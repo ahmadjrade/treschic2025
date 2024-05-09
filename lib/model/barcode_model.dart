@@ -1,0 +1,3 @@
+class BarcodeModel {
+  String barcodeValue = '';
+}

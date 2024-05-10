@@ -54,7 +54,7 @@ Future<void> showToast(result) async {
                   showImagePicker(context);
                 }
               },
-              child: Text('Select Image'),
+              child: Text('Select Imdage'),
             ),Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0.0),
                   child: GetBuilder<InsertRechargeType>(
@@ -98,8 +98,8 @@ Future<void> showToast(result) async {
                                   );
                                 });
 
-                            insertRechargeType.uploadType(
-                                    '123', imageFile!)
+                            insertRechargeType.addProduct(
+                                     imageFile!)
                                 
                                 // .then((value) => RefreshVar())
                                 .then((value) => Navigator.of(context).pop())
@@ -111,7 +111,9 @@ Future<void> showToast(result) async {
                           'Insert Sub-Category',
                           style: TextStyle(color: Colors.white),
                         ));
+                        
                   }),
+                  
                 ),
           ],
         ),

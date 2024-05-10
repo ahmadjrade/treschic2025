@@ -2,11 +2,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:fixnshop_admin/model/cart_types_model.dart';
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

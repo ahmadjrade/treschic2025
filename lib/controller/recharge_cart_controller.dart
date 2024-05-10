@@ -4,8 +4,7 @@
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/model/product_detail_model.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
+
 import 'package:fixnshop_admin/model/recharge_cart_model.dart';
 import 'package:fixnshop_admin/view/buy_accessories.dart';
 import 'package:get/get.dart';
@@ -18,6 +17,7 @@ class RechargeCartController extends GetxController {
   String result = '';
   RxBool isLoading = false.obs;
   Rx<RechargeCartModel?> SelectedRechargeCart = Rx<RechargeCartModel?>(null);
+    RxList<RechargeCartModel> InvoiceCards = <RechargeCartModel>[].obs;
 
   void clearSelectedCat() {
     SelectedRechargeCart.value = null;
@@ -40,11 +40,89 @@ class RechargeCartController extends GetxController {
     fetch_recharge_carts();
   }
 
-  List<RechargeCartModel> searchProducts(String query) {
+  List<RechargeCartModel> searchcardss(String query) {
     return recharge_carts
         .where((cart) =>
             cart.Cart_Name.toLowerCase().contains(query.toLowerCase()))
         .toList();
+  }
+  RxDouble totalLb = 0.0.obs;
+  RxDouble totalQty = 0.0.obs;
+
+  void calculateTotalLb() {
+    totalLb.value = 0.0;
+    for (var item in InvoiceCards) {
+      totalLb.value += (item.Cart_Sell * item.quantity.value);
+    }
+  }
+
+  void calculateTotalQty() {
+    totalQty.value = 0.0;
+    for (var item in InvoiceCards) {
+      totalQty.value += item.quantity.value;
+    }
+  }
+
+  void DecreaseQty(RechargeCartModel recharge) {
+    recharge.quantity-= 1;
+    calculateTotalLb();
+    calculateTotalQty();
+    
+  }
+  void IncreaseQty(RechargeCartModel recharge) {
+    recharge.quantity += 1;
+    calculateTotalLb();
+    calculateTotalQty();
+  }
+  void fetchcards(String cardName) {
+    RechargeCartModel? cards;
+   // Username = sharedPreferencesController.username;
+    // Iterate through the cardss list to find the matching cards
+    for (var card in recharge_carts) {
+      if (card.Cart_Name == cardName ) {
+        cards = card;
+        break;
+      }
+    }
+
+    if (cards != null) {
+      // Check if the cards already exists in the invoice
+      if (InvoiceCards.contains(cards)) {
+        
+          cards.quantity.value += 1;
+          calculateTotalLb();
+          calculateTotalQty();
+          print(InvoiceCards);
+          // Get.snackbar('cards Qty Increased', 'Code $cardName',
+          //     snackPosition: SnackPosition.BOTTOM,
+          //     duration: const Duration(seconds: 1));
+        
+        // Display message when the cards is already in the invoice
+        // Get.snackbar(
+        //     'cards Already Added', 'The cards is already in the invoice.',
+        //     snackPosition: SnackPosition.BOTTOM,
+        //     duration: const Duration(seconds: 2));
+     
+      } else {
+        // Add the cards to the invoice
+        InvoiceCards.add(cards);
+                  print(InvoiceCards);
+
+        calculateTotalLb();
+        
+        calculateTotalQty();
+        Get.snackbar(
+            'cards Added To Invoice', 'cards Code $cardName',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 2));
+      }
+    } else {
+      // Display error message when cards is not found
+      Get.snackbar('cards Not Found',
+          'The cards with the provided code does not exist.',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 2));
+    }
   }
 
   void fetch_recharge_carts() async {
@@ -62,7 +140,7 @@ class RechargeCartController extends GetxController {
           //  final List<dynamic> data = json.decode(response.body);
           recharge_carts.assignAll(
               data.map((item) => RechargeCartModel.fromJson(item)).toList());
-          //category = data.map((item) => Product_Details.fromJson(item)).toList();
+          //category = data.map((item) => cards_Details.fromJson(item)).toList();
           isDataFetched = true;
           isLoading.value = false;
 
@@ -84,10 +162,10 @@ class RechargeCartController extends GetxController {
   }
 
   // String result2 = '';
-  // Future<void> UpdateProductQty(String P_Detail_id, String Qty) async {
+  // Future<void> UpdatecardsQty(String P_Detail_id, String Qty) async {
   //   try {
   //     String domain = domainModel.domain;
-  //     String uri = '$domain' + 'update_product_quantity.php';
+  //     String uri = '$domain' + 'update_cards_quantity.php';
 
   //     var res = await http.post(Uri.parse(uri), body: {
   //       "P_Detail_id": P_Detail_id,
@@ -101,7 +179,7 @@ class RechargeCartController extends GetxController {
   //     print(response);
   //     result2 = response;
   //     if (response.toString().trim() ==
-  //         'Product Quantity Updated successfully.') {
+  //         'cards Quantity Updated successfully.') {
   //       //  result = 'refresh';
   //     } else if (response.toString().trim() == 'Phone IMEI already exists.') {}
   //   } catch (e) {

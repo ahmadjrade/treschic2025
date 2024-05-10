@@ -3,10 +3,39 @@ import 'dart:io';
 import 'package:fixnshop_admin/model/domain.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import "package:async/async.dart";
+
+import 'package:path/path.dart';
+
 
 class InsertRechargeType extends GetxController {
   DomainModel domainModel = DomainModel();
-  String result = '';
+  String result = ''; 
+
+
+  Future addProduct(File imageFile) async{
+     String domain = domainModel.domain;
+      String uri2 = '$domain' + 'insert_recharge_type.php';
+// ignore: deprecated_member_use
+      var stream= new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+      var length= await imageFile.length();
+      var uri = Uri.parse(uri2);
+
+      var request = new http.MultipartRequest("POST", uri);
+
+      var multipartFile = new http.MultipartFile("image", stream, length, filename: basename(imageFile.path));
+
+      request.files.add(multipartFile);
+      request.fields['type_name'] = 'nmfpwpkwendpwepdwed';
+
+
+      var respond = await request.send();
+      if(respond.statusCode==200){
+        print("Image Uploaded");
+      }else{
+        print("Upload Failed");
+      }
+        }
   
   Future<void> uploadType(String Type_name, File imageFile) async {
     try {

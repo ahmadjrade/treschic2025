@@ -2,6 +2,7 @@
 
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/view/invoice_history.dart';
+import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
 import 'package:fixnshop_admin/view/recharge_types.dart';
 import 'package:fixnshop_admin/view/repair_history.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _selectedDestination = index;
       });
     } else if (index == 2) {
-      Get.to(() => RechargeTypes());
+      Get.to(() => NewRechargeInvoice());
       setState(() {
         _selectedDestination = index;
       });

@@ -17,13 +17,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class RechargeCarts extends StatelessWidget {
   int Type_id;
   String Type_Name;
 
   RechargeCarts({super.key, required this.Type_id, required this.Type_Name});
-
+  String addCommasToNumber(double value) {
+    final formatter = NumberFormat('#,##0.00');
+    return formatter.format(value);
+  }
   final RechargeCartController rechargeCartController =
       Get.find<RechargeCartController>();
 
@@ -91,171 +95,8 @@ class RechargeCarts extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          children: [
-            SizedBox(
-              height: 25,
-            ),
-            // TextFormField(
-            //   //maxLength: 15,
-            //   initialValue: Product_Name,
-            //   readOnly: true,
-            //   //controller: Product_Name,
-            //   decoration: InputDecoration(
-            //     //helperText: '*',
-
-            //     //  hintText: '03123456',
-            //     labelText: "Product Name",
-            //     labelStyle: TextStyle(
-            //       color: Colors.black,
-            //     ),
-            //     fillColor: Colors.black,
-            //     focusedBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.black,
-            //       ),
-            //     ),
-            //     enabledBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.black,
-            //         width: 2.0,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            // TextFormField(
-            //   //maxLength: 15,
-            //   initialValue: Product_Code,
-            //   readOnly: true,
-            //   //controller: Product_Name,
-            //   decoration: InputDecoration(
-            //     //helperText: '*',
-
-            //     //  hintText: '03123456',
-            //     labelText: "Product Code",
-            //     labelStyle: TextStyle(
-            //       color: Colors.black,
-            //     ),
-            //     fillColor: Colors.black,
-            //     focusedBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.black,
-            //       ),
-            //     ),
-            //     enabledBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.black,
-            //         width: 2.0,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            // TextFormField(
-            //   //maxLength: 15,
-            //   initialValue: Product_Color,
-            //   readOnly: true,
-            //   //controller: Product_Name,
-            //   decoration: InputDecoration(
-            //     //helperText: '*',
-
-            //     //  hintText: '03123456',
-            //     labelText: "Product Color",
-            //     labelStyle: TextStyle(
-            //       color: Colors.black,
-            //     ),
-            //     fillColor: Colors.black,
-            //     focusedBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.black,
-            //       ),
-            //     ),
-            //     enabledBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(15.0),
-            //       borderSide: BorderSide(
-            //         color: Colors.black,
-            //         width: 2.0,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: TextFormField(
-            //         readOnly: true,
-            //         //   maxLength: 50,
-            //         //   initialValue: Product_Code,
-            //         keyboardType: TextInputType.number,
-            //         initialValue: Product_LPrice,
-            //         decoration: InputDecoration(
-            //           labelText: "Lowest Price ",
-            //           labelStyle: TextStyle(
-            //             color: Colors.black,
-            //           ),
-            //           fillColor: Colors.black,
-            //           focusedBorder: OutlineInputBorder(
-            //             borderRadius: BorderRadius.circular(15.0),
-            //             borderSide: BorderSide(
-            //               color: Colors.black,
-            //             ),
-            //           ),
-            //           enabledBorder: OutlineInputBorder(
-            //             borderRadius: BorderRadius.circular(15.0),
-            //             borderSide: BorderSide(
-            //               color: Colors.black,
-            //               width: 2.0,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 20,
-            //     ),
-            //     Expanded(
-            //       child: TextFormField(
-            //         readOnly: true,
-            //         //   maxLength: 50,
-            //         //   initialValue: Product_Code,
-            //         keyboardType: TextInputType.number,
-            //         initialValue: Product_MPrice,
-            //         decoration: InputDecoration(
-            //           labelText: "Max Price ",
-            //           labelStyle: TextStyle(
-            //             color: Colors.black,
-            //           ),
-            //           fillColor: Colors.black,
-            //           focusedBorder: OutlineInputBorder(
-            //             borderRadius: BorderRadius.circular(15.0),
-            //             borderSide: BorderSide(
-            //               color: Colors.black,
-            //             ),
-            //           ),
-            //           enabledBorder: OutlineInputBorder(
-            //             borderRadius: BorderRadius.circular(15.0),
-            //             borderSide: BorderSide(
-            //               color: Colors.black,
-            //               width: 2.0,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [        
             SizedBox(
               height: 20,
             ),
@@ -281,6 +122,9 @@ class RechargeCarts extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
+                              onTap: () {
+                                rechargeCartController.fetchcards(carts.Cart_Name);
+                              },
                               // collapsedTextColor: Colors.black,
                               // textColor: Colors.black,
                               // backgroundColor: Colors.deepPurple.shade100,
@@ -297,6 +141,7 @@ class RechargeCarts extends StatelessWidget {
                                   : Placeholder(),
 
                               title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // carts.Cart_Image != null
                                   //     ? SizedBox(
@@ -312,27 +157,20 @@ class RechargeCarts extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17),
                                   ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.remove),
-                                      Spacer(),
-                                      Text('1'),
-                                      Spacer(),
-                                      Icon(Icons.add),
-                                    ],
-                                  )
+                                 
                                 ],
                               ),
-                              trailing: Text(
-                                carts.Cart_Sell.toString() + ' LL',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.green.shade900),
-                              ),
+                              subtitle: 
+                              
+                                  Text(
+                                    addCommasToNumber(carts.Cart_Sell)
+                                    .toString() + ' LL',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: Colors.green.shade900),
+                                  )
+                              
                               // controlAffinity: ListTileControlAffinity.leading,
                               // children: <Widget>[
                               //   Padding(
@@ -494,7 +332,30 @@ class RechargeCarts extends StatelessWidget {
                 },
               ),
             ),
-          ],
+            Card(
+              color: Colors.grey.shade300,
+              child: Padding(
+
+                padding: const EdgeInsets.all(20.0),
+                child: 
+                Obx(() {
+                                       return       Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Carts:'), Text(rechargeCartController.totalQty.toString()),
+
+                    Text('Total:'),
+
+                    Text(addCommasToNumber(rechargeCartController.totalLb.value).  toString() + ' LL'),
+
+                  ],
+                );
+                                            })
+               
+              ),
+            ),
+            SizedBox(height: 20,),
+            ],
         ),
       ),
     );

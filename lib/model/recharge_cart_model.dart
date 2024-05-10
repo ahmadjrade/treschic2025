@@ -8,6 +8,7 @@ class RechargeCartModel {
   final double Cart_Sell;
   final String Cart_Image;
   final int Cart_Type;
+  RxInt quantity;
 
   RechargeCartModel({
     required this.Cart_id,
@@ -16,6 +17,7 @@ class RechargeCartModel {
     required this.Cart_Sell,
     required this.Cart_Image,
     required this.Cart_Type,
+    required this.quantity,
     // Change type to double
   });
 
@@ -27,6 +29,7 @@ class RechargeCartModel {
       Cart_Sell: json['Cart_Sell'].toDouble(),
       Cart_Image: json['Cart_Image'],
       Cart_Type: json['Cart_Type'],
+      quantity: 1.obs,
     );
   }
 }

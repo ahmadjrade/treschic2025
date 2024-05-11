@@ -1,42 +1,45 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
 import 'package:fixnshop_admin/controller/category_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/controller/sub_category_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
+import 'package:fixnshop_admin/model/invoice_history_model.dart';
 import 'package:fixnshop_admin/model/product_detail_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/add_product_detail.dart';
+import 'package:fixnshop_admin/view/Product/add_product_detail.dart';
 import 'package:fixnshop_admin/view/sub_category_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class ProductListDetail extends StatelessWidget {
-  String Product_id,
-      Product_Name,
-      Product_Color,
-      Product_LPrice,
-      Product_MPrice,
-      Product_Code;
-  ProductListDetail(
+class InvoiceHistoryItems extends StatelessWidget {
+  String Invoice_id,
+      Customer_Name,
+      Customer_Number,
+      Invoice_Total_US,
+      Invoice_Rec_US,
+      Invoice_Due_US;
+  InvoiceHistoryItems(
       {super.key,
-      required this.Product_id,
-      required this.Product_Name,
-      required this.Product_Color,
-      required this.Product_LPrice,
-      required this.Product_MPrice,
-      required this.Product_Code});
-  final ProductDetailController productDetailController =
-      Get.find<ProductDetailController>();
+      required this.Invoice_id,
+      required this.Customer_Name,
+      required this.Customer_Number,
+      required this.Invoice_Total_US,
+      required this.Invoice_Rec_US,
+      required this.Invoice_Due_US});
+  final InvoiceDetailController invoiceDetailController =
+      Get.find<InvoiceDetailController>();
   TextEditingController New_Qty = TextEditingController();
+
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   RxString Username = ''.obs;
-  // TextEditingController Product_Name = TextEditingController();
+  // TextEditingController Customer_Name = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Username = sharedPreferencesController.username;
@@ -48,36 +51,36 @@ class ProductListDetail extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(snackBar2);
     }
 
-    // productDetailController.isDataFetched = false;
-    // productDetailController.fetchproductdetails();
-    List<ProductDetailModel> filteredProductDetails() {
-      return productDetailController.product_detail
-          .where((product_details) =>
-              product_details.Product_id == int.tryParse(Product_id))
+    // invoiceDetailController.isDataFetched = false;
+    // invoiceDetailController.fetchproductdetails();
+    List<InvoiceHistoryModel> filteredProductDetails() {
+      return invoiceDetailController.invoice_detail
+          .where((invoice_detail) =>
+              invoice_detail.Invoice_id == int.tryParse(Invoice_id))
           .toList();
     }
 
-    //  productDetailController.product_detail.clear();
-    // productDetailController.isDataFetched = false;
-    //  productDetailController.fetchproductdetails(Product_id);
+    //  invoiceDetailController.product_detail.clear();
+    // invoiceDetailController.isDataFetched = false;
+    //  invoiceDetailController.fetchproductdetails(Invoice_id);
     // productController.fetchproducts();
     return Scaffold(
       appBar: AppBar(
           title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Product List Detail'),
+          Text('Invoice #$Invoice_id Items'),
           IconButton(
-            color: Colors.deepPurple,
+            color: Color.fromRGBO(13, 134, 151, 1),
             iconSize: 24.0,
             onPressed: () {
-              Get.to(() => AddProductDetail(
-                    Product_id: Product_id,
-                    Product_Name: Product_Name,
-                    Product_Code: Product_Code,
-                    Product_LPrice: Product_LPrice,
-                    Product_MPrice: Product_MPrice,
-                  ));
+              // Get.to(() => AddProductDetail(
+              //       Invoice_id: Invoice_id,
+              //       Customer_Name: Customer_Name,
+              //       Invoice_Due_US: Invoice_Due_US,
+              //       Invoice_Total_US: Invoice_Total_US,
+              //       Invoice_Rec_US: Invoice_Rec_US,
+              //     ));
             },
             icon: Icon(CupertinoIcons.add),
           ),
@@ -85,8 +88,8 @@ class ProductListDetail extends StatelessWidget {
             color: Colors.deepPurple,
             iconSize: 24.0,
             onPressed: () {
-              productDetailController.isDataFetched = false;
-              productDetailController.fetchproductdetails();
+              invoiceDetailController.isDataFetched = false;
+              invoiceDetailController.fetchinvoicesdetails();
               // categoryController.isDataFetched =false;
               // categoryController.fetchcategories();
             },
@@ -103,78 +106,14 @@ class ProductListDetail extends StatelessWidget {
             ),
             TextFormField(
               //maxLength: 15,
-              initialValue: Product_Name,
+              initialValue: Customer_Name + ' || ' + Customer_Number,
               readOnly: true,
-              //controller: Product_Name,
+              //controller: Customer_Name,
               decoration: InputDecoration(
                 //helperText: '*',
 
                 //  hintText: '03123456',
-                labelText: "Product Name",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                fillColor: Colors.black,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 2.0,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              //maxLength: 15,
-              initialValue: Product_Code,
-              readOnly: true,
-              //controller: Product_Name,
-              decoration: InputDecoration(
-                //helperText: '*',
-
-                //  hintText: '03123456',
-                labelText: "Product Code",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                fillColor: Colors.black,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 2.0,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              //maxLength: 15,
-              initialValue: Product_Color,
-              readOnly: true,
-              //controller: Product_Name,
-              decoration: InputDecoration(
-                //helperText: '*',
-
-                //  hintText: '03123456',
-                labelText: "Product Color",
+                labelText: "Customer",
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -198,16 +137,19 @@ class ProductListDetail extends StatelessWidget {
               height: 20,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: TextFormField(
+                    //maxLength: 15,
+                    initialValue: Invoice_Total_US,
                     readOnly: true,
-                    //   maxLength: 50,
-                    //   initialValue: Product_Code,
-                    keyboardType: TextInputType.number,
-                    initialValue: Product_LPrice,
+                    //controller: Customer_Name,
                     decoration: InputDecoration(
-                      labelText: "Lowest Price ",
+                      //helperText: '*',
+                  
+                      //  hintText: '03123456',
+                      labelText: "Total",
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
@@ -228,18 +170,48 @@ class ProductListDetail extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 20,
-                ),
+                SizedBox(width: 10,),
                 Expanded(
                   child: TextFormField(
+                    //maxLength: 15,
+                    initialValue: Invoice_Rec_US,
                     readOnly: true,
-                    //   maxLength: 50,
-                    //   initialValue: Product_Code,
-                    keyboardType: TextInputType.number,
-                    initialValue: Product_MPrice,
+                    //controller: Customer_Name,
                     decoration: InputDecoration(
-                      labelText: "Max Price ",
+                      //helperText: '*',
+                  
+                      //  hintText: '03123456',
+                      labelText: "Received",
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                      fillColor: Colors.black,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ), SizedBox(width: 10,),Expanded(
+                  child: TextFormField(
+                    //maxLength: 15,
+                    initialValue: Invoice_Due_US,
+                    readOnly: true,
+                    //controller: Customer_Name,
+                    decoration: InputDecoration(
+                      //helperText: '*',
+                  
+                      //  hintText: '03123456',
+                      labelText: "Due",
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
@@ -262,24 +234,26 @@ class ProductListDetail extends StatelessWidget {
                 ),
               ],
             ),
+            
+            
             SizedBox(
               height: 20,
             ),
             Expanded(
               child: Obx(
                 () {
-                  final List<ProductDetailModel> filteredproducts =
+                  final List<InvoiceHistoryModel> filtereditems =
                       filteredProductDetails();
-                  if (productDetailController.isLoading.value) {
+                  if (invoiceDetailController.isLoading.value) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (productDetailController.product_detail.isEmpty) {
-                    return Center(child: Text('No Quantity Yet ! Add Some'));
+                  } else if (invoiceDetailController.invoice_detail.isEmpty) {
+                    return Center(child: Text('No Items Yet ! Add Some'));
                   } else {
                     return ListView.builder(
-                      itemCount: filteredproducts.length,
+                      itemCount: filtereditems.length,
                       itemBuilder: (context, index) {
-                        final ProductDetailModel product =
-                            filteredproducts[index];
+                        final InvoiceHistoryModel invoice =
+                            filtereditems[index];
                         return Container(
                           color: Colors.grey.shade200,
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -291,12 +265,12 @@ class ProductListDetail extends StatelessWidget {
                             backgroundColor: Colors.deepPurple.shade100,
                             //   collapsedBackgroundColor: Colors.white,
                             trailing: Text(
-                              product.Product_Quantity.toString() + ' PCS',
+                              invoice.Product_Quantity.toString() + ' PCS',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
                             title: Text(
-                              product.Product_Store,
+                              invoice.Product_Name,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 17),
                             ),
@@ -310,7 +284,7 @@ class ProductListDetail extends StatelessWidget {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Visibility(
-                                      visible: productDetailController
+                                      visible: invoiceDetailController
                                           .isadmin(Username.value),
                                       child: IconButton(
                                           color: Colors.red,
@@ -378,20 +352,20 @@ class ProductListDetail extends StatelessWidget {
                                                                   ),
                                                                 );
                                                               });
-                                                          productDetailController.UpdateProductQty(
-                                                                  product.PD_id
+                                                          invoiceDetailController.UpdateProductQty(
+                                                                  invoice.Invoice_Detail_id
                                                                       .toString(),
                                                                   New_Qty.text)
                                                               .then((value) => showToast(
-                                                                  productDetailController
+                                                                  invoiceDetailController
                                                                       .result2))
                                                               .then((value) =>
-                                                                  productDetailController
+                                                                  invoiceDetailController
                                                                           .isDataFetched =
                                                                       false)
                                                               .then((value) =>
-                                                                  productDetailController
-                                                                      .fetchproductdetails())
+                                                                  invoiceDetailController
+                                                                      .fetchinvoicesdetails())
                                                               .then((value) =>
                                                                   Navigator.of(context)
                                                                       .pop())
@@ -419,18 +393,18 @@ class ProductListDetail extends StatelessWidget {
                                           icon: Icon(Icons.edit)),
                                     ),
                                     Text('Total Quantity Bought: ' +
-                                        product.Product_Max_Quantity
+                                        invoice.Product_Quantity
                                             .toString()),
                                     SizedBox(
                                       height: 5,
                                     ),
                                     Text('Total Quantity Sold: ' +
-                                        product.Product_Sold_Quantity
+                                        invoice.Product_Quantity
                                             .toString()),
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    // Text('id' + product.PD_id.toString()),
+                                    // Text('id' + invoice.PD_id.toString()),
                                     // SizedBox(
                                     //   height: 20,
                                     // ),
@@ -440,15 +414,15 @@ class ProductListDetail extends StatelessWidget {
                                 ),
                               )
                             ],
-                            //  subtitle: Text(product.Product_Brand),
+                            //  subtitle: Text(invoice.Product_Brand),
                             // trailing: OutlinedButton(
                             //   onPressed: () {
 
-                            //     // productController.SelectedPhone.value = product;
+                            //     // productController.SelectedPhone.value = invoice;
                             //     //       // product_detailsController.selectedproduct_details.value =
                             //     //       //     null;
 
-                            //               Get.to(() => ProductListDetail(Product_id: product.Product_id.toString(), Product_Name: product.Product_Name,Product_Color: product.Product_Color,));
+                            //               Get.to(() => InvoiceHistoryItems(Invoice_id: invoice.Invoice_id.toString(), Customer_Name: invoice.Customer_Name,Customer_Number: invoice.Customer_Number,));
                             //   },
                             //   child: Text('Select')),
                             // // Add more properties as needed

@@ -7,8 +7,8 @@ import 'package:fixnshop_admin/controller/cart_types_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/cart_types_model.dart';
-import 'package:fixnshop_admin/view/add_recharge_type.dart';
-import 'package:fixnshop_admin/view/recharge_carts.dart';
+import 'package:fixnshop_admin/view/Recharge/add_recharge_type.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_carts.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +140,7 @@ class RechargeTypes extends StatelessWidget {
                           child: ListTile(
                             leading: cart != null && cart.Type_Image != null
                                 ? CachedNetworkImage(
-                                    width: 100,
+                                    width: 50,
                                     imageUrl: cart.Type_Image!,
                                     placeholder: (context, url) => Center(
                                         child: CircularProgressIndicator()),
@@ -152,6 +152,7 @@ class RechargeTypes extends StatelessWidget {
                             //   copyToClipboard(cart.cart_Code);
                             // },
                             title: Row(
+                              
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(

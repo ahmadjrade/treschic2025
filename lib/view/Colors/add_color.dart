@@ -2,19 +2,22 @@
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:fixnshop_admin/controller/brand_controller.dart';
+import 'package:fixnshop_admin/controller/color_controller.dart';
+import 'package:fixnshop_admin/controller/insert_color_controller.dart';
 import 'package:fixnshop_admin/model/brand_model.dart';
+import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/insert_brand_controller.dart';
+import '../../controller/insert_brand_controller.dart';
 
-class AddBrand extends StatelessWidget {
-  AddBrand({super.key});
+class AddColor extends StatelessWidget {
+  AddColor({super.key});
 
-  final InsertBrandController insertbrandController =
-      Get.put(InsertBrandController());
-  final BrandController brandController = Get.find<BrandController>();
+  final InsertColorController insertColorController =
+      Get.put(InsertColorController());
+  final ColorController colorController = Get.find<ColorController>();
 
   TextEditingController Brand_Name = TextEditingController();
 
@@ -33,13 +36,13 @@ class AddBrand extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('New Brand'),
+            Text('New Color'),
             IconButton(
               color: Colors.white,
               iconSize: 24.0,
               onPressed: () {
-                brandController.isDataFetched = false;
-                brandController.fetchbrands();
+                colorController.isDataFetched = false;
+                colorController.fetchcolors();
                 //  supplierController.isDataFetched = false;
                 // supplierController.fetchsuppliers();
               },
@@ -61,7 +64,7 @@ class AddBrand extends StatelessWidget {
               keyboardType: TextInputType.name,
               controller: Brand_Name,
               decoration: InputDecoration(
-                labelText: "Brand Name ",
+                labelText: "Color Name ",
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -87,8 +90,8 @@ class AddBrand extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: GetBuilder<InsertBrandController>(
-                builder: (insertbrandController) {
+            child: GetBuilder<InsertColorController>(
+                builder: (insertColorController) {
               return OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(double.maxFinite, 50),
@@ -127,21 +130,24 @@ class AddBrand extends StatelessWidget {
                               ),
                             );
                           });
-                      insertbrandController.UploadBrand(Brand_Name.text)
+                      insertColorController.UploadColor(Brand_Name.text)
                           .then((value) => Brand_Name.clear())
                           .then(
-                              (value) => brandController.isDataFetched = false)
-                          .then((value) => brandController.fetchbrands())
+                              (value) => colorController.isDataFetched = false)
+                          .then((value) => colorController.fetchcolors())
                           .then((value) =>
-                              showToast(insertbrandController.result))
+                              showToast(insertColorController.result))
                           .then((value) => Navigator.of(context).pop());
                     } else {
-                      showToast('Please add Brand Name');
+                      showToast('Please add Color Name');
                     }
                   },
-                  child: Text(
-                    'Insert Brand',
-                    style: TextStyle(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      'Insert Color',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ));
             }),
           ),
@@ -171,7 +177,7 @@ class AddBrand extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Obx(
-              () => brandController.brands.isEmpty
+              () => colorController.colors.isEmpty
                   ? Center(
                       child: Column(
                         children: [
@@ -180,9 +186,9 @@ class AddBrand extends StatelessWidget {
                         ],
                       ),
                     )
-                  : DropdownButtonFormField<BrandModel>(
+                  : DropdownButtonFormField<ColorModel>(
                       decoration: InputDecoration(
-                        labelText: "Brands",
+                        labelText: "Colors",
                         labelStyle: TextStyle(
                           color: Colors.black,
                         ),
@@ -204,15 +210,15 @@ class AddBrand extends StatelessWidget {
                       iconDisabledColor: Colors.deepPurple.shade300,
                       iconEnabledColor: Colors.deepPurple.shade300,
                       //  value: categoryController.category.first,
-                      onChanged: (BrandModel? value) {
+                      onChanged: (ColorModel? value) {
                         //SelectedCategory = value;
                         //SelectCatId = (SelectedCategory?.Cat_id).toString();
                         //print(SelectCatId);
                       },
-                      items: brandController.brands
-                          .map((brand) => DropdownMenuItem<BrandModel>(
-                                value: brand,
-                                child: Text(brand.Brand_Name),
+                      items: colorController.colors
+                          .map((color) => DropdownMenuItem<ColorModel>(
+                                value: color,
+                                child: Text(color.Color),
                               ))
                           .toList(),
                     ),

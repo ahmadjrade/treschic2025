@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/view/buy_accessories.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 

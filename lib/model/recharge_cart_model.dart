@@ -1,34 +1,34 @@
 import 'package:get/get.dart';
 
 class RechargeCartModel {
-  final int Cart_id;
+  final int Card_id;
 
-  final String Cart_Name;
-  final double Cart_Cost;
-  final double Cart_Sell;
-  final String Cart_Image;
-  final int Cart_Type;
+  final String Card_Name;
+  final double Card_Cost;
+  final double Card_Price;
+  final String? Card_Image;
+  final int Card_Type;
   RxInt quantity;
 
   RechargeCartModel({
-    required this.Cart_id,
-    required this.Cart_Name,
-    required this.Cart_Cost,
-    required this.Cart_Sell,
-    required this.Cart_Image,
-    required this.Cart_Type,
+    required this.Card_id,
+    required this.Card_Name,
+    required this.Card_Cost,
+    required this.Card_Price,
+    required this.Card_Image,
+    required this.Card_Type,
     required this.quantity,
     // Change type to double
   });
 
   factory RechargeCartModel.fromJson(Map<String, dynamic> json) {
     return RechargeCartModel(
-      Cart_id: json['Cart_id'],
-      Cart_Name: json['Cart_Name'],
-      Cart_Cost: json['Cart_Cost'].toDouble(),
-      Cart_Sell: json['Cart_Sell'].toDouble(),
-      Cart_Image: json['Cart_Image'],
-      Cart_Type: json['Cart_Type'],
+      Card_id: json['Card_id'],
+      Card_Name: json['Card_Name'],
+      Card_Cost: json['Card_Cost'].toDouble(),
+      Card_Price: json['Card_Sell'].toDouble(),
+      Card_Image: json['Card_Image'],
+      Card_Type: json['Card_Type'],
       quantity: 1.obs,
     );
   }

@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../controller/category_controller.dart';
-import '../controller/insert_category_controller.dart';
-import '../controller/insert_sub_category_controller.dart';
-import '../model/category_model.dart';
+import '../../controller/category_controller.dart';
+import '../../controller/insert_category_controller.dart';
+import '../../controller/insert_sub_category_controller.dart';
+import '../../model/category_model.dart';
 
 class AddCategory extends StatelessWidget {
   AddCategory({super.key});

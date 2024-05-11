@@ -8,7 +8,7 @@ import 'package:fixnshop_admin/model/domain.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class InsertRechargeType extends GetxController {
+class InsertRechargeCard extends GetxController {
   // RxList<CustomerModel> customerModel = <CustomerModel>[].obs;
         final SharedPreferencesController sharedPreferencesController = Get.find<SharedPreferencesController>(); 
          RxString Username = ''.obs;
@@ -18,26 +18,30 @@ class InsertRechargeType extends GetxController {
   final DateTimeController dateController = DateTimeController();
   String formattedDate = '';
   String formattedTime = '';
-  Future<void> UploadCard(String Type_Name) async {
+  Future<void> UploadCard(String Type_id,String Card_Name,
+      String Card_Cost, String Card_Price,) async {
     try {
       //   Username = sharedPreferencesController.username;
       // formattedDate = dateController.getFormattedDate();
       // formattedTime = dateController.getFormattedTime();
       String domain = domainModel.domain;
 
-      String uri = '$domain' + 'insert_recharge_type.php';
+      String uri = '$domain' + 'insert_recharge_card.php';
       var res = await http.post(Uri.parse(uri), body: {
-        "Type_Name": Type_Name,
-      
+        "Type_id": Type_id,
+        "Card_Name":Card_Name,
+        "Card_Cost": Card_Cost,
+        "Card_Price": Card_Price,  
+        
 
         
       });
-     // print(Ty + Card_Name + Card_Cost + Card_Price);
+      print(Type_id + Card_Name + Card_Cost + Card_Price);
       var response = json.decode(json.encode(res.body));
 
       print(response);
       result = response;
-      if (response.toString().trim() == 'Card Type inserted successfully.') {
+      if (response.toString().trim() == 'Card inserted successfully.') {
         //  result = 'refresh';
       }
     } catch (e) {

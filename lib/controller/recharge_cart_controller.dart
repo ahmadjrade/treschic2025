@@ -6,7 +6,7 @@ import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
 
 import 'package:fixnshop_admin/model/recharge_cart_model.dart';
-import 'package:fixnshop_admin/view/buy_accessories.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -43,7 +43,7 @@ class RechargeCartController extends GetxController {
   List<RechargeCartModel> searchcardss(String query) {
     return recharge_carts
         .where((cart) =>
-            cart.Cart_Name.toLowerCase().contains(query.toLowerCase()))
+            cart.Card_Name.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
   RxDouble totalLb = 0.0.obs;
@@ -52,7 +52,7 @@ class RechargeCartController extends GetxController {
   void calculateTotalLb() {
     totalLb.value = 0.0;
     for (var item in InvoiceCards) {
-      totalLb.value += (item.Cart_Sell * item.quantity.value);
+      totalLb.value += (item.Card_Price * item.quantity.value);
     }
   }
 
@@ -79,7 +79,7 @@ class RechargeCartController extends GetxController {
    // Username = sharedPreferencesController.username;
     // Iterate through the cardss list to find the matching cards
     for (var card in recharge_carts) {
-      if (card.Cart_Name == cardName ) {
+      if (card.Card_Name == cardName ) {
         cards = card;
         break;
       }

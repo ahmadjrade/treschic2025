@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/view/invoice_history.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
-import 'package:fixnshop_admin/view/recharge_types.dart';
-import 'package:fixnshop_admin/view/repair_history.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_types.dart';
+import 'package:fixnshop_admin/view/Repairs/repair_history.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // ignore_for_file: prefer_const_constructors

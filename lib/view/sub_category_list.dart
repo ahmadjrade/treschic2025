@@ -3,8 +3,8 @@
 import 'package:fixnshop_admin/controller/category_controller.dart';
 import 'package:fixnshop_admin/controller/sub_category_controller.dart';
 import 'package:fixnshop_admin/model/sub_category_model.dart';
-import 'package:fixnshop_admin/view/buy_accessories.dart';
-import 'package:fixnshop_admin/view/product_list_by_scat.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
+import 'package:fixnshop_admin/view/Product/product_list_by_scat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

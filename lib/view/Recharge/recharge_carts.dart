@@ -11,7 +11,8 @@ import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/product_detail_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
 import 'package:fixnshop_admin/model/recharge_cart_model.dart';
-import 'package:fixnshop_admin/view/add_product_detail.dart';
+import 'package:fixnshop_admin/view/Product/add_product_detail.dart';
+import 'package:fixnshop_admin/view/Recharge/add_recharge_card.dart';
 import 'package:fixnshop_admin/view/sub_category_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class RechargeCarts extends StatelessWidget {
     // rechargeCartController.fetchproductdetails();
     List<RechargeCartModel> filteredProductDetails() {
       return rechargeCartController.recharge_carts
-          .where((carts) => carts.Cart_Type == (Type_id))
+          .where((carts) => carts.Card_Type == (Type_id))
           .toList();
     }
 
@@ -64,18 +65,16 @@ class RechargeCarts extends StatelessWidget {
           title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [ 
-          Text('$Type_Name Recharge Cards'),
+          Expanded(child: Text('$Type_Name Recharge Cards',overflow:TextOverflow.ellipsis,)),
           IconButton(
             color: Colors.deepPurple,
             iconSize: 24.0,
             onPressed: () {
-              // Get.to(() => AddProductDetail(
-              //       Type_id: Type_id,
-              //       Product_Name: Product_Name,
-              //       Product_Code: Product_Code,
-              //       Product_LPrice: Product_LPrice,
-              //       Product_MPrice: Product_MPrice,
-              //     ));
+
+              Get.to(() => AddRechargeCard(
+                    Type_id: Type_id,
+
+                  ));
             },
             icon: Icon(CupertinoIcons.add),
           ),
@@ -123,22 +122,27 @@ class RechargeCarts extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
                               onTap: () {
-                                rechargeCartController.fetchcards(carts.Cart_Name);
+                                rechargeCartController.fetchcards(carts.Card_Name);
                               },
                               // collapsedTextColor: Colors.black,
                               // textColor: Colors.black,
                               // backgroundColor: Colors.deepPurple.shade100,
                               //   collapsedBackgroundColor: Colors.white,
-                              leading: carts != null && carts.Cart_Image != null
-                                  ? CachedNetworkImage(
+                              leading:  carts.Card_Image == null
+                                  ? SizedBox(width: 100, child: Column(
+                                    children: [
+                                      Text('No Image'),
+                                      Icon( Icons.error,),
+                                    ],
+                                  ))
+                                  : CachedNetworkImage(
                                       width: 100,
-                                      imageUrl: carts.Cart_Image!,
+                                      imageUrl: carts.Card_Image!,
                                       placeholder: (context, url) => Center(
                                           child: CircularProgressIndicator()),
                                       errorWidget: (context, url, error) =>
                                           Icon(Icons.error),
-                                    )
-                                  : Placeholder(),
+                                    ),
 
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +156,7 @@ class RechargeCarts extends StatelessWidget {
                                   //     : Placeholder(),
 
                                   Text(
-                                    carts.Cart_Name,
+                                    carts.Card_Name,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17),
@@ -163,7 +167,7 @@ class RechargeCarts extends StatelessWidget {
                               subtitle: 
                               
                                   Text(
-                                    addCommasToNumber(carts.Cart_Sell)
+                                    addCommasToNumber(carts.Card_Price)
                                     .toString() + ' LL',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,

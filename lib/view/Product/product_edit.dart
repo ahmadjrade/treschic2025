@@ -16,7 +16,7 @@ import 'package:fixnshop_admin/model/brand_model.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/sub_category_model.dart';
-import 'package:fixnshop_admin/view/buy_accessories.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

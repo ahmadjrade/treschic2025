@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../controller/sub_category_controller.dart';
+import '../../controller/sub_category_controller.dart';
 
 class BuyAccessories extends StatefulWidget {
   const BuyAccessories({super.key});

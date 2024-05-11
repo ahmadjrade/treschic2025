@@ -6,7 +6,7 @@ import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
-import 'package:fixnshop_admin/view/phone_edit.dart';
+import 'package:fixnshop_admin/view/Phones/phone_edit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

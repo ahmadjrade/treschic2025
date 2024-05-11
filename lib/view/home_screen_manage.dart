@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/view/customer_list.dart';
+import 'package:fixnshop_admin/view/Customers/customer_list.dart';
 import 'package:fixnshop_admin/view/home_screen.dart';
-import 'package:fixnshop_admin/view/insertion_screen.dart';
-import 'package:fixnshop_admin/view/product_list.dart';
+import 'package:fixnshop_admin/view/Repairs/insertion_screen.dart';
+import 'package:fixnshop_admin/view/Product/product_list.dart';
 import 'package:fixnshop_admin/view/search_screen.dart';
 import 'package:fixnshop_admin/view/settings_screen.dart';
 import 'package:fixnshop_admin/view/stocks_screen.dart';

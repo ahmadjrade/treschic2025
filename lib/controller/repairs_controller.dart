@@ -13,7 +13,7 @@ import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
 import 'package:fixnshop_admin/model/repairs_model.dart';
-import 'package:fixnshop_admin/view/buy_accessories.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;

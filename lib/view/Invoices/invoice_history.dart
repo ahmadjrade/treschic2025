@@ -5,7 +5,7 @@ import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/view/invoice_history_items.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

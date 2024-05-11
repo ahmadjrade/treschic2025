@@ -9,10 +9,10 @@ import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
-import 'package:fixnshop_admin/view/buy_accessories.dart';
-import 'package:fixnshop_admin/view/product_list.dart';
-import 'package:fixnshop_admin/view/recharge_carts.dart';
-import 'package:fixnshop_admin/view/recharge_types.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
+import 'package:fixnshop_admin/view/Product/product_list.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_carts.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_types.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -262,33 +262,50 @@ class NewRechargeInvoice extends StatelessWidget {
                               var card =
                                   rechargeCartController.InvoiceCards[index];
                               return Card(
+                                
                                   child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
+                                    
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        card != null && card.Cart_Image != null
-                                  ? CachedNetworkImage(
+                                             
+                                         card.Card_Image == null
+                                  ? SizedBox(width: 50, child: Column(
+                                    children: [
+                                      Text('No Image',style: TextStyle(fontSize: 10),),
+                                      Icon( Icons.error,),
+                                    ],
+                                  ))
+                                  : CachedNetworkImage(
                                       width: 50,
 
-                                      imageUrl: card.Cart_Image!,
+                                      imageUrl: card.Card_Image!,
                                       placeholder: (context, url) => Center(
                                           child: CircularProgressIndicator()),
                                       errorWidget: (context, url, error) =>
                                           Icon(Icons.error),
-                                    )
-                                  : Placeholder(),
+                                    ),
                                   SizedBox(width: 10,),
                                         Expanded(
-                                          child: Text(
-                                            card.Cart_Name,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: 15),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                card.Card_Name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(fontSize: 15),
+                                              ), Text(addCommasToNumber( card.Card_Price)
+                                               .toString() + ' LL',
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(fontSize: 15,color: Colors.green.shade900),
+                                              ),
+                                            ],
                                           ),
                                         ),
 
@@ -300,17 +317,103 @@ class NewRechargeInvoice extends StatelessWidget {
                                                 IconButton(
                                         icon: Icon(Icons.remove),
                                         onPressed: () {
-                                          rechargeCartController.DecreaseQty(rechargeCartController
+                                          if(card.quantity.value == 1) {
+                                                showDialog(
+                                                        barrierDismissible:
+                                                            false,
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                                'Remove Item?'),
+                                                            // content: setupAlertDialoadContainer(),
+
+                                                            actions: [
+                                                              Center(
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child: OutlinedButton(
+                                                                          style: ElevatedButton.styleFrom(
+                                                                            fixedSize:
+                                                                                Size(double.infinity, 20),
+                                                                            backgroundColor:
+                                                                                Colors.red,
+                                                                            side:
+                                                                                BorderSide(width: 2.0, color: Colors.red),
+                                                                            shape:
+                                                                                RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(32.0),
+                                                                            ),
+                                                                          ),
+                                                                          onPressed: () {
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          child: Text(
+                                                                            'No',
+                                                                            style:
+                                                                                TextStyle(color: Colors.white),
+                                                                          )),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 20,
+                                                                    ),
+                                                                    Expanded(
+                                                                      child: OutlinedButton(
+                                                                          style: ElevatedButton.styleFrom(
+                                                                            fixedSize:
+                                                                                Size(double.infinity, 20),
+                                                                            backgroundColor:
+                                                                                Colors.green,
+                                                                            side:
+                                                                                BorderSide(width: 2.0, color: Colors.green),
+                                                                            shape:
+                                                                                RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(32.0),
+                                                                            ),
+                                                                          ),
+                                                                          onPressed: () {
+                                                                            rechargeCartController.InvoiceCards.removeAt(index);
+                                                                            Navigator.of(context).pop();
+                                                                            rechargeCartController.calculateTotalLb();
+                                                                            rechargeCartController.calculateTotalQty();
+                                                                            
+                                                                            // _showeditAlertDialog(
+                                                                            //     context,
+                                                                            //     product_info[index]
+                                                                            //         .Product_info_id);
+                                                                            // Navigator.of(context).pop();
+                                                                          },
+                                                                          child: Text(
+                                                                            'Yes',
+                                                                            style:
+                                                                                TextStyle(color: Colors.white),
+                                                                          )),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            ],
+                                                          );
+                                                        });
+                                          } else {
+                                            rechargeCartController.DecreaseQty(rechargeCartController
                                                                 .InvoiceCards[
                                                             index]) ;
+                                          }
+                                          
                                         
                                       },
                                       ),
-                                      SizedBox(width: 25,),
+                                      SizedBox(width: 5,),
                                       Text(card.quantity.toString()),
                                               ],
                                             ),
-                                      SizedBox(width: 25,),
+                                      SizedBox(width: 5,),
                                       IconButton(
                                         icon: Icon(Icons.add),
                                         onPressed: () {
@@ -319,10 +422,15 @@ class NewRechargeInvoice extends StatelessWidget {
                                                             index]) ;
                                         
                                       },
-                                      ),
+                                      ), IconButton(onPressed: (){ 
+                                               rechargeCartController.InvoiceCards.removeAt(index);
+                                                                            rechargeCartController.calculateTotalLb();
+                                                                            rechargeCartController.calculateTotalQty();
+
+                                    }, icon: Icon(Icons.delete,color: Colors.red,)),
                                                 
                                             
-                                          ],
+                                           ],
                                         );})
                                     
 
@@ -375,7 +483,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('Rate: '),
+                                            Text('Rate: ',style: TextStyle(fontWeight: FontWeight.bold)),
                                             Text(
                                                 '${rateController.rateValue.value}'),
                                           ],
@@ -391,7 +499,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Item Count: '),
+                                        Text('Item Count: ',style: TextStyle(fontWeight: FontWeight.bold)),
                                         Text(
                                             '${rechargeCartController.totalQty.toString()}'),
                                       ],
@@ -405,7 +513,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Invoice Total: '),
+                                        Text('Invoice Total: ',style: TextStyle(fontWeight: FontWeight.bold)),
                                         Text(
                                           addCommasToNumber(rechargeCartController
                                                   .totalLb.value) +
@@ -424,13 +532,13 @@ class NewRechargeInvoice extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Invoice Total US: '),
+                                        Text('Invoice Total US: ',style: TextStyle(fontWeight: FontWeight.bold),),
                                         Text(
                                           addCommasToNumber(rechargeCartController
-                                                  .totalLb.value * rateController.rateValue.value) +
+                                                  .totalLb.value / rateController.rateValue.value) +
                                               ' \$',
                                           style: TextStyle(
-                                              color: Colors.green.shade900),
+                                              color: Colors.green.shade900,),
                                         ),
                                       ],
                                     ),

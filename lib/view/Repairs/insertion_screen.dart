@@ -14,11 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../controller/category_controller.dart';
-import '../controller/sub_category_controller.dart';
-import '../controller/supplier_controller.dart';
-import '../model/category_model.dart';
-import '../model/sub_category_model.dart';
+import '../../controller/category_controller.dart';
+import '../../controller/sub_category_controller.dart';
+import '../../controller/supplier_controller.dart';
+import '../../model/category_model.dart';
+import '../../model/sub_category_model.dart';
 
 class InsertionScreen extends StatelessWidget {
   InsertionScreen({super.key});

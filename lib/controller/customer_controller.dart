@@ -10,6 +10,9 @@ class CustomerController extends GetxController {
   bool isDataFetched = false;
   RxString result = ''.obs;
   RxString result2 = ''.obs;
+
+  RxString result3 = ''.obs;
+  RxString result4 = ''.obs;
   RxBool isLoading = false.obs;
 
   DomainModel domainModel = DomainModel();
@@ -49,6 +52,27 @@ class CustomerController extends GetxController {
     } else {
       result.value = 'Customer name not found';
       result2.value = 'Customer  idnot found';
+
+      print(result);
+    }
+  }
+  void searchCustomerforDue(searchController) {
+    String customerNumber = searchController.text;
+    // Find the customer in the list by number
+    CustomerModel foundCustomer = customers.firstWhere(
+        (customer) => customer.Cus_Number == customerNumber,
+        orElse: () =>
+            CustomerModel(Cus_id: -1, Cus_Name: 'Not Found', Cus_Number: '',Cus_Due_LB: 0.0,Cus_Due_USD: 0.0));
+
+    // Display the result
+    if (foundCustomer.Cus_id != -1) {
+      result3.value = '${foundCustomer.Cus_Name}';
+      result4.value = '${foundCustomer.Cus_id}';
+
+      print(result);
+    } else {
+      result3.value = 'Customer name not found';
+      result4.value = 'Customer  idnot found';
 
       print(result);
     }

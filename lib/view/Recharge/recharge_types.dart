@@ -138,21 +138,30 @@ class RechargeTypes extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: ListTile(
-                            leading: cart != null && cart.Type_Image != null
-                                ? CachedNetworkImage(
-                                    width: 50,
-                                    imageUrl: cart.Type_Image!,
-                                    placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator()),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  )
-                                : Placeholder(),
+                            leading:
+                                cart.Type_Image == null || cart.Type_Image == ''
+                                    ? SizedBox(
+                                        width: 75,
+                                        child: Column(
+                                          children: [
+                                            Text('No Image'),
+                                            Icon(
+                                              Icons.error,
+                                            ),
+                                          ],
+                                        ))
+                                    : CachedNetworkImage(
+                                        width: 75,
+                                        imageUrl: cart.Type_Image!,
+                                        placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
                             // onLongPress: () {
                             //   copyToClipboard(cart.cart_Code);
                             // },
                             title: Row(
-                              
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
@@ -162,7 +171,7 @@ class RechargeTypes extends StatelessWidget {
                                   // cart.cart_Code,
                                   ,
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w500,
                                       fontSize: 17),
                                 ),
                                 OutlinedButton(
@@ -189,13 +198,13 @@ class RechargeTypes extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          'Select',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
+                                        // Text(
+                                        //   'Select',
+                                        //   style: TextStyle(color: Colors.white),
+                                        // ),
+                                        // SizedBox(
+                                        //   width: 5,
+                                        // ),
                                         Icon(Icons.arrow_circle_right_rounded,
                                             color: Colors.white
                                             //  'Details',

@@ -694,8 +694,10 @@ class InsertionScreen extends StatelessWidget {
                                     note.text,
                                     receiviedMoney.text)
                                 .then((value) => Navigator.of(context).pop())
-                                .then((value) => repairsController.isDataFetched =false)
-                                .then((Value)=> repairsController.fetchrepairs())
+                                .then((value) =>
+                                    repairsController.isDataFetched = false)
+                                .then(
+                                    (Value) => repairsController.fetchrepairs())
                                 .then((value) => clear())
                                 .then((value) =>
                                     showToast(insertrepairController.result));

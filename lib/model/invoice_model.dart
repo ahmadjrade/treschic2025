@@ -14,12 +14,12 @@ class InvoiceModel {
   final double Invoice_Due_USD;
   final double Invoice_Due_LB;
   final String Invoice_Date;
-  final int Cus_id;
-  final String Cus_Name;
-  final String Cus_Number;
+  final int? Cus_id;
+  final String? Cus_Name;
+  final String? Cus_Number;
   final String Invoice_Time;
   final int isPaid;
-  final String Invoice_Type;
+  final String? Invoice_Type;
   final String Username;
   
   // RxDouble _product_MPrice; // Use RxDouble for reactive price

@@ -3,6 +3,8 @@
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
@@ -11,11 +13,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoiceHistory extends StatelessWidget {
-  InvoiceHistory({super.key});
+class RechargeInvoiceHistory extends StatelessWidget {
+  RechargeInvoiceHistory({super.key});
 
-  final InvoiceHistoryController invoiceHistoryController =
-      Get.find<InvoiceHistoryController>();
+  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
+      Get.find<RechargeInvoiceHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -25,9 +27,9 @@ class InvoiceHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    invoiceHistoryController.reset();
+    rechargeInvoiceHistoryController.reset();
 
-    invoiceHistoryController.CalTotal();
+    rechargeInvoiceHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -66,11 +68,11 @@ class InvoiceHistory extends StatelessWidget {
           title: (Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Invoice History'),
+          Text('Recharge Invoice History'),
           IconButton(
               onPressed: () {
-                invoiceHistoryController.isDataFetched = false;
-                invoiceHistoryController.fetchinvoices();
+                rechargeInvoiceHistoryController.isDataFetched = false;
+                rechargeInvoiceHistoryController.fetchrechargeInvoice();
               },
               icon: Icon(Icons.refresh))
         ],
@@ -93,7 +95,7 @@ class InvoiceHistory extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                invoiceHistoryController.invoices.refresh();
+                                rechargeInvoiceHistoryController.recharge_invoices.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -163,10 +165,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     ],
                   //                   ),
                   //                   value: 'this',
-                  //                   groupValue: invoiceHistoryController.Store.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Store.value = 'this';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Store.value = 'this';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -185,10 +187,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'other',
-                  //                   groupValue: invoiceHistoryController.Store.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Store.value = 'other';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Store.value = 'other';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -206,10 +208,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: invoiceHistoryController.Store.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Store.value = 'all';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Store.value = 'all';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -243,10 +245,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'No',
-                  //                   groupValue: invoiceHistoryController.Sold.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Sold.value = 'No';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Sold.value = 'No';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -265,10 +267,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Yes',
-                  //                   groupValue: invoiceHistoryController.Sold.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Sold.value = 'Yes';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Sold.value = 'Yes';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -286,10 +288,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: invoiceHistoryController.Sold.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Sold.value = 'all';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Sold.value = 'all';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -323,10 +325,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'New',
-                  //                   groupValue: invoiceHistoryController.Condition.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Condition.value = 'New';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Condition.value = 'New';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -345,10 +347,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Used',
-                  //                   groupValue: invoiceHistoryController.Condition.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Condition.value = 'Used';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Condition.value = 'Used';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -366,10 +368,10 @@ class InvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: invoiceHistoryController.Condition.value,
+                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Condition.value = 'all';
-                  //                     invoiceHistoryController.searchPhones(
+                  //                     RechargeInvoiceHistoryController.Condition.value = 'all';
+                  //                     RechargeInvoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -396,12 +398,12 @@ class InvoiceHistory extends StatelessWidget {
                   Obx(
                     () {
                       final List<InvoiceModel> filteredinvoices =
-                          invoiceHistoryController.searchPhones(
+                          rechargeInvoiceHistoryController.searchPhones(
                         FilterQuery.text,
                       );
-                      if (invoiceHistoryController.isLoading.value) {
+                      if (rechargeInvoiceHistoryController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (invoiceHistoryController.invoices.isEmpty) {
+                      } else if (rechargeInvoiceHistoryController.recharge_invoices.isEmpty) {
                         return Center(
                             child: Text('No Invoices Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
@@ -418,7 +420,7 @@ class InvoiceHistory extends StatelessWidget {
                             return Container(
                               //  width: double.infinity,
                               //   height: 150.0,
-                              color: invoiceHistoryController
+                              color: rechargeInvoiceHistoryController
                                       .ispaid(invoice.isPaid)
                                   ? Colors.grey.shade300
                                   : Colors.red.shade100,
@@ -469,7 +471,7 @@ class InvoiceHistory extends StatelessWidget {
                                         Spacer(),
                                         Icon(
                                           Icons.paid,
-                                          color: invoiceHistoryController
+                                          color: rechargeInvoiceHistoryController
                                                   .ispaid(invoice.isPaid)
                                               ? Colors.green.shade900
                                               : Colors.red.shade900,
@@ -613,7 +615,7 @@ class InvoiceHistory extends StatelessWidget {
                                                     side: BorderSide(
                                                       width: 2.0,
                                                       color:
-                                                          invoiceHistoryController
+                                                          rechargeInvoiceHistoryController
                                                                   .ispaid(invoice
                                                                       .isPaid)
                                                               ? Colors.green
@@ -649,7 +651,7 @@ class InvoiceHistory extends StatelessWidget {
                                                     Icons
                                                         .arrow_circle_right_rounded,
                                                     color:
-                                                        invoiceHistoryController
+                                                        rechargeInvoiceHistoryController
                                                                 .ispaid(invoice
                                                                     .isPaid)
                                                             ? Colors
@@ -679,27 +681,27 @@ class InvoiceHistory extends StatelessWidget {
                                           //       invoice.Sell_Price.toString() +
                                           //       '\$',
                                           //   style: TextStyle(
-                                          //       color: invoiceHistoryController
+                                          //       color: RechargeInvoiceHistoryController
                                           //               .issold(invoice.isSold)
                                           //           ? Colors.black
                                           //           : Colors.green.shade900),
                                           // ),
                                           // Visibility(
-                                          //   visible: invoiceHistoryController
+                                          //   visible: RechargeInvoiceHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Cost Price: ' +
                                           //         invoice.Price.toString() +
                                           //         '\$',
                                           //     style: TextStyle(
-                                          //         color: invoiceHistoryController
+                                          //         color: RechargeInvoiceHistoryController
                                           //                 .issold(invoice.isSold)
                                           //             ? Colors.black
                                           //             : Colors.red.shade900),
                                           //   ),
                                           // ),
                                           // Visibility(
-                                          //   visible: invoiceHistoryController
+                                          //   visible: RechargeInvoiceHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Bought From: ' +
@@ -711,7 +713,7 @@ class InvoiceHistory extends StatelessWidget {
                                           //   ),
                                           // ),
                                           // Visibility(
-                                          //   visible: invoiceHistoryController
+                                          //   visible: RechargeInvoiceHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Bought at: ' +
@@ -726,7 +728,7 @@ class InvoiceHistory extends StatelessWidget {
                                       ),
                                     ),
                                     // Visibility(
-                                    //   visible: invoiceHistoryController
+                                    //   visible: RechargeInvoiceHistoryController
                                     //       .isadmin(Username.value),
                                     //   child: IconButton(
                                     //       onPressed: () {
@@ -742,7 +744,7 @@ class InvoiceHistory extends StatelessWidget {
                                     //             Note: invoice.Note,Color: invoice.Color_id,));
                                     //       },
                                     //       icon: Icon(Icons.edit,
-                                    //           color: invoiceHistoryController
+                                    //           color: RechargeInvoiceHistoryController
                                     //                   .issold(invoice.isSold)
                                     //               ? Colors.black
                                     //               : Colors.red)),
@@ -757,7 +759,7 @@ class InvoiceHistory extends StatelessWidget {
                                     //     ),
                                     //     Visibility(
                                     //       visible:
-                                    //           invoiceHistoryController.isadmin(Username.value),
+                                    //           RechargeInvoiceHistoryController.isadmin(Username.value),
                                     //       child: Text(
                                     //         invoice.Price.toString() + '\$',
                                     //         style: TextStyle(
@@ -770,7 +772,7 @@ class InvoiceHistory extends StatelessWidget {
 
                                     // OutlinedButton(
                                     //     onPressed: () {
-                                    //       // invoiceHistoryController.SelectedPhone.value = invoice;
+                                    //       // RechargeInvoiceHistoryController.SelectedPhone.value = invoice;
                                     //       //       // subcategoryController.selectedSubCategory.value =
                                     //       //       //     null;
 
@@ -822,7 +824,7 @@ class InvoiceHistory extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
+                                    addCommasToNumber(rechargeInvoiceHistoryController
                                                 .total.value)
                                             .toString() +
                                         '\$',
@@ -842,7 +844,7 @@ class InvoiceHistory extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
+                                    addCommasToNumber(rechargeInvoiceHistoryController
                                                 .totalrec.value)
                                             .toString() +
                                         '\$',
@@ -862,7 +864,7 @@ class InvoiceHistory extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
+                                    addCommasToNumber(rechargeInvoiceHistoryController
                                                 .totaldue.value)
                                             .toString() +
                                         '\$',

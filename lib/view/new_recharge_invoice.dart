@@ -10,6 +10,7 @@ import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/model/customer_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:fixnshop_admin/view/Product/product_list.dart';
@@ -31,7 +32,8 @@ class NewRechargeInvoice extends StatelessWidget {
 
   final RechargeCartController rechargeCartController =
       Get.find<RechargeCartController>();
-
+  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
+      Get.find<RechargeInvoiceHistoryController>();
   // final InvoiceController invoiceController = Get.put(InvoiceController());
   final RateController rateController = Get.find<RateController>();
   final CustomerController customerController = Get.find<CustomerController>();
@@ -983,6 +985,10 @@ class NewRechargeInvoice extends StatelessWidget {
                                 .then((value) =>
                                     showToast(rechargeCartController.result))
                                 .then((value) => rechargeCartController.reset())
+                                .then((value) => rechargeInvoiceHistoryController.reset())
+                                .then((value) => rechargeInvoiceHistoryController.isDataFetched= false)
+                                .then((value) => rechargeInvoiceHistoryController.fetchrechargeInvoice())
+
                                 .then((value) => Navigator.of(context).pop())
                                 .then((value) => Navigator.of(context).pop());
                           } else {

@@ -16,12 +16,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class InvoiceHistoryController extends GetxController {
-  RxList<InvoiceModel> invoices = <InvoiceModel>[].obs;
+class RechargeInvoiceHistoryController extends GetxController {
+  RxList<InvoiceModel> recharge_invoices = <InvoiceModel>[].obs;
   bool isDataFetched = false;
   String result = '';
   RxBool isLoading = false.obs;
-  Rx<InvoiceModel?> SelectedInvoice = Rx<InvoiceModel?>(null);
+  Rx<InvoiceModel?> SelectedRechargeInvoice = Rx<InvoiceModel?>(null);
   RxString Store = 'this'.obs;
   RxString Sold = 'Yes'.obs;
   RxString Condition = 'New'.obs;
@@ -32,8 +32,8 @@ class InvoiceHistoryController extends GetxController {
 
   //RxString show = 'Yes'.obs;
   void clearSelectedCat() {
-    SelectedInvoice.value = null;
-    invoices.clear();
+    SelectedRechargeInvoice.value = null;
+    recharge_invoices.clear();
   }
 
   void reset() {
@@ -75,7 +75,7 @@ class InvoiceHistoryController extends GetxController {
   void onInit() {
     super.onInit();
     print(isDataFetched);
-    fetchinvoices();
+    fetchrechargeInvoice();
   }
 
   final DateTimeController dateController = DateTimeController();
@@ -93,7 +93,7 @@ class InvoiceHistoryController extends GetxController {
     // formattedDate = dateController.getFormattedDate();
     //   formattedTime = dateController.getFormattedTime();
 
-    return invoices
+    return recharge_invoices
         .where((invoice) =>
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
@@ -108,7 +108,7 @@ class InvoiceHistoryController extends GetxController {
     // if (Store.value == 'this') {
     //   if (Sold.value == 'Yes') {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -126,7 +126,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -144,7 +144,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -162,7 +162,7 @@ class InvoiceHistoryController extends GetxController {
     //     }
     //   } else if(Sold.value == 'No'){
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -180,7 +180,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -198,7 +198,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -216,7 +216,7 @@ class InvoiceHistoryController extends GetxController {
     //     }
     //   } else {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -234,7 +234,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -252,7 +252,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -273,7 +273,7 @@ class InvoiceHistoryController extends GetxController {
     // else if(Store.value == 'other') {
     //   if (Sold.value == 'Yes') {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -291,7 +291,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -309,7 +309,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -327,7 +327,7 @@ class InvoiceHistoryController extends GetxController {
     //     }
     //   } else if(Sold.value == 'No') {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -345,7 +345,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -363,7 +363,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -381,7 +381,7 @@ class InvoiceHistoryController extends GetxController {
     //     }
     //   } else {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -397,7 +397,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -413,7 +413,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -431,7 +431,7 @@ class InvoiceHistoryController extends GetxController {
     // } else  {
     //   if (Sold.value == 'Yes') {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -448,7 +448,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -464,7 +464,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -480,7 +480,7 @@ class InvoiceHistoryController extends GetxController {
     //     }
     //   } else if(Sold.value == 'No') {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -496,7 +496,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -512,7 +512,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -528,7 +528,7 @@ class InvoiceHistoryController extends GetxController {
     //     }
     //   } else {
     //     if (Condition.value == 'New') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -542,7 +542,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'New')
     //           .toList();
     //     } else if (Condition.value == 'Used') {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -556,7 +556,7 @@ class InvoiceHistoryController extends GetxController {
     //                   invoice.Phone_Condition == 'Used')
     //           .toList();
     //     } else {
-    //       return invoices
+    //       return recharge_invoices
     //           .where((invoice) =>
     //               (invoice.Brand_Name +
     //                           ' ' +
@@ -588,7 +588,7 @@ class InvoiceHistoryController extends GetxController {
     Username = sharedPreferencesController.username;
     total.value = 0;
 
-    List<InvoiceModel> totalofinvoices = invoices
+    List<InvoiceModel> totalofinvoices = recharge_invoices
         .where((invoice) =>
             invoice.Username == Username.value &&
             invoice.Invoice_Date.contains(formattedDate))
@@ -600,7 +600,7 @@ class InvoiceHistoryController extends GetxController {
     }
   }
 
-  void fetchinvoices() async {
+  void fetchrechargeInvoice() async {
     Username = sharedPreferencesController.username;
 
     if (!isDataFetched) {
@@ -609,19 +609,19 @@ class InvoiceHistoryController extends GetxController {
 
         String domain = domainModel.domain;
         final response =
-            await http.get(Uri.parse('$domain' 'fetch_invoices.php'));
+            await http.get(Uri.parse('$domain' 'fetch_recharge_invoices.php'));
 
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           final List<dynamic> data = jsonData;
           //  final List<dynamic> data = json.decode(response.body);
-          invoices.assignAll(
+          recharge_invoices.assignAll(
               data.map((item) => InvoiceModel.fromJson(item)).toList());
           //category = data.map((item) => Product_Details.fromJson(item)).toList();
           isDataFetched = true;
           isLoading.value = false;
 
-          if (invoices.isEmpty) {
+          if (recharge_invoices.isEmpty) {
             print(0);
           } else {
             isDataFetched = true;

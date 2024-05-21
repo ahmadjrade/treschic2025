@@ -25,9 +25,9 @@ class InvoiceHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    invoiceHistoryController.reset();
+    // invoiceHistoryController.reset();
 
-    invoiceHistoryController.CalTotal();
+    // invoiceHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -69,6 +69,7 @@ class InvoiceHistory extends StatelessWidget {
           Text('Invoice History'),
           IconButton(
               onPressed: () {
+                invoiceHistoryController.reset();
                 invoiceHistoryController.isDataFetched = false;
                 invoiceHistoryController.fetchinvoices();
               },
@@ -629,21 +630,27 @@ class InvoiceHistory extends StatelessWidget {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    Get.to(() => InvoiceHistoryItems(
-                                              Invoice_id:
-                                                  invoice.Invoice_id.toString(),
-                                              Customer_Name:
-                                                  invoice.Cus_Name.toString(),
-                                              Customer_Number:
-                                                  invoice.Cus_Number.toString(),
-                                              Invoice_Total_US: 
-                                                  invoice.Invoice_Total_Usd.toString(),
-                                              Invoice_Rec_US: invoice
-                                                  .Invoice_Rec_Usd
-                                                  .toString(),
-                                              Invoice_Due_US:
-                                                  invoice.Invoice_Due_USD.toString(),
-                                            ));
+                                                    Get.to(() =>
+                                                        InvoiceHistoryItems(
+                                                          Invoice_id:
+                                                              invoice.Invoice_id
+                                                                  .toString(),
+                                                          Customer_Name:
+                                                              invoice.Cus_Name
+                                                                  .toString(),
+                                                          Customer_Number:
+                                                              invoice.Cus_Number
+                                                                  .toString(),
+                                                          Invoice_Total_US:
+                                                              invoice.Invoice_Total_Usd
+                                                                  .toString(),
+                                                          Invoice_Rec_US: invoice
+                                                                  .Invoice_Rec_Usd
+                                                              .toString(),
+                                                          Invoice_Due_US: invoice
+                                                                  .Invoice_Due_USD
+                                                              .toString(),
+                                                        ));
                                                   },
                                                   child: Icon(
                                                     Icons

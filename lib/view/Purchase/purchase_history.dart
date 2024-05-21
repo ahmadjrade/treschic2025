@@ -1,23 +1,21 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
+import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
+
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:fixnshop_admin/model/purchase_history_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class RechargeInvoiceHistory extends StatelessWidget {
-  RechargeInvoiceHistory({super.key});
-
-  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
-      Get.find<RechargeInvoiceHistoryController>();
+class PurchaseHistory extends StatelessWidget {
+  PurchaseHistory({super.key});
+  
+  final PurchaseHistoryController purchaseHistoryController =
+      Get.find<PurchaseHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -27,9 +25,9 @@ class RechargeInvoiceHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // rechargeInvoiceHistoryController.reset();
+    // purchaseHistoryController.reset();
 
-    // rechargeInvoiceHistoryController.CalTotal();
+    // purchaseHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -68,12 +66,12 @@ class RechargeInvoiceHistory extends StatelessWidget {
           title: (Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Recharge Invoice History'),
+          Text('Purchase History'),
           IconButton(
               onPressed: () {
-                rechargeInvoiceHistoryController.reset();
-                rechargeInvoiceHistoryController.isDataFetched = false;
-                rechargeInvoiceHistoryController.fetchrechargeInvoice();
+                purchaseHistoryController.reset();
+                purchaseHistoryController.isDataFetched = false;
+                purchaseHistoryController.fetchpurchases();
               },
               icon: Icon(Icons.refresh))
         ],
@@ -96,9 +94,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                rechargeInvoiceHistoryController
-                                    .recharge_invoices
-                                    .refresh();
+                                purchaseHistoryController.pruchases.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -168,10 +164,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     ],
                   //                   ),
                   //                   value: 'this',
-                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
+                  //                   groupValue: purchaseHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Store.value = 'this';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Store.value = 'this';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -190,10 +186,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'other',
-                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
+                  //                   groupValue: purchaseHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Store.value = 'other';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Store.value = 'other';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -211,10 +207,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
+                  //                   groupValue: purchaseHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Store.value = 'all';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Store.value = 'all';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -248,10 +244,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'No',
-                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
+                  //                   groupValue: purchaseHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Sold.value = 'No';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Sold.value = 'No';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -270,10 +266,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Yes',
-                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
+                  //                   groupValue: purchaseHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Sold.value = 'Yes';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Sold.value = 'Yes';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -291,10 +287,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
+                  //                   groupValue: purchaseHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Sold.value = 'all';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Sold.value = 'all';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -328,10 +324,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'New',
-                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
+                  //                   groupValue: purchaseHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Condition.value = 'New';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Condition.value = 'New';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -350,10 +346,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Used',
-                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
+                  //                   groupValue: purchaseHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Condition.value = 'Used';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Condition.value = 'Used';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -371,10 +367,10 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
+                  //                   groupValue: purchaseHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Condition.value = 'all';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
+                  //                     purchaseHistoryController.Condition.value = 'all';
+                  //                     purchaseHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -400,32 +396,31 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   ),
                   Obx(
                     () {
-                      final List<InvoiceModel> filteredinvoices =
-                          rechargeInvoiceHistoryController.searchPhones(
+                      final List<PurchaseModel> filteredPurchases =
+                          purchaseHistoryController.searchPurchases(
                         FilterQuery.text,
                       );
-                      if (rechargeInvoiceHistoryController.isLoading.value) {
+                      if (purchaseHistoryController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (rechargeInvoiceHistoryController
-                          .recharge_invoices.isEmpty) {
+                      } else if (purchaseHistoryController.pruchases.isEmpty) {
                         return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
-                      } else if (filteredinvoices.length == 0) {
+                            child: Text('No Purchases Yet In This Store ! '));
+                      } else if (filteredPurchases.length == 0) {
                         return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
+                            child: Text('No Purchases Yet In This Store ! '));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: filteredinvoices.length,
+                          itemCount: filteredPurchases.length,
                           itemBuilder: (context, index) {
-                            final InvoiceModel invoice =
-                                filteredinvoices[index];
+                            final PurchaseModel Purchase =
+                                filteredPurchases[index];
                             return Container(
                               //  width: double.infinity,
                               //   height: 150.0,
-                              color: rechargeInvoiceHistoryController
-                                      .ispaid(invoice.isPaid)
+                              color: purchaseHistoryController
+                                      .ispaid(Purchase.isPaid)
                                   ? Colors.grey.shade300
                                   : Colors.red.shade100,
                               margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
@@ -435,14 +430,14 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                 // leading: Column(
                                 //   children: [
                                 //     Expanded(
-                                //       child: invoice.imageUrl != null
-                                //           ? Image.network(invoice.imageUrl!)
+                                //       child: Purchase.imageUrl != null
+                                //           ? Image.network(Purchase.imageUrl!)
                                 //           : Placeholder(),
                                 //     ),
                                 //   ],
                                 // ),
                                 onLongPress: () {
-                                  //copyToClipboard(invoice.id);
+                                  //copyToClipboard(Purchase.id);
                                 },
                                 title: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -453,20 +448,20 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Invoice #' +
-                                              invoice.Invoice_id.toString() +
+                                          'Purchase #' +
+                                              Purchase.Purchase_id.toString() +
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
                                         ),
                                         Text(
-                                          invoice.Cus_Name! +
+                                          Purchase.Supplier_Name! +
                                               ' ' +
-                                              invoice.Cus_Number!
+                                              Purchase.Supplier_Number!
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // Purchase.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -475,31 +470,30 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                         Spacer(),
                                         Icon(
                                           Icons.paid,
-                                          color:
-                                              rechargeInvoiceHistoryController
-                                                      .ispaid(invoice.isPaid)
-                                                  ? Colors.green.shade900
-                                                  : Colors.red.shade900,
+                                          color: purchaseHistoryController
+                                                  .ispaid(Purchase.isPaid)
+                                              ? Colors.green.shade900
+                                              : Colors.red.shade900,
                                         )
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         Text(
-                                          invoice.Invoice_Date
+                                          Purchase.Purchase_Date
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // Purchase.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w300,
                                               fontSize: 12),
                                         ),
                                         Text(
-                                          ' ' + Format(invoice.Invoice_Time)
+                                          ' ' + Format(Purchase.Purchase_Time)
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // Purchase.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w300,
@@ -507,11 +501,11 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                         ),
                                         Text(
                                           ' || ' +
-                                              invoice.Username.toUpperCase() +
+                                              Purchase.Username.toUpperCase() +
                                               ' Store'
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // Purchase.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w300,
@@ -544,9 +538,9 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    'Invoice Total US:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Invoice_Total_Usd)
+                                                    'Purchase Total US:  ' +
+                                                        addCommasToNumber(Purchase
+                                                                .Purchase_Total_USD)
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
@@ -555,9 +549,9 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                             .blue.shade900),
                                                   ),
                                                   Text(
-                                                    'Invoice Total LL:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Invoice_Total_Lb)
+                                                    'Purchase Total LL:  ' +
+                                                        addCommasToNumber(Purchase
+                                                                .Purchase_Total_LB)
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
@@ -566,9 +560,9 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                             .blue.shade900),
                                                   ),
                                                   Text(
-                                                    'Invoice Rec US:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Invoice_Rec_Usd)
+                                                    'Purchase Rec US:  ' +
+                                                        addCommasToNumber(Purchase
+                                                                .Purchase_Rec_USD)
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
@@ -577,9 +571,9 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                             .green.shade900),
                                                   ),
                                                   Text(
-                                                    'Invoice Rec LL:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Invoice_Rec_Lb)
+                                                    'Purchase Rec LL:  ' +
+                                                        addCommasToNumber(Purchase
+                                                                .Purchase_Rec_LB)
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
@@ -588,9 +582,9 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                             .green.shade900),
                                                   ),
                                                   Text(
-                                                    'Invoice Due US:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Invoice_Due_USD)
+                                                    'Purchase Due US:  ' +
+                                                        addCommasToNumber(Purchase
+                                                                .Purchase_Due_USD)
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
@@ -599,9 +593,9 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                             .red.shade900),
                                                   ),
                                                   Text(
-                                                    'Invoice Due LL:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Invoice_Due_LB)
+                                                    'Purchase Due LL:  ' +
+                                                        addCommasToNumber(Purchase
+                                                                .Purchase_Due_LB)
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
@@ -620,8 +614,8 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                     side: BorderSide(
                                                       width: 2.0,
                                                       color:
-                                                          rechargeInvoiceHistoryController
-                                                                  .ispaid(invoice
+                                                          purchaseHistoryController
+                                                                  .ispaid(Purchase
                                                                       .isPaid)
                                                               ? Colors.green
                                                                   .shade900
@@ -637,24 +631,24 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                   ),
                                                   onPressed: () {
                                                     // Get.to(() =>
-                                                    //     InvoiceHistoryItems(
-                                                    //       Invoice_id:
-                                                    //           invoice.Invoice_id
+                                                    //     PurchaseHistoryItems(
+                                                    //       Purchase_id:
+                                                    //           Purchase.Purchase_id
                                                     //               .toString(),
                                                     //       Customer_Name:
-                                                    //           invoice.Cus_Name
+                                                    //           Purchase.Cus_Name
                                                     //               .toString(),
                                                     //       Customer_Number:
-                                                    //           invoice.Cus_Number
+                                                    //           Purchase.Cus_Number
                                                     //               .toString(),
-                                                    //       Invoice_Total_US:
-                                                    //           invoice.Invoice_Total_Usd
+                                                    //       Purchase_Total_US:
+                                                    //           Purchase.Purchase_Total_Usd
                                                     //               .toString(),
-                                                    //       Invoice_Rec_US: invoice
-                                                    //               .Invoice_Rec_Usd
+                                                    //       Purchase_Rec_US: Purchase
+                                                    //               .Purchase_Rec_Usd
                                                     //           .toString(),
-                                                    //       Invoice_Due_US: invoice
-                                                    //               .Invoice_Due_USD
+                                                    //       Purchase_Due_US: Purchase
+                                                    //               .Purchase_Due_USD
                                                     //           .toString(),
                                                     //     ));
                                                   },
@@ -662,8 +656,8 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                     Icons
                                                         .arrow_circle_right_rounded,
                                                     color:
-                                                        rechargeInvoiceHistoryController
-                                                                .ispaid(invoice
+                                                        purchaseHistoryController
+                                                                .ispaid(Purchase
                                                                     .isPaid)
                                                             ? Colors
                                                                 .green.shade900
@@ -682,55 +676,55 @@ class RechargeInvoiceHistory extends StatelessWidget {
 
                                           // Text(
                                           //     'Store: ' +
-                                          //         invoice.Username.toUpperCase() +
+                                          //         Purchase.Username.toUpperCase() +
                                           //         ' Store',
                                           //     style: TextStyle(
                                           //         fontSize: 13,
                                           //         color: Colors.black)),
                                           // Text(
                                           //   'Sell Price: ' +
-                                          //       invoice.Sell_Price.toString() +
+                                          //       Purchase.Sell_Price.toString() +
                                           //       '\$',
                                           //   style: TextStyle(
-                                          //       color: RechargeInvoiceHistoryController
-                                          //               .issold(invoice.isSold)
+                                          //       color: purchaseHistoryController
+                                          //               .issold(Purchase.isSold)
                                           //           ? Colors.black
                                           //           : Colors.green.shade900),
                                           // ),
                                           // Visibility(
-                                          //   visible: RechargeInvoiceHistoryController
+                                          //   visible: purchaseHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Cost Price: ' +
-                                          //         invoice.Price.toString() +
+                                          //         Purchase.Price.toString() +
                                           //         '\$',
                                           //     style: TextStyle(
-                                          //         color: RechargeInvoiceHistoryController
-                                          //                 .issold(invoice.isSold)
+                                          //         color: purchaseHistoryController
+                                          //                 .issold(Purchase.isSold)
                                           //             ? Colors.black
                                           //             : Colors.red.shade900),
                                           //   ),
                                           // ),
                                           // Visibility(
-                                          //   visible: RechargeInvoiceHistoryController
+                                          //   visible: purchaseHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Bought From: ' +
-                                          //         invoice.Cus_Name +
+                                          //         Purchase.Cus_Name +
                                           //         ' - ' +
-                                          //         invoice.Cus_Number.toString(),
+                                          //         Purchase.Cus_Number.toString(),
                                           //     style: TextStyle(
                                           //         color: Colors.black),
                                           //   ),
                                           // ),
                                           // Visibility(
-                                          //   visible: RechargeInvoiceHistoryController
+                                          //   visible: purchaseHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Bought at: ' +
-                                          //         invoice.Buy_Date +
+                                          //         Purchase.Buy_Date +
                                           //         ' - ' +
-                                          //         Format(invoice.Buy_Time),
+                                          //         Format(Purchase.Buy_Time),
                                           //     style: TextStyle(
                                           //         color: Colors.black),
                                           //   ),
@@ -739,40 +733,40 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                       ),
                                     ),
                                     // Visibility(
-                                    //   visible: RechargeInvoiceHistoryController
+                                    //   visible: purchaseHistoryController
                                     //       .isadmin(Username.value),
                                     //   child: IconButton(
                                     //       onPressed: () {
                                     //         Get.to(() => PhoneEdit(
-                                    //             Phone_id: invoice.Phone_id,
-                                    //             FilterQuery: invoice.FilterQuery,
-                                    //             IMEI: invoice.IMEI,
-                                    //             Cost_Price: invoice.Price,
-                                    //             Sell_Price: invoice.Sell_Price,
+                                    //             Phone_id: Purchase.Phone_id,
+                                    //             FilterQuery: Purchase.FilterQuery,
+                                    //             IMEI: Purchase.IMEI,
+                                    //             Cost_Price: Purchase.Price,
+                                    //             Sell_Price: Purchase.Sell_Price,
                                     //             Condition:
-                                    //                 invoice.Phone_Condition,
-                                    //             Capacity: invoice.Capacity,
-                                    //             Note: invoice.Note,Color: invoice.Color_id,));
+                                    //                 Purchase.Phone_Condition,
+                                    //             Capacity: Purchase.Capacity,
+                                    //             Note: Purchase.Note,Color: Purchase.Color_id,));
                                     //       },
                                     //       icon: Icon(Icons.edit,
-                                    //           color: RechargeInvoiceHistoryController
-                                    //                   .issold(invoice.isSold)
+                                    //           color: purchaseHistoryController
+                                    //                   .issold(Purchase.isSold)
                                     //               ? Colors.black
                                     //               : Colors.red)),
                                     // )
                                     // Column(
                                     //   children: [
                                     //     Text(
-                                    //       invoice.Sell_Price.toString() + '\$',
+                                    //       Purchase.Sell_Price.toString() + '\$',
                                     //       style: TextStyle(
                                     //           fontSize: 17,
                                     //           color: Colors.green.shade900),
                                     //     ),
                                     //     Visibility(
                                     //       visible:
-                                    //           RechargeInvoiceHistoryController.isadmin(Username.value),
+                                    //           purchaseHistoryController.isadmin(Username.value),
                                     //       child: Text(
-                                    //         invoice.Price.toString() + '\$',
+                                    //         Purchase.Price.toString() + '\$',
                                     //         style: TextStyle(
                                     //             fontSize: 17,
                                     //             color: Colors.red.shade900),
@@ -783,20 +777,20 @@ class RechargeInvoiceHistory extends StatelessWidget {
 
                                     // OutlinedButton(
                                     //     onPressed: () {
-                                    //       // RechargeInvoiceHistoryController.SelectedPhone.value = invoice;
+                                    //       // purchaseHistoryController.SelectedPhone.value = Purchase;
                                     //       //       // subcategoryController.selectedSubCategory.value =
                                     //       //       //     null;
 
                                     //       // Get.to(() => PhonesListDetail(
                                     //       //       phone_id:
-                                    //       //           invoice.phone_id.toString(),
-                                    //       //       FilterQuery: invoice.FilterQuery,
-                                    //       //       phone_Color: invoice.phone_Color,
+                                    //       //           Purchase.phone_id.toString(),
+                                    //       //       FilterQuery: Purchase.FilterQuery,
+                                    //       //       phone_Color: Purchase.phone_Color,
                                     //       //       phone_LPrice:
-                                    //       //           invoice.phone_LPrice.toString(),
+                                    //       //           Purchase.phone_LPrice.toString(),
                                     //       //       phone_MPrice:
-                                    //       //           invoice.phone_MPrice.toString(),
-                                    //       //       phone_Code: invoice.phone_Code,
+                                    //       //           Purchase.phone_MPrice.toString(),
+                                    //       //       phone_Code: Purchase.phone_Code,
                                     //       //     ));
                                     //     },
                                     //     child: Icon(Icons.arrow_right)),
@@ -830,14 +824,13 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Total US:',
+                                    'Purchases Total US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .total.value)
+                                    addCommasToNumber(purchaseHistoryController
+                                                .total.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -851,14 +844,13 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Recieved US:',
+                                    'Purchases Recieved US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .totalrec.value)
+                                    addCommasToNumber(purchaseHistoryController
+                                                .totalrec.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -872,14 +864,13 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Due US:',
+                                    'Purchases Due US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .totaldue.value)
+                                    addCommasToNumber(purchaseHistoryController
+                                                .totaldue.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(

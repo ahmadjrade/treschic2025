@@ -12,6 +12,7 @@ import 'package:fixnshop_admin/view/settings_screen.dart';
 import 'package:fixnshop_admin/view/stocks_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -46,7 +47,7 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
   double isIos() {
     double Height;
     if (Platform.isIOS) {
-      Height = 25 ;
+      Height = 25;
     } else {
       Height = 20;
     }
@@ -65,8 +66,8 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
           onPopInvoked: (didPop) {},
           child: _HomeScreenpages[SelectedPageIndex]),
       backgroundColor: Colors.white,
-
       bottomNavigationBar: GNav(
+          duration: Duration(milliseconds: 200),
           backgroundColor: Colors.white,
           rippleColor:
               Colors.grey[300]!, // tab button ripple color when pressed
@@ -126,7 +127,7 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
             //     )
           ]),
 
-      //  CurvedNavigationBar(
+      // CurvedNavigationBar(
       //     height: isIos(),
       //     backgroundColor: Colors.white,
       //     color: Colors.deepPurple.shade300,
@@ -135,29 +136,29 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
       //       _BottomNavAction(index);
       //     },
       //     items: [
-      //       Icon(
-      //         Icons.home,
-      //         color: Colors.white,
-      //       ),
-      //       Icon(
-      //         Icons.search,
-      //         color: Colors.white,
-      //       ),
-      //       Icon(
-      //         CupertinoIcons.add,
-      //         color: Colors.white,
-      //         size: 24.0,
-      //         //semanticLabel: 'Text to announce in accessibility modes',
-      //       ),
-      //       Icon(
-      //         Icons.warehouse,
-      //         color: Colors.white,
-      //       ),
-      //       Icon(
-      //         Icons.settings,
-      //         color: Colors.white,
-      //       ),
-      //     ]),
+      //   Icon(
+      //     Icons.home,
+      //     color: Colors.white,
+      //   ),
+      //   Icon(
+      //     Icons.search,
+      //     color: Colors.white,
+      //   ),
+      //   Icon(
+      //     CupertinoIcons.add,
+      //     color: Colors.white,
+      //     size: 24.0,
+      //     //semanticLabel: 'Text to announce in accessibility modes',
+      //   ),
+      //   Icon(
+      //     Icons.warehouse,
+      //     color: Colors.white,
+      //   ),
+      //   Icon(
+      //     Icons.settings,
+      //     color: Colors.white,
+      //   ),
+      // ]),
     );
   }
 }

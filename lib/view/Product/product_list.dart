@@ -152,10 +152,8 @@ class ProductList extends StatelessWidget {
                       final ProductModel product = filteredCategories[index];
                       return Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                        color: Colors.grey.shade300
-
-                        ),
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.grey.shade300),
                         //  width: double.infinity,
                         //   height: 150.0,
                         //color: Colors.grey.shade200,
@@ -208,29 +206,34 @@ class ProductList extends StatelessWidget {
                                     Text('Product Code:  ' +
                                         product.Product_Code +
                                         '\nCategory: ' +
-                                        product.Product_Cat + ' || '+
-                                        
-                                        product.PRoduct_Sub_Cat + ' || '+ product.Product_Brand) ,
+                                        product.Product_Cat +
+                                        ' || ' +
+                                        product.PRoduct_Sub_Cat +
+                                        ' || ' +
+                                        product.Product_Brand),
                                     //Text('Brand: ' + product.Product_Brand),
 
                                     Row(
                                       children: [
                                         Text(
                                           'Max Price: ' +
-                                              product.product_MPrice.toString() +
+                                              product.product_MPrice
+                                                  .toString() +
                                               '\$',
                                           style: TextStyle(
                                               color: Colors.green.shade900),
-                                        ),Text(
-                                      ' Lowest Price: ' +
-                                          product.Product_LPrice.toString() +
-                                          '\$',
-                                      style:
-                                          TextStyle(color: Colors.red.shade900),
-                                    ),
+                                        ),
+                                        Text(
+                                          ' Lowest Price: ' +
+                                              product.Product_LPrice
+                                                  .toString() +
+                                              '\$',
+                                          style: TextStyle(
+                                              color: Colors.red.shade900),
+                                        ),
                                       ],
                                     ),
-                                    
+
                                     Visibility(
                                       visible: productController
                                           .isadmin(Username.value),
@@ -294,8 +297,9 @@ class ProductList extends StatelessWidget {
                                                                         fixedSize: Size(
                                                                             double.infinity,
                                                                             20),
-                                                                        backgroundColor:
-                                                                            Colors.red.shade900,
+                                                                        backgroundColor: Colors
+                                                                            .red
+                                                                            .shade900,
                                                                         side: BorderSide(
                                                                             width:
                                                                                 2.0,
@@ -440,24 +444,25 @@ class ProductList extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                   
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 5,),
-                              product.imageUrl != ''
-                                  ? CachedNetworkImage(
-                                      width: 50,
-                                      imageUrl: product.imageUrl!,
-                                      placeholder: (context, url) => Center(
-                                          child: CircularProgressIndicator()),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    )
-                                  : SizedBox(
-                                      width: 50,
-                                      child: Icon(
-                                          Icons.image_not_supported_sharp)),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              // product.imageUrl != ''
+                              //     ? CachedNetworkImage(
+                              //         width: 50,
+                              //         imageUrl: product.imageUrl!,
+                              //         placeholder: (context, url) => Center(
+                              //             child: CircularProgressIndicator()),
+                              //         errorWidget: (context, url, error) =>
+                              //             Icon(Icons.error),
+                              //       )
+                              //     : SizedBox(
+                              //         width: 50,
+                              //         child: Icon(
+                              //             Icons.image_not_supported_sharp)),
                             ],
                           ),
                         ),

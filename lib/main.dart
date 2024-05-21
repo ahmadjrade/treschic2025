@@ -16,6 +16,7 @@ import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/phone_model_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
@@ -133,13 +134,18 @@ Future<void> main() async {
     () => RechargeCartController(),
     fenix: true,
   );
-   Get.lazyPut<RechargeInvoiceHistoryController>(
+  Get.lazyPut<RechargeInvoiceHistoryController>(
     () => RechargeInvoiceHistoryController(),
     fenix: true,
   );
+  Get.lazyPut<PurchaseHistoryController>(
+    () => PurchaseHistoryController(),
+    fenix: true,
+  );
+  final PurchaseHistoryController purchaseHistoryController =
+      Get.find<PurchaseHistoryController>();
   final RechargeCartController rechargeCartController =
       Get.find<RechargeCartController>();
-
   final PhoneController phoneController = Get.find<PhoneController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
   final RepairsController repairsController = Get.find<RepairsController>();
@@ -148,7 +154,8 @@ Future<void> main() async {
 
   //final InvoiceController invoiceController = Get.find<InvoiceController>();
   final RateController rateController = Get.find<RateController>();
-    final RechargeInvoiceHistoryController rechargeInvoiceHistoryController = Get.find<RechargeInvoiceHistoryController>();
+  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
+      Get.find<RechargeInvoiceHistoryController>();
 
   final BarcodeController barcodeController = Get.find<BarcodeController>();
   final InvoiceDetailController invoiceDetailController =

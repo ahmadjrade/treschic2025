@@ -192,279 +192,286 @@ class _HomeScreenState extends State<HomeScreen> {
       //     Image.asset('assets/nav-drawer-4.jpg'),
       //   ],
       // ),
-      body: SafeArea(
-          child: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            Visibility(
-              visible: true,
-              child: Obx(() {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Card(
-                      child: Container(
-                        width: double.infinity,
-                        //     height: double.maxFinite,
-                        child: InputDecorator(
-                          decoration: InputDecoration(
-                            labelText: 'Recharge',
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide: BorderSide(color: Colors.black)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Invoices Total US:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Visibility(
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+         // homeController.selectedPageIndex.value = 0;
+
+        },
+        child: SafeArea(
+            child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                visible: true,
+                child: Obx(() {
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Card(
+                        child: Container(
+                          width: double.infinity,
+                          //     height: double.maxFinite,
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'Recharge',
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderSide: BorderSide(color: Colors.black)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Invoices Total US:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Visibility(
+                                              visible:
+                                                  rechargeInvoiceHistoryController
+                                                      .isLoading.value,
+                                              child: CircularProgressIndicator()),
+                                          Visibility(
                                             visible:
-                                                rechargeInvoiceHistoryController
+                                                !rechargeInvoiceHistoryController
                                                     .isLoading.value,
-                                            child: CircularProgressIndicator()),
-                                        Visibility(
-                                          visible:
-                                              !rechargeInvoiceHistoryController
-                                                  .isLoading.value,
-                                          child: Text(
-                                            addCommasToNumber(
-                                                        rechargeInvoiceHistoryController
-                                                            .total.value)
-                                                    .toString() +
-                                                '\$',
-                                            style: TextStyle(
-                                                color: Colors.blue.shade900,
-                                                fontWeight: FontWeight.bold),
+                                            child: Text(
+                                              addCommasToNumber(
+                                                          rechargeInvoiceHistoryController
+                                                              .total.value)
+                                                      .toString() +
+                                                  '\$',
+                                              style: TextStyle(
+                                                  color: Colors.blue.shade900,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Invoices Recieved US:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Visibility(
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Invoices Recieved US:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Visibility(
+                                              visible:
+                                                  rechargeInvoiceHistoryController
+                                                      .isLoading.value,
+                                              child: CircularProgressIndicator()),
+                                          Visibility(
                                             visible:
-                                                rechargeInvoiceHistoryController
+                                                !rechargeInvoiceHistoryController
                                                     .isLoading.value,
-                                            child: CircularProgressIndicator()),
-                                        Visibility(
-                                          visible:
-                                              !rechargeInvoiceHistoryController
-                                                  .isLoading.value,
-                                          child: Text(
-                                            addCommasToNumber(
-                                                        rechargeInvoiceHistoryController
-                                                            .totalrec.value)
-                                                    .toString() +
-                                                '\$',
-                                            style: TextStyle(
-                                                color: Colors.green.shade900,
-                                                fontWeight: FontWeight.bold),
+                                            child: Text(
+                                              addCommasToNumber(
+                                                          rechargeInvoiceHistoryController
+                                                              .totalrec.value)
+                                                      .toString() +
+                                                  '\$',
+                                              style: TextStyle(
+                                                  color: Colors.green.shade900,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Invoices Due US:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Visibility(
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Invoices Due US:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Visibility(
+                                              visible:
+                                                  rechargeInvoiceHistoryController
+                                                      .isLoading.value,
+                                              child: CircularProgressIndicator()),
+                                          Visibility(
                                             visible:
-                                                rechargeInvoiceHistoryController
+                                                !rechargeInvoiceHistoryController
                                                     .isLoading.value,
-                                            child: CircularProgressIndicator()),
-                                        Visibility(
-                                          visible:
-                                              !rechargeInvoiceHistoryController
-                                                  .isLoading.value,
-                                          child: Text(
-                                            addCommasToNumber(
-                                                        rechargeInvoiceHistoryController
-                                                            .totaldue.value)
-                                                    .toString() +
-                                                '\$',
-                                            style: TextStyle(
-                                                color: Colors.red.shade900,
-                                                fontWeight: FontWeight.bold),
+                                            child: Text(
+                                              addCommasToNumber(
+                                                          rechargeInvoiceHistoryController
+                                                              .totaldue.value)
+                                                      .toString() +
+                                                  '\$',
+                                              style: TextStyle(
+                                                  color: Colors.red.shade900,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ));
-              }),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Visibility(
-              visible: true,
-              child: Obx(() {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Card(
-                      child: Container(
-                        width: double.infinity,
-                        //     height: double.maxFinite,
-                        child: InputDecorator(
-                          decoration: InputDecoration(
-                            labelText: 'Invoice',
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderSide: BorderSide(color: Colors.black)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Invoices Total US:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Visibility(
-                                            visible: invoiceHistoryController
+                      ));
+                }),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                visible: true,
+                child: Obx(() {
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Card(
+                        child: Container(
+                          width: double.infinity,
+                          //     height: double.maxFinite,
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'Invoice',
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderSide: BorderSide(color: Colors.black)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Invoices Total US:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Visibility(
+                                              visible: invoiceHistoryController
+                                                  .isLoading.value,
+                                              child: CircularProgressIndicator()),
+                                          Visibility(
+                                            visible: !invoiceHistoryController
                                                 .isLoading.value,
-                                            child: CircularProgressIndicator()),
-                                        Visibility(
-                                          visible: !invoiceHistoryController
-                                              .isLoading.value,
-                                          child: Text(
-                                            addCommasToNumber(
-                                                        invoiceHistoryController
-                                                            .total.value)
-                                                    .toString() +
-                                                '\$',
-                                            style: TextStyle(
-                                                color: Colors.blue.shade900,
-                                                fontWeight: FontWeight.bold),
+                                            child: Text(
+                                              addCommasToNumber(
+                                                          invoiceHistoryController
+                                                              .total.value)
+                                                      .toString() +
+                                                  '\$',
+                                              style: TextStyle(
+                                                  color: Colors.blue.shade900,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Invoices Recieved US:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Visibility(
-                                            visible: invoiceHistoryController
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Invoices Recieved US:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Visibility(
+                                              visible: invoiceHistoryController
+                                                  .isLoading.value,
+                                              child: CircularProgressIndicator()),
+                                          Visibility(
+                                            visible: !invoiceHistoryController
                                                 .isLoading.value,
-                                            child: CircularProgressIndicator()),
-                                        Visibility(
-                                          visible: !invoiceHistoryController
-                                              .isLoading.value,
-                                          child: Text(
-                                            addCommasToNumber(
-                                                        invoiceHistoryController
-                                                            .totalrec.value)
-                                                    .toString() +
-                                                '\$',
-                                            style: TextStyle(
-                                                color: Colors.green.shade900,
-                                                fontWeight: FontWeight.bold),
+                                            child: Text(
+                                              addCommasToNumber(
+                                                          invoiceHistoryController
+                                                              .totalrec.value)
+                                                      .toString() +
+                                                  '\$',
+                                              style: TextStyle(
+                                                  color: Colors.green.shade900,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Invoices Due US:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Visibility(
-                                            visible: invoiceHistoryController
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Invoices Due US:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Visibility(
+                                              visible: invoiceHistoryController
+                                                  .isLoading.value,
+                                              child: CircularProgressIndicator()),
+                                          Visibility(
+                                            visible: !invoiceHistoryController
                                                 .isLoading.value,
-                                            child: CircularProgressIndicator()),
-                                        Visibility(
-                                          visible: !invoiceHistoryController
-                                              .isLoading.value,
-                                          child: Text(
-                                            addCommasToNumber(
-                                                        invoiceHistoryController
-                                                            .totaldue.value)
-                                                    .toString() +
-                                                '\$',
-                                            style: TextStyle(
-                                                color: Colors.red.shade900,
-                                                fontWeight: FontWeight.bold),
+                                            child: Text(
+                                              addCommasToNumber(
+                                                          invoiceHistoryController
+                                                              .totaldue.value)
+                                                      .toString() +
+                                                  '\$',
+                                              style: TextStyle(
+                                                  color: Colors.red.shade900,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ));
-              }),
-            ),
-          ],
-        ),
-      )),
+                      ));
+                }),
+              ),
+            ],
+          ),
+        )),
+      ),
     );
   }
 }

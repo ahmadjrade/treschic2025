@@ -266,6 +266,7 @@ class InvoiceController extends GetxController {
           'Invoice_Time': formattedTime,
           'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
           'Invoice_Type': 'Store',
+          'Invoice_Rate': rateController.rateValue.value,
           'invoiceItems': invoiceData,
         }),
         headers: {'Content-Type': 'application/json'},

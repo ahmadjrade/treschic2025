@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
@@ -31,6 +32,8 @@ class NewInvoice extends StatelessWidget {
       Get.find<InvoiceHistoryController>();
   final ProductDetailController productDetailController =
       Get.find<ProductDetailController>();
+  final InvoiceDetailController invoiceDetailController =
+      Get.find<InvoiceDetailController>();
 
   TextEditingController Product_Code = TextEditingController();
   // final InvoiceController invoiceController = Get.put(InvoiceController());
@@ -932,6 +935,10 @@ class NewInvoice extends StatelessWidget {
                                     .isDataFetched = false)
                                 .then((value) =>
                                     invoiceHistoryController.fetchinvoices())
+                                    .then((value) => invoiceDetailController
+                                    .isDataFetched = false)
+                                .then((value) =>
+                                    invoiceDetailController.fetchinvoicesdetails())
                                 .then((value) => invoiceController.reset())
                                 .then((value) => invoiceController.reset())
                                 .then((value) => Navigator.of(context).pop())

@@ -3,6 +3,7 @@
 import 'package:fixnshop_admin/controller/brand_controller_phones.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
+import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
 import 'package:fixnshop_admin/controller/insert_repair_controller.dart';
 import 'package:fixnshop_admin/controller/phone_model_controller.dart';
 import 'package:fixnshop_admin/controller/repairs_controller.dart';
@@ -37,6 +38,7 @@ class InsertionScreen extends StatelessWidget {
   final RepairsController repairsController = Get.find<RepairsController>();
 
   final SupplierController supplierController = Get.find<SupplierController>();
+      final HomeController homeController = Get.find<HomeController>();
 
   CategoryModel? SelectedCategory;
   String cusname = '';
@@ -138,8 +140,10 @@ class InsertionScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: PopScope(
+        canPop: false,
         onPopInvoked: (didPop) {
-          customerController.resetResult();
+          homeController.selectedPageIndex.value = 0;
+
         },
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 00, 00.0),

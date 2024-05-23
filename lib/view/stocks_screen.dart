@@ -1,10 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class StocksScreen extends StatelessWidget {
-  const StocksScreen({super.key});
+  
+  
+   StocksScreen({super.key});
+      final HomeController homeController = Get.find<HomeController>();
+
   static const List Variables = [
     'Customers',
     'Brands',
@@ -56,58 +61,65 @@ class StocksScreen extends StatelessWidget {
         backgroundColor: Colors.deepPurple.shade300,
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: GridView.builder(
-          itemCount: 14,
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.all(15),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.deepPurple.shade300,
-                ),
-                height: 50,
-                width: 50,
-                // color: Colors.deepPurple.shade300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(Variables[index]),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: OutlinedButton(
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: Size(double.maxFinite, 20),
-                            backgroundColor: Colors.white,
-                            side: BorderSide(width: 2.0, color: Colors.white),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+          homeController.selectedPageIndex.value = 0;
+
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: GridView.builder(
+            itemCount: 14,
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.all(15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.deepPurple.shade300,
+                  ),
+                  height: 50,
+                  width: 50,
+                  // color: Colors.deepPurple.shade300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(Variables[index]),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: OutlinedButton(
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: Size(double.maxFinite, 20),
+                              backgroundColor: Colors.white,
+                              side: BorderSide(width: 2.0, color: Colors.white),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            String name = Pathes[index];
-                            Get.toNamed('$name');
-                          },
-                          child: Text(
-                            btnName[index],
-                            style: TextStyle(fontSize: 15),
-                          )),
-                    )
-                  ],
+                            onPressed: () {
+                              String name = Pathes[index];
+                              Get.toNamed('$name');
+                            },
+                            child: Text(
+                              btnName[index],
+                              style: TextStyle(fontSize: 15),
+                            )),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

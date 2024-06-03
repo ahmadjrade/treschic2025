@@ -5,7 +5,8 @@ import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/purchase_history_model.dart';
+import 'package:fixnshop_admin/model/purchase_model.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ import 'package:intl/intl.dart';
 
 class PurchaseHistory extends StatelessWidget {
   PurchaseHistory({super.key});
-  
+
   final PurchaseHistoryController purchaseHistoryController =
       Get.find<PurchaseHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
@@ -25,6 +26,9 @@ class PurchaseHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (purchaseHistoryController.pruchases.isEmpty) {
+      purchaseHistoryController.fetchpurchases();
+    }
     // purchaseHistoryController.reset();
 
     // purchaseHistoryController.CalTotal();
@@ -605,71 +609,86 @@ class PurchaseHistory extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              OutlinedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    // /fixedSize: Size(70, 20),
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    side: BorderSide(
-                                                      width: 2.0,
-                                                      color:
-                                                          purchaseHistoryController
-                                                                  .ispaid(Purchase
-                                                                      .isPaid)
-                                                              ? Colors.green
-                                                                  .shade900
-                                                              : Colors
-                                                                  .red.shade900,
-                                                    ),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
-                                                    ),
+                                              
+                                            ],
+                                          ),
+                                          SizedBox(height: 10,),
+                                          OutlinedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                fixedSize:
+                                                    Size(double.maxFinite, 20),
+                                                backgroundColor:
+                                                    purchaseHistoryController
+                                                            .ispaid(
+                                                                Purchase.isPaid)
+                                                        ? Colors.green.shade900
+                                                        : Colors.red.shade900,
+                                                side: BorderSide(
+                                                  width: 2.0,
+                                                  color:
+                                                      purchaseHistoryController
+                                                              .ispaid(Purchase
+                                                                  .isPaid)
+                                                          ? Colors
+                                                              .green.shade900
+                                                          : Colors.red.shade900,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                              Get.to(() =>
+                                                        PurchaseHistoryItems(
+                                                          Purchase_id:
+                                                              Purchase.Purchase_id
+                                                                  .toString(),
+                                                          Supplier_Name:
+                                                              Purchase.Supplier_Name
+                                                                  .toString(),
+                                                          Supplier_Number:
+                                                              Purchase.Supplier_Number
+                                                                  .toString(),
+                                                          purchase_Total_US:
+                                                              Purchase.Purchase_Total_USD
+                                                                  .toString(),
+                                                          purchase_Rec_US: Purchase
+                                                                  .Purchase_Rec_USD
+                                                              .toString(),
+                                                          purchase_Due_US: Purchase
+                                                                  .Purchase_Due_USD
+                                                              .toString(),
+                                                        ));
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Select',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
                                                   ),
-                                                  onPressed: () {
-                                                    // Get.to(() =>
-                                                    //     PurchaseHistoryItems(
-                                                    //       Purchase_id:
-                                                    //           Purchase.Purchase_id
-                                                    //               .toString(),
-                                                    //       Customer_Name:
-                                                    //           Purchase.Cus_Name
-                                                    //               .toString(),
-                                                    //       Customer_Number:
-                                                    //           Purchase.Cus_Number
-                                                    //               .toString(),
-                                                    //       Purchase_Total_US:
-                                                    //           Purchase.Purchase_Total_Usd
-                                                    //               .toString(),
-                                                    //       Purchase_Rec_US: Purchase
-                                                    //               .Purchase_Rec_Usd
-                                                    //           .toString(),
-                                                    //       Purchase_Due_US: Purchase
-                                                    //               .Purchase_Due_USD
-                                                    //           .toString(),
-                                                    //     ));
-                                                  },
-                                                  child: Icon(
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Icon(
                                                     Icons
                                                         .arrow_circle_right_rounded,
                                                     color:
                                                         purchaseHistoryController
                                                                 .ispaid(Purchase
                                                                     .isPaid)
-                                                            ? Colors
-                                                                .green.shade900
-                                                            : Colors
-                                                                .red.shade900,
+                                                            ? Colors.white
+                                                            : Colors.white,
                                                     //  'Details',
                                                     //   style: TextStyle(
                                                     //        color: Colors.red),
-                                                  )),
-                                            ],
-                                          ),
-
+                                                  ),
+                                                ],
+                                              )),
                                           SizedBox(
                                             height: 10,
                                           ),

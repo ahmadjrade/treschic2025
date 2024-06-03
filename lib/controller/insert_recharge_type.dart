@@ -18,7 +18,11 @@ class InsertRechargeType extends GetxController {
   final DateTimeController dateController = DateTimeController();
   String formattedDate = '';
   String formattedTime = '';
-  Future<void> UploadCard(String Type_Name) async {
+
+
+  Future<void> UploadCard(String Type_Name) async { //     .then((value) => showToast(
+                                                          //         productDetailController
+                                                          //             .result2))
     try {
       //   Username = sharedPreferencesController.username;
       // formattedDate = dateController.getFormattedDate();

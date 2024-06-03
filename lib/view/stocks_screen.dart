@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class StocksScreen extends StatelessWidget {
-  
-  
-   StocksScreen({super.key});
-      final HomeController homeController = Get.find<HomeController>();
+  StocksScreen({super.key});
+  final HomeController homeController = Get.find<HomeController>();
 
   static const List Variables = [
     'Customers',
@@ -22,7 +20,9 @@ class StocksScreen extends StatelessWidget {
     'Phone Model',
     'New Color',
     'Product Details',
-    'Products','Phones','Suppliers'
+    'Products',
+    'Phones',
+    'Suppliers'
   ];
 
   static const List Pathes = [
@@ -37,7 +37,9 @@ class StocksScreen extends StatelessWidget {
     '/NewPhoneModel',
     '/NewColor',
     '/NewProductDetail',
-    '/Products','/Phones','/Suppliers'
+    '/Products',
+    '/Phones',
+    '/Suppliers'
   ];
   static const List btnName = [
     'Add',
@@ -51,10 +53,18 @@ class StocksScreen extends StatelessWidget {
     'Add',
     'Add',
     'Add',
-    'See','See','See'
+    'See',
+    'See',
+    'See'
   ];
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    var screenWidth = mediaQuery.size.width;
+    var screenHeight = mediaQuery.size.height;
+    var padding = mediaQuery.padding;
+    var safeWidth = screenWidth - padding.horizontal;
+    var safeHeight = screenHeight - padding.vertical;
     return Scaffold(
       appBar: AppBar(
         title: Text('Stocks Screen'),
@@ -65,10 +75,9 @@ class StocksScreen extends StatelessWidget {
         canPop: false,
         onPopInvoked: (didPop) {
           homeController.selectedPageIndex.value = 0;
-
         },
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          padding:  EdgeInsets.symmetric( horizontal:  safeWidth * 0.01,vertical: safeHeight * 0.01),
           child: GridView.builder(
             itemCount: 14,
             gridDelegate:
@@ -81,8 +90,8 @@ class StocksScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(25),
                     color: Colors.deepPurple.shade300,
                   ),
-                  height: 50,
-                  width: 50,
+                  height: safeHeight * 0.8,
+                  width: safeWidth * 0.8,
                   // color: Colors.deepPurple.shade300,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +101,7 @@ class StocksScreen extends StatelessWidget {
                       ),
                       Text(Variables[index]),
                       SizedBox(
-                        height: 10,
+                        height: safeHeight / 100,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),

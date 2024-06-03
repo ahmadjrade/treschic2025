@@ -3,10 +3,13 @@
 import 'dart:async';
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
+import 'package:fixnshop_admin/controller/color_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/purchase_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
+import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:fixnshop_admin/view/Product/product_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,11 +32,14 @@ class New_Purchase extends StatelessWidget {
 
   final ProductDetailController productDetailController =
       Get.find<ProductDetailController>();
-
+ final PurchaseHistoryController purchaseHistoryController =
+      Get.find<PurchaseHistoryController>();
   TextEditingController Product_Code = TextEditingController();
   final PurchaseController purchaseController = Get.put(PurchaseController());
   final RateController rateController = Get.find<RateController>();
-
+  final ColorController colorController = Get.find<ColorController>();
+  ColorModel? SelectedColor;
+int SelectedColorId = 0;
   double TP = 0;
   double CalPrice(qty, up) {
     return TP = qty * up;
@@ -288,7 +294,8 @@ class New_Purchase extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Code: ${product.Product_Code}'),
+                                                                                       Text('Code: ${product.Product_Code}'),
+
                                         Obx(() {
                                           return Row(
                                             children: [
@@ -645,6 +652,78 @@ class New_Purchase extends StatelessWidget {
                                         // )
                                       ],
                                     ),
+          //                            Row(
+          //   children: [
+          //     Expanded(
+          //       child: Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          //         child: Obx(
+          //           () => colorController.colors.isEmpty
+          //               ? Center(
+          //                   child: Column(
+          //                     children: [
+          //                       // Text('Fetching Rate! Please Wait'),
+          //                       CircularProgressIndicator(),
+          //                     ],
+          //                   ),
+          //                 )
+          //               : DropdownButtonFormField<ColorModel>(
+          //                   decoration: InputDecoration(
+          //                     labelText: "Colors",
+          //                     labelStyle: TextStyle(
+          //                       color: Colors.black,
+          //                     ),
+          //                     fillColor: Colors.black,
+          //                     focusedBorder: OutlineInputBorder(
+          //                       borderRadius: BorderRadius.circular(15.0),
+          //                       borderSide: BorderSide(
+          //                         color: Colors.black,
+          //                       ),
+          //                     ),
+          //                     enabledBorder: OutlineInputBorder(
+          //                       borderRadius: BorderRadius.circular(15.0),
+          //                       borderSide: BorderSide(
+          //                         color: Colors.black,
+          //                         width: 2.0,
+          //                       ),
+          //                     ),
+          //                   ),
+          //                   iconDisabledColor: Colors.deepPurple.shade300,
+          //                   iconEnabledColor: Colors.deepPurple.shade300,
+          //                   //  value: categoryController.category.first,
+          //                   onChanged: (ColorModel? value) {
+          //                     SelectedColor = value;
+          //                     SelectedColorId = (SelectedColor?.Color_id)!;
+          //                     product.Product_Code = product.Product_Code + '-' + SelectedColorId.toString();
+          //                   },
+          //                   items: colorController.colors
+          //                       .map((color) => DropdownMenuItem<ColorModel>(
+          //                             value: color,
+          //                             child: Text(color.Color),
+          //                           ))
+          //                       .toList(),
+          //                 ),
+          //         ),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.fromLTRB(0, 0, 25, 0),
+          //       child: IconButton(
+          //         color: Colors.blueAccent,
+          //         iconSize: 24.0,
+          //         onPressed: () {
+          //           Get.toNamed('/NewColor');
+          //           // colorController.isDataFetched = false;
+          //           // colorController.fetchcolors();
+          //           // //Quantities.clear();
+          //           //Quantities.add(Product_Quantity.text);
+          //         //  print(Quantities);
+          //         },
+          //         icon: Icon(CupertinoIcons.add),
+          //       ),
+          //     )
+          //   ],
+          // ),
                                   ],
                                 ),
                               ));
@@ -948,6 +1027,9 @@ class New_Purchase extends StatelessWidget {
                                 .then((value) => refreshProducts())
                                 .then((value) => purchaseController.reset())
                                 .then((value) => purchaseController.reset())
+                                .then((value) => purchaseHistoryController.isDataFetched = false)
+
+                                .then((value) => purchaseHistoryController.fetchpurchases())
                                 .then((value) => Navigator.of(context).pop())
                                 .then((value) => Navigator.of(context).pop());
                           } else {

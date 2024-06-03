@@ -16,9 +16,11 @@ import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/phone_model_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_detail_controller.dart';
 import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/repairs_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
@@ -142,6 +144,19 @@ Future<void> main() async {
     () => PurchaseHistoryController(),
     fenix: true,
   );
+  Get.lazyPut<RechargeDetailController>(
+    () => RechargeDetailController(),
+    fenix: true,
+  );
+    Get.lazyPut<PurchaseDetailController>(
+    () => PurchaseDetailController(),
+    fenix: true,
+  );
+   final PurchaseDetailController purchaseDetailController =
+      Get.find<PurchaseDetailController>();
+      
+  final RechargeDetailController rechargeDetailController =
+      Get.find<RechargeDetailController>();
   final PurchaseHistoryController purchaseHistoryController =
       Get.find<PurchaseHistoryController>();
   final RechargeCartController rechargeCartController =

@@ -24,7 +24,7 @@ class ProductList extends StatelessWidget {
   final ProductController productController = Get.find<ProductController>();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
   final PurchaseController purchaseController = Get.put(PurchaseController());
-      final HomeController homeController = Get.find<HomeController>();
+  final HomeController homeController = Get.find<HomeController>();
 
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
@@ -32,6 +32,8 @@ class ProductList extends StatelessWidget {
   RxString Username = ''.obs;
   TextEditingController Product_Name = TextEditingController();
 
+
+  
   Future<void> set() async {
     Product_Name.text = barcodeController.barcode3.value;
     productController.searchProducts(Product_Name.text);
@@ -97,10 +99,9 @@ class ProductList extends StatelessWidget {
             ],
           )),
       body: PopScope(
-        canPop: false,
+        canPop: true,
         onPopInvoked: (didPop) {
           homeController.selectedPageIndex.value = 0;
-
         },
         child: Column(
           children: [
@@ -208,7 +209,8 @@ class ProductList extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text('Product Code:  ' +
@@ -220,7 +222,7 @@ class ProductList extends StatelessWidget {
                                           ' || ' +
                                           product.Product_Brand),
                                       //Text('Brand: ' + product.Product_Brand),
-        
+
                                       Row(
                                         children: [
                                           Text(
@@ -241,7 +243,7 @@ class ProductList extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-        
+
                                       Visibility(
                                         visible: productController
                                             .isadmin(Username.value),
@@ -279,11 +281,12 @@ class ProductList extends StatelessWidget {
                                                   showDialog(
                                                       barrierDismissible: false,
                                                       context: context,
-                                                      builder:
-                                                          (BuildContext context) {
+                                                      builder: (BuildContext
+                                                          context) {
                                                         return AlertDialog(
                                                           title: SizedBox(
-                                                            child: BarcodeWidget(
+                                                            child:
+                                                                BarcodeWidget(
                                                               barcode: Barcode
                                                                   .code128(),
                                                               data: product
@@ -291,7 +294,7 @@ class ProductList extends StatelessWidget {
                                                             ),
                                                           ),
                                                           // content: setupAlertDialoadContainer(),
-        
+
                                                           actions: [
                                                             Center(
                                                               child: Row(
@@ -309,10 +312,8 @@ class ProductList extends StatelessWidget {
                                                                               .red
                                                                               .shade900,
                                                                           side: BorderSide(
-                                                                              width:
-                                                                                  2.0,
-                                                                              color:
-                                                                                  Colors.red.shade900),
+                                                                              width: 2.0,
+                                                                              color: Colors.red.shade900),
                                                                           shape:
                                                                               RoundedRectangleBorder(
                                                                             borderRadius:
@@ -325,9 +326,8 @@ class ProductList extends StatelessWidget {
                                                                         },
                                                                         child: Text(
                                                                           'Close',
-                                                                          style: TextStyle(
-                                                                              color:
-                                                                                  Colors.white),
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
                                                                         )),
                                                                   ),
                                                                 ],
@@ -374,12 +374,12 @@ class ProductList extends StatelessWidget {
                                                 onPressed: () {
                                                   if (isPur == 1) {
                                                     invoiceController
-                                                        .fetchProduct(
-                                                            product.Product_Code);
+                                                        .fetchProduct(product
+                                                            .Product_Code);
                                                   } else {
                                                     purchaseController
-                                                        .fetchProduct(
-                                                            product.Product_Code);
+                                                        .fetchProduct(product
+                                                            .Product_Code);
                                                   }
                                                 },
                                                 child: Row(
@@ -417,23 +417,24 @@ class ProductList extends StatelessWidget {
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  Get.to(() => ProductListDetail(
-                                                        Product_id:
-                                                            product.Product_id
+                                                  Get.to(
+                                                      () => ProductListDetail(
+                                                            Product_id: product
+                                                                    .Product_id
                                                                 .toString(),
-                                                        Product_Name:
-                                                            product.Product_Name,
-                                                        Product_Color:
-                                                            product.Product_Color,
-                                                        Product_LPrice:
-                                                            product.Product_LPrice
+                                                            Product_Name: product
+                                                                .Product_Name,
+                                                            Product_Color: product
+                                                                .Product_Color,
+                                                            Product_LPrice:
+                                                                product.Product_LPrice
+                                                                    .toString(),
+                                                            Product_MPrice: product
+                                                                .product_MPrice
                                                                 .toString(),
-                                                        Product_MPrice: product
-                                                            .product_MPrice
-                                                            .toString(),
-                                                        Product_Code:
-                                                            product.Product_Code,
-                                                      ));
+                                                            Product_Code: product
+                                                                .Product_Code,
+                                                          ));
                                                 },
                                                 child: Row(
                                                   mainAxisAlignment:

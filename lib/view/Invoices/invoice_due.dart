@@ -1,19 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
+
+
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoiceHistory extends StatelessWidget {
-  InvoiceHistory({super.key});
+class InvoiceDue extends StatelessWidget {
+  InvoiceDue({super.key});
 
   final InvoiceHistoryController invoiceHistoryController =
       Get.find<InvoiceHistoryController>();
@@ -23,6 +23,7 @@ class InvoiceHistory extends StatelessWidget {
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
+    TextEditingController Payment_Ammount = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,13 +62,20 @@ class InvoiceHistory extends StatelessWidget {
       final formatter = NumberFormat('#,##0.00');
       return formatter.format(value);
     }
+    Future<void> showToast(result) async {
+      final snackBar2 = SnackBar(
+        content: Text(result),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+    }
+
 
     return Scaffold(
       appBar: AppBar(
           title: (Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Invoice History'),
+          Text('Invoice Due'),
           IconButton(
               onPressed: () {
                 invoiceHistoryController.reset();
@@ -398,17 +406,17 @@ class InvoiceHistory extends StatelessWidget {
                   Obx(
                     () {
                       final List<InvoiceModel> filteredinvoices =
-                          invoiceHistoryController.SearchInvoices(
+                          invoiceHistoryController.SearchDueInvoices(
                         FilterQuery.text,
                       );
                       if (invoiceHistoryController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
                       } else if (invoiceHistoryController.invoices.isEmpty) {
                         return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
+                            child: Text('No Due Invoices Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
                         return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
+                            child: Text('No Due Invoices Yet In This Store ! '));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
@@ -612,85 +620,274 @@ class InvoiceHistory extends StatelessWidget {
                                           SizedBox(
                                             height: 10,
                                           ),
-
-                                          OutlinedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                fixedSize:
-                                                    Size(double.maxFinite, 20),
-                                                backgroundColor:
-                                                    invoiceHistoryController
-                                                            .ispaid(
-                                                                invoice.isPaid)
-                                                        ? Colors.green.shade900
-                                                        : Colors.red.shade900,
-                                                side: BorderSide(
-                                                  width: 2.0,
-                                                  color:
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  // fixedSize:
+                                                  //     Size(double.infinity, 20),
+                                                  backgroundColor:
                                                       invoiceHistoryController
-                                                              .ispaid(invoice
-                                                                  .isPaid)
-                                                          ? Colors
-                                                              .green.shade900
+                                                              .ispaid(
+                                                                  invoice.isPaid)
+                                                          ? Colors.green.shade900
                                                           : Colors.red.shade900,
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Get.to(
-                                                    () => InvoiceHistoryItems(
-                                                          Invoice_id:
-                                                              invoice.Invoice_id
-                                                                  .toString(),
-                                                                  Customer_id: invoice.Cus_id.toString(),
-                                                          Customer_Name:
-                                                              invoice.Cus_Name
-                                                                  .toString(),
-                                                          Customer_Number:
-                                                              invoice.Cus_Number
-                                                                  .toString(),
-                                                          Invoice_Total_US:
-                                                              invoice.Invoice_Total_Usd
-                                                                  .toString(),
-                                                          Invoice_Rec_US: invoice
-                                                                  .Invoice_Rec_Usd
-                                                              .toString(),
-                                                          Invoice_Due_US: invoice
-                                                                  .Invoice_Due_USD
-                                                              .toString(),
-                                                        ));
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Select',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Icon(
-                                                    Icons
-                                                        .arrow_circle_right_rounded,
+                                                  side: BorderSide(
+                                                    width: 2.0,
                                                     color:
                                                         invoiceHistoryController
                                                                 .ispaid(invoice
                                                                     .isPaid)
-                                                            ? Colors.white
-                                                            : Colors.white,
-                                                    //  'Details',
-                                                    //   style: TextStyle(
-                                                    //        color: Colors.red),
+                                                            ? Colors
+                                                                .green.shade900
+                                                            : Colors.red.shade900,
                                                   ),
-                                                ],
-                                              )),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Get.to(
+                                                      () => InvoiceHistoryItems(
+                                                            Invoice_id:
+                                                                invoice.Invoice_id
+                                                                    .toString(),
+                                                                    Customer_id: invoice.Cus_id.toString(),
+                                                            Customer_Name:
+                                                                invoice.Cus_Name
+                                                                    .toString(),
+                                                            Customer_Number:
+                                                                invoice.Cus_Number
+                                                                    .toString(),
+                                                            Invoice_Total_US:
+                                                                invoice.Invoice_Total_Usd
+                                                                    .toString(),
+                                                            Invoice_Rec_US: invoice
+                                                                    .Invoice_Rec_Usd
+                                                                .toString(),
+                                                            Invoice_Due_US: invoice
+                                                                    .Invoice_Due_USD
+                                                                .toString(),
+                                                          ));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Select',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Icon(
+                                                      Icons
+                                                          .arrow_circle_right_rounded,
+                                                      color:
+                                                          invoiceHistoryController
+                                                                  .ispaid(invoice
+                                                                      .isPaid)
+                                                              ? Colors.white
+                                                              : Colors.white,
+                                                      //  'Details',
+                                                      //   style: TextStyle(
+                                                      //        color: Colors.red),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
 
+                                          SizedBox(width: 20),
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  // fixedSize:
+                                                  //     Size(double.infinity, 20),
+                                                  backgroundColor:
+                                                     Colors.green.shade900
+                                                          ,
+                                                  side: BorderSide(
+                                                    width: 2.0,
+                                                    color:
+                                                         Colors
+                                                                .green.shade900
+                                                            
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      'Pay Due'),
+                                                  content: TextField(
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    controller: Payment_Ammount,
+                                                    decoration: InputDecoration(
+                                                        hintText:
+                                                            'Enter Payment Ammount'),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        if (Payment_Ammount.text !=
+                                                            '') {
+                                                          showDialog(
+                                                              // The user CANNOT close this dialog  by pressing outsite it
+                                                              barrierDismissible:
+                                                                  false,
+                                                              context: context,
+                                                              builder: (_) {
+                                                                return Dialog(
+                                                                  // The background color
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            20),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        // The loading indicator
+                                                                        CircularProgressIndicator(),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              15,
+                                                                        ),
+                                                                        // Some text
+                                                                        Text(
+                                                                            'Loading')
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+                                                              invoiceHistoryController.PayInvDue(invoice.Invoice_id.toString(), Payment_Ammount.text, invoice.Invoice_Due_USD.toString(), (invoice.Invoice_Due_USD - double.tryParse(Payment_Ammount.text)! ).toString())
+                                                                   .then((value) => showToast(
+                                                                  invoiceHistoryController
+                                                                      .result2))
+                                                                      .then((value) => invoiceHistoryController.isDataFetched = false)
+                                                                      .then((value) => invoiceHistoryController.fetchinvoices())
+                                                                      .then((value) => Navigator.of(context).pop())
+                                                                      .then((value) => Navigator.of(context).pop());
+
+                                                          // productDetailController.UpdateProductQty(
+                                                          //         product.PD_id
+                                                          //             .toString(),
+                                                          //         New_Qty.text)
+                                                          //     .then((value) => showToast(
+                                                          //         productDetailController
+                                                          //             .result2))
+                                                          //     .then((value) =>
+                                                          //         productDetailController
+                                                          //                 .isDataFetched =
+                                                          //             false)
+                                                          //     .then((value) =>
+                                                          //         productDetailController
+                                                          //             .fetchproductdetails())
+                                                          //     .then((value) =>
+                                                          //         Navigator.of(context)
+                                                          //             .pop())
+                                                          //     .then((value) =>
+                                                          //         Navigator.of(context).pop());
+
+                                                          Payment_Ammount.clear();
+                                                        } else {
+                                                          Get.snackbar('Error',
+                                                              'Add New Quantity');
+                                                        }
+
+                                                        // Do something with the text, e.g., save it
+                                                        //  String enteredText = _textEditingController.text;
+                                                        //  print('Entered text: $enteredText');
+                                                        // Close the dialog
+                                                      },
+                                                      child: Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                                  // Get.to(
+                                                  //     () => InvoiceHistoryItems(
+                                                  //           Invoice_id:
+                                                  //               invoice.Invoice_id
+                                                  //                   .toString(),
+                                                  //                   Customer_id: invoice.Cus_id.toString(),
+                                                  //           Customer_Name:
+                                                  //               invoice.Cus_Name
+                                                  //                   .toString(),
+                                                  //           Customer_Number:
+                                                  //               invoice.Cus_Number
+                                                  //                   .toString(),
+                                                  //           Invoice_Total_US:
+                                                  //               invoice.Invoice_Total_Usd
+                                                  //                   .toString(),
+                                                  //           Invoice_Rec_US: invoice
+                                                  //                   .Invoice_Rec_Usd
+                                                  //               .toString(),
+                                                  //           Invoice_Due_US: invoice
+                                                  //                   .Invoice_Due_USD
+                                                  //               .toString(),
+                                                  //         ));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Pay',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Icon(
+                                                      Icons
+                                                          .arrow_circle_right_rounded,
+                                                      color:
+                                                          invoiceHistoryController
+                                                                  .ispaid(invoice
+                                                                      .isPaid)
+                                                              ? Colors.white
+                                                              : Colors.white,
+                                                      //  'Details',
+                                                      //   style: TextStyle(
+                                                      //        color: Colors.red),
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                            ],
+                                          ),
+                                         
                                           // Text(
                                           //     'Store: ' +
                                           //         invoice.Username.toUpperCase() +

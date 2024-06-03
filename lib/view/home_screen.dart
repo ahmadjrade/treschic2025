@@ -3,15 +3,13 @@
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
 import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_types.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_history.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 // ignore_for_file: prefer_const_constructors
@@ -31,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final InvoiceHistoryController invoiceHistoryController =
       Get.find<InvoiceHistoryController>();
   int _selectedDestination = 0;
+  RxString Username = ''.obs;
 
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
@@ -63,18 +62,34 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _selectedDestination = index;
       });
-    } else {}
+    } else if (index == 5) {
+      Get.to(() => InvoiceDue());
+      setState(() {
+        _selectedDestination = index;
+      });
+    } 
+    else {}
   }
+
+
 
   @override
   Widget build(BuildContext context) {
+          Username = sharedPreferencesController.username;
+            // invoiceHistoryController.reset();
+            //     invoiceHistoryController.isDataFetched = false;
+            //     invoiceHistoryController.fetchinvoices();
+            //     rechargeInvoiceHistoryController.reset();
+            //     rechargeInvoiceHistoryController.isDataFetched = false;
+            //     rechargeInvoiceHistoryController.fetchrechargeInvoice();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey.shade100,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Home Screen'),
+            Text('Home Screen '),
             Row(
               children: [
                 IconButton(
@@ -115,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'AJTech',
+                'AJTech | $Username Store',
                 //style: textTheme.headline6,
               ),
             ),
@@ -126,14 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 10,
             ),
-            ListTile(
-              leading: Icon(Icons.history),
-              title: Text('Invoice History'),
-              selected: _selectedDestination == 0,
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
-              onTap: () => selectDestination(0),
-            ),
+           
             ListTile(
               leading: Icon(Icons.phonelink_setup_sharp),
               title: Text('Repairs'),
@@ -157,11 +165,19 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Label',
+                'History',
               ),
             ),
+             ListTile(
+              leading: Icon(Icons.history_outlined),
+              title: Text('Invoice History'),
+              selected: _selectedDestination == 0,
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              onTap: () => selectDestination(0),
+            ),
             ListTile(
-              leading: Icon(Icons.bookmark),
+              leading: Icon(Icons.history_outlined),
               title: Text('Recharge History'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
@@ -169,33 +185,33 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () => selectDestination(3),
             ),
             ListTile(
-              leading: Icon(Icons.bookmark),
+              leading: Icon(Icons.history_outlined),
               title: Text('Purchase History'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
               selected: _selectedDestination == 4,
               onTap: () => selectDestination(4),
             ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Action',
+              ),
+            ),ListTile(
+              leading: Icon(Icons.history_outlined),
+              title: Text('Invoice Due'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 5,
+              onTap: () => selectDestination(5),
+            ),
           ],
         ),
       ),
-      // body: GridView.count(
-      //   crossAxisCount: 2,
-      //   crossAxisSpacing: 20,
-      //   mainAxisSpacing: 20,
-      //   padding: EdgeInsets.all(20),
-      //   childAspectRatio: 3 / 2,
-      //   children: [
-      //     Image.asset('assets/nav-drawer-1.jpg'),
-      //     Image.asset('assets/nav-drawer-2.jpg'),
-      //     Image.asset('assets/nav-drawer-3.jpg'),
-      //     Image.asset('assets/nav-drawer-4.jpg'),
-      //   ],
-      // ),
+      
       body: PopScope(
         canPop: false,
         onPopInvoked: (didPop) {
-         // homeController.selectedPageIndex.value = 0;
 
         },
         child: SafeArea(

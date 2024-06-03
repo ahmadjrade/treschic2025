@@ -821,7 +821,8 @@ class RepairHistory extends StatelessWidget {
                                       //     },
                                       //     child: Icon(Icons.arrow_right)),
                                     ],
-                                  ),OutlinedButton(
+                                  ),
+                                  OutlinedButton(
                                                     style:
                                                         ElevatedButton.styleFrom(
                                                       fixedSize: Size(double.maxFinite, 20),

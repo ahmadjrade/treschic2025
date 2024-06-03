@@ -4,48 +4,52 @@ import 'package:fixnshop_admin/controller/category_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/controller/sub_category_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/invoice_history_model.dart';
 import 'package:fixnshop_admin/model/product_detail_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/Invoices/old_invoice_update.dart';
+import 'package:fixnshop_admin/model/recharge_inv_history_model.dart';
 import 'package:fixnshop_admin/view/Product/add_product_detail.dart';
 import 'package:fixnshop_admin/view/sub_category_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-class InvoiceHistoryItems extends StatelessWidget {
-  String Invoice_id,
-      Customer_id,
+class RechargeHistoryItems extends StatelessWidget {
+  String Recharge_id,
       Customer_Name,
       Customer_Number,
       Invoice_Total_US,
       Invoice_Rec_US,
       Invoice_Due_US;
-  InvoiceHistoryItems(
+  RechargeHistoryItems(
       {super.key,
-      required this.Invoice_id,
-            required this.Customer_id,
-
+      required this.Recharge_id,
       required this.Customer_Name,
       required this.Customer_Number,
       required this.Invoice_Total_US,
       required this.Invoice_Rec_US,
       required this.Invoice_Due_US});
-  final InvoiceDetailController invoiceDetailController =
-      Get.find<InvoiceDetailController>();
-  TextEditingController New_Qty = TextEditingController();
 
+  final RechargeDetailController rechargeDetailController =
+      Get.find<RechargeDetailController>();
+  TextEditingController New_Qty = TextEditingController();
+      final RxString filter = ''.obs;
+  final TextEditingController filterController = TextEditingController();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   RxString Username = ''.obs;
-    final RxString filter = ''.obs;
-  final TextEditingController filterController = TextEditingController();
   // TextEditingController Customer_Name = TextEditingController();
+  String addCommasToNumber(double value) {
+    final formatter = NumberFormat('#,##0.00');
+    return formatter.format(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     Username = sharedPreferencesController.username;
@@ -57,44 +61,39 @@ class InvoiceHistoryItems extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(snackBar2);
     }
 
-    // invoiceDetailController.isDataFetched = false;
-    // invoiceDetailController.fetchproductdetails();
-    // List<InvoiceHistoryModel> filteredProductDetails() {
-      
-    //   return invoiceDetailController.invoice_detail
-    //       .where((invoice_detail) =>
-    //           invoice_detail.Invoice_id == int.tryParse(Invoice_id))
-    //       .toList();
-    // }
-    List<InvoiceHistoryModel> filteredProductDetails() {
-      final filterText = filter.value.toLowerCase();
-      return invoiceDetailController.invoice_detail
+    // rechargeDetailController.isDataFetched = false;
+    // rechargeDetailController.fetchproductdetails();
+    List<RechargeHistoryModel> filteredProductDetails() {
+            final filterText = filter.value.toLowerCase();
+
+      return rechargeDetailController.recharge_detail
           .where((invoice_detail) =>
-              invoice_detail.Invoice_id == int.tryParse(Invoice_id) &&
-              (invoice_detail.Product_Name.toLowerCase().contains(filterText) ||
-               invoice_detail.Product_Code.toLowerCase().contains(filterText)))
+              invoice_detail.Recharge_invoice_id == int.tryParse(Recharge_id) && 
+              (invoice_detail.Card_Name.toLowerCase().contains(filterText) ))
           .toList();
     }
-    //  invoiceDetailController.product_detail.clear();
-    // invoiceDetailController.isDataFetched = false;
-    //  invoiceDetailController.fetchproductdetails(Invoice_id);
+   
+    //  rechargeDetailController.product_detail.clear();
+    // rechargeDetailController.isDataFetched = false;
+    //  rechargeDetailController.fetchproductdetails(Recharge_id);
     // productController.fetchproducts();
     return Scaffold(
       appBar: AppBar(
           title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Invoice #$Invoice_id Items'),
+          Text('Invoice #$Recharge_id Items'),
           IconButton(
             color: Color.fromRGBO(13, 134, 151, 1),
             iconSize: 24.0,
             onPressed: () {
-              Get.to(() => OldInvoiceUpdate(
-                    Invoice_id: Invoice_id,
-                     Cus_id: Customer_id, 
-                     Cus_Name: Customer_Name, 
-                     Cus_Number: Customer_Number,
-                  ));
+              // Get.to(() => AddProductDetail(
+              //       Recharge_id: Recharge_id,
+              //       Customer_Name: Customer_Name,
+              //       Invoice_Due_US: Invoice_Due_US,
+              //       Invoice_Total_US: Invoice_Total_US,
+              //       Invoice_Rec_US: Invoice_Rec_US,
+              //     ));
             },
             icon: Icon(CupertinoIcons.add),
           ),
@@ -102,8 +101,8 @@ class InvoiceHistoryItems extends StatelessWidget {
             color: Colors.deepPurple,
             iconSize: 24.0,
             onPressed: () {
-              invoiceDetailController.isDataFetched = false;
-              invoiceDetailController.fetchinvoicesdetails();
+              rechargeDetailController.isDataFetched = false;
+              rechargeDetailController.fetchrecdetails();
               // categoryController.isDataFetched =false;
               // categoryController.fetchcategories();
             },
@@ -256,7 +255,8 @@ class InvoiceHistoryItems extends StatelessWidget {
             ),
             SizedBox(
               height: 20,
-            ),TextFormField(
+            ), 
+            TextFormField(
               controller: filterController,
               decoration: InputDecoration(
                 labelText: "Filter by Name or Code",
@@ -277,17 +277,17 @@ class InvoiceHistoryItems extends StatelessWidget {
             Expanded(
               child: Obx(
                 () {
-                  final List<InvoiceHistoryModel> filtereditems =
+                  final List<RechargeHistoryModel> filtereditems =
                       filteredProductDetails();
-                  if (invoiceDetailController.isLoading.value) {
+                  if (rechargeDetailController.isLoading.value) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (invoiceDetailController.invoice_detail.isEmpty) {
+                  } else if (rechargeDetailController.recharge_detail.isEmpty) {
                     return Center(child: Text('No Items Yet ! Add Some'));
                   } else {
                     return ListView.builder(
                       itemCount: filtereditems.length,
                       itemBuilder: (context, index) {
-                        final InvoiceHistoryModel invoice =
+                        final RechargeHistoryModel invoice =
                             filtereditems[index];
                         return Container(
                           color: Colors.grey.shade200,
@@ -303,13 +303,16 @@ class InvoiceHistoryItems extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  invoice.Product_Quantity.toString() + ' PCS',
+                                  invoice.Card_Qty.toString() + ' PCS',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12),
                                 ),
                                 Text(
-                                  'UP: ' + invoice.product_UP.toString() + '\$',
+                                  'UP: ' +
+                                      addCommasToNumber(invoice.Card_UP)
+                                          .toString() +
+                                      'LL',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
@@ -319,9 +322,9 @@ class InvoiceHistoryItems extends StatelessWidget {
                             ),
                             title: Text(
                               '#' +
-                                  invoice.Invoice_Detail_id.toString() +
+                                  invoice.Rinvoice_detail_id.toString() +
                                   ' || ' +
-                                  invoice.Product_Name,
+                                  invoice.Card_Name,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -332,78 +335,131 @@ class InvoiceHistoryItems extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 0.0),
                                 child: Column(
                                   //  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                                Visibility(
-                                      visible:true,
+                                    Visibility(
+                                      visible: rechargeDetailController
+                                          .isadmin(Username.value),
                                       child: IconButton(
                                           color: Colors.red,
                                           onPressed: () {
-                                            if(double.tryParse( Invoice_Due_US ) == 0) {
-                                      showDialog(
-                                      // The user CANNOT close this dialog  by pressing outsite it
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (_) {
-                                        return Dialog(
-                                          // The background color
-                                          backgroundColor: Colors.white,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.symmetric(vertical: 20),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                // The loading indicator
-                                                CircularProgressIndicator(),
-                                                SizedBox(
-                                                  height: 15,
-                                                ),
-                                                // Some text
-                                                Text('Loading')
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      });
-                                                    invoiceDetailController.DeleteInvItem(invoice.Invoice_Detail_id.toString())
-                                                    .then((value) => showToast(invoiceDetailController.result2))
-                                                    .then((value) => invoiceDetailController.isDataFetched = false)
-                                                    .then((value) => invoiceDetailController.fetchinvoicesdetails)
-                                                    
-                                                    .then((value) => Navigator.of(context).pop());
-                                                    } else {
-                                                      showToast('Invoice Due Must Be 0');
-                                                    }
-                                              
-        
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      'Update Item Quantity'),
+                                                  content: TextField(
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    controller: New_Qty,
+                                                    decoration: InputDecoration(
+                                                        hintText:
+                                                            'Enter New Quantity'),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        if (New_Qty.text !=
+                                                            '') {
+                                                          showDialog(
+                                                              // The user CANNOT close this dialog  by pressing outsite it
+                                                              barrierDismissible:
+                                                                  false,
+                                                              context: context,
+                                                              builder: (_) {
+                                                                return Dialog(
+                                                                  // The background color
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            20),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        // The loading indicator
+                                                                        CircularProgressIndicator(),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              15,
+                                                                        ),
+                                                                        // Some text
+                                                                        Text(
+                                                                            'Loading')
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+                                                          //   rechargeDetailController.UpdateProductQty(
+                                                          //           invoice.Invoice_Detail_id
+                                                          //               .toString(),
+                                                          //           New_Qty.text)
+                                                          //       .then((value) => showToast(
+                                                          //           rechargeDetailController
+                                                          //               .result2))
+                                                          //       .then((value) =>
+                                                          //           rechargeDetailController
+                                                          //                   .isDataFetched =
+                                                          //               false)
+                                                          //       .then((value) =>
+                                                          //           rechargeDetailController
+                                                          //               .fetchinvoicesdetails())
+                                                          //       .then((value) =>
+                                                          //           Navigator.of(context)
+                                                          //               .pop())
+                                                          //       .then((value) =>
+                                                          //           Navigator.of(context).pop());
 
-                                           },
-                                          icon: Icon(Icons.delete)),
+                                                          //   New_Qty.clear();
+                                                          // } else {
+                                                          //   Get.snackbar('Error',
+                                                          //       'Add New Quantity');
+                                                        }
+
+                                                        // Do something with the text, e.g., save it
+                                                        //  String enteredText = _textEditingController.text;
+                                                        //  print('Entered text: $enteredText');
+                                                        // Close the dialog
+                                                      },
+                                                      child: Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          icon: Icon(Icons.edit)),
                                     ),
-                                    ],),
-                                    
-                                    Text('Product Code: ' +
-                                        invoice.Product_Code),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text('Product Color: ' +
-                                        invoice.Product_Color),
+                                    Text('Card Ammount: ' +
+                                        invoice.Card_Amount.toString() +
+                                        '\$'),
                                     SizedBox(
                                       height: 5,
                                     ),
                                     Text('Unit Price: ' +
-                                        invoice.product_UP.toString() +
+                                        invoice.Card_UP.toString() +
                                         '\$'),
                                     SizedBox(
                                       height: 5,
                                     ),
                                     Text('Total Price: ' +
-                                        invoice.product_TP.toString() +
+                                        invoice.Card_TP.toString() +
                                         '\$'),
                                     SizedBox(
                                       height: 25,
@@ -426,7 +482,7 @@ class InvoiceHistoryItems extends StatelessWidget {
                             //     //       // product_detailsController.selectedproduct_details.value =
                             //     //       //     null;
 
-                            //               Get.to(() => InvoiceHistoryItems(Invoice_id: invoice.Invoice_id.toString(), Customer_Name: invoice.Customer_Name,Customer_Number: invoice.Customer_Number,));
+                            //               Get.to(() => RechargeHistoryItems(Recharge_id: invoice.Recharge_id.toString(), Customer_Name: invoice.Customer_Name,Customer_Number: invoice.Customer_Number,));
                             //   },
                             //   child: Text('Select')),
                             // // Add more properties as needed

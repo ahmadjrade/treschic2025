@@ -10,6 +10,7 @@ import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/model/customer_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
@@ -37,6 +38,8 @@ class NewRechargeInvoice extends StatelessWidget {
   // final InvoiceController invoiceController = Get.put(InvoiceController());
   final RateController rateController = Get.find<RateController>();
   final CustomerController customerController = Get.find<CustomerController>();
+  final RechargeDetailController rechargeDetailController =
+      Get.find<RechargeDetailController>();
 
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
@@ -256,7 +259,7 @@ class NewRechargeInvoice extends StatelessWidget {
                           decoration: InputDecoration(
                             labelText: 'Recharge Cards',
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15.0),
+                                borderRadius: BorderRadius.circular(24.0),
                                 borderSide: BorderSide(color: Colors.black)),
                           ),
                           child: ListView.builder(
@@ -270,7 +273,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                   rechargeCartController.InvoiceCards[index];
                               return Card(
                                   child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -314,6 +317,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              
                                               Text(
                                                 card.Card_Name,
                                                 overflow: TextOverflow.ellipsis,
@@ -430,8 +434,17 @@ class NewRechargeInvoice extends StatelessWidget {
                                                   SizedBox(
                                                     width: 5,
                                                   ),
-                                                  Text(
-                                                      card.quantity.toString()),
+                                                  Container(
+                                                    decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.circular(24) ),
+                                                    //width: double.infinity,
+                                                    child : Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Text(
+                                                          card.quantity.toString(),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                 
                                                 ],
                                               ),
                                               SizedBox(
@@ -491,7 +504,7 @@ class NewRechargeInvoice extends StatelessWidget {
                             decoration: InputDecoration(
                               labelText: 'Invoice Information',
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderRadius: BorderRadius.circular(24.0),
                                   borderSide: BorderSide(color: Colors.black)),
                             ),
                             child: Column(
@@ -765,180 +778,166 @@ class NewRechargeInvoice extends StatelessWidget {
                                 SizedBox(
                                   height: 10,
                                 ),
-                               
                               ],
                             ),
                           ));
                     }),
-                    SizedBox(height: 10,),
-                     Obx(() { return 
-                     Visibility(
-                      visible: rechargeCartController.isDue.value,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Obx(() {
+                      return Visibility(
+                        visible: rechargeCartController.isDue.value,
+                        child: Container(
+                          width: double.infinity,
+                          //     height: double.maxFinite,
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'Customer Information',
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderSide: BorderSide(color: Colors.black)),
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      //maxLength: 15,
+                                      controller: rechargeCartController
+                                          .numberController,
+                                      onFieldSubmitted: (value) {
+                                        customerController.searchCustomer(
+                                            rechargeCartController
+                                                .numberController);
+                                      },
+                                      //controller: Product_Name,
+                                      decoration: InputDecoration(
+                                        //helperText: '*',
 
-                       child: Container(
-                       
-                        width: double.infinity,
-                            //     height: double.maxFinite,
-                            child: InputDecorator(
-                              decoration: InputDecoration(
-                                labelText: 'Customer Information',
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: BorderSide(color: Colors.black)),
-                              ),
-                         child: Column(
-                           children: [
-                             SizedBox(height: 5,),
-                             Row(children: [
-                               Expanded(
-                                 child: TextFormField(
-                                   //maxLength: 15,
-                                   controller: rechargeCartController
-                                       .numberController,
-                                   onFieldSubmitted: (value) {
-                                     customerController
-                                         .searchCustomer(
-                                             rechargeCartController
-                                                 .numberController);
-                                   },
-                                   //controller: Product_Name,
-                                   decoration: InputDecoration(
-                                     //helperText: '*',
-                                                
-                                     hintText: '03123456',
-                                     labelText:
-                                         "Customer Phone Number ",
-                                     labelStyle: TextStyle(
-                                       color: Colors.black,
-                                     ),
-                                     fillColor: Colors.black,
-                                     focusedBorder:
-                                         OutlineInputBorder(
-                                       borderRadius:
-                                           BorderRadius.circular(
-                                               15.0),
-                                       borderSide: BorderSide(
-                                         color: Colors.black,
-                                       ),
-                                     ),
-                                     enabledBorder:
-                                         OutlineInputBorder(
-                                       borderRadius:
-                                           BorderRadius.circular(
-                                               15.0),
-                                       borderSide: BorderSide(
-                                         color: Colors.black,
-                                         width: 2.0,
-                                       ),
-                                     ),
-                                   ),
-                                 ),
-                               ),
-                               Padding(
-                                 padding: const EdgeInsets.fromLTRB(
-                                     0, 0, 0, 0),
-                                 child: Row(
-                                   children: [
-                                     IconButton(
-                                       color: Colors.black,
-                                       iconSize: 24.0,
-                                       icon:
-                                           Icon(CupertinoIcons.add),
-                                       onPressed: () {
-                                         //customerController.searchCustomer(numberController);
-                                         Get.toNamed('/NewCustomer');
-                                       },
-                                     ),
-                                     SizedBox(
-                                       width: 20,
-                                     ),
-                                     IconButton(
-                                       color: Colors.black,
-                                       iconSize: 24.0,
-                                       icon: Icon(CupertinoIcons
-                                           .check_mark),
-                                       onPressed: () {
-                                         customerController
-                                             .searchCustomerforDue(
-                                                 rechargeCartController
-                                                     .numberController);
-                                       },
-                                     ),
-                                   ],
-                                 ),
-                               )
-                             ]),
-                             SizedBox(
-                               height: 10,
-                             ),
-                             Row(
-                               mainAxisAlignment:
-                                   MainAxisAlignment.spaceEvenly,
-                               children: [
-                                 Expanded(
-                                   child: Padding(
-                                     padding:
-                                         const EdgeInsets.fromLTRB(
-                                             0, 0, 0, 0),
-                                     child: Obx(
-                                       () {
-                                         // Display the result of the search
-                                         rechargeCartController
-                                                 .nameController
-                                                 .text =
-                                             '${customerController.result3.value}';
-                                         rechargeCartController
-                                                 .idController.text =
-                                             '${customerController.result4.value}';
-                                         return TextFormField(
-                                           readOnly: true,
-                                           // initialValue: ,
-                                           controller:
-                                               rechargeCartController
-                                                   .nameController,
-                                           decoration:
-                                               InputDecoration(
-                                             labelText:
-                                                 "Customer Name ",
-                                             labelStyle: TextStyle(
-                                               color: Colors.black,
-                                             ),
-                                             fillColor: Colors.black,
-                                             focusedBorder:
-                                                 OutlineInputBorder(
-                                               borderRadius:
-                                                   BorderRadius
-                                                       .circular(
-                                                           15.0),
-                                               borderSide:
-                                                   BorderSide(
-                                                 color: Colors.black,
-                                               ),
-                                             ),
-                                             enabledBorder:
-                                                 OutlineInputBorder(
-                                               borderRadius:
-                                                   BorderRadius
-                                                       .circular(
-                                                           15.0),
-                                               borderSide:
-                                                   BorderSide(
-                                                 color: Colors.black,
-                                                 width: 2.0,
-                                               ),
-                                             ),
-                                           ),
-                                         );
-                                       },
-                                     ),
-                                   ),
-                                 ),
-                               ],
-                             ),
-                           ],
-                         ),
-                       ),),
-                     );}),
+                                        hintText: '03123456',
+                                        labelText: "Customer Phone Number ",
+                                        labelStyle: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                        fillColor: Colors.black,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 2.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          color: Colors.black,
+                                          iconSize: 24.0,
+                                          icon: Icon(CupertinoIcons.add),
+                                          onPressed: () {
+                                            //customerController.searchCustomer(numberController);
+                                            Get.toNamed('/NewCustomer');
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        IconButton(
+                                          color: Colors.black,
+                                          iconSize: 24.0,
+                                          icon: Icon(CupertinoIcons.check_mark),
+                                          onPressed: () {
+                                            customerController
+                                                .searchCustomerforDue(
+                                                    rechargeCartController
+                                                        .numberController);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 0),
+                                        child: Obx(
+                                          () {
+                                            // Display the result of the search
+                                            rechargeCartController
+                                                    .nameController.text =
+                                                '${customerController.result3.value}';
+                                            rechargeCartController
+                                                    .idController.text =
+                                                '${customerController.result4.value}';
+                                            return TextFormField(
+                                              readOnly: true,
+                                              // initialValue: ,
+                                              controller: rechargeCartController
+                                                  .nameController,
+                                              decoration: InputDecoration(
+                                                labelText: "Customer Name ",
+                                                labelStyle: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                                fillColor: Colors.black,
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 2.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                     SizedBox(
                       height: 10,
                     ),
@@ -985,10 +984,18 @@ class NewRechargeInvoice extends StatelessWidget {
                                 .then((value) =>
                                     showToast(rechargeCartController.result))
                                 .then((value) => rechargeCartController.reset())
-                                .then((value) => rechargeInvoiceHistoryController.reset())
-                                .then((value) => rechargeInvoiceHistoryController.isDataFetched= false)
-                                .then((value) => rechargeInvoiceHistoryController.fetchrechargeInvoice())
-
+                                .then((value) =>
+                                    rechargeInvoiceHistoryController.reset())
+                                .then((value) =>
+                                    rechargeInvoiceHistoryController
+                                        .isDataFetched = false)
+                                .then((value) =>
+                                    rechargeInvoiceHistoryController
+                                        .fetchrechargeInvoice())
+                                .then((value) => rechargeDetailController
+                                    .isDataFetched = false)
+                                .then((value) =>
+                                    rechargeDetailController.fetchrecdetails())
                                 .then((value) => Navigator.of(context).pop())
                                 .then((value) => Navigator.of(context).pop());
                           } else {

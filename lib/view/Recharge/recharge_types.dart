@@ -138,6 +138,12 @@ class RechargeTypes extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: ListTile(
+                            onTap: () {
+                              Get.to(() => RechargeCarts(
+                                            Type_id: cart.Type_id,
+                                            Type_Name: cart.Type_Name,
+                                          ));
+                            },
                             leading:
                                 cart.Type_Image == null || cart.Type_Image == ''
                                     ? SizedBox(
@@ -176,7 +182,7 @@ class RechargeTypes extends StatelessWidget {
                                 ),
                                 OutlinedButton(
                                     style: ElevatedButton.styleFrom(
-                                      // fixedSize: Size(double.maxFinite, 20),
+                                      //fixedSize: Size(200, 20),
                                       backgroundColor:
                                           Colors.deepPurpleAccent.shade200,
                                       side: BorderSide(

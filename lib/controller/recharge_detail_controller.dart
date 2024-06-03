@@ -6,23 +6,25 @@ import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
 import 'package:fixnshop_admin/model/invoice_history_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
+import 'package:fixnshop_admin/model/recharge_inv_history_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class InvoiceDetailController extends GetxController {
-  RxList<InvoiceHistoryModel> invoice_detail = <InvoiceHistoryModel>[].obs;
+class RechargeDetailController extends GetxController {
+  RxList<RechargeHistoryModel> recharge_detail = <RechargeHistoryModel>[].obs;
   bool isDataFetched = false;
   String result = '';
   RxBool isLoading = false.obs;
-  Rx<InvoiceHistoryModel?> SelectedInvoiceDetail = Rx<InvoiceHistoryModel?>(null);
+  Rx<RechargeHistoryModel?> SelectedRechargeINV =
+      Rx<RechargeHistoryModel?>(null);
 
   void clearSelectedCat() {
-    SelectedInvoiceDetail.value = null;
-    invoice_detail.clear();
+    SelectedRechargeINV.value = null;
+    recharge_detail.clear();
   }
-  
+
   bool isadmin(username) {
     if (username == 'admin') {
       return true;
@@ -36,33 +38,33 @@ class InvoiceDetailController extends GetxController {
   void onInit() {
     super.onInit();
     print(isDataFetched);
-    fetchinvoicesdetails();
+    fetchrecdetails();
   }
 
-//  List<InvoiceHistoryModel> searchProducts(String query) {
-//     return invoice_detail.where((product) =>
+//  List<RechargeHistoryModel> searchProducts(String query) {
+//     return recharge_detail.where((product) =>
 //         product.P.toLowerCase().contains(query.toLowerCase())).toList();
 //   }
-  void fetchinvoicesdetails() async {
+  void fetchrecdetails() async {
     if (!isDataFetched) {
       try {
         isLoading.value = true;
 
         String domain = domainModel.domain;
         final response =
-            await http.get(Uri.parse('$domain' + 'fetch_inv_detail.php'));
+            await http.get(Uri.parse('$domain' + 'fetch_rec_inv_details.php'));
 
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           final List<dynamic> data = jsonData;
           //  final List<dynamic> data = json.decode(response.body);
-          invoice_detail.assignAll(
-              data.map((item) => InvoiceHistoryModel.fromJson(item)).toList());
-          //category = data.map((item) => invoice_details.fromJson(item)).toList();
+          recharge_detail.assignAll(
+              data.map((item) => RechargeHistoryModel.fromJson(item)).toList());
+          //category = data.map((item) => recharge_details.fromJson(item)).toList();
           isDataFetched = true;
           isLoading.value = false;
 
-          if (invoice_detail.isEmpty) {
+          if (recharge_detail.isEmpty) {
             print(0);
           } else {
             isDataFetched = true;
@@ -80,26 +82,28 @@ class InvoiceDetailController extends GetxController {
   }
 
   String result2 = '';
-  Future<void> DeleteInvItem(String I_Detail_id) async {
-    try {
-      String domain = domainModel.domain;
-      String uri = '$domain' + 'delete_inv_item.php';
+  // Future<void> UpdateProductQty(String P_Detail_id, String Qty) async {
+  //   try {
+  //     String domain = domainModel.domain;
+  //     String uri = '$domain' + 'update_product_quantity.php';
 
-      var res = await http.post(Uri.parse(uri), body: {
-        "I_Detail_id": I_Detail_id,
-      });
+  //     var res = await http.post(Uri.parse(uri), body: {
+  //       "P_Detail_id": P_Detail_id,
+  //       "Qty": Qty,
+  //     });
 
-      var response = json.decode(json.encode(res.body));
-      I_Detail_id = '';
+  //     var response = json.decode(json.encode(res.body));
+  //     P_Detail_id = '';
+  //     Qty = '';
 
-      print(response);
-      result2 = response;
-      if (response.toString().trim() ==
-          'Product Quantity Updated successfully.') {
-        //  result = 'refresh';
-      } else if (response.toString().trim() == 'Phone IMEI already exists.') {}
-    } catch (e) {
-      print(e);
-    }
-  }
+  //     print(response);
+  //     result2 = response;
+  //     if (response.toString().trim() ==
+  //         'Product Quantity Updated successfully.') {
+  //       //  result = 'refresh';
+  //     } else if (response.toString().trim() == 'Phone IMEI already exists.') {}
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }

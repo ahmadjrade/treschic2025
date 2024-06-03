@@ -9,6 +9,7 @@ import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
+import 'package:fixnshop_admin/view/Phones/phones_list.dart';
 import 'package:fixnshop_admin/view/Product/product_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -188,14 +189,25 @@ class NewInvoice extends StatelessWidget {
                             ),
                           ),
                         )),
-                        IconButton(
-                          icon: Icon(Icons.search),
-                          color: Colors.black,
-                          onPressed: () {
-                            Get.to(() => ProductList(
-                                  isPur: 1,
-                                ));
+                        SizedBox(width: 20,),
+                        GestureDetector(
+                          onTap: () {
+                             Get.to(() => ProductList(
+                                    isPur: 1,
+                                  ));
                           },
+                          onDoubleTap: () {
+                            Get.to(() => PhonesList(
+                                  ));
+                             
+                          },
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                            //onPressed: () {
+                             
+                           // },
+                          ),
                         ),
                         IconButton(
                           icon: Icon(Icons.check),
@@ -203,6 +215,7 @@ class NewInvoice extends StatelessWidget {
                           onPressed: () {
                             invoiceController.fetchProduct(Product_Code.text);
                           },
+                          
                         ),
 
                         // Expanded(
@@ -281,22 +294,28 @@ class NewInvoice extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
-                                          child: Text(
-                                            product.Product_Name,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: 15),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                product.Product_Name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                              SizedBox(width: 5,),
+                                              Text(product.Product_Color)
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 5,
+                                      height: 0,
                                     ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Code: ${product.Product_Code}'),
+                                        Text('${product.Product_Code}'),
                                         Obx(() {
                                           return Row(
                                             children: [
@@ -591,7 +610,7 @@ class NewInvoice extends StatelessWidget {
                                                                       invoiceController
                                                                               .invoiceItems[
                                                                           index],
-                                                                      int.tryParse(
+                                                                      double.tryParse(
                                                                           New_Qty
                                                                               .text)!);
                                                                   Navigator.of(

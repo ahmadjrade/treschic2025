@@ -8,6 +8,7 @@ import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.da
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -68,7 +69,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
           title: (Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Recharge Invoice History'),
+          Text('Recharge History'),
           IconButton(
               onPressed: () {
                 rechargeInvoiceHistoryController.reset();
@@ -310,7 +311,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   //           Row(
                   //             mainAxisAlignment: MainAxisAlignment.center,
                   //             children: [
-                  //               SizedBox(
+                  //                SizedBox(
                   //                 width: 10,
                   //               ),
                   //               // Text(
@@ -611,71 +612,87 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              OutlinedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    // /fixedSize: Size(70, 20),
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    side: BorderSide(
-                                                      width: 2.0,
-                                                      color:
-                                                          rechargeInvoiceHistoryController
-                                                                  .ispaid(invoice
-                                                                      .isPaid)
-                                                              ? Colors.green
-                                                                  .shade900
-                                                              : Colors
-                                                                  .red.shade900,
-                                                    ),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
-                                                    ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          OutlinedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                fixedSize:
+                                                    Size(double.maxFinite, 20),
+                                                backgroundColor:
+                                                    rechargeInvoiceHistoryController
+                                                            .ispaid(
+                                                                invoice.isPaid)
+                                                        ? Colors.green.shade900
+                                                        : Colors.red.shade900,
+                                                side: BorderSide(
+                                                  width: 2.0,
+                                                  color:
+                                                      rechargeInvoiceHistoryController
+                                                              .ispaid(invoice
+                                                                  .isPaid)
+                                                          ? Colors
+                                                              .green.shade900
+                                                          : Colors.red.shade900,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Get.to(
+                                                    () => RechargeHistoryItems(
+                                                          Recharge_id:
+                                                              invoice.Invoice_id
+                                                                  .toString(),
+                                                          Customer_Name:
+                                                              invoice.Cus_Name
+                                                                  .toString(),
+                                                          Customer_Number:
+                                                              invoice.Cus_Number
+                                                                  .toString(),
+                                                          Invoice_Total_US:
+                                                              invoice.Invoice_Total_Usd
+                                                                  .toString(),
+                                                          Invoice_Rec_US: invoice
+                                                                  .Invoice_Rec_Usd
+                                                              .toString(),
+                                                          Invoice_Due_US: invoice
+                                                                  .Invoice_Due_USD
+                                                              .toString(),
+                                                        ));
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Select',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
                                                   ),
-                                                  onPressed: () {
-                                                    // Get.to(() =>
-                                                    //     InvoiceHistoryItems(
-                                                    //       Invoice_id:
-                                                    //           invoice.Invoice_id
-                                                    //               .toString(),
-                                                    //       Customer_Name:
-                                                    //           invoice.Cus_Name
-                                                    //               .toString(),
-                                                    //       Customer_Number:
-                                                    //           invoice.Cus_Number
-                                                    //               .toString(),
-                                                    //       Invoice_Total_US:
-                                                    //           invoice.Invoice_Total_Usd
-                                                    //               .toString(),
-                                                    //       Invoice_Rec_US: invoice
-                                                    //               .Invoice_Rec_Usd
-                                                    //           .toString(),
-                                                    //       Invoice_Due_US: invoice
-                                                    //               .Invoice_Due_USD
-                                                    //           .toString(),
-                                                    //     ));
-                                                  },
-                                                  child: Icon(
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Icon(
                                                     Icons
                                                         .arrow_circle_right_rounded,
                                                     color:
                                                         rechargeInvoiceHistoryController
                                                                 .ispaid(invoice
                                                                     .isPaid)
-                                                            ? Colors
-                                                                .green.shade900
-                                                            : Colors
-                                                                .red.shade900,
+                                                            ? Colors.white
+                                                            : Colors.white,
                                                     //  'Details',
                                                     //   style: TextStyle(
                                                     //        color: Colors.red),
-                                                  )),
-                                            ],
-                                          ),
-
+                                                  ),
+                                                ],
+                                              )),
                                           SizedBox(
                                             height: 10,
                                           ),

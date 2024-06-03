@@ -11,7 +11,7 @@ import 'package:fixnshop_admin/model/domain.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/model/purchase_history_model.dart';
+import 'package:fixnshop_admin/model/purchase_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -76,7 +76,7 @@ class PurchaseHistoryController extends GetxController {
   void onInit() {
     super.onInit();
     print(isDataFetched);
-    fetchpurchases();
+    //  fetchpurchases();
   }
 
   final DateTimeController dateController = DateTimeController();

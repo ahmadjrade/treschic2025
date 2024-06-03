@@ -8,7 +8,7 @@ class ProductModel {
   final String Product_Brand;
   final String Product_Cat;
   final String PRoduct_Sub_Cat;
-  final String Product_Code;
+   String Product_Code;
   final String Product_Color;
   RxDouble _product_Cost;
 

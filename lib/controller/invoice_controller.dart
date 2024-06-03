@@ -3,11 +3,13 @@
 import 'dart:convert';
 
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
+import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/domain.dart';
+import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/model/product_detail_model.dart';
 import 'package:get/get.dart';
 import '../model/product_model.dart';
@@ -16,6 +18,8 @@ import 'package:http/http.dart' as http;
 class InvoiceController extends GetxController {
   final ProductDetailController productDetailController =
       Get.find<ProductDetailController>();
+      final PhoneController phoneController =
+      Get.find<PhoneController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   final RateController rateController = Get.find<RateController>();
@@ -148,65 +152,100 @@ class InvoiceController extends GetxController {
       calculateTotalQty();
     }
   }
-
-  void fetchProduct(String productCodeController) {
-    ProductDetailModel? product;
-    Username = sharedPreferencesController.username;
-    // Iterate through the products list to find the matching product
-    for (var prod in productDetailController.product_detail) {
-      if (prod.Product_Code == productCodeController &&
-          prod.Username == Username.value) {
-        product = prod;
-        break;
-      }
-    }
+  void recalculateAll() {
+    calculateTotal();
+    calculateTotalLb();
+    calculateTotalQty();
+    calculateDueUSD();
+    calculateDueLB();
+  }
+   void fetchProduct(String productCodeController) {
+    ProductDetailModel? product = _findProductDetail(productCodeController);
+    PhoneModel? phone = _findPhone(productCodeController);
 
     if (product != null) {
-      // Check if the product already exists in the invoice
-      if (invoiceItems.contains(product)) {
-        if (product.quantity.value == product.Product_Quantity) {
-          Get.snackbar('Product Already Added', 'Max Quantity Reached.',
-              snackPosition: SnackPosition.BOTTOM,
-              duration: const Duration(seconds: 2));
-        } else {
-          product.quantity.value += 1;
-          calculateTotalLb();
-          calculateDueUSD();
-          calculateDueLB();
-          calculateTotal();
-          calculateTotalQty();
-          // Get.snackbar('Product Qty Increased', 'Code $productCodeController',
-          //     snackPosition: SnackPosition.BOTTOM,
-          //     duration: const Duration(seconds: 1));
-        }
-        // Display message when the product is already in the invoice
-        // Get.snackbar(
-        //     'Product Already Added', 'The product is already in the invoice.',
-        //     snackPosition: SnackPosition.BOTTOM,
-        //     duration: const Duration(seconds: 2));
-      } else if (product.Product_Quantity == 0) {
-        Get.snackbar('Product Addition Failed', 'No More Quantity.',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 2));
+      _addProductToInvoice(product);
+    } 
+    else if (phone != null) {
+      _addPhoneToInvoice(phone);
+    }
+     else {
+      Get.snackbar('Product Not Found', 'The product with the provided code does not exist.',
+          snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
+    }
+  }
+
+  ProductDetailModel? _findProductDetail(String productCode) {
+    Username.value = sharedPreferencesController.username.value;
+    for (var prod in productDetailController.product_detail) {
+      if (prod.Product_Code == productCode && prod.Username == Username.value) {
+        return prod;
+      }
+    }
+    return null;
+  }
+
+  PhoneModel? _findPhone(String productCode) {
+    Username.value = sharedPreferencesController.username.value;
+    for (var phone in phoneController.phones) {
+      if (phone.IMEI == productCode && phone.Username.toLowerCase() == Username.value.toLowerCase() && phone.isSold == 0 ) { // Assuming productCode matches IMEI for PhoneModel
+        return phone;
+      }
+    }
+    return null;
+  }
+
+  void _addProductToInvoice(ProductDetailModel product) {
+    if (invoiceItems.contains(product)) {
+      if (product.quantity.value == product.Product_Quantity) {
+        Get.snackbar('Product Already Added', 'Max Quantity Reached.',
+            snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
       } else {
-        // Add the product to the invoice
-        invoiceItems.add(product);
-        calculateTotal();
-        calculateTotalLb();
-        calculateDueUSD();
-        calculateDueLB();
-        calculateTotalQty();
-        Get.snackbar(
-            'Product Added To Invoice', 'Product Code $productCodeController',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 2));
+        product.quantity.value += 1;
+        recalculateAll();
+      }
+    } else if (product.Product_Quantity == 0) {
+      Get.snackbar('Product Addition Failed', 'No More Quantity.',
+          snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
+    } else {
+      invoiceItems.add(product);
+      recalculateAll();
+      Get.snackbar('Product Added To Invoice', 'Product Code ${product.Product_Code}',
+          snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
+    }
+  }
+
+  void _addPhoneToInvoice(PhoneModel phone) {
+    if (invoiceItems.any((item) => item.Product_Code == phone.IMEI)) {
+      var existingItem = invoiceItems.firstWhere((item) => item.Product_Code == phone.IMEI);
+      if (existingItem.quantity.value == existingItem.Product_Quantity) {
+        Get.snackbar('Product Already Added', 'Max Quantity Reached.',
+            snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
+      } else {
+        existingItem.quantity.value += 1;
+        recalculateAll();
       }
     } else {
-      // Display error message when product is not found
-      Get.snackbar('Product Not Found',
-          'The product with the provided code does not exist.',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 2));
+      invoiceItems.add(ProductDetailModel(
+        PD_id: 0,
+         Product_id: phone.Phone_id, 
+         Product_Name: phone.Phone_Name, 
+         Product_Code: phone.IMEI,
+          Product_Color: phone.Color,
+           Product_Quantity: 1,
+            Product_Max_Quantity: 1, 
+            Product_Sold_Quantity: 1, 
+            Product_LPrice: 0, 
+            Product_MPrice: double.tryParse(phone.Sell_Price.toString())! , 
+            Product_Cost: double.tryParse(phone.Price.toString())!, 
+            Product_Store: phone.Username, 
+            Username: phone.Username,
+             quantity: 1.obs
+        
+        )); // Assuming quantity is represented by Sell_Price
+      recalculateAll();
+      Get.snackbar('Phone Added To Invoice', 'Product Code ${phone.IMEI}',
+          snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
     }
   }
 
@@ -267,6 +306,67 @@ class InvoiceController extends GetxController {
           'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
           'Invoice_Type': 'Store',
           'Invoice_Rate': rateController.rateValue.value,
+          'invoiceItems': invoiceData,
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Data successfully sent to the API
+        print('Data sent successfully');
+        result = 'Invoice Sent Successfully';
+        // Continue with the rest of the logic if needed
+      } else {
+        // Error occurred while sending the data
+        print('Error sending data. StatusCode: ${response.statusCode}');
+        result = 'Invoice Sending Failed';
+      }
+    } catch (error) {
+      // Exception occurred while sending the data
+      print('Exception: $error');
+    }
+  }
+  Future<void> uploadOldInvoiceToDatabase(String Inv_id) async {
+    try {
+      Username = sharedPreferencesController.username;
+      formattedDate = dateController.getFormattedDate();
+      formattedTime = dateController.getFormattedTime();
+      // Prepare invoice data
+      List<Map<String, dynamic>> invoiceData = [];
+
+      for (ProductDetailModel product in invoiceItems) {
+        invoiceData.add({
+          'Invoice_id': Inv_id,
+          'Store_id': product.Product_Store,
+          'Product_id': product.Product_id,
+          'Product_Name': product.Product_Name,
+          'Product_Qty': product.quantity.value,
+          'Product_UP': product.product_MPrice,
+          'Product_TP': (product.quantity.value * product.product_MPrice),
+          'Product_Code': product.Product_Code,
+          'Product_Color': product.Product_Color,
+        });
+      }
+
+      // Send invoice data to PHP script
+      String domain = domainModel.domain;
+      String uri = '$domain' 'insert_in_oldinvoice.php';
+      final response = await http.post(
+        Uri.parse(uri),
+        body: jsonEncode({
+           'Inv_id': Inv_id,
+
+          'item_count': totalQty.value,
+          'Invoice_Total_USD': totalUsd.value,
+          'Invoice_Total_Lb': totalLb.value,
+          'Invoice_Rec_Usd': ReceivedUSD.value,
+          'Invoice_Rec_Lb': ReceivedLb.value,
+          'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
+          'Invoice_Due_LB': DueLB.value,
+          
+          'Invoice_Date': formattedDate,
+          'Invoice_Time': formattedTime,
+          'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
           'invoiceItems': invoiceData,
         }),
         headers: {'Content-Type': 'application/json'},

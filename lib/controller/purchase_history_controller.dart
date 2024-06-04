@@ -108,473 +108,31 @@ class PurchaseHistoryController extends GetxController {
                     .contains(query.toLowerCase()) &&
                 pruchase.Username == Username.value)
         .toList();
-    // if (Store.value == 'this') {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 1 ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No'){
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 0 ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-    //                   pruchase.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username &&
-
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username
-    //                   ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username == username
-    //                   )
-    //           .toList();
-    //     }
-    //   }
-    // }
-    // else if(Store.value == 'other') {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 1 ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No') {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 0 ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username  ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Username != username )
-    //           .toList();
-    //     }
-    //   }
-    // } else  {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 1 &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 1 ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No') {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 0 &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 0 ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Phone_Condition == 'New' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   pruchase.Phone_Condition == 'Used' ||
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   pruchase.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return pruchases
-    //           .where((pruchase) =>
-    //               (pruchase.Brand_Name +
-    //                           ' ' +
-    //                           pruchase.Phone_Name +
-    //                           ' ' +
-    //                           pruchase.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //               pruchase.IMEI.toLowerCase().contains(query.toLowerCase())
-    //                   )
-    //           .toList();
-    //     }
-    //   }
+  
   }
+  List<PurchaseModel> SearchDuePurchases(String query) {
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
 
+    return pruchases
+        .where((purchase) =>
+            (purchase.Purchase_id.toString()).contains(query.toLowerCase()) &&
+                purchase.Username == Username.value &&
+                purchase.Purchase_Due_USD != 0 ||
+            purchase.Supplier_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                 purchase.Username == Username.value &&
+                purchase.Purchase_Due_USD != 0 || 
+            purchase.Supplier_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                 purchase.Username == Username.value &&
+                purchase.Purchase_Due_USD != 0)
+        .toList();
+    
+  }
   RxDouble total = 0.0.obs;
   RxDouble totalrec = 0.0.obs;
   RxDouble totaldue = 0.0.obs;
@@ -642,5 +200,38 @@ class PurchaseHistoryController extends GetxController {
         print(e);
       }
     }
+  }
+  String result2 = '';
+  Future<void> PayInvDue(String Pur_id,Ammount,Old_Due,New_Due) async {
+    try {
+      Username = sharedPreferencesController.username;
+      formattedDate = dateController.getFormattedDate();
+      formattedTime = dateController.getFormattedTime();
+      String domain = domainModel.domain;
+
+      String uri = '$domain' + 'insert_pur_payment.php';
+      var res = await http.post(Uri.parse(uri), body: {
+        "Purchase_id": Pur_id,
+        "Ammount": Ammount,
+        "Payment_Date":formattedDate,
+        "Payment_Time":formattedDate,
+        "Username":Username.value,
+        "Old_Due":Old_Due,
+        "New_Due":New_Due,
+
+
+        
+      });
+     // print(Ty + Card_Name + Card_Cost + Card_Price);
+      var response = json.decode(json.encode(res.body));
+
+      print(response);
+      result2 = response;
+      if (response.toString().trim() == 'Payment inserted successfully.') {
+        //  result = 'refresh';
+      }
+    } catch (e) {
+      print(e);
+    } 
   }
 }

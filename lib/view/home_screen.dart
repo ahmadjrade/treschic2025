@@ -5,7 +5,9 @@ import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.da
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
 import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_history.dart';
@@ -64,6 +66,17 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else if (index == 5) {
       Get.to(() => InvoiceDue());
+      setState(() {
+        _selectedDestination = index;
+      });
+    } 
+    else if (index == 6) {
+      Get.to(() => PurchaseDue());
+      setState(() {
+        _selectedDestination = index;
+      });
+    } else if (index == 7) {
+      Get.to(() => RechargeDue());
       setState(() {
         _selectedDestination = index;
       });
@@ -136,7 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Divider(
               height: 1,
-              thickness: 2,
+              thickness: 1,
+              color: Colors.black,
             ),
             SizedBox(
               height: 10,
@@ -191,19 +205,37 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedColor: Colors.white,
               selected: _selectedDestination == 4,
               onTap: () => selectDestination(4),
+            ),Divider(
+              height: 1,
+              thickness: 1,
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Action',
+                'Dues',
               ),
             ),ListTile(
-              leading: Icon(Icons.history_outlined),
+              leading: Icon(Icons.payment),
               title: Text('Invoice Due'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
               selected: _selectedDestination == 5,
               onTap: () => selectDestination(5),
+            ),ListTile(
+              leading: Icon(Icons.payment),
+              title: Text('Purchase Due'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 6,
+              onTap: () => selectDestination(6),
+            ),
+            ListTile(
+              leading: Icon(Icons.payment),
+              title: Text('Recharge Due'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 7,
+              onTap: () => selectDestination(7),
             ),
           ],
         ),

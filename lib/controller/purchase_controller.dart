@@ -285,4 +285,5 @@ class PurchaseController extends GetxController {
       print('Exception: $error');
     }
   }
+  
 }

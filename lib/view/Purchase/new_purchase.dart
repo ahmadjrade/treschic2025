@@ -1028,7 +1028,6 @@ int SelectedColorId = 0;
                                 .then((value) => purchaseController.reset())
                                 .then((value) => purchaseController.reset())
                                 .then((value) => purchaseHistoryController.isDataFetched = false)
-
                                 .then((value) => purchaseHistoryController.fetchpurchases())
                                 .then((value) => Navigator.of(context).pop())
                                 .then((value) => Navigator.of(context).pop());

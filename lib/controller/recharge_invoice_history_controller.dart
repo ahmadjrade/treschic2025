@@ -105,471 +105,30 @@ class RechargeInvoiceHistoryController extends GetxController {
                 invoice.Username == Username.value &&
                 invoice.Invoice_Date.contains(formattedDate))
         .toList();
-    // if (Store.value == 'this') {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No'){
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
+   
+  }
+  List<InvoiceModel> SearchDuePurchases(String query) {
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
 
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username
-    //                   ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username
-    //                   )
-    //           .toList();
-    //     }
-    //   }
-    // }
-    // else if(Store.value == 'other') {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No') {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username  ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username )
-    //           .toList();
-    //     }
-    //   }
-    // } else  {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No') {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return recharge_invoices
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase())
-    //                   )
-    //           .toList();
-    //     }
-    //   }
+    return recharge_invoices
+        .where((recharge) =>
+            (recharge.Invoice_id.toString()).contains(query.toLowerCase()) &&
+                recharge.Username == Username.value &&
+                recharge.Invoice_Due_USD != 0 ||
+            recharge.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                 recharge.Username == Username.value &&
+                recharge.Invoice_Due_USD != 0 || 
+            recharge.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                 recharge.Username == Username.value &&
+                recharge.Invoice_Due_USD != 0)
+        .toList();
+    
   }
 
   RxDouble total = 0.0.obs;
@@ -641,5 +200,36 @@ class RechargeInvoiceHistoryController extends GetxController {
         print(e);
       }
     }
+  }
+  String result2 = '';
+  Future<void> PayInvDue(String RInv_id,Ammount) async {
+    try {
+      Username = sharedPreferencesController.username;
+      formattedDate = dateController.getFormattedDate();
+      formattedTime = dateController.getFormattedTime();
+      String domain = domainModel.domain;
+
+      String uri = '$domain' + 'insert_rech_payment.php';
+      var res = await http.post(Uri.parse(uri), body: {
+        "RInvoice_id": RInv_id,
+        "Ammount": Ammount,
+        "Payment_Date":formattedDate,
+        "Payment_Time":formattedDate,
+        "Username":Username.value,
+      
+
+        
+      });
+     // print(Ty + Card_Name + Card_Cost + Card_Price);
+      var response = json.decode(json.encode(res.body));
+
+      print(response);
+      result2 = response;
+      if (response.toString().trim() == 'Payment inserted successfully.') {
+        //  result = 'refresh';
+      }
+    } catch (e) {
+      print(e);
+    } 
   }
 }

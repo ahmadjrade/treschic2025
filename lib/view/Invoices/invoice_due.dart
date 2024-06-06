@@ -728,13 +728,18 @@ class InvoiceDue extends StatelessWidget {
                                                   showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
+                                                Payment_Ammount.text =invoice.Invoice_Due_USD.toString();
                                                 return AlertDialog(
                                                   title: Text(
                                                       'Pay Due'),
-                                                  content: TextField(
+                                                  content: TextFormField(
+                                                    initialValue: invoice.Invoice_Due_USD.toString(),
+                                                    onChanged: (value) {
+                                                      Payment_Ammount.text = value;
+                                                    },
                                                     keyboardType:
                                                         TextInputType.number,
-                                                    controller: Payment_Ammount,
+                                                    //controller: Payment_Ammount,
                                                     decoration: InputDecoration(
                                                         hintText:
                                                             'Enter Payment Ammount'),
@@ -788,7 +793,7 @@ class InvoiceDue extends StatelessWidget {
                                                                   ),
                                                                 );
                                                               });
-                                                              invoiceHistoryController.PayInvDue(invoice.Invoice_id.toString(), Payment_Ammount.text, invoice.Invoice_Due_USD.toString(), (invoice.Invoice_Due_USD - double.tryParse(Payment_Ammount.text)! ).toString())
+                                                              invoiceHistoryController.PayInvDue(invoice.Invoice_id.toString(), Payment_Ammount.text, invoice.Invoice_Due_USD.toString(), (invoice.Invoice_Due_USD - double.tryParse(Payment_Ammount.text)! ).toString(),invoice.Cus_id.toString(),invoice.Invoice_Date)
                                                                    .then((value) => showToast(
                                                                   invoiceHistoryController
                                                                       .result2))

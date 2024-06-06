@@ -200,7 +200,7 @@ class InvoiceHistoryController extends GetxController {
     }
   }
   String result2 = '';
-  Future<void> PayInvDue(String Inv_id,Ammount,Old_Due,New_Due) async {
+  Future<void> PayInvDue(String Inv_id,Ammount,Old_Due,New_Due,Cus_id,String Date) async {
     try {
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
@@ -216,9 +216,9 @@ class InvoiceHistoryController extends GetxController {
         "Username":Username.value,
         "Old_Due":Old_Due,
         "New_Due":New_Due,
+        "Cus_id":Cus_id,
+                "Invoice_Date":Date,
 
-
-        
       });
      // print(Ty + Card_Name + Card_Cost + Card_Price);
       var response = json.decode(json.encode(res.body));

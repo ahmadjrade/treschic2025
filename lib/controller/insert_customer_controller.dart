@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class InsertCustomerController extends GetxController {
-  // RxList<CustomerModel> customerModel = <CustomerModel>[].obs;
 
   DomainModel domainModel = DomainModel();
   String result = '';

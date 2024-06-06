@@ -735,7 +735,7 @@ class RechargeDue extends StatelessWidget {
                                                       'Pay Due (Lebanese)'),
                                                   content: TextFormField(
                                                     readOnly: true,
-                                                    initialValue: (invoice.Invoice_Total_Lb).toString(),
+                                                    initialValue: (invoice.Invoice_Due_LB).toString(),
                                                     keyboardType:
                                                         TextInputType.number,
                                                         

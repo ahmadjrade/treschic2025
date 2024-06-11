@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:fixnshop_admin/controller/daily_income_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/daily_income_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
@@ -34,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<InvoiceHistoryController>();
   int _selectedDestination = 0;
   RxString Username = ''.obs;
-    final DailyIncomeController dailyIncomeController = Get.find<DailyIncomeController>();
 
 
   String addCommasToNumber(double value) {
@@ -112,8 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 IconButton(
                   onPressed: () {
-                      dailyIncomeController.isDataFetched = false;
-                      dailyIncomeController.fetchincomes();
+                   
                     // invoiceHistoryController.reset();
                     // invoiceHistoryController.isDataFetched = false;
                     // invoiceHistoryController.fetchinvoices();
@@ -260,96 +256,33 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 20,
               ),
-              Obx(
-              () {
-                
-                if (dailyIncomeController.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return ListView.builder(
-                    itemCount: dailyIncomeController.daily_income.length,
-                    itemBuilder: (context, index) {
-                      final DailyIncomeModel value = dailyIncomeController.daily_income[index];
-                      return Container(
-                        //  width: double.infinity,
-                        //   height: 150.0,
-                        color: Colors.grey.shade200,
-                        margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                        //     padding: EdgeInsets.all(35),
-                        alignment: Alignment.center,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.perm_contact_cal,
-                                color: Colors.blue.shade900,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                value.Source.toUpperCase()
-                                // +
-                                // ' -- ' +
-                                // supplier.Product_Code,
-                                ,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 17),
-                              ),
-                            ],
-                          ),
-                          subtitle: Row(
-                            // crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.phone,
-                                    color: Colors.green.shade900,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                  value.Source
-                                    // +
-                                    // ' -- ' +
-                                    // supplier.Product_Code,
-                                    ,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          trailing: OutlinedButton(
-                              onPressed: () {
-                                // productController.SelectedPhone.value = product;
-                                //       // subcategoryController.selectedSubCategory.value =
-                                // //       //     null;
-
-                                // Get.to(() => New_Purchase(
-                                //       Supp_id: supplier.Supplier_id.toString(),
-                                //       Supp_Name: supplier.Supplier_Name,
-                                //       Supp_Number: supplier.Supplier_Number,
-                                //     ));
-                              },
-                              child: Icon(
-                                Icons.arrow_right,
-                                color: Colors.blue.shade900,
-                              )),
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
-            ),
+      //          Obx(() {
+      //   if (dailyIncomeController.isLoading.value) {
+      //     return Center(child: CircularProgressIndicator());
+      //   } else {
+      //     return ListView.builder(
+      //       itemCount: dailyIncomeController.daily_income.length,
+      //       itemBuilder: (context, index) {
+      //         var invoice = dailyIncomeController.daily_income[index];
+      //         return ListTile(
+      //           title: Text(invoice.source),
+      //           subtitle: Column(
+      //             crossAxisAlignment: CrossAxisAlignment.start,
+      //             children: [
+      //               Text('Total USD: ${invoice.totalUsd}'),
+      //               Text('Received USD: ${invoice.iRecUsd}'),
+      //               Text('Received LB: ${invoice.recLb}'),
+      //               Text('Due USD: ${invoice.iDueUsd}'),
+      //               Text('Sum Received: ${invoice.iSumRec}'),
+      //             ],
+      //           ),
+      //         );
+      //       },
+      //     );
+      //   }
+      // }),
+    
+  
               // Visibility(
               //   visible: true,
               //   child: Obx(() {

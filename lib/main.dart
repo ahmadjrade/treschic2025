@@ -7,7 +7,6 @@ import 'package:fixnshop_admin/controller/cart_types_controller.dart';
 import 'package:fixnshop_admin/controller/category_controller.dart';
 import 'package:fixnshop_admin/controller/color_controller.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/daily_income_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
@@ -153,14 +152,9 @@ Future<void> main() async {
     () => PurchaseDetailController(),
     fenix: true,
   );
-   Get.lazyPut<DailyIncomeController>(
-    () => DailyIncomeController(),
-    fenix: true,
-  );
+  
    final PurchaseDetailController purchaseDetailController =
       Get.find<PurchaseDetailController>();
-      final DailyIncomeController dailyIncomeController =
-      Get.find<DailyIncomeController>();  
   final RechargeDetailController rechargeDetailController =
       Get.find<RechargeDetailController>();
   final PurchaseHistoryController purchaseHistoryController =

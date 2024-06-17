@@ -48,6 +48,15 @@ class _PhonesListState extends State<PhonesList> {
 
   @override
   Widget build(BuildContext context) {
+    if(Username.value != 'admin') {
+ phoneController.Condition.value ='all';
+    phoneController.Store.value = 'this';
+    phoneController.Sold.value = 'No';
+    } else {
+       phoneController.Condition.value ='all';
+    phoneController.Store.value = 'all';
+    phoneController.Sold.value = 'No';
+    }
    
     Username = sharedPreferencesController.username;
     phoneController.CalTotal();

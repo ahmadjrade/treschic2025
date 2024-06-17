@@ -240,7 +240,8 @@ class InvoiceController extends GetxController {
             Product_Cost: double.tryParse(phone.Price.toString())!, 
             Product_Store: phone.Username, 
             Username: phone.Username,
-             quantity: 1.obs
+             quantity: 1.obs,
+             isPhone: 1
         
         )); // Assuming quantity is represented by Sell_Price
       recalculateAll();
@@ -281,6 +282,7 @@ class InvoiceController extends GetxController {
           'Product_TP': (product.quantity.value * product.product_MPrice),
           'Product_Code': product.Product_Code,
           'Product_Color': product.Product_Color,
+          'isPhone' : product.isPhone
         });
       }
 

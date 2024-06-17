@@ -18,6 +18,8 @@ class ProductDetailModel {
 
   RxDouble _product_MPrice;
   RxInt quantity;
+    final int isPhone;
+
 
   ProductDetailModel({
     required this.PD_id,
@@ -35,6 +37,8 @@ class ProductDetailModel {
     required this.Product_Store,
     required this.Username,
     required this.quantity,
+        required this.isPhone,
+
   })  : _product_MPrice = Product_MPrice.obs,
         _product_Cost = Product_Cost.obs,
         _Product_LPrice = Product_Cost.obs; // Initialize RxDouble
@@ -72,6 +76,9 @@ class ProductDetailModel {
       Product_Cost: json['Product_Cost'].toDouble(),
 
       quantity: 1.obs,
+
+            isPhone: json['isPhone'],
+
     );
   }
 }

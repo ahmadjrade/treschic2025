@@ -13,6 +13,9 @@ class CustomerController extends GetxController {
 
   RxString result3 = ''.obs;
   RxString result4 = ''.obs;
+  RxString result5 = ''.obs;
+  RxString result6 = ''.obs;
+
   RxBool isLoading = false.obs;
 
   DomainModel domainModel = DomainModel();
@@ -31,8 +34,9 @@ class CustomerController extends GetxController {
   List<CustomerModel> searchProducts(String query) {
     return customers
         .where((customer) =>
-            customer.Cus_Number.toLowerCase().contains(query.toLowerCase()) || customer.Cus_Name.toLowerCase().contains(query.toLowerCase()))
-        .toList()  ;
+            customer.Cus_Number.toLowerCase().contains(query.toLowerCase()) ||
+            customer.Cus_Name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   void searchCustomer(searchController) {
@@ -40,8 +44,12 @@ class CustomerController extends GetxController {
     // Find the customer in the list by number
     CustomerModel foundCustomer = customers.firstWhere(
         (customer) => customer.Cus_Number == customerNumber,
-        orElse: () =>
-            CustomerModel(Cus_id: -1, Cus_Name: 'Not Found', Cus_Number: '',Cus_Due_LB: 0.0,Cus_Due_USD: 0.0));
+        orElse: () => CustomerModel(
+            Cus_id: -1,
+            Cus_Name: 'Not Found',
+            Cus_Number: '',
+            Cus_Due_LB: 0.0,
+            Cus_Due_USD: 0.0));
 
     // Display the result
     if (foundCustomer.Cus_id != -1) {
@@ -56,23 +64,32 @@ class CustomerController extends GetxController {
       print(result);
     }
   }
+
   void searchCustomerforDue(searchController) {
     String customerNumber = searchController.text;
     // Find the customer in the list by number
     CustomerModel foundCustomer = customers.firstWhere(
         (customer) => customer.Cus_Number == customerNumber,
-        orElse: () =>
-            CustomerModel(Cus_id: -1, Cus_Name: 'Not Found', Cus_Number: '',Cus_Due_LB: 0.0,Cus_Due_USD: 0.0));
+        orElse: () => CustomerModel(
+            Cus_id: -1,
+            Cus_Name: 'Not Found',
+            Cus_Number: '',
+            Cus_Due_LB: 0.0,
+            Cus_Due_USD: 0.0));
 
     // Display the result
     if (foundCustomer.Cus_id != -1) {
       result3.value = '${foundCustomer.Cus_Name}';
       result4.value = '${foundCustomer.Cus_id}';
+      result5.value = '${foundCustomer.Cus_Due_LB}';
+      result6.value = '${foundCustomer.Cus_Due_USD}';
 
       print(result);
     } else {
       result3.value = 'Customer name not found';
       result4.value = 'Customer  idnot found';
+      result5.value = '0';
+      result6.value = '0';
 
       print(result);
     }
@@ -112,6 +129,59 @@ class CustomerController extends GetxController {
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  String address_result = '';
+  Future<void> InsertAddress(String Cus_id, String Address) async {
+    try {
+      String domain = domainModel.domain;
+      String uri = '$domain' + 'insert_customer_address.php';
+
+      var res = await http.post(Uri.parse(uri), body: {
+        "Cus_id": Cus_id,
+        "Address": Address,
+      });
+
+      var response = json.decode(json.encode(res.body));
+      Cus_id = '';
+      Address = '';
+
+      print(response);
+      address_result = response;
+      if (response.toString().trim() ==
+          'Customer Address Added Successfully.') {
+        //  result = 'refresh';
+      } else if (response.toString().trim() == '') {}
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  String Update_result = '';
+  Future<void> UpdateCustomer(String Cus_id, Cus_Name, Cus_Number) async {
+    try {
+      String domain = domainModel.domain;
+      String uri = '$domain' + 'update_customer_info.php';
+
+      var res = await http.post(Uri.parse(uri), body: {
+        "Cus_id": Cus_id,
+        "Cus_Name": Cus_Name,
+        "Cus_Number": Cus_Number,
+      });
+
+      var response = json.decode(json.encode(res.body));
+      Cus_id = '';
+      Cus_Name = '';
+      Cus_Number = '';
+
+      print(response);
+      Update_result = response;
+      if (response.toString().trim() == 'Customer Updated  successfully.') {
+        //  result = 'refresh';
+      } else if (response.toString().trim() == 'Phone IMEI already exists.') {}
+    } catch (e) {
+      print(e);
     }
   }
 }

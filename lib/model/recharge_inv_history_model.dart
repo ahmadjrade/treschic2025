@@ -7,7 +7,7 @@ class RechargeHistoryModel {
   final int Store_id;
   final int Card_id;
   final String Card_Name;
-  final int Card_Amount;
+  final double Card_Amount;
   final int Card_Qty;
 
   RxDouble _Card_UP;
@@ -41,7 +41,7 @@ class RechargeHistoryModel {
       Store_id: json['Store_id'],
       Card_id: json['Card_id'],
       Card_Name: json['Card_Name'],
-      Card_Amount: json['Card_Amount'],
+      Card_Amount: json['Card_Amount'].toDouble(),
       Card_Qty: json['Card_Qty'],
       Card_UP: json['Card_UP'].toDouble(),
       Card_TP: json['Card_TP'].toDouble(),

@@ -418,7 +418,24 @@ class RechargeTypes extends StatelessWidget {
           ),
           SizedBox(
             height: 10,
-          )
+          ),Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: OutlinedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(double.maxFinite, 50),
+                        backgroundColor: Colors.green.shade900,
+                        side: BorderSide(
+                            width: 2.0, color: Colors.deepPurple.shade900),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                onPressed: ()  {
+                                  Navigator.of(context).pop();
+            
+              }, child: Text('Done',style: TextStyle(color: Colors.white),)),
+          ),
+            SizedBox(height: 30,),
         ],
       ),
     );

@@ -452,14 +452,6 @@ class PurchaseHistory extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Purchase #' +
-                                              Purchase.Purchase_id.toString() +
-                                              ' || ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                        Text(
                                           Purchase.Supplier_Name! +
                                               ' ' +
                                               Purchase.Supplier_Number!
@@ -484,13 +476,21 @@ class PurchaseHistory extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
+                                          'Purchase #' +
+                                              Purchase.Purchase_id.toString() +
+                                              ' || ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
                                           Purchase.Purchase_Date
                                           // +
                                           // ' -- ' +
                                           // Purchase.phone_Code,
                                           ,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w300,
+                                              fontWeight: FontWeight.w500,
                                               fontSize: 12),
                                         ),
                                         Text(
@@ -500,7 +500,7 @@ class PurchaseHistory extends StatelessWidget {
                                           // Purchase.phone_Code,
                                           ,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w300,
+                                              fontWeight: FontWeight.w500,
                                               fontSize: 12),
                                         ),
                                         Text(
@@ -512,7 +512,7 @@ class PurchaseHistory extends StatelessWidget {
                                           // Purchase.phone_Code,
                                           ,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w300,
+                                              fontWeight: FontWeight.w500,
                                               fontSize: 12),
                                         ),
                                       ],
@@ -609,10 +609,11 @@ class PurchaseHistory extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              
                                             ],
                                           ),
-                                          SizedBox(height: 10,),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
                                           OutlinedButton(
                                               style: ElevatedButton.styleFrom(
                                                 fixedSize:
@@ -640,17 +641,17 @@ class PurchaseHistory extends StatelessWidget {
                                                 ),
                                               ),
                                               onPressed: () {
-                                              Get.to(() =>
-                                                        PurchaseHistoryItems(
-                                                          Purchase_id:
-                                                              Purchase.Purchase_id
-                                                                  .toString(),
-                                                          Supplier_Name:
-                                                              Purchase.Supplier_Name
-                                                                  .toString(),
-                                                          Supplier_Number:
-                                                              Purchase.Supplier_Number
-                                                                  .toString(),
+                                                Get.to(
+                                                    () => PurchaseHistoryItems(
+                                                          Purchase_id: Purchase
+                                                                  .Purchase_id
+                                                              .toString(),
+                                                          Supplier_Name: Purchase
+                                                                  .Supplier_Name
+                                                              .toString(),
+                                                          Supplier_Number: Purchase
+                                                                  .Supplier_Number
+                                                              .toString(),
                                                           purchase_Total_US:
                                                               Purchase.Purchase_Total_USD
                                                                   .toString(),

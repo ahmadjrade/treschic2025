@@ -1,14 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
+import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/brand_controller.dart';
 import 'package:fixnshop_admin/controller/brand_controller_phones.dart';
 import 'package:fixnshop_admin/controller/cart_types_controller.dart';
 import 'package:fixnshop_admin/controller/category_controller.dart';
 import 'package:fixnshop_admin/controller/color_controller.dart';
+import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
+import 'package:fixnshop_admin/controller/customer_address_controller.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_controller.dart';
+import 'package:fixnshop_admin/controller/insert_recharge_balance.dart';
+import 'package:fixnshop_admin/controller/insert_repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
@@ -22,15 +27,19 @@ import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/repairs_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/controller/supplier_controller.dart';
+import 'package:fixnshop_admin/controller/topup_history_controller.dart';
 import 'package:fixnshop_admin/view/Brands/add_brand.dart';
 import 'package:fixnshop_admin/view/Category/add_category.dart';
 import 'package:fixnshop_admin/view/Colors/add_color.dart';
 import 'package:fixnshop_admin/view/Customers/add_customer.dart';
 import 'package:fixnshop_admin/view/Phones/add_phone_model.dart';
 import 'package:fixnshop_admin/view/Category/category_list.dart';
+import 'package:fixnshop_admin/view/Repairs/buy_repair_product.dart';
 import 'package:fixnshop_admin/view/Suppliers/add_supplier.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:fixnshop_admin/view/buy_expenses.dart';
@@ -136,6 +145,10 @@ Future<void> main() async {
     () => RechargeCartController(),
     fenix: true,
   );
+  Get.lazyPut<InsertRepairProductController>(
+    () => InsertRepairProductController(),
+    fenix: true,
+  );
   Get.lazyPut<RechargeInvoiceHistoryController>(
     () => RechargeInvoiceHistoryController(),
     fenix: true,
@@ -148,12 +161,51 @@ Future<void> main() async {
     () => RechargeDetailController(),
     fenix: true,
   );
-    Get.lazyPut<PurchaseDetailController>(
+  Get.lazyPut<PurchaseDetailController>(
     () => PurchaseDetailController(),
     fenix: true,
   );
-  
-   final PurchaseDetailController purchaseDetailController =
+  Get.lazyPut<BluetoothController>(
+    () => BluetoothController(),
+    fenix: true,
+  );
+  Get.lazyPut<RechargeBalanceController>(
+    () => RechargeBalanceController(),
+    fenix: true,
+  );
+  Get.lazyPut<InsertRechargeBalance>(
+    () => InsertRechargeBalance(),
+    fenix: true,
+  );
+  Get.lazyPut<TopupHistoryController>(
+    () => TopupHistoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<CustomerAddressController>(
+    () => CustomerAddressController(),
+    fenix: true,
+  );
+
+  Get.lazyPut<RepairProductController>(
+    () => RepairProductController(),
+    fenix: true,
+  );
+  Get.lazyPut<RepairProductDetailController>(
+    () => RepairProductDetailController(),
+    fenix: true,
+  );
+  final RepairProductDetailController repairProductDetailController =
+      Get.find<RepairProductDetailController>();
+  final RepairProductController repairProductController =
+      Get.find<RepairProductController>();
+  final CustomerAddressController customerAddressController =
+      Get.find<CustomerAddressController>();
+  final BluetoothController bluetoothController =
+      Get.find<BluetoothController>();
+  final RechargeBalanceController rechargeBalanceController =
+      Get.find<RechargeBalanceController>();
+
+  final PurchaseDetailController purchaseDetailController =
       Get.find<PurchaseDetailController>();
   final RechargeDetailController rechargeDetailController =
       Get.find<RechargeDetailController>();
@@ -178,9 +230,10 @@ Future<void> main() async {
 
   final ProductDetailController productDetailController =
       Get.find<ProductDetailController>();
-
   final InsertProductDetailController insertProductDetailController =
       Get.find<InsertProductDetailController>();
+  final InsertRechargeBalance insertRechargeBalance =
+      Get.find<InsertRechargeBalance>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -203,7 +256,8 @@ Future<void> main() async {
   final ColorController colorController = Get.find<ColorController>();
   final InsertProductController insertProductController =
       Get.find<InsertProductController>();
-
+  final InsertRepairProductController insertRepairProductController =
+      Get.find<InsertRepairProductController>();
   await Get.putAsync<SharedPreferencesController>(
       () async => SharedPreferencesController());
   final sharedPreferenecesController = Get.find<SharedPreferencesController>();
@@ -244,6 +298,7 @@ class MainApp extends StatelessWidget {
                 )),
         GetPage(name: "/Phones", page: () => PhonesList()),
         GetPage(name: "/Suppliers", page: () => SupplierList()),
+        GetPage(name: "/BuyRepairProducts", page: () => BuyRepairProduct()),
 
         //GetPage(name: "/CatList", page: () => CatList()),
 

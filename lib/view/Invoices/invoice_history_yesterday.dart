@@ -1,35 +1,35 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
+import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_history_items.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class RechargeDue extends StatelessWidget {
-  RechargeDue({super.key});
+class InvoiceHistoryYesterday extends StatelessWidget {
+  InvoiceHistoryYesterday({super.key});
 
-  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
-      Get.find<RechargeInvoiceHistoryController>();
+  final InvoiceHistoryController invoiceHistoryController =
+      Get.find<InvoiceHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
-  TextEditingController Payment_Ammount = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // rechargeInvoiceHistoryController.reset();
+    invoiceHistoryController.CalTotalYday();
+    // invoiceHistoryController.reset();
 
-    // rechargeInvoiceHistoryController.CalTotal();
+    // invoiceHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -63,28 +63,8 @@ class RechargeDue extends StatelessWidget {
       return formatter.format(value);
     }
 
-    Future<void> showToast(result) async {
-      final snackBar2 = SnackBar(
-        content: Text(result),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar2);
-    }
-
     return Scaffold(
-      appBar: AppBar(
-          title: (Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('invoice Due'),
-          IconButton(
-              onPressed: () {
-                rechargeInvoiceHistoryController.reset();
-                rechargeInvoiceHistoryController.isDataFetched = false;
-                rechargeInvoiceHistoryController.fetchrechargeInvoice();
-              },
-              icon: Icon(Icons.refresh))
-        ],
-      ))),
+   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -103,9 +83,7 @@ class RechargeDue extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                rechargeInvoiceHistoryController
-                                    .recharge_invoices
-                                    .refresh();
+                                invoiceHistoryController.invoices.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -175,10 +153,10 @@ class RechargeDue extends StatelessWidget {
                   //                     ],
                   //                   ),
                   //                   value: 'this',
-                  //                   groupValue: rechargeInvoiceHistoryController.Store.value,
+                  //                   groupValue: invoiceHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Store.value = 'this';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Store.value = 'this';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -197,10 +175,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'other',
-                  //                   groupValue: rechargeInvoiceHistoryController.Store.value,
+                  //                   groupValue: invoiceHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Store.value = 'other';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Store.value = 'other';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -218,10 +196,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: rechargeInvoiceHistoryController.Store.value,
+                  //                   groupValue: invoiceHistoryController.Store.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Store.value = 'all';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Store.value = 'all';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -255,10 +233,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'No',
-                  //                   groupValue: rechargeInvoiceHistoryController.Sold.value,
+                  //                   groupValue: invoiceHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Sold.value = 'No';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Sold.value = 'No';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -277,10 +255,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Yes',
-                  //                   groupValue: rechargeInvoiceHistoryController.Sold.value,
+                  //                   groupValue: invoiceHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Sold.value = 'Yes';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Sold.value = 'Yes';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -298,10 +276,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: rechargeInvoiceHistoryController.Sold.value,
+                  //                   groupValue: invoiceHistoryController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Sold.value = 'all';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Sold.value = 'all';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -335,10 +313,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'New',
-                  //                   groupValue: rechargeInvoiceHistoryController.Condition.value,
+                  //                   groupValue: invoiceHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Condition.value = 'New';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Condition.value = 'New';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -357,10 +335,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Used',
-                  //                   groupValue: rechargeInvoiceHistoryController.Condition.value,
+                  //                   groupValue: invoiceHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Condition.value = 'Used';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Condition.value = 'Used';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -378,10 +356,10 @@ class RechargeDue extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: rechargeInvoiceHistoryController.Condition.value,
+                  //                   groupValue: invoiceHistoryController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     rechargeInvoiceHistoryController.Condition.value = 'all';
-                  //                     rechargeInvoiceHistoryController.searchPhones(
+                  //                     invoiceHistoryController.Condition.value = 'all';
+                  //                     invoiceHistoryController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -408,20 +386,17 @@ class RechargeDue extends StatelessWidget {
                   Obx(
                     () {
                       final List<InvoiceModel> filteredinvoices =
-                          rechargeInvoiceHistoryController.SearchDuePurchases(
+                          invoiceHistoryController.SearchInvoicesYesterday(
                         FilterQuery.text,
                       );
-                      if (rechargeInvoiceHistoryController.isLoading.value) {
+                      if (invoiceHistoryController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (rechargeInvoiceHistoryController
-                          .recharge_invoices.isEmpty) {
+                      } else if (invoiceHistoryController.invoices.isEmpty) {
                         return Center(
-                            child:
-                                Text('No Due invoices Yet In This Store ! '));
+                            child: Text('No Invoices Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
                         return Center(
-                            child:
-                                Text('No Due invoices Yet In This Store ! '));
+                            child: Text('No Invoices Yet In This Store ! '));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
@@ -433,7 +408,7 @@ class RechargeDue extends StatelessWidget {
                             return Container(
                               //  width: double.infinity,
                               //   height: 140.0,
-                              color: rechargeInvoiceHistoryController
+                              color: invoiceHistoryController
                                       .ispaid(invoice.isPaid)
                                   ? Colors.grey.shade300
                                   : Colors.red.shade100,
@@ -462,7 +437,7 @@ class RechargeDue extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '#' +
+                                          'Invoice #' +
                                               invoice.Invoice_id.toString() +
                                               ' || ',
                                           style: TextStyle(
@@ -479,16 +454,15 @@ class RechargeDue extends StatelessWidget {
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 15),
+                                              fontSize: 17),
                                         ),
                                         Spacer(),
                                         Icon(
                                           Icons.paid,
-                                          color:
-                                              rechargeInvoiceHistoryController
-                                                      .ispaid(invoice.isPaid)
-                                                  ? Colors.green.shade900
-                                                  : Colors.red.shade900,
+                                          color: invoiceHistoryController
+                                                  .ispaid(invoice.isPaid)
+                                              ? Colors.green.shade900
+                                              : Colors.red.shade900,
                                         )
                                       ],
                                     ),
@@ -553,7 +527,7 @@ class RechargeDue extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    'invoice Total US:  ' +
+                                                    'Invoice Total US:  ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Total_Usd)
                                                             .toString() +
@@ -564,7 +538,7 @@ class RechargeDue extends StatelessWidget {
                                                             .blue.shade900),
                                                   ),
                                                   Text(
-                                                    'invoice Total LL:  ' +
+                                                    'Invoice Total LL:  ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Total_Lb)
                                                             .toString() +
@@ -575,7 +549,7 @@ class RechargeDue extends StatelessWidget {
                                                             .blue.shade900),
                                                   ),
                                                   Text(
-                                                    'invoice Rec US:  ' +
+                                                    'Invoice Rec US:  ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Rec_Usd)
                                                             .toString() +
@@ -586,7 +560,7 @@ class RechargeDue extends StatelessWidget {
                                                             .green.shade900),
                                                   ),
                                                   Text(
-                                                    'invoice Rec LL:  ' +
+                                                    'Invoice Rec LL:  ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Rec_Lb)
                                                             .toString() +
@@ -597,7 +571,7 @@ class RechargeDue extends StatelessWidget {
                                                             .green.shade900),
                                                   ),
                                                   Text(
-                                                    'invoice Due US:  ' +
+                                                    'Invoice Due US:  ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Due_USD)
                                                             .toString() +
@@ -608,7 +582,7 @@ class RechargeDue extends StatelessWidget {
                                                             .red.shade900),
                                                   ),
                                                   Text(
-                                                    'invoice Due LL:  ' +
+                                                    'Invoice Due LL:  ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Due_LB)
                                                             .toString() +
@@ -626,290 +600,86 @@ class RechargeDue extends StatelessWidget {
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: OutlinedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      // fixedSize:
-                                                      //     Size(double.infinity, 20),
-                                                      backgroundColor:
-                                                          rechargeInvoiceHistoryController
-                                                                  .ispaid(invoice
-                                                                      .isPaid)
-                                                              ? Colors.green
-                                                                  .shade900
-                                                              : Colors
-                                                                  .red.shade900,
-                                                      side: BorderSide(
-                                                        width: 2.0,
-                                                        color: rechargeInvoiceHistoryController
+
+                                          OutlinedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                fixedSize:
+                                                    Size(double.maxFinite, 20),
+                                                backgroundColor:
+                                                    invoiceHistoryController
+                                                            .ispaid(
+                                                                invoice.isPaid)
+                                                        ? Colors.green.shade900
+                                                        : Colors.red.shade900,
+                                                side: BorderSide(
+                                                  width: 2.0,
+                                                  color:
+                                                      invoiceHistoryController
+                                                              .ispaid(invoice
+                                                                  .isPaid)
+                                                          ? Colors
+                                                              .green.shade900
+                                                          : Colors.red.shade900,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Get.to(
+                                                    () => InvoiceHistoryItems(
+                                                          Invoice_id:
+                                                              invoice.Invoice_id
+                                                                  .toString(),
+                                                          Customer_id:
+                                                              invoice.Cus_id
+                                                                  .toString(),
+                                                          Customer_Name:
+                                                              invoice.Cus_Name
+                                                                  .toString(),
+                                                          Customer_Number:
+                                                              invoice.Cus_Number
+                                                                  .toString(),
+                                                          Invoice_Total_US:
+                                                              invoice.Invoice_Total_Usd
+                                                                  .toString(),
+                                                          Invoice_Rec_US: invoice
+                                                                  .Invoice_Rec_Usd
+                                                              .toString(),
+                                                          Invoice_Due_US: invoice
+                                                                  .Invoice_Due_USD
+                                                              .toString(),
+                                                        ));
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Select',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .arrow_circle_right_rounded,
+                                                    color:
+                                                        invoiceHistoryController
                                                                 .ispaid(invoice
                                                                     .isPaid)
-                                                            ? Colors
-                                                                .green.shade900
-                                                            : Colors
-                                                                .red.shade900,
-                                                      ),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15.0),
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      Get.to(() =>
-                                                          RechargeHistoryItems(
-                                                            Recharge_id: invoice
-                                                                    .Invoice_id
-                                                                .toString(),
-                                                            Customer_Name:
-                                                                invoice.Cus_Name
-                                                                    .toString(),
-                                                            Customer_Number:
-                                                                invoice.Cus_Number
-                                                                    .toString(),
-                                                            Invoice_Total_US:
-                                                                invoice.Invoice_Total_Usd
-                                                                    .toString(),
-                                                            Invoice_Rec_US:
-                                                                invoice.Invoice_Rec_Usd
-                                                                    .toString(),
-                                                            Invoice_Due_US:
-                                                                invoice.Invoice_Due_USD
-                                                                    .toString(),
-                                                          ));
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'Select',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_circle_right_rounded,
-                                                          color: rechargeInvoiceHistoryController
-                                                                  .ispaid(invoice
-                                                                      .isPaid)
-                                                              ? Colors.white
-                                                              : Colors.white,
-                                                          //  'Details',
-                                                          //   style: TextStyle(
-                                                          //        color: Colors.red),
-                                                        ),
-                                                      ],
-                                                    )),
-                                              ),
-                                              SizedBox(width: 20),
-                                              Expanded(
-                                                child: OutlinedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      // fixedSize:
-                                                      //     Size(double.infinity, 20),
-                                                      backgroundColor:
-                                                          Colors.green.shade900,
-                                                      side: BorderSide(
-                                                          width: 2.0,
-                                                          color: Colors
-                                                              .green.shade900),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15.0),
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return AlertDialog(
-                                                            title: Text(
-                                                                'Pay Due (Lebanese)'),
-                                                            content:
-                                                                TextFormField(
-                                                              readOnly: true,
-                                                              initialValue: (invoice
-                                                                      .Invoice_Due_LB)
-                                                                  .toString(),
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .number,
-
-                                                              //controller: Payment_Ammount,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                      hintText:
-                                                                          'Enter Payment Ammount'),
-                                                            ),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                child: Text(
-                                                                    'Cancel'),
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  showDialog(
-                                                                      // The user CANNOT close this dialog  by pressing outsite it
-                                                                      barrierDismissible:
-                                                                          false,
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (_) {
-                                                                        return Dialog(
-                                                                          // The background color
-                                                                          backgroundColor:
-                                                                              Colors.white,
-                                                                          child:
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(vertical: 20),
-                                                                            child:
-                                                                                Column(
-                                                                              mainAxisSize: MainAxisSize.min,
-                                                                              children: [
-                                                                                // The loading indicator
-                                                                                CircularProgressIndicator(),
-                                                                                SizedBox(
-                                                                                  height: 15,
-                                                                                ),
-                                                                                // Some text
-                                                                                Text('Loading')
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        );
-                                                                      });
-                                                                  rechargeInvoiceHistoryController.PayInvDue(
-                                                                          invoice.Invoice_id
-                                                                              .toString(),
-                                                                          invoice.Invoice_Due_LB
-                                                                              .toString())
-                                                                      .then((value) =>
-                                                                          showToast(
-                                                                              rechargeInvoiceHistoryController
-                                                                                  .result2))
-                                                                      .then((value) => rechargeInvoiceHistoryController
-                                                                              .isDataFetched =
-                                                                          false)
-                                                                      .then((value) =>
-                                                                          rechargeInvoiceHistoryController
-                                                                              .fetchrechargeInvoice())
-                                                                      .then((value) =>
-                                                                          Navigator.of(context)
-                                                                              .pop())
-                                                                      .then((value) =>
-                                                                          Navigator.of(context)
-                                                                              .pop());
-
-                                                                  // productDetailController.UpdateProductQty(
-                                                                  //         product.PD_id
-                                                                  //             .toString(),
-                                                                  //         New_Qty.text)
-                                                                  //     .then((value) => showToast(
-                                                                  //         productDetailController
-                                                                  //             .result2))
-                                                                  //     .then((value) =>
-                                                                  //         productDetailController
-                                                                  //                 .isDataFetched =
-                                                                  //             false)
-                                                                  //     .then((value) =>
-                                                                  //         productDetailController
-                                                                  //             .fetchproductdetails())
-                                                                  //     .then((value) =>
-                                                                  //         Navigator.of(context)
-                                                                  //             .pop())
-                                                                  //     .then((value) =>
-                                                                  //         Navigator.of(context).pop());
-
-                                                                  Payment_Ammount
-                                                                      .clear();
-
-                                                                  // Do something with the text, e.g., save it
-                                                                  //  String enteredText = _textEditingController.text;
-                                                                  //  print('Entered text: $enteredText');
-                                                                  // Close the dialog
-                                                                },
-                                                                child:
-                                                                    Text('OK'),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        },
-                                                      );
-                                                      // Get.to(
-                                                      //     () => invoiceHistoryItems(
-                                                      //           invoice_id:
-                                                      //               invoice.invoice_id
-                                                      //                   .toString(),
-                                                      //                   Customer_id: invoice.Cus_id.toString(),
-                                                      //           Customer_Name:
-                                                      //               invoice.Cus_Name
-                                                      //                   .toString(),
-                                                      //           Customer_Number:
-                                                      //               invoice.Cus_Number
-                                                      //                   .toString(),
-                                                      //           invoice_Total_US:
-                                                      //               invoice.invoice_Total_Usd
-                                                      //                   .toString(),
-                                                      //           invoice_Rec_US: invoice
-                                                      //                   .invoice_Rec_Usd
-                                                      //               .toString(),
-                                                      //           invoice_Due_US: invoice
-                                                      //                   .invoice_Due_USD
-                                                      //               .toString(),
-                                                      //         ));
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'Pay',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_circle_right_rounded,
-                                                          color: rechargeInvoiceHistoryController
-                                                                  .ispaid(invoice
-                                                                      .isPaid)
-                                                              ? Colors.white
-                                                              : Colors.white,
-                                                          //  'Details',
-                                                          //   style: TextStyle(
-                                                          //        color: Colors.red),
-                                                        ),
-                                                      ],
-                                                    )),
-                                              ),
-                                            ],
-                                          ),
+                                                            ? Colors.white
+                                                            : Colors.white,
+                                                    //  'Details',
+                                                    //   style: TextStyle(
+                                                    //        color: Colors.red),
+                                                  ),
+                                                ],
+                                              )),
 
                                           // Text(
                                           //     'Store: ' +
@@ -923,27 +693,27 @@ class RechargeDue extends StatelessWidget {
                                           //       invoice.Sell_Price.toString() +
                                           //       '\$',
                                           //   style: TextStyle(
-                                          //       color: rechargeInvoiceHistoryController
+                                          //       color: invoiceHistoryController
                                           //               .issold(invoice.isSold)
                                           //           ? Colors.black
                                           //           : Colors.green.shade900),
                                           // ),
                                           // Visibility(
-                                          //   visible: rechargeInvoiceHistoryController
+                                          //   visible: invoiceHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Cost Price: ' +
                                           //         invoice.Price.toString() +
                                           //         '\$',
                                           //     style: TextStyle(
-                                          //         color: rechargeInvoiceHistoryController
+                                          //         color: invoiceHistoryController
                                           //                 .issold(invoice.isSold)
                                           //             ? Colors.black
                                           //             : Colors.red.shade900),
                                           //   ),
                                           // ),
                                           // Visibility(
-                                          //   visible: rechargeInvoiceHistoryController
+                                          //   visible: invoiceHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Bought From: ' +
@@ -955,7 +725,7 @@ class RechargeDue extends StatelessWidget {
                                           //   ),
                                           // ),
                                           // Visibility(
-                                          //   visible: rechargeInvoiceHistoryController
+                                          //   visible: invoiceHistoryController
                                           //       .isadmin(Username.value),
                                           //   child: Text(
                                           //     'Bought at: ' +
@@ -970,7 +740,7 @@ class RechargeDue extends StatelessWidget {
                                       ),
                                     ),
                                     // Visibility(
-                                    //   visible: rechargeInvoiceHistoryController
+                                    //   visible: invoiceHistoryController
                                     //       .isadmin(Username.value),
                                     //   child: IconButton(
                                     //       onPressed: () {
@@ -986,7 +756,7 @@ class RechargeDue extends StatelessWidget {
                                     //             Note: invoice.Note,Color: invoice.Color_id,));
                                     //       },
                                     //       icon: Icon(Icons.edit,
-                                    //           color: rechargeInvoiceHistoryController
+                                    //           color: invoiceHistoryController
                                     //                   .issold(invoice.isSold)
                                     //               ? Colors.black
                                     //               : Colors.red)),
@@ -1001,7 +771,7 @@ class RechargeDue extends StatelessWidget {
                                     //     ),
                                     //     Visibility(
                                     //       visible:
-                                    //           rechargeInvoiceHistoryController.isadmin(Username.value),
+                                    //           invoiceHistoryController.isadmin(Username.value),
                                     //       child: Text(
                                     //         invoice.Price.toString() + '\$',
                                     //         style: TextStyle(
@@ -1014,7 +784,7 @@ class RechargeDue extends StatelessWidget {
 
                                     // OutlinedButton(
                                     //     onPressed: () {
-                                    //       // rechargeInvoiceHistoryController.SelectedPhone.value = invoice;
+                                    //       // invoiceHistoryController.SelectedPhone.value = invoice;
                                     //       //       // subcategoryController.selectedSubCategory.value =
                                     //       //       //     null;
 
@@ -1061,14 +831,13 @@ class RechargeDue extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'invoices Total US:',
+                                    'Invoices Total US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .total.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .total_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -1082,14 +851,13 @@ class RechargeDue extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'invoices Recieved US:',
+                                    'Invoices Recieved US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .totalrec.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .totalrec_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -1103,14 +871,13 @@ class RechargeDue extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'invoices Due US:',
+                                    'Invoices Due US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .totaldue.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .totaldue_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(

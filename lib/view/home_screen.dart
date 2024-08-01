@@ -1,18 +1,27 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'dart:typed_data';
+
+import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_balances.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
+import 'package:fixnshop_admin/view/Repairs/repair_product_list.dart';
 import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_history.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 // ignore_for_file: prefer_const_constructors
 
@@ -32,7 +41,87 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<InvoiceHistoryController>();
   int _selectedDestination = 0;
   RxString Username = ''.obs;
+  FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
 
+  final BluetoothController bluetoothController =
+      Get.find<BluetoothController>();
+
+  Future<void> _PrintReceipt() async {
+    final profile = await CapabilityProfile.load();
+    final PaperSize paper = PaperSize.mm80;
+
+    final List<int> bytes = await ReceiptDesign(
+      paper,
+      profile,
+    );
+    if (bluetoothController!.isConnected &&
+        bluetoothController!.connection != null) {
+      try {
+        bluetoothController!.connection!.output.add(Uint8List.fromList(bytes));
+        await bluetoothController!.connection!.output.allSent;
+      } catch (e) {
+        print('Error printing: $e');
+      }
+    } else {
+      print('Error: Not connected to a Bluetooth device');
+    }
+  }
+
+  Future<void> showAvailableDevices() async {
+    List<BluetoothDevice> devices = [];
+    try {
+      devices = await _bluetooth.getBondedDevices();
+    } catch (e) {
+      print('Error getting devices: $e');
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Available Devices'),
+          content: Column(
+            children: devices.map((device) {
+              return Expanded(
+                child: ListTile(
+                  title: Text(device.name!),
+                  onTap: () async {
+                    await bluetoothController!.connectToDevice(device);
+                    Navigator.pop(context); // Close the dialog after connecting
+                  },
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<List<int>> ReceiptDesign(
+    PaperSize paper,
+    CapabilityProfile profile,
+  ) async {
+    final Generator ticket = Generator(paper, profile);
+    List<int> bytes = [];
+    //List Name = ['123', '1234', '12345'];
+
+    ////final ByteData data = await rootBundle.load('images/test.png');
+    ///final Uint8List imageBytes = data.buffer.asUint8List();
+    //final im.Image? image = im.decodeImage(imageBytes);
+    // bytes += ticket.image(image!); // Add the image to the bytes list
+    bytes += ticket.text('Mile To Smile',
+        styles: PosStyles(
+          align: PosAlign.center,
+          height: PosTextSize.size2,
+          width: PosTextSize.size2,
+        ),
+        linesAfter: 1);
+
+    bytes += ticket.feed(3);
+
+    return bytes;
+  }
 
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
@@ -41,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void selectDestination(int index) {
     if (index == 0) {
-      Get.to(() => InvoiceHistory());
+      Get.to(() => InvoiceHistoryManage());
       setState(() {
         _selectedDestination = index;
       });
@@ -70,8 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _selectedDestination = index;
       });
-    } 
-    else if (index == 6) {
+    } else if (index == 6) {
       Get.to(() => PurchaseDue());
       setState(() {
         _selectedDestination = index;
@@ -81,22 +169,31 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _selectedDestination = index;
       });
-    } 
-    else {}
+    } else if (index == 8) {
+      Get.to(() => RechargeBalance());
+      setState(() {
+        _selectedDestination = index;
+      });
+    } else if (index == 9) {
+      Get.to(() => RepairProductList(
+            isPur: 1,
+          ));
+      setState(() {
+        _selectedDestination = index;
+      });
+    } else {}
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-          Username = sharedPreferencesController.username;
-       
-            // invoiceHistoryController.reset();
-            //     invoiceHistoryController.isDataFetched = false;
-            //     invoiceHistoryController.fetchinvoices();
-            //     rechargeInvoiceHistoryController.reset();
-            //     rechargeInvoiceHistoryController.isDataFetched = false;
-            //     rechargeInvoiceHistoryController.fetchrechargeInvoice();
+    Username = sharedPreferencesController.username;
+
+    // invoiceHistoryController.reset();
+    //     invoiceHistoryController.isDataFetched = false;
+    //     invoiceHistoryController.fetchinvoices();
+    //     rechargeInvoiceHistoryController.reset();
+    //     rechargeInvoiceHistoryController.isDataFetched = false;
+    //     rechargeInvoiceHistoryController.fetchrechargeInvoice();
 
     return Scaffold(
       appBar: AppBar(
@@ -109,7 +206,6 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 IconButton(
                   onPressed: () {
-                   
                     // invoiceHistoryController.reset();
                     // invoiceHistoryController.isDataFetched = false;
                     // invoiceHistoryController.fetchinvoices();
@@ -127,6 +223,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(Icons.exit_to_app),
                   color: Colors.deepPurple,
                 ),
+                IconButton(
+                    color: bluetoothController!.connection == null ||
+                            !bluetoothController!.connection!.isConnected
+                        ? Colors.red
+                        : Colors.green,
+                    iconSize: 24.0,
+                    icon: Icon(Icons.print),
+                    onPressed: () async {
+                      if (bluetoothController!.connection == null ||
+                          !bluetoothController!.connection!.isConnected) {
+                        List<BluetoothDevice> devices = [];
+                        try {
+                          devices = await FlutterBluetoothSerial.instance
+                              .getBondedDevices();
+                        } catch (e) {
+                          print('Error getting devices: $e');
+                        }
+
+                        if (devices.isNotEmpty) {
+                          await showAvailableDevices();
+                        } else {
+                          print('No bonded devices available');
+                        }
+                      } else {
+                        print('Already connected');
+                        //   for (int i = 0; i < 3; i++) {
+                        _PrintReceipt();
+                      }
+                    }),
               ],
             )
           ],
@@ -158,7 +283,6 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 10,
             ),
-           
             ListTile(
               leading: Icon(Icons.phonelink_setup_sharp),
               title: Text('Repairs'),
@@ -185,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'History',
               ),
             ),
-             ListTile(
+            ListTile(
               leading: Icon(Icons.history_outlined),
               title: Text('Invoice History'),
               selected: _selectedDestination == 0,
@@ -208,7 +332,8 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedColor: Colors.white,
               selected: _selectedDestination == 4,
               onTap: () => selectDestination(4),
-            ),Divider(
+            ),
+            Divider(
               height: 1,
               thickness: 1,
             ),
@@ -217,14 +342,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 'Dues',
               ),
-            ),ListTile(
+            ),
+            ListTile(
               leading: Icon(Icons.payment),
               title: Text('Invoice Due'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
               selected: _selectedDestination == 5,
               onTap: () => selectDestination(5),
-            ),ListTile(
+            ),
+            ListTile(
               leading: Icon(Icons.payment),
               title: Text('Purchase Due'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
@@ -240,15 +367,39 @@ class _HomeScreenState extends State<HomeScreen> {
               selected: _selectedDestination == 7,
               onTap: () => selectDestination(7),
             ),
+            Divider(
+              height: 1,
+              thickness: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Extras',
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.attach_money_outlined),
+              title: Text('Recharge Balances'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 8,
+              onTap: () => selectDestination(8),
+            ),
+            ListTile(
+              leading: Icon(Icons.attach_money_outlined),
+              title: Text('Repair Prodcuts'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 9,
+              onTap: () => selectDestination(9),
+            ),
           ],
         ),
       ),
-      
+
       body: PopScope(
         canPop: false,
-        onPopInvoked: (didPop) {
-
-        },
+        onPopInvoked: (didPop) {},
         child: SafeArea(
             child: Center(
           child: Column(
@@ -256,33 +407,32 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 20,
               ),
-      //          Obx(() {
-      //   if (dailyIncomeController.isLoading.value) {
-      //     return Center(child: CircularProgressIndicator());
-      //   } else {
-      //     return ListView.builder(
-      //       itemCount: dailyIncomeController.daily_income.length,
-      //       itemBuilder: (context, index) {
-      //         var invoice = dailyIncomeController.daily_income[index];
-      //         return ListTile(
-      //           title: Text(invoice.source),
-      //           subtitle: Column(
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: [
-      //               Text('Total USD: ${invoice.totalUsd}'),
-      //               Text('Received USD: ${invoice.iRecUsd}'),
-      //               Text('Received LB: ${invoice.recLb}'),
-      //               Text('Due USD: ${invoice.iDueUsd}'),
-      //               Text('Sum Received: ${invoice.iSumRec}'),
-      //             ],
-      //           ),
-      //         );
-      //       },
-      //     );
-      //   }
-      // }),
-    
-  
+              //          Obx(() {
+              //   if (dailyIncomeController.isLoading.value) {
+              //     return Center(child: CircularProgressIndicator());
+              //   } else {
+              //     return ListView.builder(
+              //       itemCount: dailyIncomeController.daily_income.length,
+              //       itemBuilder: (context, index) {
+              //         var invoice = dailyIncomeController.daily_income[index];
+              //         return ListTile(
+              //           title: Text(invoice.source),
+              //           subtitle: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text('Total USD: ${invoice.totalUsd}'),
+              //               Text('Received USD: ${invoice.iRecUsd}'),
+              //               Text('Received LB: ${invoice.recLb}'),
+              //               Text('Due USD: ${invoice.iDueUsd}'),
+              //               Text('Sum Received: ${invoice.iSumRec}'),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   }
+              // }),
+
               // Visibility(
               //   visible: true,
               //   child: Obx(() {

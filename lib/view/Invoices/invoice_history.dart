@@ -63,20 +63,7 @@ class InvoiceHistory extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-          title: (Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Invoice History'),
-          IconButton(
-              onPressed: () {
-                invoiceHistoryController.reset();
-                invoiceHistoryController.isDataFetched = false;
-                invoiceHistoryController.fetchinvoices();
-              },
-              icon: Icon(Icons.refresh))
-        ],
-      ))),
+   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -645,7 +632,9 @@ class InvoiceHistory extends StatelessWidget {
                                                           Invoice_id:
                                                               invoice.Invoice_id
                                                                   .toString(),
-                                                                  Customer_id: invoice.Cus_id.toString(),
+                                                          Customer_id:
+                                                              invoice.Cus_id
+                                                                  .toString(),
                                                           Customer_Name:
                                                               invoice.Cus_Name
                                                                   .toString(),

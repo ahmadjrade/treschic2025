@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, must_be_immutable, prefer_interpolation_to_compose_strings, sized_box_for_whitespace
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
+import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
@@ -21,23 +23,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class NewRechargeInvoice extends StatelessWidget {
+class NewRechargeInvoice extends StatefulWidget {
   NewRechargeInvoice({
     super.key,
   });
+
+  @override
+  State<NewRechargeInvoice> createState() => _NewRechargeInvoiceState();
+}
+
+class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
   TextEditingController New_Price = TextEditingController();
+
   TextEditingController New_Qty = TextEditingController();
 
   final RechargeCartController rechargeCartController =
       Get.find<RechargeCartController>();
+
   final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
       Get.find<RechargeInvoiceHistoryController>();
-  // final InvoiceController invoiceController = Get.put(InvoiceController());
+
+  // final InvoiceController rechargeDetailController = Get.put(InvoiceController());
   final RateController rateController = Get.find<RateController>();
+
   final CustomerController customerController = Get.find<CustomerController>();
+
   final RechargeDetailController rechargeDetailController =
       Get.find<RechargeDetailController>();
 
@@ -46,14 +60,153 @@ class NewRechargeInvoice extends StatelessWidget {
     return formatter.format(value);
   }
 
+  FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
+
+  final BluetoothController bluetoothController =
+      Get.find<BluetoothController>();
+
+  TextEditingController i = TextEditingController();
+  Future<void> refresh_history() async {
+    rechargeInvoiceHistoryController.isDataFetched = false;
+    rechargeInvoiceHistoryController.fetchrechargeInvoice();
+    // productDetailController.fetchproductdetails();
+  }
+
+  Future<void> refreshRate() async {
+    rateController.isDataFetched = false;
+    rateController.fetchrate();
+  }
+
+  Future<void> showAvailableDevices() async {
+    List<BluetoothDevice> devices = [];
+    try {
+      devices = await _bluetooth.getBondedDevices();
+    } catch (e) {
+      print('Error getting devices: $e');
+    }
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            title: Text('Available Devices'),
+            content: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: devices.map((device) {
+                      return Expanded(
+                        child: ListTile(
+                          title: Row(
+                            children: [
+                              Text(
+                                device.name!,
+                                // overflow: TextOverflow.f,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
+                          onTap: () async {
+                            await bluetoothController!
+                                .connectToDevice(device)
+                                .then((value) => CheckPrinter());
+                            Navigator.pop(
+                                context); // Close the dialog after connecting
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(double.maxFinite, 50),
+                      backgroundColor: Colors.deepPurple.shade300,
+                      side: BorderSide(
+                          width: 2.0, color: Colors.deepPurple.shade300),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      refresh_history()
+                          .then((value) =>
+                              rechargeCartController.isDataFetched = false)
+                          .then((value) =>
+                              rechargeCartController.fetch_recharge_carts())
+                          .then((value) => rechargeCartController.reset())
+                          .then((value) => rechargeCartController.reset())
+                          .then((value) => rechargeCartController.reset())
+                          .then((value) => Navigator.of(context).pop())
+                          .then((value) => Navigator.of(context).pop())
+                          .then((value) => Navigator.of(context).pop());
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> CheckPrinter() async {
+    if (rechargeCartController.result == 'Invoice Sent Successfully') {
+      if (bluetoothController!.connection == null ||
+          !bluetoothController!.connection!.isConnected) {
+        List<BluetoothDevice> devices = [];
+        try {
+          devices = await FlutterBluetoothSerial.instance.getBondedDevices();
+        } catch (e) {
+          print('Error getting devices: $e');
+        }
+
+        if (devices.isNotEmpty) {
+          await showAvailableDevices();
+        } else {
+          print('No bonded devices available');
+          refresh_history()
+              .then((value) => rechargeDetailController.isDataFetched = false)
+              .then((value) => rechargeDetailController.fetchrecdetails())
+              .then((value) => rechargeCartController.reset())
+              .then((value) => rechargeCartController.reset())
+              .then((value) => rechargeCartController.reset())
+              .then((value) => Navigator.of(context).pop())
+              .then((value) => Navigator.of(context).pop());
+        }
+      } else {
+        print('Already connected');
+        rechargeCartController.PrintReceipt()
+            .then((value) => refresh_history()
+                .then((value) => rechargeCartController.isDataFetched = false)
+                .then((value) => rechargeCartController.fetch_recharge_carts()))
+            .then((value) => rechargeCartController.reset())
+            .then((value) => rechargeCartController.reset())
+            .then((value) => rechargeCartController.reset())
+            .then((value) => Navigator.of(context).pop())
+            .then((value) => Navigator.of(context).pop());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //  invoiceController.reset();
+    rechargeCartController.ReceivedUSD.value = 0;
+    rechargeCartController.ReceivedLb.value = 0;
+    rechargeCartController.calculateDueLB();
 
-    Future<void> refreshRate() async {
-      rateController.isDataFetched = false;
-      rateController.fetchrate();
-    }
+    //  rechargeDetailController.reset();
 
     Future<void> showToast(result) async {
       final snackBar2 = SnackBar(
@@ -110,7 +263,7 @@ class NewRechargeInvoice extends StatelessWidget {
               //   color: Colors.deepPurple,
               //   iconSize: 24.0,
               //   onPressed: () {
-              //     invoiceController.reset();
+              //     rechargeDetailController.reset();
               //     // Get.toNamed('/BuyAccessories');
               //     // productController.isDataFetched = false;
               //     // productController.fetchproducts();
@@ -202,7 +355,7 @@ class NewRechargeInvoice extends StatelessWidget {
                     //       icon: Icon(Icons.check),
                     //       color: Colors.black,
                     //       onPressed: () {
-                    //         invoiceController.fetchProduct(Product_Code.text);
+                    //         rechargeDetailController.fetchProduct(Product_Code.text);
                     //       },
                     //     ),
 
@@ -317,7 +470,6 @@ class NewRechargeInvoice extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              
                                               Text(
                                                 card.Card_Name,
                                                 overflow: TextOverflow.ellipsis,
@@ -435,16 +587,22 @@ class NewRechargeInvoice extends StatelessWidget {
                                                     width: 5,
                                                   ),
                                                   Container(
-                                                    decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.circular(24) ),
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(24)),
                                                     //width: double.infinity,
-                                                    child : Padding(
-                                                      padding: const EdgeInsets.all(8.0),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                       child: Text(
-                                                          card.quantity.toString(),
+                                                        card.quantity
+                                                            .toString(),
                                                       ),
                                                     ),
                                                   ),
-                                                 
                                                 ],
                                               ),
                                               SizedBox(
@@ -615,7 +773,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                         GestureDetector(
                                           onLongPress: () {
                                             // copyToClipboard(
-                                            //     invoiceController.DueLB.value);
+                                            //     rechargeDetailController.DueLB.value);
                                           },
                                           child: Text(
                                             addCommasToNumber(
@@ -643,7 +801,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                         GestureDetector(
                                           onLongPress: () {
                                             // copyToClipboard(
-                                            //     invoiceController.DueLB.value);
+                                            //     rechargeDetailController.DueLB.value);
                                           },
                                           child: Text(
                                             addCommasToNumber(
@@ -673,7 +831,7 @@ class NewRechargeInvoice extends StatelessWidget {
                                 //           child: Text(
                                 //             addCommasToNumber(double.tryParse(
                                 //                     CalDue(
-                                //                         invoiceController
+                                //                         rechargeDetailController
                                 //                             .DueLB.value,
                                 //                         rateController.rateValue
                                 //                             .value))!) +
@@ -697,10 +855,10 @@ class NewRechargeInvoice extends StatelessWidget {
                                 //         GestureDetector(
                                 //           onLongPress: () {
                                 //             copyToClipboard(
-                                //                 invoiceController.DueLB.value);
+                                //                 rechargeDetailController.DueLB.value);
                                 //           },
                                 //           child: Text(
-                                //             addCommasToNumber(invoiceController
+                                //             addCommasToNumber(rechargeDetailController
                                 //                     .DueLB.value) +
                                 //                 ' \LB',
                                 //             style: TextStyle(
@@ -894,6 +1052,12 @@ class NewRechargeInvoice extends StatelessWidget {
                                             rechargeCartController
                                                     .idController.text =
                                                 '${customerController.result4.value}';
+                                            rechargeCartController
+                                                    .duelbController.text =
+                                                '${customerController.result5.value}';
+                                            rechargeCartController
+                                                    .dueUsdController.text =
+                                                '${customerController.result6.value}';
                                             return TextFormField(
                                               readOnly: true,
                                               // initialValue: ,
@@ -953,53 +1117,87 @@ class NewRechargeInvoice extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (rechargeCartController.InvoiceCards.isNotEmpty) {
-                            showDialog(
-                                // The user CANNOT close this dialog  by pressing outsite it
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (_) {
-                                  return Dialog(
-                                    // The background color
-                                    backgroundColor: Colors.white,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          // The loading indicator
-                                          CircularProgressIndicator(),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          // Some text
-                                          Text('Loading')
-                                        ],
+                            if (Platform.isAndroid) {
+                              showDialog(
+                                  // The user CANNOT close this dialog  by pressing outsite it
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) {
+                                    return Dialog(
+                                      // The background color
+                                      backgroundColor: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            // The loading indicator
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Some text
+                                            Text('Loading')
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                });
-                            rechargeCartController
-                                .uploadRechargeInvoice()
-                                .then((value) =>
-                                    showToast(rechargeCartController.result))
-                                .then((value) => rechargeCartController.reset())
-                                .then((value) =>
-                                    rechargeInvoiceHistoryController.reset())
-                                .then((value) =>
-                                    rechargeInvoiceHistoryController
-                                        .isDataFetched = false)
-                                .then((value) =>
-                                    rechargeInvoiceHistoryController
-                                        .fetchrechargeInvoice())
-                                .then((value) => rechargeDetailController
-                                    .isDataFetched = false)
-                                .then((value) =>
-                                    rechargeDetailController.fetchrecdetails())
-                                .then((value) => Navigator.of(context).pop())
-                                .then((value) => Navigator.of(context).pop());
+                                    );
+                                  });
+                              rechargeCartController
+                                  .uploadInvoiceToDatabase()
+                                  .then((value) =>
+                                      showToast(rechargeCartController.result))
+                                  .then((value) => CheckPrinter());
+                            } else {
+                              showDialog(
+                                  // The user CANNOT close this dialog  by pressing outsite it
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) {
+                                    return Dialog(
+                                      // The background color
+                                      backgroundColor: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            // The loading indicator
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Some text
+                                            Text('Loading')
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                              rechargeCartController
+                                  .uploadInvoiceToDatabase()
+                                  .then((value) =>
+                                      showToast(rechargeCartController.result))
+                                  .then((value) => refresh_history()
+                                      .then((value) => rechargeCartController
+                                          .isDataFetched = false)
+                                      .then((value) => rechargeCartController
+                                          .fetch_recharge_carts())
+                                      .then((value) =>
+                                          rechargeCartController.reset())
+                                      .then((value) =>
+                                          rechargeCartController.reset())
+                                      .then((value) =>
+                                          rechargeCartController.reset())
+                                      .then((value) =>
+                                          Navigator.of(context).pop())
+                                      .then(
+                                          (value) => Navigator.of(context).pop())
+                                      .then((value) => Navigator.of(context).pop()));
+                            }
                           } else {
-                            //    showToast('Add Products');
                             Get.snackbar('No Products Added!', 'Add Products ');
                           }
                         },
@@ -1010,6 +1208,7 @@ class NewRechargeInvoice extends StatelessWidget {
                     SizedBox(
                       height: 40,
                     ),
+
                     // SizedBox(
                     //   height: 40,
                     // ),

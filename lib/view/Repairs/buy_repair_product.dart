@@ -8,6 +8,7 @@ import 'package:fixnshop_admin/controller/category_controller.dart';
 import 'package:fixnshop_admin/controller/color_controller.dart';
 import 'package:fixnshop_admin/controller/image_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_controller.dart';
+import 'package:fixnshop_admin/controller/insert_repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/supplier_controller.dart';
 import 'package:fixnshop_admin/model/brand_model.dart';
@@ -22,11 +23,11 @@ import 'package:get/get.dart';
 
 import '../../controller/sub_category_controller.dart';
 
-class BuyAccessories extends StatefulWidget {
-  const BuyAccessories({super.key});
+class BuyRepairProduct extends StatefulWidget {
+  const BuyRepairProduct({super.key});
 
   @override
-  State<BuyAccessories> createState() => _BuyAccessoriesState();
+  State<BuyRepairProduct> createState() => _BuyAccessoriesState();
 }
 
 final SubCategoryController subcategoryController =
@@ -35,8 +36,8 @@ final ColorController colorController = Get.find<ColorController>();
 final BrandController brandController = Get.find<BrandController>();
 final BarcodeController barcodeController = Get.find<BarcodeController>();
 
-final InsertProductController insertProductController =
-    Get.find<InsertProductController>();
+final InsertRepairProductController insertRepairProductController =
+    Get.find<InsertRepairProductController>();
 final ProductController productController = Get.find<ProductController>();
 
 final CategoryController categoryController = Get.find<CategoryController>();
@@ -54,12 +55,11 @@ ColorModel? SelectedColor;
 int SelectedColorId = 0;
 TextEditingController Product_Code = TextEditingController();
 TextEditingController Product_Cost = TextEditingController();
-TextEditingController Product_LPrice = TextEditingController();
 TextEditingController Product_MPrice = TextEditingController();
 TextEditingController Product_Name = TextEditingController();
 //List Quantities = [];
 
-class _BuyAccessoriesState extends State<BuyAccessories> {
+class _BuyAccessoriesState extends State<BuyRepairProduct> {
   @override
   Widget build(BuildContext context) {
     Future<void> showToast(result) async {
@@ -90,7 +90,7 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Buy Accessories'),
+            Text('Buy Repair Product'),
             IconButton(
               color: Colors.white,
               iconSize: 24.0,
@@ -241,7 +241,7 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                           print(SelectCatId);
                         },
                         items: categoryController.category
-                            .where((cat) => cat.Repair_Category != 1)
+                            .where((cat) => cat.Repair_Category == 1)
                             .map((color) => DropdownMenuItem<CategoryModel>(
                                   value: color,
                                   child: Text(color.Cat_Name),
@@ -432,6 +432,7 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                               //print(SelectCatId);
                             },
                             items: brandController.brands
+                                .where((p0) => p0.Repair_Brand == 1)
                                 .map((brand) => DropdownMenuItem<BrandModel>(
                                       value: brand,
                                       child: Text(brand.Brand_Name),
@@ -672,38 +673,6 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                         //   maxLength: 50,
                         //   initialValue: Product_Code,
                         keyboardType: TextInputType.number,
-                        controller: Product_LPrice,
-                        decoration: InputDecoration(
-                          labelText: "LPrice ",
-                          labelStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                          fillColor: Colors.black,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        readOnly: false,
-                        //   maxLength: 50,
-                        //   initialValue: Product_Code,
-                        keyboardType: TextInputType.number,
                         controller: Product_MPrice,
                         decoration: InputDecoration(
                           labelText: "MPrice ",
@@ -737,8 +706,8 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: GetBuilder<InsertProductController>(
-                builder: (insertProductController) {
+            child: GetBuilder<InsertRepairProductController>(
+                builder: (insertRepairProductController) {
               return OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(double.maxFinite, 50),
@@ -760,8 +729,6 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                       showToast('Select Brand');
                     } else if (SelectedColorId == '') {
                       showToast('Select Color');
-                    } else if (Product_LPrice.text == '') {
-                      showToast('Please Add Lower Price');
                     } else if (barcodeController.barcode.value == '') {
                       showToast('Please Add Product Code ');
                     } else if (Product_MPrice.text == '') {
@@ -770,22 +737,11 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                       showToast('Please Add Product Cost');
                     } else if (double.tryParse(Product_Cost.text)! == 0) {
                       showToast('Please Increase Cost');
-                    } else if (double.tryParse(Product_LPrice.text)! == 0) {
-                      showToast('Please Increase Lower Price');
                     } else if (double.tryParse(Product_MPrice.text)! == 0) {
                       showToast('Please Increase Max Price');
-                    } else if (double.tryParse(Product_Cost.text)! >
-                        double.tryParse(Product_LPrice.text)!) {
-                      showToast('Cost Can\'t Be Bigger than Price');
-                    } else if (double.tryParse(Product_LPrice.text) ==
-                        double.tryParse(Product_Cost.text)) {
-                      showToast('Cost Can\'t Be equal to lowest Price');
                     } else if (double.tryParse(Product_MPrice.text) ==
                         double.tryParse(Product_Cost.text)) {
                       showToast('Cost Can\'t Be equal to Max Price');
-                    } else if (double.tryParse(Product_LPrice.text)! >
-                        double.tryParse(Product_MPrice.text)!) {
-                      showToast('Lowest Pric2 Can\'t Be Bigger to Max Price');
                     } else {
                       showDialog(
                           // The user CANNOT close this dialog  by pressing outsite it
@@ -813,7 +769,7 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                               ),
                             );
                           });
-                      insertProductController.UploadAcc(
+                      insertRepairProductController.UploadAcc(
                               Product_Name.text,
                               SelectCatId,
                               SelectSubCatId,
@@ -821,10 +777,9 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                               Product_Code.text,
                               SelectedColorId.toString(),
                               Product_Cost.text,
-                              Product_LPrice.text,
                               Product_MPrice.text)
                           .then((value) =>
-                              showToast(insertProductController.result))
+                              showToast(insertRepairProductController.result))
                           .then((value) =>
                               productController.isDataFetched = false)
                           .then((value) => productController.fetchproducts())

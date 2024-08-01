@@ -14,7 +14,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    usernameController.text = 'beirut';
+    usernameController.text = 'hara';
     passwordController.text = '123';
     return Scaffold(
       appBar: AppBar(title: Text('FixNShop')),

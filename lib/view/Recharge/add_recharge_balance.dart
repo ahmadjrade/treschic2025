@@ -1,4 +1,6 @@
 import 'package:fixnshop_admin/controller/cart_types_controller.dart';
+import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
+import 'package:fixnshop_admin/controller/insert_recharge_balance.dart';
 import 'package:fixnshop_admin/controller/insert_recharge_card.dart';
 import 'package:fixnshop_admin/controller/insert_recharge_type.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
@@ -6,17 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class AddRechargeType extends StatelessWidget {
-  AddRechargeType({
+class AddRechargeBalance extends StatelessWidget {
+  AddRechargeBalance({
     super.key,
   });
 
-  TextEditingController Type_Name = TextEditingController();
+  TextEditingController Balance_Name = TextEditingController();
+  TextEditingController Credit_Balance = TextEditingController();
+  TextEditingController Credit_Price = TextEditingController();
 
-  final InsertRechargeType insertRechargeType = Get.put(InsertRechargeType());
+  final InsertRechargeBalance insertRechargeBalance =
+      Get.put(InsertRechargeBalance());
 
-  final CartTypesController cartTypesController =
-      Get.find<CartTypesController>();
+  final RechargeBalanceController rechargeBalanceController =
+      Get.find<RechargeBalanceController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class AddRechargeType extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Recharge Card'),
+        title: Text('New Recharge Balance'),
       ),
       body: SafeArea(
           child: Padding(
@@ -47,7 +52,7 @@ class AddRechargeType extends StatelessWidget {
                   //   maxLength: 50,
                   //   initialValue: Product_Code,
                   keyboardType: TextInputType.name,
-                  controller: Type_Name,
+                  controller: Balance_Name,
                   decoration: InputDecoration(
                     labelText: "Type Name ",
                     labelStyle: TextStyle(
@@ -68,7 +73,70 @@ class AddRechargeType extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  readOnly: false,
+                  //   maxLength: 50,
+                  //   initialValue: Product_Code,
+                  keyboardType: TextInputType.name,
+                  controller: Credit_Balance,
+                  decoration: InputDecoration(
+                    labelText: "Current Balance ",
+                    labelStyle: TextStyle(
+                      color: Colors.black,
+                    ),
+                    fillColor: Colors.black,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  readOnly: false,
+                  //   maxLength: 50,
+                  //   initialValue: Product_Code,
+                  keyboardType: TextInputType.name,
+                  controller: Credit_Price,
+                  decoration: InputDecoration(
+                    labelText: "Credit Price ",
+                    labelStyle: TextStyle(
+                      color: Colors.black,
+                    ),
+                    fillColor: Colors.black,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
               ],
             ),
             Padding(
@@ -109,19 +177,22 @@ class AddRechargeType extends StatelessWidget {
                             ),
                           );
                         });
-                    insertRechargeType.UploadCard(Type_Name.text)
-                        .then((value) => showToast(insertRechargeType.result))
+                    insertRechargeBalance.UploadRBalance(Balance_Name.text,
+                            Credit_Balance.text, Credit_Price.text)
+                        .then(
+                            (value) => showToast(insertRechargeBalance.result))
                         .then((value) =>
-                            cartTypesController.isDataFetched = false)
-                        .then((value) => cartTypesController.fetch_cart_types())
+                            rechargeBalanceController.isDataFetched = false)
+                        .then((value) =>
+                            rechargeBalanceController.fetch_cart_types())
                         .then((value) => Navigator.of(context).pop())
                         .then((value) => Navigator.of(context).pop());
                   },
                   child: Text(
-                    'Insert Card',
+                    'Insert Balance',
                     style: TextStyle(color: Colors.white),
                   )),
-            )
+            ),
           ],
         ),
       )),

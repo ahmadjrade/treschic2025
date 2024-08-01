@@ -45,15 +45,12 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
-        body: PopScope
-        
-        (
-          canPop: false,
-        onPopInvoked: (didPop) {
-        //  homeController.selectedPageIndex.value = 0;
-
-        },
-          child: _homeScreenPages[homeController.selectedPageIndex.value]),
+        body: PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              //  homeController.selectedPageIndex.value = 0;
+            },
+            child: _homeScreenPages[homeController.selectedPageIndex.value]),
         bottomNavigationBar: GNav(
           duration: Duration(milliseconds: 200),
           backgroundColor: Colors.white,

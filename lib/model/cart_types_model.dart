@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class CartTypeModel {
   final int Type_id;
   final String Type_Name;
-  final String Type_Image;
+  final String? Type_Image;
 
   CartTypeModel({
     required this.Type_id,

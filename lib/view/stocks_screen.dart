@@ -22,7 +22,8 @@ class StocksScreen extends StatelessWidget {
     'Product Details',
     'Products',
     'Phones',
-    'Suppliers'
+    'Suppliers',
+    'Repair Product',
   ];
 
   static const List Pathes = [
@@ -39,7 +40,8 @@ class StocksScreen extends StatelessWidget {
     '/NewProductDetail',
     '/Products',
     '/Phones',
-    '/Suppliers'
+    '/Suppliers',
+    '/BuyRepairProducts'
   ];
   static const List btnName = [
     'Add',
@@ -55,7 +57,8 @@ class StocksScreen extends StatelessWidget {
     'Add',
     'See',
     'See',
-    'See'
+    'See',
+    'Buy'
   ];
   @override
   Widget build(BuildContext context) {
@@ -77,9 +80,10 @@ class StocksScreen extends StatelessWidget {
           homeController.selectedPageIndex.value = 0;
         },
         child: Padding(
-          padding:  EdgeInsets.symmetric( horizontal:  safeWidth * 0.01,vertical: safeHeight * 0.01),
+          padding: EdgeInsets.symmetric(
+              horizontal: safeWidth * 0.01, vertical: safeHeight * 0.01),
           child: GridView.builder(
-            itemCount: 14,
+            itemCount: 15,
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemBuilder: (context, index) {

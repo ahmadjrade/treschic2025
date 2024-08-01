@@ -1,23 +1,27 @@
 // controllers/item_controller.dart
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:fixnshop_admin/model/cart_types_model.dart';
+import 'package:fixnshop_admin/model/category_model.dart';
+import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
+import 'package:fixnshop_admin/model/product_model.dart';
+import 'package:fixnshop_admin/model/repair_product_model.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class CartTypesController extends GetxController {
-  RxList<CartTypeModel> carts = <CartTypeModel>[].obs;
+class RepairProductController extends GetxController {
+  RxList<RepairProductModel> repair_products = <RepairProductModel>[].obs;
   bool isDataFetched = false;
   String result = '';
   RxBool isLoading = false.obs;
   RxBool iseditable = false.obs;
-  Rx<CartTypeModel?> SelectedCart = Rx<CartTypeModel?>(null);
+  Rx<RepairProductModel?> SelectedRepairProduct = Rx<RepairProductModel?>(null);
 
   void clearSelectedCat() {
-    SelectedCart.value = null;
-    carts.clear();
+    SelectedRepairProduct.value = null;
+    repair_products.clear();
   }
 
   bool isadmin(username) {
@@ -33,36 +37,37 @@ class CartTypesController extends GetxController {
   void onInit() {
     super.onInit();
     print(isDataFetched);
-    fetch_cart_types();
+    fetchproducts();
   }
 
-  List<CartTypeModel> searchTypes(String query) {
-    return carts
-        .where((cart) =>
-            cart.Type_Name.toLowerCase().contains(query.toLowerCase()))
+  List<RepairProductModel> searchProducts(String query) {
+    return repair_products
+        .where((product) =>
+            product.Repair_p_name.toLowerCase().contains(query.toLowerCase()) ||
+            product.Repair_p_code.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
 
-  void fetch_cart_types() async {
+  void fetchproducts() async {
     if (!isDataFetched) {
       try {
         isLoading.value = true;
 
         String domain = domainModel.domain;
         final response =
-            await http.get(Uri.parse('$domain' + 'fetch_cart_types.php'));
+            await http.get(Uri.parse('$domain' + 'fetch_repair_products.php'));
 
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           final List<dynamic> data = jsonData;
           //  final List<dynamic> data = json.decode(response.body);
-          carts.assignAll(
-              data.map((item) => CartTypeModel.fromJson(item)).toList());
+          repair_products.assignAll(
+              data.map((item) => RepairProductModel.fromJson(item)).toList());
           //category = data.map((item) => Product_Details.fromJson(item)).toList();
           isDataFetched = true;
           isLoading.value = false;
 
-          if (carts.isEmpty) {
+          if (repair_products.isEmpty) {
             print(0);
           } else {
             isDataFetched = true;

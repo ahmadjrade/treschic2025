@@ -3,11 +3,13 @@
 import 'package:fixnshop_admin/controller/category_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/controller/sub_category_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/product_detail_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
+import 'package:fixnshop_admin/model/repair_product_detail_model.dart';
 import 'package:fixnshop_admin/view/Product/add_product_detail.dart';
 import 'package:fixnshop_admin/view/sub_category_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,28 +17,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class ProductListDetail extends StatelessWidget {
-  String Product_id,
-      Product_Name,
-      Product_Color,
-      Product_LPrice,
-      Product_MPrice,
-      Product_Code;
-  ProductListDetail(
+class RepairProductListDetail extends StatelessWidget {
+  String Repair_Product_id,
+      Repair_Product_Name,
+      Repair_Product_Color,
+      Repair_Product_Price,
+      Repair_Product_Code;
+  RepairProductListDetail(
       {super.key,
-      required this.Product_id,
-      required this.Product_Name,
-      required this.Product_Color,
-      required this.Product_LPrice,
-      required this.Product_MPrice,
-      required this.Product_Code});
-  final ProductDetailController productDetailController =
-      Get.find<ProductDetailController>();
+      required this.Repair_Product_id,
+      required this.Repair_Product_Name,
+      required this.Repair_Product_Color,
+      required this.Repair_Product_Price,
+      required this.Repair_Product_Code});
+  final RepairProductDetailController repairProductDetailController =
+      Get.find<RepairProductDetailController>();
   TextEditingController New_Qty = TextEditingController();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   RxString Username = ''.obs;
-  // TextEditingController Product_Name = TextEditingController();
+  // TextEditingController Repair_Product_Name = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Username = sharedPreferencesController.username;
@@ -50,47 +50,54 @@ class ProductListDetail extends StatelessWidget {
 
     // productDetailController.isDataFetched = false;
     // productDetailController.fetchproductdetails();
-    List<ProductDetailModel> filteredProductDetails() {
-      return productDetailController.product_detail
+    List<RepairProductDetailModel> filteredProductDetails() {
+      return repairProductDetailController.repair_product_detail
           .where((product_details) =>
-              product_details.Product_id == int.tryParse(Product_id))
+              product_details.R_product_id == int.tryParse(Repair_Product_id))
           .toList();
     }
 
     //  productDetailController.product_detail.clear();
     // productDetailController.isDataFetched = false;
-    //  productDetailController.fetchproductdetails(Product_id);
+    //  productDetailController.fetchproductdetails(Repair_Product_id);
     // productController.fetchproducts();
     return Scaffold(
       appBar: AppBar(
           title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Product List Detail'),
-          IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              Get.to(() => AddProductDetail(
-                    Product_id: Product_id,
-                    Product_Name: Product_Name,
-                    Product_Code: Product_Code,
-                    Product_LPrice: Product_LPrice,
-                    Product_MPrice: Product_MPrice,
-                  ));
-            },
-            icon: Icon(CupertinoIcons.add),
+          Text(
+            'Repair Product List Detail',
+            style: TextStyle(fontSize: 18),
           ),
-          IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              productDetailController.isDataFetched = false;
-              productDetailController.fetchproductdetails();
-              // categoryController.isDataFetched =false;
-              // categoryController.fetchcategories();
-            },
-            icon: Icon(CupertinoIcons.refresh),
+          Row(
+            children: [
+              IconButton(
+                color: Colors.deepPurple,
+                iconSize: 24.0,
+                onPressed: () {
+                  // Get.to(() => AddProductDetail(
+                  //       Repair_Product_id: Repair_Product_id,
+                  //       Repair_Product_Name: Repair_Product_Name,
+                  //       Repair_Product_Code: Repair_Product_Code,
+                  //       Product_LPrice: Product_LPrice,
+                  //       Repair_Product_Price: Repair_Product_Price,
+                  //     ));
+                },
+                icon: Icon(CupertinoIcons.add),
+              ),
+              IconButton(
+                color: Colors.deepPurple,
+                iconSize: 24.0,
+                onPressed: () {
+                  repairProductDetailController.isDataFetched = false;
+                  repairProductDetailController.fetchproductdetails();
+                  // categoryController.isDataFetched =false;
+                  // categoryController.fetchcategories();
+                },
+                icon: Icon(CupertinoIcons.refresh),
+              ),
+            ],
           ),
         ],
       )),
@@ -103,9 +110,9 @@ class ProductListDetail extends StatelessWidget {
             ),
             TextFormField(
               //maxLength: 15,
-              initialValue: Product_Name,
+              initialValue: Repair_Product_Name,
               readOnly: true,
-              //controller: Product_Name,
+              //controller: Repair_Product_Name,
               decoration: InputDecoration(
                 //helperText: '*',
 
@@ -135,9 +142,9 @@ class ProductListDetail extends StatelessWidget {
             ),
             TextFormField(
               //maxLength: 15,
-              initialValue: Product_Code,
+              initialValue: Repair_Product_Code,
               readOnly: true,
-              //controller: Product_Name,
+              //controller: Repair_Product_Name,
               decoration: InputDecoration(
                 //helperText: '*',
 
@@ -167,9 +174,9 @@ class ProductListDetail extends StatelessWidget {
             ),
             TextFormField(
               //maxLength: 15,
-              initialValue: Product_Color,
+              initialValue: Repair_Product_Color,
               readOnly: true,
-              //controller: Product_Name,
+              //controller: Repair_Product_Name,
               decoration: InputDecoration(
                 //helperText: '*',
 
@@ -203,43 +210,11 @@ class ProductListDetail extends StatelessWidget {
                   child: TextFormField(
                     readOnly: true,
                     //   maxLength: 50,
-                    //   initialValue: Product_Code,
+                    //   initialValue: Repair_Product_Code,
                     keyboardType: TextInputType.number,
-                    initialValue: Product_LPrice,
+                    initialValue: Repair_Product_Price,
                     decoration: InputDecoration(
-                      labelText: "Lowest Price ",
-                      labelStyle: TextStyle(
-                        color: Colors.black,
-                      ),
-                      fillColor: Colors.black,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: TextFormField(
-                    readOnly: true,
-                    //   maxLength: 50,
-                    //   initialValue: Product_Code,
-                    keyboardType: TextInputType.number,
-                    initialValue: Product_MPrice,
-                    decoration: InputDecoration(
-                      labelText: "Max Price ",
+                      labelText: "Price ",
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
@@ -268,9 +243,9 @@ class ProductListDetail extends StatelessWidget {
             Expanded(
               child: Obx(
                 () {
-                  final List<ProductDetailModel> filteredproducts =
+                  final List<RepairProductDetailModel> filteredproducts =
                       filteredProductDetails();
-                  if (productDetailController.isLoading.value) {
+                  if (repairProductDetailController.isLoading.value) {
                     return Center(child: CircularProgressIndicator());
                   } else if (filteredproducts.isEmpty) {
                     return Center(child: Text('No Quantity Yet ! Add Some'));
@@ -278,7 +253,7 @@ class ProductListDetail extends StatelessWidget {
                     return ListView.builder(
                       itemCount: filteredproducts.length,
                       itemBuilder: (context, index) {
-                        final ProductDetailModel product =
+                        final RepairProductDetailModel product =
                             filteredproducts[index];
                         return Container(
                           color: Colors.grey.shade200,
@@ -291,7 +266,7 @@ class ProductListDetail extends StatelessWidget {
                             backgroundColor: Colors.deepPurple.shade100,
                             //   collapsedBackgroundColor: Colors.white,
                             trailing: Text(
-                              product.Product_Quantity.toString() + ' PCS',
+                              product.R_product_quantity.toString() + ' PCS',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -310,7 +285,7 @@ class ProductListDetail extends StatelessWidget {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Visibility(
-                                      visible: productDetailController
+                                      visible: repairProductDetailController
                                           .isadmin(Username.value),
                                       child: IconButton(
                                           color: Colors.red,
@@ -378,27 +353,27 @@ class ProductListDetail extends StatelessWidget {
                                                                   ),
                                                                 );
                                                               });
-                                                          productDetailController.UpdateProductQty(
-                                                                  product.PD_id
-                                                                      .toString(),
-                                                                  New_Qty.text)
-                                                              .then((value) => showToast(
-                                                                  productDetailController
-                                                                      .result2))
-                                                              .then((value) =>
-                                                                  productDetailController
-                                                                          .isDataFetched =
-                                                                      false)
-                                                              .then((value) =>
-                                                                  productDetailController
-                                                                      .fetchproductdetails())
-                                                              .then((value) =>
-                                                                  Navigator.of(context)
-                                                                      .pop())
-                                                              .then((value) =>
-                                                                  Navigator.of(context).pop());
+                                                          // productDetailController.UpdateProductQty(
+                                                          //         product.PD_id
+                                                          //             .toString(),
+                                                          //         New_Qty.text)
+                                                          //     .then((value) => showToast(
+                                                          //         productDetailController
+                                                          //             .result2))
+                                                          //     .then((value) =>
+                                                          //         productDetailController
+                                                          //                 .isDataFetched =
+                                                          //             false)
+                                                          //     .then((value) =>
+                                                          //         productDetailController
+                                                          //             .fetchproductdetails())
+                                                          //     .then((value) =>
+                                                          //         Navigator.of(context)
+                                                          //             .pop())
+                                                          //     .then((value) =>
+                                                          //         Navigator.of(context).pop());
 
-                                                          New_Qty.clear();
+                                                          // New_Qty.clear();
                                                         } else {
                                                           Get.snackbar('Error',
                                                               'Add New Quantity');
@@ -419,13 +394,13 @@ class ProductListDetail extends StatelessWidget {
                                           icon: Icon(Icons.edit)),
                                     ),
                                     Text('Total Quantity Bought: ' +
-                                        product.Product_Max_Quantity
+                                        product.R_product_max_quantity
                                             .toString()),
                                     SizedBox(
                                       height: 5,
                                     ),
                                     Text('Total Quantity Sold: ' +
-                                        product.Product_Sold_Quantity
+                                        product.R_product_sold_quantity
                                             .toString()),
                                     SizedBox(
                                       height: 20,
@@ -448,7 +423,7 @@ class ProductListDetail extends StatelessWidget {
                             //     //       // product_detailsController.selectedproduct_details.value =
                             //     //       //     null;
 
-                            //               Get.to(() => ProductListDetail(Product_id: product.Product_id.toString(), Product_Name: product.Product_Name,Product_Color: product.Product_Color,));
+                            //               Get.to(() => RepairProductListDetail(Repair_Product_id: product.Repair_Product_id.toString(), Repair_Product_Name: product.Repair_Product_Name,Repair_Product_Color: product.Repair_Product_Color,));
                             //   },
                             //   child: Text('Select')),
                             // // Add more properties as needed

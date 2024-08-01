@@ -16,13 +16,14 @@ class InvoiceDetailController extends GetxController {
   bool isDataFetched = false;
   String result = '';
   RxBool isLoading = false.obs;
-  Rx<InvoiceHistoryModel?> SelectedInvoiceDetail = Rx<InvoiceHistoryModel?>(null);
+  Rx<InvoiceHistoryModel?> SelectedInvoiceDetail =
+      Rx<InvoiceHistoryModel?>(null);
 
   void clearSelectedCat() {
     SelectedInvoiceDetail.value = null;
     invoice_detail.clear();
   }
-  
+
   bool isadmin(username) {
     if (username == 'admin') {
       return true;

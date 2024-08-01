@@ -7,10 +7,12 @@ import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/controller/sub_category_controller.dart';
+import 'package:fixnshop_admin/controller/topup_history_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/product_detail_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
 import 'package:fixnshop_admin/model/recharge_cart_model.dart';
+import 'package:fixnshop_admin/model/topup_history_model.dart';
 import 'package:fixnshop_admin/view/Product/add_product_detail.dart';
 import 'package:fixnshop_admin/view/Recharge/add_recharge_card.dart';
 import 'package:fixnshop_admin/view/sub_category_list.dart';
@@ -20,18 +22,18 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class RechargeCarts extends StatelessWidget {
-  int Type_id;
-  String Type_Name;
+class Topup_History extends StatelessWidget {
+  int B_id;
+  String B_Name;
 
-  RechargeCarts({super.key, required this.Type_id, required this.Type_Name});
+  Topup_History({super.key, required this.B_id, required this.B_Name});
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
     return formatter.format(value);
   }
 
-  final RechargeCartController rechargeCartController =
-      Get.find<RechargeCartController>();
+  final TopupHistoryController topupHistoryController =
+      Get.find<TopupHistoryController>();
 
   //TextEditingController New_Qty = TextEditingController();
   final SharedPreferencesController sharedPreferencesController =
@@ -40,8 +42,27 @@ class RechargeCarts extends StatelessWidget {
   // TextEditingController Product_Name = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    if (topupHistoryController.topup_history.isEmpty) {
+      topupHistoryController.fetch_topup_history();
+    }
     Username = sharedPreferencesController.username;
+    String Format2(Date) {
+      String time8Hour = '';
+      DateTime parsedDate = DateFormat.Hms().parse(Date);
 
+      // Format the parsed time into 8-hour time with AM/PM
+      time8Hour = DateFormat('yyyy-MM-dd').format(parsedDate);
+      return time8Hour;
+    }
+
+    String Format(time24Hour) {
+      String time8Hour = '';
+      DateTime parsedTime = DateFormat.Hms().parse(time24Hour);
+
+      // Format the parsed time into 8-hour time with AM/PM
+      time8Hour = DateFormat('h:mm a').format(parsedTime);
+      return time8Hour;
+    }
     // Future<void> showToast(result) async {
     //   final snackBar2 = SnackBar(
     //     content: Text(result),
@@ -49,18 +70,18 @@ class RechargeCarts extends StatelessWidget {
     //   ScaffoldMessenger.of(context).showSnackBar(snackBar2);
     // }
 
-    // rechargeCartController.isDataFetched = false;
-    // rechargeCartController.fetchproductdetails();
-    List<RechargeCartModel> filteredProductDetails() {
-      return rechargeCartController.recharge_carts
-          .where((carts) =>
-              carts.Card_Type == (Type_id) && carts.Username == Username.value)
+    // topupHistoryController.isDataFetched = false;
+    // topupHistoryController.fetchproductdetails();
+    List<TopupHistoryModel> filteredProductDetails() {
+      return topupHistoryController.topup_history
+          .where((topup) =>
+              topup.Balance_id == (B_id) && topup.Username == Username.value)
           .toList();
     }
 
-    //  rechargeCartController.product_detail.clear();
-    // rechargeCartController.isDataFetched = false;
-    //  rechargeCartController.fetchproductdetails(Type_id);
+    //  topupHistoryController.product_detail.clear();
+    // topupHistoryController.isDataFetched = false;
+    //  topupHistoryController.fetchproductdetails(Balance_id);
     // productController.fetchproducts();
     return Scaffold(
       appBar: AppBar(
@@ -69,16 +90,16 @@ class RechargeCarts extends StatelessWidget {
         children: [
           Expanded(
               child: Text(
-            '$Type_Name Recharge Cards',
+            '$B_Name Balance',
             overflow: TextOverflow.ellipsis,
           )),
           IconButton(
             color: Colors.deepPurple,
             iconSize: 24.0,
             onPressed: () {
-              Get.to(() => AddRechargeCard(
-                    Type_id: Type_id,
-                  ));
+              // Get.to(() => AddRechargeCard(
+              //       Balance_id: Balance_id,
+              //     ));
             },
             icon: Icon(CupertinoIcons.add),
           ),
@@ -86,9 +107,9 @@ class RechargeCarts extends StatelessWidget {
             color: Colors.deepPurple,
             iconSize: 24.0,
             onPressed: () {
-              rechargeCartController.isDataFetched = false;
-              rechargeCartController.fetch_recharge_carts();
-              // categoryController.isDataFetched =false;
+              topupHistoryController.isDataFetched = false;
+              topupHistoryController.fetch_topup_history();
+              // categoryController.g =false;
               // categoryController.fetchcategories();
             },
             icon: Icon(CupertinoIcons.refresh),
@@ -106,17 +127,17 @@ class RechargeCarts extends StatelessWidget {
             Expanded(
               child: Obx(
                 () {
-                  final List<RechargeCartModel> filteredcarts =
+                  final List<TopupHistoryModel> filteredcarts =
                       filteredProductDetails();
-                  if (rechargeCartController.isLoading.value) {
+                  if (topupHistoryController.isLoading.value) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (rechargeCartController.recharge_carts.isEmpty) {
-                    return Center(child: Text('No Carts Yet ! Add Some'));
+                  } else if (topupHistoryController.topup_history.isEmpty) {
+                    return Center(child: Text('No Topup Yet ! Add Some'));
                   } else {
                     return ListView.builder(
                       itemCount: filteredcarts.length,
                       itemBuilder: (context, index) {
-                        final RechargeCartModel carts = filteredcarts[index];
+                        final TopupHistoryModel topup = filteredcarts[index];
                         return Container(
                           color: Colors.grey.shade200,
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -125,47 +146,30 @@ class RechargeCarts extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                                onTap: () {
-                                  rechargeCartController
-                                      .fetchcards(carts.Card_Name);
-                                },
+
                                 // collapsedTextColor: Colors.black,
                                 // textColor: Colors.black,
                                 // backgroundColor: Colors.deepPurple.shade100,
                                 //   collapsedBackgroundColor: Colors.white,
-                                leading: carts.Card_Image == null ||
-                                        carts.Card_Image == ''
-                                    ? SizedBox(
-                                        width: 100,
-                                        child: Column(
-                                          children: [
-                                            Text('No Image'),
-                                            Icon(
-                                              Icons.error,
-                                            ),
-                                          ],
-                                        ))
-                                    : CachedNetworkImage(
-                                        width: 100,
-                                        imageUrl: carts.Card_Image!,
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                      ),
+
                                 title: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // carts.Cart_Image != null
+                                    // topup.Cart_Image != null
                                     //     ? SizedBox(
                                     //         child: Image.network(
-                                    //         carts.Cart_Image!,
+                                    //         topup.Cart_Image!,
                                     //         scale: 3,
                                     //       ))
                                     //     : Placeholder(),
 
                                     Text(
-                                      carts.Card_Name,
+                                      '#' +
+                                          topup.Topup_id.toString() +
+                                          ' || ' +
+                                          'Topup Ammount : ' +
+                                          addCommasToNumber(topup.Topup_Ammount)
+                                              .toString(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 17),
@@ -173,13 +177,16 @@ class RechargeCarts extends StatelessWidget {
                                   ],
                                 ),
                                 subtitle: Text(
-                                  addCommasToNumber(carts.Card_Price)
-                                          .toString() +
-                                      ' LL',
+                                  'Store: ' +
+                                      topup.Username +
+                                      ' | ' +
+                                      (topup.Date).toString() +
+                                      ' - ' +
+                                      Format(topup.Time),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
-                                      color: Colors.green.shade900),
+                                      color: Colors.red.shade900),
                                 )
 
                                 // controlAffinity: ListTileControlAffinity.leading,
@@ -192,7 +199,7 @@ class RechargeCarts extends StatelessWidget {
                                 //           MainAxisAlignment.spaceAround,
                                 //       children: [
                                 //         Visibility(
-                                //           visible: rechargeCartController
+                                //           visible: topupHistoryController
                                 //               .isadmin(Username.value),
                                 //           child: IconButton(
                                 //               color: Colors.red,
@@ -260,19 +267,19 @@ class RechargeCarts extends StatelessWidget {
                                 //                                       ),
                                 //                                     );
                                 //                                   });
-                                //                               rechargeCartController.UpdateProductQty(
-                                //                                       carts.PD_id
+                                //                               topupHistoryController.UpdateProductQty(
+                                //                                       topup.PD_id
                                 //                                           .toString(),
                                 //                                       New_Qty.text)
                                 //                                   .then((value) => showToast(
-                                //                                       rechargeCartController
+                                //                                       topupHistoryController
                                 //                                           .result2))
                                 //                                   .then((value) =>
-                                //                                       rechargeCartController
+                                //                                       topupHistoryController
                                 //                                               .isDataFetched =
                                 //                                           false)
                                 //                                   .then((value) =>
-                                //                                       rechargeCartController
+                                //                                       topupHistoryController
                                 //                                           .fetchproductdetails())
                                 //                                   .then((value) =>
                                 //                                       Navigator.of(context)
@@ -301,18 +308,18 @@ class RechargeCarts extends StatelessWidget {
                                 //               icon: Icon(Icons.edit)),
                                 //         ),
                                 //         Text('Total Quantity Bought: ' +
-                                //             carts.Product_Max_Quantity
+                                //             topup.Product_Max_Quantity
                                 //                 .toString()),
                                 //         SizedBox(
                                 //           height: 5,
                                 //         ),
                                 //         Text('Total Quantity Sold: ' +
-                                //             carts.Product_Sold_Quantity
+                                //             topup.Product_Sold_Quantity
                                 //                 .toString()),
                                 //         SizedBox(
                                 //           height: 20,
                                 //         ),
-                                //         // Text('id' + carts.PD_id.toString()),
+                                //         // Text('id' + topup.PD_id.toString()),
                                 //         // SizedBox(
                                 //         //   height: 20,
                                 //         // ),
@@ -322,15 +329,15 @@ class RechargeCarts extends StatelessWidget {
                                 //     ),
                                 //   )
                                 // ],
-                                //  subtitle: Text(carts.Product_Brand),
+                                //  subtitle: Text(topup.Product_Brand),
                                 // trailing: OutlinedButton(
                                 //   onPressed: () {
 
-                                //     // productController.SelectedPhone.value = carts;
+                                //     // productController.SelectedPhone.value = topup;
                                 //     //       // product_detailsController.selectedproduct_details.value =
                                 //     //       //     null;
 
-                                //               Get.to(() => RechargeCarts(Type_id: carts.Type_id.toString(), Product_Name: carts.Product_Name,Product_Color: carts.Product_Color,));
+                                //               Get.to(() => Topup_History(Balance_id: topup.Balance_id.toString(), Product_Name: topup.Product_Name,Product_Color: topup.Product_Color,));
                                 //   },
                                 //   child: Text('Select')),
                                 // // Add more properties as needed
@@ -342,41 +349,6 @@ class RechargeCarts extends StatelessWidget {
                   }
                 },
               ),
-            ),
-            OutlinedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.green.shade900,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.deepPurple.shade900),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                    ),
-              onPressed: ()  {
-                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-
-            }, child: Text('Done',style: TextStyle(color: Colors.white),)),
-            SizedBox(height: 10,),
-            Card(
-              color: Colors.grey.shade300,
-              child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Obx(() {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Carts:'),
-                        Text(rechargeCartController.totalQty.toString()),
-                        Text('Total:'),
-                        Text(addCommasToNumber(
-                                    rechargeCartController.totalLb.value)
-                                .toString() +
-                            ' LL'),
-                      ],
-                    );
-                  })),
             ),
             SizedBox(
               height: 20,

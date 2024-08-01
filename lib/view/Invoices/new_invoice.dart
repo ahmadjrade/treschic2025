@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, must_be_immutable, prefer_interpolation_to_compose_strings, sized_box_for_whitespace
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
+import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
@@ -15,32 +17,48 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class NewInvoice extends StatelessWidget {
-  String Cus_id, Cus_Name, Cus_Number;
+class NewInvoice extends StatefulWidget {
+  String Cus_id, Cus_Name, Cus_Number, Cus_Due;
   NewInvoice(
       {super.key,
       required this.Cus_id,
       required this.Cus_Name,
-      required this.Cus_Number});
+      required this.Cus_Number,
+      required this.Cus_Due});
+
+  @override
+  State<NewInvoice> createState() => _NewInvoiceState();
+}
+
+class _NewInvoiceState extends State<NewInvoice> {
   final BarcodeController barcodeController = Get.find<BarcodeController>();
+
   TextEditingController New_Price = TextEditingController();
+
   TextEditingController New_Qty = TextEditingController();
 
   final InvoiceHistoryController invoiceHistoryController =
       Get.find<InvoiceHistoryController>();
+
   final ProductDetailController productDetailController =
       Get.find<ProductDetailController>();
+
   final InvoiceDetailController invoiceDetailController =
       Get.find<InvoiceDetailController>();
 
   TextEditingController Product_Code = TextEditingController();
+
   // final InvoiceController invoiceController = Get.put(InvoiceController());
   final RateController rateController = Get.find<RateController>();
+
   final InvoiceController invoiceController = Get.find<InvoiceController>();
+
   double TP = 0;
+
   double CalPrice(qty, up) {
     return TP = qty * up;
   }
@@ -51,32 +69,164 @@ class NewInvoice extends StatelessWidget {
   }
 
   String CalculatedDueUsd = '';
+
   String CalDue(due, rate) {
     CalculatedDueUsd = '';
     CalculatedDueUsd = (due / rate).toString();
     return CalculatedDueUsd;
   }
 
+  FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
+
+  final BluetoothController bluetoothController =
+      Get.find<BluetoothController>();
+
   TextEditingController i = TextEditingController();
+
+  Future<void> refreshProducts() async {
+    productDetailController.product_detail.clear();
+    productDetailController.isDataFetched = false;
+    productDetailController.fetchproductdetails();
+  }
+
+  Future<void> showAvailableDevices() async {
+    List<BluetoothDevice> devices = [];
+    try {
+      devices = await _bluetooth.getBondedDevices();
+    } catch (e) {
+      print('Error getting devices: $e');
+    }
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            title: Text('Available Devices'),
+            content: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: devices.map((device) {
+                      return Expanded(
+                        child: ListTile(
+                          title: Row(
+                            children: [
+                              Text(
+                                device.name!,
+                                // overflow: TextOverflow.f,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
+                          onTap: () async {
+                            await bluetoothController!
+                                .connectToDevice(device)
+                                .then((value) => CheckPrinter(widget.Cus_Name,
+                                    widget.Cus_Number, widget.Cus_Due));
+                            Navigator.pop(
+                                context); // Close the dialog after connecting
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(double.maxFinite, 50),
+                      backgroundColor: Colors.deepPurple.shade300,
+                      side: BorderSide(
+                          width: 2.0, color: Colors.deepPurple.shade300),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      refreshProducts()
+                          .then((value) =>
+                              invoiceDetailController.isDataFetched = false)
+                          .then((value) =>
+                              invoiceDetailController.fetchinvoicesdetails())
+                          .then((value) => invoiceController.reset())
+                          .then((value) => invoiceController.reset())
+                          .then((value) => invoiceController.reset())
+                          .then((value) => Navigator.of(context).pop())
+                          .then((value) => Navigator.of(context).pop())
+                          .then((value) => Navigator.of(context).pop());
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> CheckPrinter(Cus_Name, Cus_Number, Cus_Due) async {
+    if (invoiceController.result == 'Invoice Sent Successfully') {
+      if (bluetoothController!.connection == null ||
+          !bluetoothController!.connection!.isConnected) {
+        List<BluetoothDevice> devices = [];
+        try {
+          devices = await FlutterBluetoothSerial.instance.getBondedDevices();
+        } catch (e) {
+          print('Error getting devices: $e');
+        }
+
+        if (devices.isNotEmpty) {
+          await showAvailableDevices();
+        } else {
+          print('No bonded devices available');
+          refreshProducts()
+              .then((value) => invoiceHistoryController.isDataFetched = false)
+              .then((value) => invoiceHistoryController.fetchinvoices())
+              .then((value) => invoiceDetailController.isDataFetched = false)
+              .then((value) => invoiceDetailController.fetchinvoicesdetails())
+              .then((value) => invoiceController.reset())
+              .then((value) => invoiceController.reset())
+              .then((value) => invoiceController.reset())
+              .then((value) => Navigator.pop(context))
+              .then((value) => Navigator.pop(context));
+        }
+      } else {
+        print('Already connected');
+        invoiceController.PrintReceipt(Cus_Name, Cus_Number, Cus_Due)
+            .then((value) => refreshProducts()
+                .then((value) => invoiceHistoryController.isDataFetched = false)
+                .then((value) => invoiceHistoryController.fetchinvoices())
+                .then((value) => invoiceDetailController.isDataFetched = false)
+                .then(
+                    (value) => invoiceDetailController.fetchinvoicesdetails()))
+            .then((value) => invoiceController.reset())
+            .then((value) => invoiceController.reset())
+            .then((value) => invoiceController.reset())
+            .then((value) => Navigator.pop(context))
+            .then((value) => Navigator.pop(context));
+      }
+    }
+  }
+
+  Future<void> refreshRate() async {
+    rateController.isDataFetched = false;
+    rateController.fetchrate();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //  invoiceController.reset();
-    Future<void> refreshProducts() async {
-      invoiceController.invoiceItems.clear();
-
-      productDetailController.product_detail.clear();
-      productDetailController.isDataFetched = false;
-      productDetailController.fetchproductdetails();
-    }
-
-    Future<void> refreshRate() async {
-      rateController.isDataFetched = false;
-      rateController.fetchrate();
-    }
-
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText.toString()));
-      // Show a snackbar or any other feedback that the text has been copied.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Remaining LB copied to clipboard'),
@@ -99,24 +249,11 @@ class NewInvoice extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('New Invoice'),
-              // IconButton(
-              //   color: Colors.deepPurple,
-              //   iconSize: 24.0,
-              //   onPressed: () {
-              //     Get.toNamed('/NewCat');
-              //   },
-              //   icon: Icon(CupertinoIcons.add),
-              // ),
-
               IconButton(
                 color: Colors.deepPurple,
                 iconSize: 24.0,
                 onPressed: () {
                   Get.toNamed('/BuyAccessories');
-                  // productController.isDataFetched = false;
-                  // productController.fetchproducts();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
                 },
                 icon: Icon(CupertinoIcons.add),
               ),
@@ -126,12 +263,6 @@ class NewInvoice extends StatelessWidget {
                 onPressed: () {
                   refreshProducts();
                   refreshRate();
-
-                  // Get.toNamed('/BuyAccessories');
-                  // productController.isDataFetched = false;
-                  // productController.fetchproducts();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
                 },
                 icon: Icon(CupertinoIcons.refresh),
               ),
@@ -140,11 +271,6 @@ class NewInvoice extends StatelessWidget {
                 iconSize: 24.0,
                 onPressed: () {
                   invoiceController.reset();
-                  // Get.toNamed('/BuyAccessories');
-                  // productController.isDataFetched = false;
-                  // productController.fetchproducts();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
                 },
                 icon: Icon(CupertinoIcons.radiowaves_left),
               ),
@@ -189,24 +315,24 @@ class NewInvoice extends StatelessWidget {
                             ),
                           ),
                         )),
-                        SizedBox(width: 20,),
+                        SizedBox(
+                          width: 20,
+                        ),
                         GestureDetector(
                           onTap: () {
-                             Get.to(() => ProductList(
-                                    isPur: 1,
-                                  ));
+                            Get.to(() => ProductList(
+                                  isPur: 1,
+                                ));
                           },
                           onDoubleTap: () {
-                            Get.to(() => PhonesList(
-                                  ));
-                             
+                            Get.to(() => PhonesList());
                           },
                           child: Icon(
                             Icons.search,
                             color: Colors.black,
                             //onPressed: () {
-                             
-                           // },
+
+                            // },
                           ),
                         ),
                         IconButton(
@@ -215,7 +341,6 @@ class NewInvoice extends StatelessWidget {
                           onPressed: () {
                             invoiceController.fetchProduct(Product_Code.text);
                           },
-                          
                         ),
 
                         // Expanded(
@@ -301,7 +426,9 @@ class NewInvoice extends StatelessWidget {
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(fontSize: 15),
                                               ),
-                                              SizedBox(width: 5,),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
                                               Text(product.Product_Color)
                                             ],
                                           ),
@@ -684,7 +811,7 @@ class NewInvoice extends StatelessWidget {
                                       children: [
                                         Text('Customer Name: '),
                                         Text(
-                                          Cus_Name,
+                                          widget.Cus_Name,
                                           style: TextStyle(color: Colors.black),
                                         ),
                                       ],
@@ -700,7 +827,7 @@ class NewInvoice extends StatelessWidget {
                                       children: [
                                         Text('Customer Number: '),
                                         Text(
-                                          Cus_Number,
+                                          widget.Cus_Number,
                                           style: TextStyle(color: Colors.black),
                                         ),
                                       ],
@@ -918,50 +1045,91 @@ class NewInvoice extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (invoiceController.invoiceItems.isNotEmpty) {
-                            showDialog(
-                                // The user CANNOT close this dialog  by pressing outsite it
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (_) {
-                                  return Dialog(
-                                    // The background color
-                                    backgroundColor: Colors.white,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          // The loading indicator
-                                          CircularProgressIndicator(),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          // Some text
-                                          Text('Loading')
-                                        ],
+                            if (Platform.isAndroid) {
+                              showDialog(
+                                  // The user CANNOT close this dialog  by pressing outsite it
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) {
+                                    return Dialog(
+                                      // The background color
+                                      backgroundColor: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            // The loading indicator
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Some text
+                                            Text('Loading')
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                });
-                            invoiceController
-                                .uploadInvoiceToDatabase(
-                                    Cus_id.toString(), Cus_Name, Cus_Number)
-                                .then((value) =>
-                                    showToast(invoiceController.result))
-                                .then((value) => refreshProducts())
-                                .then((value) => invoiceHistoryController
-                                    .isDataFetched = false)
-                                .then((value) =>
-                                    invoiceHistoryController.fetchinvoices())
-                                    .then((value) => invoiceDetailController
-                                    .isDataFetched = false)
-                                .then((value) =>
-                                    invoiceDetailController.fetchinvoicesdetails())
-                                .then((value) => invoiceController.reset())
-                                .then((value) => invoiceController.reset())
-                                .then((value) => Navigator.of(context).pop())
-                                .then((value) => Navigator.of(context).pop());
+                                    );
+                                  });
+                              invoiceController
+                                  .uploadInvoiceToDatabase(
+                                      widget.Cus_id.toString(),
+                                      widget.Cus_Name,
+                                      widget.Cus_Number)
+                                  .then((value) =>
+                                      showToast(invoiceController.result))
+                                  .then((value) => CheckPrinter(widget.Cus_Name,
+                                      widget.Cus_Number, widget.Cus_Due));
+                            } else {
+                              showDialog(
+                                  // The user CANNOT close this dialog  by pressing outsite it
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) {
+                                    return Dialog(
+                                      // The background color
+                                      backgroundColor: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            // The loading indicator
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Some text
+                                            Text('Loading')
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                              invoiceController
+                                  .uploadInvoiceToDatabase(
+                                      widget.Cus_id.toString(),
+                                      widget.Cus_Name,
+                                      widget.Cus_Number)
+                                  .then((value) =>
+                                      showToast(invoiceController.result))
+                                  .then((value) => refreshProducts()
+                                      .then((value) => invoiceHistoryController
+                                          .isDataFetched = false)
+                                      .then((value) => invoiceHistoryController
+                                          .fetchinvoices())
+                                      .then((value) => invoiceDetailController
+                                          .isDataFetched = false)
+                                      .then((value) => invoiceDetailController
+                                          .fetchinvoicesdetails())
+                                      .then((value) => invoiceController.reset())
+                                      .then((value) => invoiceController.reset())
+                                      .then((value) => invoiceController.reset())
+                                      .then((value) => Navigator.pop(context))
+                                      .then((value) => Navigator.pop(context)));
+                            }
                           } else {
                             //    showToast('Add Products');
                             Get.snackbar('No Products Added!', 'Add Products ');
@@ -971,6 +1139,7 @@ class NewInvoice extends StatelessWidget {
                           'Insert Invoice',
                           style: TextStyle(color: Colors.white),
                         )),
+
                     SizedBox(
                       height: 40,
                     ),

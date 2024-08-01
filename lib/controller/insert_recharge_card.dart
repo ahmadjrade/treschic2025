@@ -10,18 +10,25 @@ import 'package:http/http.dart' as http;
 
 class InsertRechargeCard extends GetxController {
   // RxList<CustomerModel> customerModel = <CustomerModel>[].obs;
-        final SharedPreferencesController sharedPreferencesController = Get.find<SharedPreferencesController>(); 
-         RxString Username = ''.obs;
+  final SharedPreferencesController sharedPreferencesController =
+      Get.find<SharedPreferencesController>();
+  RxString Username = ''.obs;
 
   DomainModel domainModel = DomainModel();
   String result = '';
   final DateTimeController dateController = DateTimeController();
   String formattedDate = '';
   String formattedTime = '';
-  Future<void> UploadCard(String Type_id,String Card_Name,
-      String Card_Cost, String Card_Price,) async {
+  Future<void> UploadCard(
+      String Type_id,
+      String Card_Name,
+      String Card_Cost,
+      String Card_Price,
+      Balance_Deduction,
+      SelectedBalanceId,
+      Balance_required) async {
     try {
-      //   Username = sharedPreferencesController.username;
+      Username = sharedPreferencesController.username;
       // formattedDate = dateController.getFormattedDate();
       // formattedTime = dateController.getFormattedTime();
       String domain = domainModel.domain;
@@ -29,12 +36,13 @@ class InsertRechargeCard extends GetxController {
       String uri = '$domain' + 'insert_recharge_card.php';
       var res = await http.post(Uri.parse(uri), body: {
         "Type_id": Type_id,
-        "Card_Name":Card_Name,
+        "Username": Username.value,
+        "Card_Name": Card_Name,
         "Card_Cost": Card_Cost,
-        "Card_Price": Card_Price,  
-        
-
-        
+        "Card_Price": Card_Price,
+        "Balance_Deduction": Balance_Deduction,
+        "SelectedBalanceId": SelectedBalanceId,
+        "Balance_required": Balance_required
       });
       print(Type_id + Card_Name + Card_Cost + Card_Price);
       var response = json.decode(json.encode(res.body));
@@ -46,6 +54,6 @@ class InsertRechargeCard extends GetxController {
       }
     } catch (e) {
       print(e);
-    } 
+    }
   }
 }

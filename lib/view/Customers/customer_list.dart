@@ -5,6 +5,7 @@ import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/model/customer_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
+import 'package:fixnshop_admin/view/Customers/customer_edit.dart';
 import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
 import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
 import 'package:fixnshop_admin/view/home_screen.dart';
@@ -22,7 +23,8 @@ class CustomerList extends StatelessWidget {
     final formatter = NumberFormat('#,##0.00');
     return formatter.format(value);
   }
-    final HomeController homeController = Get.find<HomeController>();
+
+  final HomeController homeController = Get.find<HomeController>();
 
   TextEditingController Customer_Number = TextEditingController();
   @override
@@ -74,7 +76,6 @@ class CustomerList extends StatelessWidget {
         canPop: false,
         onPopInvoked: (didPop) {
           homeController.selectedPageIndex.value = 0;
-
         },
         child: Column(
           children: [
@@ -82,12 +83,12 @@ class CustomerList extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: Customer_Number,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 onChanged: (query) {
                   customerController.customers.refresh();
                 },
                 decoration: InputDecoration(
-                  labelText: 'Search by Number',
+                  labelText: 'Search by Name | Number',
                   prefixIcon: Icon(Icons.search),
                 ),
               ),
@@ -115,128 +116,255 @@ class CustomerList extends StatelessWidget {
                           //     padding: EdgeInsets.all(35),
                           alignment: Alignment.center,
                           child: ListTile(
+                            onTap: () {
+                              Get.to(() => NewInvoice(
+                                    Cus_id: customer.Cus_id.toString(),
+                                    Cus_Name: customer.Cus_Name,
+                                    Cus_Number: customer.Cus_Number,
+                                    Cus_Due: customer.Cus_Due_USD.toString(),
+                                  ));
+                            },
                             title: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(
-                                  Icons.perm_contact_cal,
-                                  color: Colors.blue.shade900,
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.perm_contact_cal,
+                                            color: Colors.blue.shade900,
+                                            size: 13,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            customer.Cus_Name.toUpperCase()
+                                            // +
+                                            // ' -- ' +
+                                            // customer.Product_Code,
+                                            ,
+                                            overflow: TextOverflow.clip,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.attach_money,
+                                                color: Colors.red.shade900,
+                                                size: 12,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                'Due US: ' +
+                                                    addCommasToNumber(customer
+                                                            .Cus_Due_USD)
+                                                        .toString() +
+                                                    ' \$'
+                                                // +
+                                                // ' -- ' +
+                                                // customer.Product_Code,
+                                                ,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  width: 10,
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.phone,
+                                            color: Colors.green.shade900,
+                                            size: 13,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            customer.Cus_Number
+                                            // +
+                                            // ' -- ' +
+                                            // customer.Product_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.attach_money,
+                                            color: Colors.red.shade900,
+                                            size: 12,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Due LB: ' +
+                                                addCommasToNumber(
+                                                        customer.Cus_Due_LB)
+                                                    .toString()
+                                            // +
+                                            // ' -- ' +
+                                            // customer.Product_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  customer.Cus_Name.toUpperCase()
-                                  // +
-                                  // ' -- ' +
-                                  // customer.Product_Code,
-                                  ,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 17),
-                                ),
+                                //Text(customer.Cus_Due_USD.toString()),
                               ],
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Row(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.phone,
-                                          color: Colors.green.shade900,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          customer.Cus_Number
-                                          // +
-                                          // ' -- ' +
-                                          // customer.Product_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.attach_money_sharp,
-                                      color: Colors.red.shade900,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'Due US: ' +
-                                          addCommasToNumber(customer.Cus_Due_USD)
-                                              .toString() +
-                                          ' \$'
-                                      // +
-                                      // ' -- ' +
-                                      // customer.Product_Code,
-                                      ,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13),
-                                    ),
-                                  ],
-                                ),
-                                //Text(customer.Cus_Due_USD.toString()),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.attach_money_sharp,
-                                      color: Colors.red.shade900,
+                                    Expanded(
+                                      child: OutlinedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            //fixedSize: Size(200, 20),
+                                            backgroundColor:
+                                                Colors.red.shade900,
+                                            side: BorderSide(
+                                              width: 2.0,
+                                              color: Colors.red.shade900,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Get.to(() => CustomerEdit(
+                                                  Cus_id: customer.Cus_id
+                                                      .toString(),
+                                                  Cus_Name: customer.Cus_Name,
+                                                  Cus_Number:
+                                                      customer.Cus_Number,
+                                                ));
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Edit',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
+                                                Icons.edit,
+                                                color: Colors.white, size: 15,
+                                                //  'Details',
+                                                //   style: TextStyle(
+                                                //        color: Colors.red),
+                                              ),
+                                            ],
+                                          )),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Text(
-                                      'Due LB: ' +
-                                          addCommasToNumber(customer.Cus_Due_LB)
-                                              .toString() +
-                                          'LL'
-                                      // +
-                                      // ' -- ' +
-                                      // customer.Product_Code,
-                                      ,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13),
+                                    Expanded(
+                                      child: OutlinedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            //fixedSize: Size(200, 20),
+                                            backgroundColor:
+                                                Colors.green.shade900,
+                                            side: BorderSide(
+                                              width: 2.0,
+                                              color: Colors.green.shade900,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Get.to(() => NewInvoice(
+                                                  Cus_id: customer.Cus_id
+                                                      .toString(),
+                                                  Cus_Name: customer.Cus_Name,
+                                                  Cus_Number:
+                                                      customer.Cus_Number,
+                                                  Cus_Due: customer.Cus_Due_USD
+                                                      .toString(),
+                                                ));
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Select',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
+                                                Icons
+                                                    .arrow_circle_right_rounded,
+                                                color: Colors.white, size: 15,
+                                                //  'Details',
+                                                //   style: TextStyle(
+                                                //        color: Colors.red),
+                                              ),
+                                            ],
+                                          )),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                            trailing: OutlinedButton(
-                                onPressed: () {
-                                  // productController.SelectedPhone.value = product;
-                                  //       // subcategoryController.selectedSubCategory.value =
-                                  // //       //     null;
-        
-                                  Get.to(() => NewInvoice(
-                                        Cus_id: customer.Cus_id.toString(),
-                                        Cus_Name: customer.Cus_Name,
-                                        Cus_Number: customer.Cus_Number,
-                                      ));
-                                },
-                                child: Icon(
-                                  Icons.arrow_right,
-                                  color: Colors.blue.shade900,
-                                )),
                           ),
                         );
                       },

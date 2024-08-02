@@ -12,8 +12,10 @@ import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_balances.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_history_manage.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_product_list.dart';
 import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
@@ -145,12 +147,12 @@ class _HomeScreenState extends State<HomeScreen> {
         _selectedDestination = index;
       });
     } else if (index == 3) {
-      Get.to(() => RechargeInvoiceHistory());
+      Get.to(() => RechargeHistoryManage());
       setState(() {
         _selectedDestination = index;
       });
     } else if (index == 4) {
-      Get.to(() => PurchaseHistory());
+      Get.to(() => PurchaseHistoryManage());
       setState(() {
         _selectedDestination = index;
       });

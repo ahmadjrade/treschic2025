@@ -29,7 +29,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // rechargeInvoiceHistoryController.reset();
-
+    rechargeInvoiceHistoryController.CalTotal();
     // rechargeInvoiceHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
@@ -65,20 +65,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-          title: (Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Recharge History'),
-          IconButton(
-              onPressed: () {
-                rechargeInvoiceHistoryController.reset();
-                rechargeInvoiceHistoryController.isDataFetched = false;
-                rechargeInvoiceHistoryController.fetchrechargeInvoice();
-              },
-              icon: Icon(Icons.refresh))
-        ],
-      ))),
+      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -109,290 +96,14 @@ class RechargeInvoiceHistory extends StatelessWidget {
                             ),
                           );
                         }),
-                        // SizedBox(
-                        //   width: 15,
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        //   child: IconButton(
-                        //     icon: Icon(Icons.qr_code_scanner_rounded),
-                        //     color: Colors.black,
-                        //     onPressed: () {
-                        //       barcodeController.scanBarcodeSearch();
-                        //       //.then((value) => set());
-                        //     },
-                        //   ),
-                        // ),
+                       
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Val == 0;
-                  //     // categoryController.f =false;
-                  //     // categoryController.fetchcategories();
-                  //   },
-                  //   child: Icon(CupertinoIcons.list_bullet),
-                  // ),
-
-                  // Obx(
-                  //   () {
-                  //     return Visibility(
-                  //       visible: true,
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 15,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Column(
-                  //                     children: [
-                  //                       Text(
-                  //                         Username.value.toUpperCase() +
-                  //                             ' Store',
-                  //                         style: TextStyle(fontSize: 8),
-                  //                       ),
-                  //                     ],
-                  //                   ),
-                  //                   value: 'this',
-                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Store.value = 'this';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'OTHER STORE',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'other',
-                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Store.value = 'other';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: RechargeInvoiceHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Store.value = 'all';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 15,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'Listed',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'No',
-                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Sold.value = 'No';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'SOLD',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'Yes',
-                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Sold.value = 'Yes';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: RechargeInvoiceHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Sold.value = 'all';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //                SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 15,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'New',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'New',
-                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Condition.value = 'New';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'Used',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'Used',
-                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Condition.value = 'Used';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: RechargeInvoiceHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     RechargeInvoiceHistoryController.Condition.value = 'all';
-                  //                     RechargeInvoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                 
                   SizedBox(
                     height: 5,
                   ),
@@ -402,7 +113,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
                   Obx(
                     () {
                       final List<InvoiceModel> filteredinvoices =
-                          rechargeInvoiceHistoryController.searchPhones(
+                          rechargeInvoiceHistoryController.searchRechargeToday(
                         FilterQuery.text,
                       );
                       if (rechargeInvoiceHistoryController.isLoading.value) {
@@ -454,7 +165,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Invoice #' +
+                                          '#' +
                                               invoice.Invoice_id.toString() +
                                               ' || ',
                                           style: TextStyle(
@@ -697,126 +408,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                             height: 10,
                                           ),
 
-                                          // Text(
-                                          //     'Store: ' +
-                                          //         invoice.Username.toUpperCase() +
-                                          //         ' Store',
-                                          //     style: TextStyle(
-                                          //         fontSize: 13,
-                                          //         color: Colors.black)),
-                                          // Text(
-                                          //   'Sell Price: ' +
-                                          //       invoice.Sell_Price.toString() +
-                                          //       '\$',
-                                          //   style: TextStyle(
-                                          //       color: RechargeInvoiceHistoryController
-                                          //               .issold(invoice.isSold)
-                                          //           ? Colors.black
-                                          //           : Colors.green.shade900),
-                                          // ),
-                                          // Visibility(
-                                          //   visible: RechargeInvoiceHistoryController
-                                          //       .isadmin(Username.value),
-                                          //   child: Text(
-                                          //     'Cost Price: ' +
-                                          //         invoice.Price.toString() +
-                                          //         '\$',
-                                          //     style: TextStyle(
-                                          //         color: RechargeInvoiceHistoryController
-                                          //                 .issold(invoice.isSold)
-                                          //             ? Colors.black
-                                          //             : Colors.red.shade900),
-                                          //   ),
-                                          // ),
-                                          // Visibility(
-                                          //   visible: RechargeInvoiceHistoryController
-                                          //       .isadmin(Username.value),
-                                          //   child: Text(
-                                          //     'Bought From: ' +
-                                          //         invoice.Cus_Name +
-                                          //         ' - ' +
-                                          //         invoice.Cus_Number.toString(),
-                                          //     style: TextStyle(
-                                          //         color: Colors.black),
-                                          //   ),
-                                          // ),
-                                          // Visibility(
-                                          //   visible: RechargeInvoiceHistoryController
-                                          //       .isadmin(Username.value),
-                                          //   child: Text(
-                                          //     'Bought at: ' +
-                                          //         invoice.Buy_Date +
-                                          //         ' - ' +
-                                          //         Format(invoice.Buy_Time),
-                                          //     style: TextStyle(
-                                          //         color: Colors.black),
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Visibility(
-                                    //   visible: RechargeInvoiceHistoryController
-                                    //       .isadmin(Username.value),
-                                    //   child: IconButton(
-                                    //       onPressed: () {
-                                    //         Get.to(() => PhoneEdit(
-                                    //             Phone_id: invoice.Phone_id,
-                                    //             FilterQuery: invoice.FilterQuery,
-                                    //             IMEI: invoice.IMEI,
-                                    //             Cost_Price: invoice.Price,
-                                    //             Sell_Price: invoice.Sell_Price,
-                                    //             Condition:
-                                    //                 invoice.Phone_Condition,
-                                    //             Capacity: invoice.Capacity,
-                                    //             Note: invoice.Note,Color: invoice.Color_id,));
-                                    //       },
-                                    //       icon: Icon(Icons.edit,
-                                    //           color: RechargeInvoiceHistoryController
-                                    //                   .issold(invoice.isSold)
-                                    //               ? Colors.black
-                                    //               : Colors.red)),
-                                    // )
-                                    // Column(
-                                    //   children: [
-                                    //     Text(
-                                    //       invoice.Sell_Price.toString() + '\$',
-                                    //       style: TextStyle(
-                                    //           fontSize: 17,
-                                    //           color: Colors.green.shade900),
-                                    //     ),
-                                    //     Visibility(
-                                    //       visible:
-                                    //           RechargeInvoiceHistoryController.isadmin(Username.value),
-                                    //       child: Text(
-                                    //         invoice.Price.toString() + '\$',
-                                    //         style: TextStyle(
-                                    //             fontSize: 17,
-                                    //             color: Colors.red.shade900),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
-
-                                    // OutlinedButton(
-                                    //     onPressed: () {
-                                    //       // RechargeInvoiceHistoryController.SelectedPhone.value = invoice;
-                                    //       //       // subcategoryController.selectedSubCategory.value =
-                                    //       //       //     null;
-
-                                    //       // Get.to(() => PhonesListDetail(
-                                    //       //       phone_id:
-                                    //       //           invoice.phone_id.toString(),
-                                    //       //       FilterQuery: invoice.FilterQuery,
-                                    //       //       phone_Color: invoice.phone_Color,
-                                    //       //       phone_LPrice:
-                                    //       //           invoice.phone_LPrice.toString(),
-                                    //       //       phone_MPrice:
-                                    //       //           invoice.phone_MPrice.toString(),
-                                    //       //       phone_Code: invoice.phone_Code,
-                                    //       //     ));
-                                    //     },
-                                    //     child: Icon(Icons.arrow_right)),
+                                        ]),),
                                   ],
                                 ),
                               ),
@@ -869,6 +461,46 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Invoices Recieved US:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .totalrecusd.value)
+                                            .toString() +
+                                        '\$',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Invoices Recieved US:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .totalreclb.value)
+                                            .toString() +
+                                        ' LL',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Invoices Recieved TOTAL:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),

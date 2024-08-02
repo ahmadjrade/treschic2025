@@ -409,6 +409,44 @@ class InvoiceHistoryAll extends StatelessWidget {
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
+                                                .totalrecusd_all.value)
+                                            .toString() +
+                                        '\$',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Invoices Recieved LB:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(invoiceHistoryController
+                                                .totalreclb_all.value)
+                                            .toString() +
+                                        'LL',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Invoices Recieved TOTAL:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(invoiceHistoryController
                                                 .totalrec_all.value)
                                             .toString() +
                                         '\$',

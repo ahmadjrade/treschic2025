@@ -12,8 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoiceHistoryYesterday extends StatelessWidget {
-  InvoiceHistoryYesterday({super.key});
+class InvoiceHistoryMonth extends StatelessWidget {
+  InvoiceHistoryMonth({super.key});
 
   final InvoiceHistoryController invoiceHistoryController =
       Get.find<InvoiceHistoryController>();
@@ -26,7 +26,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    invoiceHistoryController.CalTotalYday();
+    invoiceHistoryController.CalTotalMonth();
     // invoiceHistoryController.reset();
 
     // invoiceHistoryController.CalTotal();
@@ -93,14 +93,26 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                             ),
                           );
                         }),
-                        
+                        // SizedBox(
+                        //   width: 14,
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        //   child: IconButton(
+                        //     icon: Icon(Icons.qr_code_scanner_rounded),
+                        //     color: Colors.black,
+                        //     onPressed: () {
+                        //       barcodeController.scanBarcodeSearch();
+                        //       //.then((value) => set());
+                        //     },
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  
                   SizedBox(
                     height: 5,
                   ),
@@ -110,7 +122,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                   Obx(
                     () {
                       final List<InvoiceModel> filteredinvoices =
-                          invoiceHistoryController.SearchInvoicesYesterday(
+                          invoiceHistoryController.SearchInvoicesMonth(
                         FilterQuery.text,
                       );
                       if (invoiceHistoryController.isLoading.value) {
@@ -398,15 +410,17 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                                     .isPaid)
                                                             ? Colors.white
                                                             : Colors.white,
-                                                   
+                                                    //  'Details',
+                                                    //   style: TextStyle(
+                                                    //        color: Colors.red),
                                                   ),
                                                 ],
                                               )),
 
-                                         
                                         ],
                                       ),
                                     ),
+                                    
                                   ],
                                 ),
                               ),
@@ -443,7 +457,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
-                                                .total_yday.value)
+                                                .total_month.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -463,7 +477,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
-                                                .totalrecusd_yday.value)
+                                                .totalrecusd_month.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -482,7 +496,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
-                                                .totalreclb_yday.value)
+                                                .totalreclb_month.value)
                                             .toString() +
                                         'LL',
                                     style: TextStyle(
@@ -501,7 +515,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
-                                                .totalrec_yday.value)
+                                                .totalrec_month.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -521,7 +535,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
-                                                .totaldue_yday.value)
+                                                .totaldue_month.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(

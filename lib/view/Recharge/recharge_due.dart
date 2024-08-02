@@ -408,7 +408,7 @@ class RechargeDue extends StatelessWidget {
                   Obx(
                     () {
                       final List<InvoiceModel> filteredinvoices =
-                          rechargeInvoiceHistoryController.SearchDuePurchases(
+                          rechargeInvoiceHistoryController.searchDueRecharge  (
                         FilterQuery.text,
                       );
                       if (rechargeInvoiceHistoryController.isLoading.value) {

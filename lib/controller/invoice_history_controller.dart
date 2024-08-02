@@ -50,7 +50,7 @@ class InvoiceHistoryController extends GetxController {
   }
   void reset() {
     total.value = 0;
-    totalrec.value = 0;
+    totalrecusd.value = 0;
     totaldue.value = 0;
   }
 
@@ -93,6 +93,7 @@ class InvoiceHistoryController extends GetxController {
   final DateTimeController dateController = DateTimeController();
   String formattedDate = '';
   String formattedTime = '';
+  
 
   List<InvoiceModel> SearchInvoices(String query) {
     String dateString = dateController.getFormattedDate();
@@ -163,6 +164,30 @@ class InvoiceHistoryController extends GetxController {
         .toList();
   }
 
+List<InvoiceModel> SearchInvoicesMonth(String query) {
+  DateTime now = DateTime.now(); // Get today's date
+  int getMonthNumber(DateTime date) {
+  return date.month;
+}
+  int monthNumber = getMonthNumber(now);
+  
+
+  Username = sharedPreferencesController.username;
+
+  return invoices
+      .where((invoice) =>
+          (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
+              invoice.Username == Username.value &&
+              invoice.Invoice_Date.contains(formattedDate) ||
+          invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+              invoice.Username == Username.value &&
+              invoice.Invoice_Date.contains(formattedDate) ||
+          invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+              invoice.Username == Username.value &&
+              invoice.Invoice_Date.contains(formattedDate))
+      .toList();
+  }
+
   List<InvoiceModel> SearchDueInvoices(String query) {
     String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
@@ -187,17 +212,31 @@ class InvoiceHistoryController extends GetxController {
   }
 
   RxDouble total = 0.0.obs;
-  RxDouble totalrec = 0.0.obs;
+  RxDouble totalrecusd = 0.0.obs;
   RxDouble totaldue = 0.0.obs;
+  RxDouble totalreclb = 0.0.obs;
+    RxDouble totalrec = 0.0.obs;
 
 
   RxDouble total_yday = 0.0.obs;
-  RxDouble totalrec_yday  = 0.0.obs;
+  RxDouble totalrecusd_yday  = 0.0.obs;
   RxDouble totaldue_yday  = 0.0.obs;
+RxDouble totalreclb_yday  = 0.0.obs;
+RxDouble totalrec_yday  = 0.0.obs;
 
    RxDouble total_all = 0.0.obs;
-  RxDouble totalrec_all  = 0.0.obs;
+  RxDouble totalrecusd_all  = 0.0.obs;
   RxDouble totaldue_all = 0.0.obs;
+  RxDouble totalreclb_all  = 0.0.obs;
+  RxDouble totalrec_all  = 0.0.obs;
+
+
+     RxDouble total_month = 0.0.obs;
+  RxDouble totalrecusd_month  = 0.0.obs;
+  RxDouble totaldue_month = 0.0.obs;
+  RxDouble totalreclb_month  = 0.0.obs;
+  RxDouble totalrec_month  = 0.0.obs;
+
   void CalTotal() {
     Username = sharedPreferencesController.username;
     String dateString = dateController.getFormattedDate();
@@ -209,8 +248,10 @@ class InvoiceHistoryController extends GetxController {
     formattedTime = dateController.getFormattedTime();
     Username = sharedPreferencesController.username;
     total.value = 0;
-    totalrec.value = 0;
+    totalrecusd.value = 0;
     totaldue.value = 0;
+    totalreclb.value = 0;
+    totalrec.value = 0;
 
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
@@ -219,13 +260,57 @@ class InvoiceHistoryController extends GetxController {
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total.value += totalofinvoices[i].Invoice_Total_Usd;
-      totalrec.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totalrecusd.value += totalofinvoices[i].Invoice_Rec_Usd;
       totaldue.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb.value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec.value += totalofinvoices[i].Invoice_Rec_Lb/totalofinvoices[i].Inv_Rate + totalofinvoices[i].Invoice_Rec_Usd;
     }
   } 
+
+
+   void CalTotalMonth() {
+    total_month.value = 0;
+    totaldue_month.value = 0;
+    totalrecusd_month.value = 0;
+    totalreclb_month.value = 0;
+    totalrec_month.value = 0;
+    Username = sharedPreferencesController.username;
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+  
+    // print(formattedDate);
+   DateTime now = DateTime.now();
+  DateTime yesterday = now.subtract(Duration(days: 1));
+
+  // Format the date for yesterday
+  String day = yesterday.day.toString().padLeft(2, '0');
+  String month = yesterday.month.toString().padLeft(2, '0');
+  String year = yesterday.year.toString();
+
+  formattedDate = '$year-$month-$day';
+  formattedTime = dateController.getFormattedTime();
+
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Date.contains(formattedDate))
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_month .value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_month .value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_month .value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_month .value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec_month .value += totalofinvoices[i].Invoice_Rec_Lb/totalofinvoices[i].Inv_Rate + totalofinvoices[i].Invoice_Rec_Usd;
+
+
+    }
+  }
+
   void CalTotalYday() {
     total_yday.value = 0;
     totaldue_yday.value = 0;
+    totalrecusd_yday.value = 0;
+    totalreclb_yday.value = 0;
     totalrec_yday.value = 0;
     Username = sharedPreferencesController.username;
     String dateString = dateController.getFormattedDate();
@@ -250,17 +335,24 @@ class InvoiceHistoryController extends GetxController {
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total_yday .value += totalofinvoices[i].Invoice_Total_Usd;
-      totalrec_yday .value += totalofinvoices[i].Invoice_Rec_Usd;
+      totalrecusd_yday .value += totalofinvoices[i].Invoice_Rec_Usd;
       totaldue_yday .value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_yday .value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec_yday .value += totalofinvoices[i].Invoice_Rec_Lb/totalofinvoices[i].Inv_Rate + totalofinvoices[i].Invoice_Rec_Usd;
+
+
     }
   }
   void CalTotalall() {
     total_all.value = 0;
     totaldue_all.value = 0;
-    totalrec_all.value = 0;
+    totalrecusd_all.value = 0;
+    totalreclb_all.value = 0;
+    totalrec_all.value = 0 ;
+
     Username = sharedPreferencesController.username;
 
-    total.value = 0;
+
   
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
@@ -269,8 +361,12 @@ class InvoiceHistoryController extends GetxController {
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total_all .value += totalofinvoices[i].Invoice_Total_Usd;
-      totalrec_all .value += totalofinvoices[i].Invoice_Rec_Usd;
+      totalrecusd_all .value += totalofinvoices[i].Invoice_Rec_Usd;
       totaldue_all .value += totalofinvoices[i].Invoice_Due_USD;
+            totalreclb_all .value += totalofinvoices[i].Invoice_Rec_Lb;
+
+      totalrec_all .value += totalofinvoices[i].Invoice_Rec_Lb/totalofinvoices[i].Inv_Rate + totalofinvoices[i].Invoice_Rec_Usd;
+
     }
   }
   void fetchinvoices() async {

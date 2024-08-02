@@ -3,6 +3,7 @@
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
@@ -11,17 +12,18 @@ import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_month.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_yesterday.dart';
 import 'package:fixnshop_admin/view/Invoices/tab_item.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoiceHistoryManage extends StatelessWidget {
-  InvoiceHistoryManage({super.key});
+class PurchaseHistoryManage extends StatelessWidget {
+  PurchaseHistoryManage({super.key});
 
-  final InvoiceHistoryController invoiceHistoryController =
-      Get.find<InvoiceHistoryController>();
+  final PurchaseHistoryController purchaseHistoryController =
+      Get.find<PurchaseHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -45,9 +47,9 @@ class InvoiceHistoryManage extends StatelessWidget {
     // Getting the name of the day for yesterday
      Yesterday = DateFormat('EEEE').format(yday);
 
-    // invoiceHistoryController.reset();
+    // purchaseHistoryController.reset();
 
-    // invoiceHistoryController.CalTotal();
+    // purchaseHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -91,14 +93,14 @@ class InvoiceHistoryManage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween ,
             children: [
               Text(
-                'Invoice History',
+                'Purchase History',
                 style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
               ),
                IconButton(
               onPressed: () {
-                invoiceHistoryController.reset();
-                invoiceHistoryController.isDataFetched = false;
-                invoiceHistoryController.fetchinvoices();
+                purchaseHistoryController.reset();
+                purchaseHistoryController.isDataFetched = false;
+                purchaseHistoryController.fetchpurchases();
               },
               icon: Icon(Icons.refresh))
             ],
@@ -140,11 +142,11 @@ class InvoiceHistoryManage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: TabBarView(
                           children: [
-                            InvoiceHistory(), // Page for "Today" tab
-                            InvoiceHistoryYesterday(),
-                            InvoiceHistoryMonth(), // Page for "Yesterday" tab
+                            PurchaseHistory(), // Page for "Today" tab
+                            PurchaseHistory(),
+                            PurchaseHistory(), // Page for "Yesterday" tab
  // Page for "Yesterday" tab
-                            InvoiceHistoryAll(), // Page for "All" tab
+                            PurchaseHistory(), // Page for "All" tab
                           ],
                         ),
               ),

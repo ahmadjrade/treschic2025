@@ -3,20 +3,22 @@
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:fixnshop_admin/view/Recharge/recharge_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoiceHistoryYesterday extends StatelessWidget {
-  InvoiceHistoryYesterday({super.key});
+class RechargeInvoiceHistoryYesterday extends StatelessWidget {
+  RechargeInvoiceHistoryYesterday({super.key});
 
-  final InvoiceHistoryController invoiceHistoryController =
-      Get.find<InvoiceHistoryController>();
+  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
+      Get.find<RechargeInvoiceHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -26,10 +28,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    invoiceHistoryController.CalTotalYday();
-    // invoiceHistoryController.reset();
-
-    // invoiceHistoryController.CalTotal();
+    // rechargeInvoiceHistoryController.reset();
+      rechargeInvoiceHistoryController.CalTotalYday();
+    // rechargeInvoiceHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -64,7 +65,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
     }
 
     return Scaffold(
-   
+      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -83,7 +84,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                invoiceHistoryController.invoices.refresh();
+                                rechargeInvoiceHistoryController
+                                    .recharge_invoices
+                                    .refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -93,14 +96,14 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                             ),
                           );
                         }),
-                        
+                       
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  
+                 
                   SizedBox(
                     height: 5,
                   ),
@@ -110,12 +113,13 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                   Obx(
                     () {
                       final List<InvoiceModel> filteredinvoices =
-                          invoiceHistoryController.SearchInvoicesYesterday(
+                          rechargeInvoiceHistoryController.SearchRechargeYesterday(
                         FilterQuery.text,
                       );
-                      if (invoiceHistoryController.isLoading.value) {
+                      if (rechargeInvoiceHistoryController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (invoiceHistoryController.invoices.isEmpty) {
+                      } else if (rechargeInvoiceHistoryController
+                          .recharge_invoices.isEmpty) {
                         return Center(
                             child: Text('No Invoices Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
@@ -131,12 +135,12 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                 filteredinvoices[index];
                             return Container(
                               //  width: double.infinity,
-                              //   height: 140.0,
-                              color: invoiceHistoryController
+                              //   height: 150.0,
+                              color: rechargeInvoiceHistoryController
                                       .ispaid(invoice.isPaid)
                                   ? Colors.grey.shade300
                                   : Colors.red.shade100,
-                              margin: EdgeInsets.fromLTRB(14, 0, 14, 10),
+                              margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
                               //     padding: EdgeInsets.all(35),
                               alignment: Alignment.center,
                               child: ListTile(
@@ -166,7 +170,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 17),
+                                              fontSize: 15),
                                         ),
                                         Text(
                                           invoice.Cus_Name! +
@@ -178,15 +182,16 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 17),
+                                              fontSize: 15),
                                         ),
                                         Spacer(),
                                         Icon(
                                           Icons.paid,
-                                          color: invoiceHistoryController
-                                                  .ispaid(invoice.isPaid)
-                                              ? Colors.green.shade900
-                                              : Colors.red.shade900,
+                                          color:
+                                              rechargeInvoiceHistoryController
+                                                      .ispaid(invoice.isPaid)
+                                                  ? Colors.green.shade900
+                                                  : Colors.red.shade900,
                                         )
                                       ],
                                     ),
@@ -199,7 +204,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                           // invoice.phone_Code,
                                           ,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w300,
                                               fontSize: 12),
                                         ),
                                         Text(
@@ -209,7 +214,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                           // invoice.phone_Code,
                                           ,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w300,
                                               fontSize: 12),
                                         ),
                                         Text(
@@ -221,7 +226,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                           // invoice.phone_Code,
                                           ,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w300,
                                               fontSize: 12),
                                         ),
                                       ],
@@ -257,7 +262,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Colors
                                                             .blue.shade900),
                                                   ),
@@ -268,7 +273,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Colors
                                                             .blue.shade900),
                                                   ),
@@ -279,7 +284,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Colors
                                                             .green.shade900),
                                                   ),
@@ -290,7 +295,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Colors
                                                             .green.shade900),
                                                   ),
@@ -301,7 +306,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Colors
                                                             .red.shade900),
                                                   ),
@@ -312,7 +317,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
-                                                        fontSize: 14,
+                                                        fontSize: 13,
                                                         color: Colors
                                                             .red.shade900),
                                                   ),
@@ -320,17 +325,15 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           OutlinedButton(
                                               style: ElevatedButton.styleFrom(
                                                 fixedSize:
                                                     Size(double.maxFinite, 20),
                                                 backgroundColor:
-                                                    invoiceHistoryController
+                                                    rechargeInvoiceHistoryController
                                                             .ispaid(
                                                                 invoice.isPaid)
                                                         ? Colors.green.shade900
@@ -338,7 +341,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                 side: BorderSide(
                                                   width: 2.0,
                                                   color:
-                                                      invoiceHistoryController
+                                                      rechargeInvoiceHistoryController
                                                               .ispaid(invoice
                                                                   .isPaid)
                                                           ? Colors
@@ -353,12 +356,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                               ),
                                               onPressed: () {
                                                 Get.to(
-                                                    () => InvoiceHistoryItems(
-                                                          Invoice_id:
+                                                    () => RechargeHistoryItems(
+                                                          Recharge_id:
                                                               invoice.Invoice_id
-                                                                  .toString(),
-                                                          Customer_id:
-                                                              invoice.Cus_id
                                                                   .toString(),
                                                           Customer_Name:
                                                               invoice.Cus_Name
@@ -393,20 +393,22 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                     Icons
                                                         .arrow_circle_right_rounded,
                                                     color:
-                                                        invoiceHistoryController
+                                                        rechargeInvoiceHistoryController
                                                                 .ispaid(invoice
                                                                     .isPaid)
                                                             ? Colors.white
                                                             : Colors.white,
-                                                   
+                                                    //  'Details',
+                                                    //   style: TextStyle(
+                                                    //        color: Colors.red),
                                                   ),
                                                 ],
                                               )),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
 
-                                         
-                                        ],
-                                      ),
-                                    ),
+                                        ]),),
                                   ],
                                 ),
                               ),
@@ -429,7 +431,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                     child: Card(
                       child: Container(
                         child: Padding(
-                          padding: const EdgeInsets.all(14.0),
+                          padding: const EdgeInsets.all(15.0),
                           child: Column(
                             children: [
                               Row(
@@ -442,8 +444,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .total_yday.value)
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .total_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -462,8 +465,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalrecusd_yday.value)
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .totalrecusd_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -471,26 +475,27 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ), Row(
+                              ),Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Recieved LB:',
+                                    'Invoices Recieved US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalreclb_yday.value)
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .totalreclb_yday.value)
                                             .toString() +
-                                        'LL',
+                                        ' LL',
                                     style: TextStyle(
                                         color: Colors.green.shade900,
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ), Row(
+                              ),Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -500,8 +505,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalrec_yday.value)
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .totalrec_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -520,8 +526,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totaldue_yday.value)
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .totaldue_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -539,7 +546,7 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                 }),
               ),
               SizedBox(
-                height: 14,
+                height: 15,
               )
             ],
           ),

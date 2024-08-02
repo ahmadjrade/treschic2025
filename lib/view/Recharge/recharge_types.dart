@@ -418,7 +418,8 @@ class RechargeTypes extends StatelessWidget {
           ),
           SizedBox(
             height: 10,
-          ),Padding(
+          ),
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: OutlinedButton(
                       style: ElevatedButton.styleFrom(

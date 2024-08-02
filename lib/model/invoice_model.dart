@@ -21,7 +21,9 @@ class InvoiceModel {
   final int isPaid;
   final String? Invoice_Type;
   final String Username;
-  
+    final double Inv_Rate;
+    final int Invoice_Month;
+
   // RxDouble _product_MPrice; // Use RxDouble for reactive price
   // final int Product_Cat_id;
   // final int Product_Sub_Cat_id;
@@ -46,7 +48,9 @@ class InvoiceModel {
     required this.isPaid,
     required this.Invoice_Type,
     required this.Username,
-   
+       required this.Inv_Rate,
+       required this.Invoice_Month,
+
 
   });
   // :
@@ -76,6 +80,9 @@ class InvoiceModel {
         isPaid: json['isPaid'],
         Invoice_Type: json['Invoice_Type'],
         Username: json['Username'],
+                 Inv_Rate: json['Inv_Rate'].toDouble(),
+        Invoice_Month: json['Invoice_Month'],
+
 );
         
   }

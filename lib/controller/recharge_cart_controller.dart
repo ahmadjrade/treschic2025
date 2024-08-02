@@ -630,6 +630,8 @@ class RechargeCartController extends GetxController {
           'Invoice_Date': formattedDate,
           'Invoice_Time': formattedTime,
           'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
+          'Invoice_Rate': rateController.rateValue.value,
+
           'invoiceItems': invoiceData,
         }),
         headers: {'Content-Type': 'application/json'},

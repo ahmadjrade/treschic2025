@@ -66,20 +66,7 @@ class PurchaseHistory extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-          title: (Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Purchase History'),
-          IconButton(
-              onPressed: () {
-                purchaseHistoryController.reset();
-                purchaseHistoryController.isDataFetched = false;
-                purchaseHistoryController.fetchpurchases();
-              },
-              icon: Icon(Icons.refresh))
-        ],
-      ))),
+      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

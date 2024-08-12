@@ -25,6 +25,7 @@ class InvoiceDue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    invoiceHistoryController.CalTotalall();
     // invoiceHistoryController.reset();
 
     // invoiceHistoryController.CalTotal();
@@ -1071,46 +1072,7 @@ class InvoiceDue extends StatelessWidget {
                           padding: const EdgeInsets.all(14.0),
                           child: Column(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Total US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .total.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Recieved US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalrec.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
+                             
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1122,7 +1084,7 @@ class InvoiceDue extends StatelessWidget {
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
-                                                .totaldue.value)
+                                                .totaldue_all.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(

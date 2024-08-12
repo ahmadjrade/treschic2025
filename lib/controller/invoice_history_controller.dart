@@ -178,13 +178,13 @@ List<InvoiceModel> SearchInvoicesMonth(String query) {
       .where((invoice) =>
           (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
               invoice.Username == Username.value &&
-              invoice.Invoice_Date.contains(formattedDate) ||
+              invoice.Invoice_Month == (monthNumber) ||
           invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
               invoice.Username == Username.value &&
-              invoice.Invoice_Date.contains(formattedDate) ||
+              invoice.Invoice_Month == (monthNumber) ||
           invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
               invoice.Username == Username.value &&
-              invoice.Invoice_Date.contains(formattedDate))
+             invoice.Invoice_Month == (monthNumber))
       .toList();
   }
 
@@ -281,7 +281,10 @@ RxDouble totalrec_yday  = 0.0.obs;
     // print(formattedDate);
    DateTime now = DateTime.now();
   DateTime yesterday = now.subtract(Duration(days: 1));
-
+  int getMonthNumber(DateTime date) {
+  return date.month;
+}
+  int monthNumber = getMonthNumber(now);
   // Format the date for yesterday
   String day = yesterday.day.toString().padLeft(2, '0');
   String month = yesterday.month.toString().padLeft(2, '0');
@@ -293,7 +296,7 @@ RxDouble totalrec_yday  = 0.0.obs;
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
             invoice.Username == Username.value &&
-            invoice.Invoice_Date.contains(formattedDate))
+            invoice.Invoice_Month == (monthNumber))
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total_month .value += totalofinvoices[i].Invoice_Total_Usd;

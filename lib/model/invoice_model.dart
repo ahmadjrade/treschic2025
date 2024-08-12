@@ -80,7 +80,7 @@ class InvoiceModel {
         isPaid: json['isPaid'],
         Invoice_Type: json['Invoice_Type'],
         Username: json['Username'],
-                 Inv_Rate: json['Inv_Rate'].toDouble(),
+        Inv_Rate: json['Inv_Rate'].toDouble(),
         Invoice_Month: json['Invoice_Month'],
 
 );

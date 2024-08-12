@@ -27,6 +27,7 @@ class RechargeDue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    rechargeInvoiceHistoryController.CalTotalall();
     // rechargeInvoiceHistoryController.reset();
 
     // rechargeInvoiceHistoryController.CalTotal();
@@ -75,7 +76,7 @@ class RechargeDue extends StatelessWidget {
           title: (Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('invoice Due'),
+          Text('Recharge Invoice Due'),
           IconButton(
               onPressed: () {
                 rechargeInvoiceHistoryController.reset();
@@ -1056,48 +1057,7 @@ class RechargeDue extends StatelessWidget {
                           padding: const EdgeInsets.all(14.0),
                           child: Column(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'invoices Total US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .total.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'invoices Recieved US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(
-                                                rechargeInvoiceHistoryController
-                                                    .totalrec.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
+                              
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1110,7 +1070,7 @@ class RechargeDue extends StatelessWidget {
                                   Text(
                                     addCommasToNumber(
                                                 rechargeInvoiceHistoryController
-                                                    .totaldue.value)
+                                                    .totaldue_all.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(

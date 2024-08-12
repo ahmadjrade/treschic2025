@@ -21,6 +21,7 @@ class PurchaseModel {
   final int isPaid;
 
   final String Username;
+  final int Month;
 
   // RxDouble _product_MPrice; // Use RxDouble for reactive price
   // final int Product_Cat_id;
@@ -45,6 +46,7 @@ class PurchaseModel {
     required this.Purchase_Time,
     required this.isPaid,
     required this.Username,
+    required this.Month
   });
   // :
   //  _product_MPrice = Product_MPrice.obs; // Initialize RxDouble
@@ -71,7 +73,9 @@ class PurchaseModel {
       Supplier_Number: json['Supplier_Number'],
       Purchase_Time: json['Purchase_Time'],
       isPaid: json['isPaid'],
-      Username: json['Username'],
+      Username: json['Username'],  
+          Month: json['Month'],
+
     );
   }
 }

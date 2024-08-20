@@ -482,7 +482,7 @@ class RechargeInvoiceHistory extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Recieved US:',
+                                    'Invoices Recieved LB:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),

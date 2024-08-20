@@ -1080,7 +1080,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                                   .then((value) =>
                                       showToast(invoiceController.result))
                                   .then((value) => CheckPrinter(widget.Cus_Name,
-                                      widget.Cus_Number, widget.Cus_Due));
+                                      widget.Cus_Number, widget.Cus_Due)).then((value)=> invoiceHistoryController.CalTotal_fhome());
                             } else {
                               showDialog(
                                   // The user CANNOT close this dialog  by pressing outsite it
@@ -1128,7 +1128,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                                       .then((value) => invoiceController.reset())
                                       .then((value) => invoiceController.reset())
                                       .then((value) => Navigator.pop(context))
-                                      .then((value) => Navigator.pop(context)));
+                                      .then((value) => Navigator.pop(context)).then((value)=> invoiceHistoryController.CalTotal_fhome()));
                             }
                           } else {
                             //    showToast('Add Products');

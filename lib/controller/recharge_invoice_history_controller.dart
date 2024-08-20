@@ -243,6 +243,43 @@ RxDouble totalrec_yday  = 0.0.obs;
   RxDouble totalreclb_month  = 0.0.obs;
   RxDouble totalrec_month  = 0.0.obs;
 
+
+
+  RxDouble total_fhome = 0.0.obs;
+  RxDouble totalrecusd_fhome  = 0.0.obs;
+  RxDouble totaldue_fhome  = 0.0.obs;
+  RxDouble totalreclb_fhome  = 0.0.obs;
+    RxDouble totalrec_fhome  = 0.0.obs;
+  void CalTotal_fhome() {
+    Username = sharedPreferencesController.username;
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    // print(formattedDate);
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+    total_fhome.value = 0;
+    totalrecusd_fhome.value = 0;
+    totaldue_fhome.value = 0;
+    totalreclb_fhome.value = 0;
+    totalrec_fhome.value = 0;
+
+    List<InvoiceModel> totalofinvoices = recharge_invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Date.contains(formattedDate))
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_fhome.value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_fhome.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_fhome.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_fhome.value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec_fhome.value += totalofinvoices[i].Invoice_Rec_Lb/totalofinvoices[i].Inv_Rate + totalofinvoices[i].Invoice_Rec_Usd;
+    }
+  } 
+
   void CalTotal() {
     Username = sharedPreferencesController.username;
     String dateString = dateController.getFormattedDate();

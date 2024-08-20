@@ -1181,6 +1181,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                   .then((value) =>
                                       showToast(rechargeCartController.result))
                                   .then((value) => refresh_history()
+                                  
                                       .then((value) => rechargeCartController
                                           .isDataFetched = false)
                                       .then((value) => rechargeCartController
@@ -1191,11 +1192,13 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                           rechargeCartController.reset())
                                       .then((value) =>
                                           rechargeCartController.reset())
+                                          
                                       .then((value) =>
                                           Navigator.of(context).pop())
                                       .then(
                                           (value) => Navigator.of(context).pop())
-                                      .then((value) => Navigator.of(context).pop()));
+                                      .then((value) => Navigator.of(context).pop()).then((value) => rechargeInvoiceHistoryController
+                                          .CalTotal_fhome()));
                             }
                           } else {
                             Get.snackbar('No Products Added!', 'Add Products ');

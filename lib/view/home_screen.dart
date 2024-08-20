@@ -2,11 +2,14 @@
 
 import 'dart:typed_data';
 
+import 'package:dotted_line/dotted_line.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
+import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/model/recharge_balance_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
@@ -41,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<RechargeInvoiceHistoryController>();
   final InvoiceHistoryController invoiceHistoryController =
       Get.find<InvoiceHistoryController>();
+       final RechargeBalanceController rechargeBalanceController =
+      Get.find<RechargeBalanceController>();
+      
   int _selectedDestination = 0;
   RxString Username = ''.obs;
   FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
@@ -185,11 +191,23 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else {}
   }
+  Future<void> refresh_recharge() async {
+  rechargeInvoiceHistoryController.isDataFetched = false;
+  rechargeInvoiceHistoryController.fetchrechargeInvoice();
 
+
+
+  }
+  Future<void> refresh_invoice() async {
+  invoiceHistoryController.isDataFetched = false;
+  invoiceHistoryController.fetchinvoices();
+
+
+
+  }
   @override
   Widget build(BuildContext context) {
     Username = sharedPreferencesController.username;
-
     // invoiceHistoryController.reset();
     //     invoiceHistoryController.isDataFetched = false;
     //     invoiceHistoryController.fetchinvoices();
@@ -199,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -208,6 +226,12 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 IconButton(
                   onPressed: () {
+                    rechargeBalanceController.isDataFetched = false;
+                  rechargeBalanceController.fetch_cart_types();
+                    refresh_recharge().then((value) => rechargeInvoiceHistoryController.CalTotal_fhome());
+  rechargeBalanceController.fetch_cart_types();
+                    refresh_invoice().then((value) => invoiceHistoryController.CalTotal_fhome());
+
                     // invoiceHistoryController.reset();
                     // invoiceHistoryController.isDataFetched = false;
                     // invoiceHistoryController.fetchinvoices();
@@ -260,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         //  backgroundColor: Colors.deepPurple.shade300,
       ),
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       //drawer: Navigat,
       drawer: Drawer(
         child: ListView(
@@ -372,6 +396,39 @@ class _HomeScreenState extends State<HomeScreen> {
             Divider(
               height: 1,
               thickness: 1,
+            ), Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Payments',
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.payment),
+              title: Text('Invoice Payments'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 5,
+              onTap: () => selectDestination(5),
+            ),
+            ListTile(
+              leading: Icon(Icons.payment),
+              title: Text('Purchase Payments'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 6,
+              onTap: () => selectDestination(6),
+            ),
+            ListTile(
+              leading: Icon(Icons.payment),
+              title: Text('Recharge Payments'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 7,
+              onTap: () => selectDestination(7),
+            ),
+            Divider(
+              height: 1,
+              thickness: 1,
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -398,306 +455,260 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
+    
       body: PopScope(
         canPop: false,
-        onPopInvoked: (didPop) {},
         child: SafeArea(
             child: Center(
           child: Column(
+            mainAxisAlignment:MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                height: 20,
-              ),
-              //          Obx(() {
-              //   if (dailyIncomeController.isLoading.value) {
-              //     return Center(child: CircularProgressIndicator());
-              //   } else {
-              //     return ListView.builder(
-              //       itemCount: dailyIncomeController.daily_income.length,
-              //       itemBuilder: (context, index) {
-              //         var invoice = dailyIncomeController.daily_income[index];
-              //         return ListTile(
-              //           title: Text(invoice.source),
-              //           subtitle: Column(
-              //             crossAxisAlignment: CrossAxisAlignment.start,
-              //             children: [
-              //               Text('Total USD: ${invoice.totalUsd}'),
-              //               Text('Received USD: ${invoice.iRecUsd}'),
-              //               Text('Received LB: ${invoice.recLb}'),
-              //               Text('Due USD: ${invoice.iDueUsd}'),
-              //               Text('Sum Received: ${invoice.iSumRec}'),
-              //             ],
-              //           ),
-              //         );
-              //       },
-              //     );
-              //   }
-              // }),
+             
+              Column(
+                children: [
+                  SizedBox(height: 12,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: InputDecorator(
+                              decoration: InputDecoration(
+                                labelText: 'Recharge Balances',
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(color: Colors.black)),
+                              ),
+                        child: Obx(
+                        () {
+                          final List<RechargeBalanceModel> filteredcarts =
+                              rechargeBalanceController.searchTypes(Username.value);
+                          if (rechargeBalanceController.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (rechargeBalanceController.balance.isEmpty) {
+                            return Center(
+                                child: Text('No Recharge Balances Yet ! Add Some '));
+                          } else {
+                            return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: filteredcarts.length,
+                              itemBuilder: (context, index) {
+                                final RechargeBalanceModel balance = filteredcarts[index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal:  10.0),
+                                  child: Card(
+                                    child: Container(
+                                      
+                                      alignment: Alignment.center,
+                                      child: 
+                                       
+                                        
+                                            Padding(
+                                              padding: const EdgeInsets.all(15.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      
+                                                      Text(
+                                                        balance.Credit_Type
+                                                      
+                                                        ,
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                             ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Text(
+                                                    addCommasToNumber(balance.Credit_Balance)
+                                                        .toString()
+                                                    // +
+                                                    // ' -- ' +
+                                                    // balance.cart_Code,
+                                                    ,
+                                                    style: TextStyle(
+                                                color: Colors.green.shade900,
+                                                fontWeight: FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                           
+                                          
+                                        
+                                       
+                                      
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
+                                          ),
+                      ),
+                    ), 
+                  Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: DottedLine(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.center,
+                    lineLength: double.infinity,
+                    lineThickness: 2.0,
+                    dashLength: 4.0,
+                    dashColor: Colors.black,
+                    dashGradient: [Colors.black, Colors.black],
+                    dashRadius: 1.0,
+                    dashGapLength: 1.0,
+                    dashGapColor: Colors.transparent,
+                    dashGapGradient: [Colors.white, Colors.white],
+                    dashGapRadius: 1.0,
+                  ),
+                ),
 
-              // Visibility(
-              //   visible: true,
-              //   child: Obx(() {
-              //     return Padding(
-              //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              //         child: Card(
-              //           child: Container(
-              //             width: double.infinity,
-              //             //     height: double.maxFinite,
-              //             child: InputDecorator(
-              //               decoration: InputDecoration(
-              //                 labelText: 'Recharge',
-              //                 enabledBorder: OutlineInputBorder(
-              //                     borderRadius: BorderRadius.circular(15.0),
-              //                     borderSide: BorderSide(color: Colors.black)),
-              //               ),
-              //               child: Padding(
-              //                 padding: const EdgeInsets.all(15.0),
-              //                 child: Column(
-              //                   children: [
-              //                     Row(
-              //                       mainAxisAlignment:
-              //                           MainAxisAlignment.spaceBetween,
-              //                       children: [
-              //                         Text(
-              //                           'Invoices Total US:',
-              //                           style: TextStyle(
-              //                               fontWeight: FontWeight.bold),
-              //                         ),
-              //                         Row(
-              //                           children: [
-              //                             Visibility(
-              //                                 visible:
-              //                                     rechargeInvoiceHistoryController
-              //                                         .isLoading.value,
-              //                                 child: CircularProgressIndicator()),
-              //                             Visibility(
-              //                               visible:
-              //                                   !rechargeInvoiceHistoryController
-              //                                       .isLoading.value,
-              //                               child: Text(
-              //                                 addCommasToNumber(
-              //                                             rechargeInvoiceHistoryController
-              //                                                 .total.value)
-              //                                         .toString() +
-              //                                     '\$',
-              //                                 style: TextStyle(
-              //                                     color: Colors.blue.shade900,
-              //                                     fontWeight: FontWeight.bold),
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         )
-              //                       ],
-              //                     ),
-              //                     Row(
-              //                       mainAxisAlignment:
-              //                           MainAxisAlignment.spaceBetween,
-              //                       children: [
-              //                         Text(
-              //                           'Invoices Recieved US:',
-              //                           style: TextStyle(
-              //                               fontWeight: FontWeight.bold),
-              //                         ),
-              //                         Row(
-              //                           children: [
-              //                             Visibility(
-              //                                 visible:
-              //                                     rechargeInvoiceHistoryController
-              //                                         .isLoading.value,
-              //                                 child: CircularProgressIndicator()),
-              //                             Visibility(
-              //                               visible:
-              //                                   !rechargeInvoiceHistoryController
-              //                                       .isLoading.value,
-              //                               child: Text(
-              //                                 addCommasToNumber(
-              //                                             rechargeInvoiceHistoryController
-              //                                                 .totalrec.value)
-              //                                         .toString() +
-              //                                     '\$',
-              //                                 style: TextStyle(
-              //                                     color: Colors.green.shade900,
-              //                                     fontWeight: FontWeight.bold),
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         )
-              //                       ],
-              //                     ),
-              //                     Row(
-              //                       mainAxisAlignment:
-              //                           MainAxisAlignment.spaceBetween,
-              //                       children: [
-              //                         Text(
-              //                           'Invoices Due US:',
-              //                           style: TextStyle(
-              //                               fontWeight: FontWeight.bold),
-              //                         ),
-              //                         Row(
-              //                           children: [
-              //                             Visibility(
-              //                                 visible:
-              //                                     rechargeInvoiceHistoryController
-              //                                         .isLoading.value,
-              //                                 child: CircularProgressIndicator()),
-              //                             Visibility(
-              //                               visible:
-              //                                   !rechargeInvoiceHistoryController
-              //                                       .isLoading.value,
-              //                               child: Text(
-              //                                 addCommasToNumber(
-              //                                             rechargeInvoiceHistoryController
-              //                                                 .totaldue.value)
-              //                                         .toString() +
-              //                                     '\$',
-              //                                 style: TextStyle(
-              //                                     color: Colors.red.shade900,
-              //                                     fontWeight: FontWeight.bold),
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         )
-              //                       ],
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ));
-              //   }),
-              // ),
-              // SizedBox(
-              //   height: 20,
-              // ),
-              // Visibility(
-              //   visible: true,
-              //   child: Obx(() {
-              //     return Padding(
-              //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              //         child: Card(
-              //           child: Container(
-              //             width: double.infinity,
-              //             //     height: double.maxFinite,
-              //             child: InputDecorator(
-              //               decoration: InputDecoration(
-              //                 labelText: 'Invoice',
-              //                 enabledBorder: OutlineInputBorder(
-              //                     borderRadius: BorderRadius.circular(15.0),
-              //                     borderSide: BorderSide(color: Colors.black)),
-              //               ),
-              //               child: Padding(
-              //                 padding: const EdgeInsets.all(15.0),
-              //                 child: Column(
-              //                   children: [
-              //                     Row(
-              //                       mainAxisAlignment:
-              //                           MainAxisAlignment.spaceBetween,
-              //                       children: [
-              //                         Text(
-              //                           'Invoices Total US:',
-              //                           style: TextStyle(
-              //                               fontWeight: FontWeight.bold),
-              //                         ),
-              //                         Row(
-              //                           children: [
-              //                             Visibility(
-              //                                 visible: invoiceHistoryController
-              //                                     .isLoading.value,
-              //                                 child: CircularProgressIndicator()),
-              //                             Visibility(
-              //                               visible: !invoiceHistoryController
-              //                                   .isLoading.value,
-              //                               child: Text(
-              //                                 addCommasToNumber(
-              //                                             invoiceHistoryController
-              //                                                 .total.value)
-              //                                         .toString() +
-              //                                     '\$',
-              //                                 style: TextStyle(
-              //                                     color: Colors.blue.shade900,
-              //                                     fontWeight: FontWeight.bold),
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         )
-              //                       ],
-              //                     ),
-              //                     Row(
-              //                       mainAxisAlignment:
-              //                           MainAxisAlignment.spaceBetween,
-              //                       children: [
-              //                         Text(
-              //                           'Invoices Recieved US:',
-              //                           style: TextStyle(
-              //                               fontWeight: FontWeight.bold),
-              //                         ),
-              //                         Row(
-              //                           children: [
-              //                             Visibility(
-              //                                 visible: invoiceHistoryController
-              //                                     .isLoading.value,
-              //                                 child: CircularProgressIndicator()),
-              //                             Visibility(
-              //                               visible: !invoiceHistoryController
-              //                                   .isLoading.value,
-              //                               child: Text(
-              //                                 addCommasToNumber(
-              //                                             invoiceHistoryController
-              //                                                 .totalrec.value)
-              //                                         .toString() +
-              //                                     '\$',
-              //                                 style: TextStyle(
-              //                                     color: Colors.green.shade900,
-              //                                     fontWeight: FontWeight.bold),
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         )
-              //                       ],
-              //                     ),
-              //                     Row(
-              //                       mainAxisAlignment:
-              //                           MainAxisAlignment.spaceBetween,
-              //                       children: [
-              //                         Text(
-              //                           'Invoices Due US:',
-              //                           style: TextStyle(
-              //                               fontWeight: FontWeight.bold),
-              //                         ),
-              //                         Row(
-              //                           children: [
-              //                             Visibility(
-              //                                 visible: invoiceHistoryController
-              //                                     .isLoading.value,
-              //                                 child: CircularProgressIndicator()),
-              //                             Visibility(
-              //                               visible: !invoiceHistoryController
-              //                                   .isLoading.value,
-              //                               child: Text(
-              //                                 addCommasToNumber(
-              //                                             invoiceHistoryController
-              //                                                 .totaldue.value)
-              //                                         .toString() +
-              //                                     '\$',
-              //                                 style: TextStyle(
-              //                                     color: Colors.red.shade900,
-              //                                     fontWeight: FontWeight.bold),
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         )
-              //                       ],
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ));
-              //   }),
-              // ),
+
+                 Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: InputDecorator(
+                              decoration: InputDecoration(
+                                labelText: 'Income',
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(color: Colors.black)),
+                              ),
+                        child: Obx(() {
+                   if (rechargeBalanceController.isLoading.value || invoiceHistoryController.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          } else {
+                            return  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Card(
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Invoice Total:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(
+                                                invoiceHistoryController.total_fhome
+                                                    .value)
+                                            .toString() +
+                                        '\$',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Recharge Total:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(
+                                                rechargeInvoiceHistoryController
+                                                    .totalrec_fhome.value)
+                                            .toString() +
+                                        '\$',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                                                       
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                          } 
+                            
+                  
+                }))),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: DottedLine(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.center,
+                    lineLength: double.infinity,
+                    lineThickness: 2.0,
+                    dashLength: 4.0,
+                    dashColor: Colors.black,
+                    dashGradient: [Colors.black, Colors.black],
+                    dashRadius: 1.0,
+                    dashGapLength: 1.0,
+                    dashGapColor: Colors.transparent,
+                    dashGapGradient: [Colors.white, Colors.white],
+                    dashGapRadius: 1.0,
+                  ),
+                ),
+                ],
+              ),
+         Column(
+           children: [
+             Obx(() {if (rechargeBalanceController.isLoading.value || invoiceHistoryController.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Card(
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                   
+                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Total:',
+                                        style:
+                                            TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        addCommasToNumber(
+                                                    rechargeInvoiceHistoryController
+                                                        .totalrec_fhome.value + invoiceHistoryController.totalrec_fhome.value)
+                                                .toString() +
+                                            '\$',
+                                        style: TextStyle(
+                                            color: Colors.green.shade900,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),                             
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                          }
+                    }),
+                    SizedBox(height: 15)
+           ],
+         ),
+              
+             
             ],
           ),
         )),

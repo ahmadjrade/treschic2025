@@ -17,6 +17,7 @@ import 'package:fixnshop_admin/controller/insert_repair_product_controller.dart'
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
 import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/phone_model_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
@@ -193,7 +194,12 @@ Future<void> main() async {
   Get.lazyPut<RepairProductDetailController>(
     () => RepairProductDetailController(),
     fenix: true,
+  );Get.lazyPut<InvoicePaymentController>(
+    () => InvoicePaymentController(),
+    fenix: true,
   );
+    final InvoicePaymentController invoicePaymentController =
+      Get.find<InvoicePaymentController>();
   final RepairProductDetailController repairProductDetailController =
       Get.find<RepairProductDetailController>();
   final RepairProductController repairProductController =

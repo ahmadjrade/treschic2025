@@ -13,6 +13,7 @@ import 'package:fixnshop_admin/model/recharge_balance_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_payment_manage.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
@@ -189,7 +190,16 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _selectedDestination = index;
       });
-    } else {}
+    } 
+    else if (index == 10) {
+      Get.to(() => InvoicePaymentManage(
+            
+          ));
+      setState(() {
+        _selectedDestination = index;
+      });
+    } 
+    else {}
   }
   Future<void> refresh_recharge() async {
   rechargeInvoiceHistoryController.isDataFetched = false;
@@ -408,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
               selected: _selectedDestination == 5,
-              onTap: () => selectDestination(5),
+              onTap: () => selectDestination(10),
             ),
             ListTile(
               leading: Icon(Icons.payment),
@@ -416,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
               selected: _selectedDestination == 6,
-              onTap: () => selectDestination(6),
+              onTap: () => selectDestination(11),
             ),
             ListTile(
               leading: Icon(Icons.payment),
@@ -424,7 +434,7 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
               selected: _selectedDestination == 7,
-              onTap: () => selectDestination(7),
+              onTap: () => selectDestination(12),
             ),
             Divider(
               height: 1,

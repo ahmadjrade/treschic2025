@@ -186,7 +186,7 @@ class InvoicePaymentYesterday extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
-                                          invoice.Invoice_Date
+                                          invoice.Payment_Date
                                          
                                           ,
                                           style: TextStyle(

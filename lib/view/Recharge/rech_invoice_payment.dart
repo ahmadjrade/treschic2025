@@ -4,9 +4,11 @@ import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
+import 'package:fixnshop_admin/controller/rech_invoice_payment_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/invoice_payment_model.dart';
+import 'package:fixnshop_admin/model/rech_invoice_payment_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,11 +16,11 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoicePayment extends StatelessWidget {
-  InvoicePayment({super.key});
+class RechInvoicePayment extends StatelessWidget {
+  RechInvoicePayment({super.key});
 
-  final InvoicePaymentController invoicePaymentController =
-      Get.find<InvoicePaymentController>();
+  final RechInvoicePaymentController rechInvoicePaymentController =
+      Get.find<RechInvoicePaymentController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -30,7 +32,7 @@ class InvoicePayment extends StatelessWidget {
   Widget build(BuildContext context) {
     // invoicePaymentController.reset();
 
-    invoicePaymentController.CalTotal();
+    rechInvoicePaymentController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -84,7 +86,7 @@ class InvoicePayment extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                invoicePaymentController.payments.refresh();
+                                rechInvoicePaymentController.payments.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -386,13 +388,13 @@ class InvoicePayment extends StatelessWidget {
                   ),
                   Obx(
                     () {
-                      final List<InvoicePaymentModel> filteredinvoices =
-                          invoicePaymentController.SearchPayments(
+                      final List<RechInvoicePaymentModel> filteredinvoices =
+                          rechInvoicePaymentController.SearchPayments(
                         FilterQuery.text,
                       );
-                      if (invoicePaymentController.isLoading.value) {
+                      if (rechInvoicePaymentController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (invoicePaymentController.payments.isEmpty) {
+                      } else if (rechInvoicePaymentController.payments.isEmpty) {
                         return Center(
                             child: Text('No Payment Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
@@ -404,7 +406,7 @@ class InvoicePayment extends StatelessWidget {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: filteredinvoices.length,
                           itemBuilder: (context, index) {
-                            final InvoicePaymentModel invoice =
+                            final RechInvoicePaymentModel invoice =
                                 filteredinvoices[index];
                             return Container(
                               //  width: double.infinity,
@@ -436,7 +438,7 @@ class InvoicePayment extends StatelessWidget {
                                       children: [
                                         Text(
                                           '#' +
-                                              invoice.Invoice_id.toString() +
+                                              invoice.Recharge_Invoice_id.toString() +
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -521,7 +523,7 @@ class InvoicePayment extends StatelessWidget {
                                                         addCommasToNumber(invoice
                                                                 .Ammount)
                                                             .toString() +
-                                                        '\$',
+                                                        ' LL',
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors
@@ -537,26 +539,8 @@ class InvoicePayment extends StatelessWidget {
                                                         color: Colors
                                                             .blue.shade900),
                                                   ),
-                                                  Text(
-                                                    'Old Due:  ' +
-                                                        (invoice
-                                                                .Old_Due)
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .green.shade900),
-                                                  ),
-                                                  Text(
-                                                                                                      'New Due:  ' +
-                                                    (invoice
-                                                            .New_Due)
-                                                        .toString(),
-                                                                                                      style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors
-                                                        .green.shade900),
-                                                                                                    ),
+                                                 
+                                                
                                                   
                                                   // Text(
                                                   //   'Invoice Due US:  ' +
@@ -703,15 +687,15 @@ class InvoicePayment extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Total US:',
+                                    'Invoices Total:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoicePaymentController
+                                    addCommasToNumber(rechInvoicePaymentController
                                                 .total.value)
                                             .toString() +
-                                        '\$',
+                                        ' LL',
                                     style: TextStyle(
                                         color: Colors.blue.shade900,
                                         fontWeight: FontWeight.bold),

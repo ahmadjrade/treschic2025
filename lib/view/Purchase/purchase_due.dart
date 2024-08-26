@@ -787,7 +787,7 @@ class PurchaseDue extends StatelessWidget {
                                                                   ),
                                                                 );
                                                               });
-                                                              purchaseHistoryController.PayInvDue(Purchase.Purchase_id.toString(), Payment_Ammount.text, Purchase.Purchase_Due_USD.toString(), (Purchase.Purchase_Due_USD - double.tryParse(Payment_Ammount.text)! ).toString())
+                                                              purchaseHistoryController.PayInvDue(Purchase.Purchase_id.toString(), Payment_Ammount.text, Purchase.Purchase_Due_USD.toString(), (Purchase.Purchase_Due_USD - double.tryParse(Payment_Ammount.text)! ).toString(),Purchase.Purchase_Date)
                                                                    .then((value) => showToast(
                                                                   purchaseHistoryController
                                                                       .result2))

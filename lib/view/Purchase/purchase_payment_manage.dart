@@ -3,6 +3,7 @@
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
@@ -15,17 +16,21 @@ import 'package:fixnshop_admin/view/Invoices/invoice_payment_all.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_payment_month.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_payment_yesterday.dart';
 import 'package:fixnshop_admin/view/Invoices/tab_item.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment_all.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment_month.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment_yesterday.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoicePaymentManage extends StatelessWidget {
-  InvoicePaymentManage({super.key});
+class PurchasePaymentManage extends StatelessWidget {
+  PurchasePaymentManage({super.key});
 
-  // final InvoiceHistoryController invoiceHistoryController =
-  //     Get.find<InvoiceHistoryController>();
+  final PurchasePaymentController purchasePaymentController =
+      Get.find<PurchasePaymentController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -95,14 +100,14 @@ class InvoicePaymentManage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween ,
             children: [
               Text(
-                'Invoice Payment',
+                'Purchase Payments',
                 style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
               ),
                IconButton(
               onPressed: () {
                 // invoiceHistoryController.reset();
-                // invoiceHistoryController.isDataFetched = false;
-                // invoiceHistoryController.fetchinvoices();
+                purchasePaymentController.isDataFetched = false;
+                purchasePaymentController.fetch_payments();
               },
               icon: Icon(Icons.refresh))
             ],
@@ -144,11 +149,11 @@ class InvoicePaymentManage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: TabBarView(
                           children: [
-                            InvoicePayment(), // Page for "Today" tab
-                            InvoicePaymentYesterday(),
-                            InvoicePaymentMonth(), // Page for "Yesterday" tab
+                            PurchasePayment(), // Page for "Today" tab
+                            PurchasePaymentYesterday(),
+                            PurchasePaymentMonth(), // Page for "Yesterday" tab
  // Page for "Yesterday" tab
-                            InvoicePaymentAll(), // Page for "All" tab
+                            PurchasePaymentAll(), // Page for "All" tab
                           ],
                         ),
               ),

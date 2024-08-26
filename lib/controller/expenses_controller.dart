@@ -8,6 +8,7 @@ import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
+import 'package:fixnshop_admin/model/expenses_model.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/invoice_payment_model.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
@@ -17,15 +18,15 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class InvoicePaymentController extends GetxController {
-  RxList<InvoicePaymentModel> payments = <InvoicePaymentModel>[].obs;
-  RxList<InvoicePaymentModel> displayedPayments = <InvoicePaymentModel>[].obs; // Displayed payments
+class ExpensesController extends GetxController {
+  RxList<ExpensesModel> expenses = <ExpensesModel>[].obs;
+  RxList<ExpensesModel> displayedExpenses = <ExpensesModel>[].obs; // Displayed expenses
   bool isDataFetched = false;
   String result = '';
   RxBool isLoading = false.obs;
   RxBool isFetchingMore = false.obs; // To track loading more data
-  Rx<InvoicePaymentModel?> SelectedPayment = Rx<InvoicePaymentModel?>(null);
-  RxString Store = 'this'.obs;
+  Rx<ExpensesModel?> SelectedExpense = Rx<ExpensesModel?>(null);
+  RxString Currency = 'Usd'.obs;
   RxString Sold = 'Yes'.obs;
   RxString Condition = 'New'.obs;
   RxBool iseditable = false.obs;
@@ -38,9 +39,9 @@ class InvoicePaymentController extends GetxController {
   int currentPage = 1; // To track the current page
 
   void clearSelectedCat() {
-    SelectedPayment.value = null;
-    payments.clear();
-    displayedPayments.clear(); // Clear displayed payments as well
+    SelectedExpense.value = null;
+    expenses.clear();
+    displayedExpenses.clear(); // Clear displayed expenses as well
   }
   void onClose(){ 
      itemsToShow.value = 20;
@@ -95,7 +96,7 @@ class InvoicePaymentController extends GetxController {
   String formattedTime = '';
   
 
-  List<InvoicePaymentModel> SearchPayments(String query) {
+  List<ExpensesModel> SearchExpenses(String query) {
     String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
     String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
@@ -104,20 +105,20 @@ class InvoicePaymentController extends GetxController {
     formattedTime = dateController.getFormattedTime();
     Username = sharedPreferencesController.username;
 
-    return payments
-        .where((payment) =>
-            (payment.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                payment.Username == Username.value &&
-                payment.Payment_Date.contains(formattedDate) ||
-            payment.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                payment.Username == Username.value &&
-                payment.Payment_Date.contains(formattedDate) ||
-            payment.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-                payment.Username == Username.value &&
-                payment.Payment_Date.contains(formattedDate))
+    return expenses
+        .where((expense) =>
+            (expense.Expense_id.toString()).contains(query.toLowerCase()) &&
+                expense.Username == Username.value &&
+                expense.Expense_Date.contains(formattedDate) ||
+            expense.Expense_Desc!.toLowerCase().contains(query.toLowerCase()) &&
+                expense.Username == Username.value &&
+                expense.Expense_Date.contains(formattedDate) ||
+            expense.Exp_Cat_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                expense.Username == Username.value &&
+                expense.Expense_Date.contains(formattedDate))
         .toList();
   }
-  List<InvoicePaymentModel> SearchInvoicesYesterday(String query) {
+  List<ExpensesModel> SearchExpensesYday(String query) {
   // Get the date for yesterday
   DateTime now = DateTime.now();
   DateTime yesterday = now.subtract(Duration(days: 1));
@@ -131,20 +132,20 @@ class InvoicePaymentController extends GetxController {
   formattedTime = dateController.getFormattedTime();
   Username = sharedPreferencesController.username;
 
-  return payments
-      .where((payment) =>
-          (payment.Invoice_id.toString()).contains(query.toLowerCase()) &&
-              payment.Username == Username.value &&
-              payment.Payment_Date.contains(formattedDate) ||
-          payment.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-              payment.Username == Username.value &&
-              payment.Payment_Date.contains(formattedDate) ||
-          payment.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-              payment.Username == Username.value &&
-              payment.Payment_Date.contains(formattedDate))
+  return expenses
+      .where((expense) =>
+          (expense.Expense_id.toString()).contains(query.toLowerCase()) &&
+              expense.Username == Username.value &&
+              expense.Expense_Date.contains(formattedDate) ||
+          expense.Expense_Desc!.toLowerCase().contains(query.toLowerCase()) &&
+              expense.Username == Username.value &&
+              expense.Expense_Date.contains(formattedDate) ||
+          expense.Exp_Cat_Name!.toLowerCase().contains(query.toLowerCase()) &&
+              expense.Username == Username.value &&
+              expense.Expense_Date.contains(formattedDate))
       .toList();
 }
-  List<InvoicePaymentModel> SearchInvoicesAll(String query) {
+  List<ExpensesModel> searchExpensesAll(String query) {
     String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
     String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
@@ -153,18 +154,18 @@ class InvoicePaymentController extends GetxController {
     formattedTime = dateController.getFormattedTime();
     Username = sharedPreferencesController.username;
 
-    return payments
-        .where((payment) =>
-            (payment.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                payment.Username == Username.value  ||
-            payment.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                payment.Username == Username.value ||
-            payment.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-                payment.Username == Username.value )
+    return expenses
+        .where((expense) =>
+            (expense.Expense_id.toString()).contains(query.toLowerCase()) &&
+                expense.Username == Username.value  ||
+            expense.Expense_Desc!.toLowerCase().contains(query.toLowerCase()) &&
+                expense.Username == Username.value ||
+            expense.Exp_Cat_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                expense.Username == Username.value )
         .toList();
   }
 
-List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
+List<ExpensesModel> searchExpensesMonth(String query) {
   DateTime now = DateTime.now(); // Get today's date
   int getMonthNumber(DateTime date) {
   return date.month;
@@ -174,21 +175,21 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
 
   Username = sharedPreferencesController.username;
 
-  return payments
-      .where((payment) =>
-          (payment.Invoice_id.toString()).contains(query.toLowerCase()) &&
-              payment.Username == Username.value &&
-              payment.Payment_Month == (monthNumber) ||
-          payment.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-              payment.Username == Username.value &&
-              payment.Payment_Month == (monthNumber) ||
-          payment.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-              payment.Username == Username.value &&
-             payment.Payment_Month == (monthNumber))
+  return expenses
+      .where((expense) =>
+          (expense.Expense_id.toString()).contains(query.toLowerCase()) &&
+              expense.Username == Username.value &&
+              expense.Expense_Month == (monthNumber) ||
+          expense.Expense_Desc!.toLowerCase().contains(query.toLowerCase()) &&
+              expense.Username == Username.value &&
+              expense.Expense_Month == (monthNumber) ||
+          expense.Exp_Cat_Name!.toLowerCase().contains(query.toLowerCase()) &&
+              expense.Username == Username.value &&
+             expense.Expense_Month == (monthNumber))
       .toList();
   }
 
-  // List<InvoicePaymentModel> SearchDueInvoices(String query) {
+  // List<ExpensesModel> SearchDueInvoices(String query) {
   //   String dateString = dateController.getFormattedDate();
   //   List<String> dateParts = dateString.split('-');
   //   String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
@@ -197,17 +198,17 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
   //   formattedTime = dateController.getFormattedTime();
   //   Username = sharedPreferencesController.username;
 
-  //   return payments
-  //       .where((payment) =>
-  //           (payment.Invoice_id.toString()).contains(query.toLowerCase()) &&
-  //               payment.Username == Username.value &&
-  //               payment.Invoice_Due_USD != 0 ||
-  //           payment.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-  //                payment.Username == Username.value &&
-  //               payment.Invoice_Due_USD != 0 || 
-  //           payment.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-  //                payment.Username == Username.value &&
-  //               payment.Invoice_Due_USD != 0)
+  //   return expenses
+  //       .where((expense) =>
+  //           (expense.Expense_id.toString()).contains(query.toLowerCase()) &&
+  //               expense.Username == Username.value &&
+  //               expense.Invoice_Due_USD != 0 ||
+  //           expense.Expense_Desc!.toLowerCase().contains(query.toLowerCase()) &&
+  //                expense.Username == Username.value &&
+  //               expense.Invoice_Due_USD != 0 || 
+  //           expense.Exp_Cat_Name!.toLowerCase().contains(query.toLowerCase()) &&
+  //                expense.Username == Username.value &&
+  //               expense.Invoice_Due_USD != 0)
   //       .toList();
   // }
 
@@ -240,13 +241,13 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
     total_fhome.value = 0;
   
 
-    List<InvoicePaymentModel> totalofinvoices = payments
-        .where((payment) =>
-            payment.Username == Username.value &&
-            payment.Payment_Date.contains(formattedDate) && !payment.Invoice_Date.contains(formattedDate))
+    List<ExpensesModel> totalofinvoices = expenses
+        .where((expense) =>
+            expense.Username == Username.value &&
+            expense.Expense_Date.contains(formattedDate) )
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
-      total_fhome.value += totalofinvoices[i].Ammount;
+      total_fhome.value += totalofinvoices[i].Expense_Value;
       // totalrecusd_fhome.value += totalofinvoices[i].Invoice_Rec_Usd;
       // totaldue_fhome.value += totalofinvoices[i].Invoice_Due_USD;
       // totalreclb_fhome.value += totalofinvoices[i].Invoice_Rec_Lb;
@@ -267,13 +268,13 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
     total.value = 0;
     
 
-    List<InvoicePaymentModel> totalofinvoices = payments
-        .where((payment) =>
-            payment.Username == Username.value &&
-            payment.Payment_Date.contains(formattedDate))
+    List<ExpensesModel> totalofinvoices = expenses
+        .where((expense) =>
+            expense.Username == Username.value &&
+            expense.Expense_Date.contains(formattedDate))
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
-      total.value += totalofinvoices[i].Ammount;
+      total.value += totalofinvoices[i].Expense_Value;
     }
   } 
 
@@ -300,13 +301,13 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
   formattedDate = '$year-$month-$day';
   formattedTime = dateController.getFormattedTime();
 
-    List<InvoicePaymentModel> totalofinvoices = payments
-        .where((payment) =>
-            payment.Username == Username.value &&
-            payment.Payment_Month == (monthNumber))
+    List<ExpensesModel> totalofinvoices = expenses
+        .where((expense) =>
+            expense.Username == Username.value &&
+            expense.Expense_Month == (monthNumber))
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
-      total_month .value += totalofinvoices[i].Ammount;
+      total_month .value += totalofinvoices[i].Expense_Value;
 
 
     }
@@ -331,13 +332,13 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
   formattedDate = '$year-$month-$day';
   formattedTime = dateController.getFormattedTime();
 
-    List<InvoicePaymentModel> totalofinvoices = payments
-        .where((payment) =>
-            payment.Username == Username.value &&
-            payment.Invoice_Date.contains(formattedDate))
+    List<ExpensesModel> totalofinvoices = expenses
+        .where((expense) =>
+            expense.Username == Username.value &&
+            expense.Expense_Date.contains(formattedDate))
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
-      total_yday .value += totalofinvoices[i].Ammount;
+      total_yday .value += totalofinvoices[i].Expense_Value;
 
 
     }
@@ -349,13 +350,13 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
 
 
   
-    List<InvoicePaymentModel> totalofinvoices = payments
-        .where((payment) =>
-            payment.Username == Username.value 
+    List<ExpensesModel> totalofinvoices = expenses
+        .where((expense) =>
+            expense.Username == Username.value 
           )
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
-      total_all .value += totalofinvoices[i].Ammount;
+      total_all .value += totalofinvoices[i].Expense_Value;
       
 
     }
@@ -369,20 +370,20 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
 
         String domain = domainModel.domain;
         final response =
-            await http.get(Uri.parse('$domain' 'fetch_invoices_payments.php'));
+            await http.get(Uri.parse('$domain' 'fetch_expenses.php'));
 
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           final List<dynamic> data = jsonData;
-          payments.assignAll(
-              data.map((item) => InvoicePaymentModel.fromJson(item)).toList());
+          expenses.assignAll(
+              data.map((item) => ExpensesModel.fromJson(item)).toList());
           isDataFetched = true;
-          // Initially display the first batch of payments
-          displayedPayments.assignAll(payments.take(itemsPerPage));
+          // Initially display the first batch of expenses
+          displayedExpenses.assignAll(expenses.take(itemsPerPage));
           currentPage = 1; // Reset page count
           isLoading.value = false;
 
-          if (payments.isEmpty) {
+          if (expenses.isEmpty) {
             print(0);
           } else {
         //    CalTotal();
@@ -403,18 +404,18 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
   }
 
   Future<void> loadMoreInvoices() async {
-    if (!isFetchingMore.value && displayedPayments.length < payments.length) {
+    if (!isFetchingMore.value && displayedExpenses.length < expenses.length) {
       isFetchingMore.value = true;
       int startIndex = currentPage * itemsPerPage;
       int endIndex = startIndex + itemsPerPage;
-      if (endIndex > payments.length) {
-        endIndex = payments.length;
+      if (endIndex > expenses.length) {
+        endIndex = expenses.length;
       }
 
       // Simulate a delay for loading more data
       await Future.delayed(Duration(seconds: 2));
 
-      displayedPayments.addAll(payments.sublist(startIndex, endIndex));
+      displayedExpenses.addAll(expenses.sublist(startIndex, endIndex));
       currentPage++;
       isFetchingMore.value = false;
     }
@@ -431,9 +432,9 @@ List<InvoicePaymentModel> SearchInvoicesMonth(String query) {
 
   //     String uri = '$domain' + 'insert_inv_payment.php';
   //     var res = await http.post(Uri.parse(uri), body: {
-  //       "Invoice_id": Inv_id,
+  //       "Expense_id": Inv_id,
   //       "Ammount": Ammount,
-  //       "Payment_Date":formattedDate,
+  //       "Expense_Date":formattedDate,
   //       "Payment_Time":formattedDate,
   //       "Username":Username.value,
   //       "Old_Due":Old_Due,

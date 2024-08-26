@@ -202,8 +202,9 @@ class PurchaseHistoryController extends GetxController {
     }
   }
   String result2 = '';
-  Future<void> PayInvDue(String Pur_id,Ammount,Old_Due,New_Due) async {
+  Future<void> PayInvDue(String Pur_id,Ammount,Old_Due,New_Due,Purchase_Date) async {
     try {
+      print(Purchase_Date);
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
       formattedTime = dateController.getFormattedTime();
@@ -218,6 +219,7 @@ class PurchaseHistoryController extends GetxController {
         "Username":Username.value,
         "Old_Due":Old_Due,
         "New_Due":New_Due,
+        "P_Date ":Purchase_Date,
 
 
         

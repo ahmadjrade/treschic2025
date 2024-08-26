@@ -10,6 +10,8 @@ import 'package:fixnshop_admin/controller/color_controller.dart';
 import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
 import 'package:fixnshop_admin/controller/customer_address_controller.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
+import 'package:fixnshop_admin/controller/expense_category_controller.dart';
+import 'package:fixnshop_admin/controller/expenses_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_controller.dart';
 import 'package:fixnshop_admin/controller/insert_recharge_balance.dart';
@@ -24,7 +26,9 @@ import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/purchase_detail_controller.dart';
 import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
+import 'package:fixnshop_admin/controller/rech_invoice_payment_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
@@ -134,6 +138,10 @@ Future<void> main() async {
     () => InvoiceController(),
     fenix: true,
   );
+   Get.lazyPut<ExpenseCategoryController>(
+    () => ExpenseCategoryController(),
+    fenix: true,
+  );
   Get.lazyPut<RepairsController>(
     () => RepairsController(),
     fenix: true,
@@ -198,6 +206,24 @@ Future<void> main() async {
     () => InvoicePaymentController(),
     fenix: true,
   );
+  Get.lazyPut<RechInvoicePaymentController>(
+    () => RechInvoicePaymentController(),
+    fenix: true,
+  );
+  Get.lazyPut<PurchasePaymentController>(
+    () => PurchasePaymentController(),
+    fenix: true,
+  ); 
+  Get.lazyPut<ExpensesController>(
+    () => ExpensesController(),
+    fenix: true,
+  ); 
+   final ExpensesController expensesController =
+      Get.find<ExpensesController>();
+    final PurchasePaymentController purchasePaymentController =
+      Get.find<PurchasePaymentController>();
+   final RechInvoicePaymentController rechInvoicePaymentController =
+      Get.find<RechInvoicePaymentController>();
     final InvoicePaymentController invoicePaymentController =
       Get.find<InvoicePaymentController>();
   final RepairProductDetailController repairProductDetailController =

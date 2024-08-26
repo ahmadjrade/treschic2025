@@ -433,6 +433,10 @@ RxDouble totalrec_yday  = 0.0.obs;
             print(0);
           } else {
             CalTotal();
+            CalTotalMonth();
+            CalTotal_fhome();
+            CalTotalYday();
+            CalTotalall();
           }
         } else {
           result == 'fail';

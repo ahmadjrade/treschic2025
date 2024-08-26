@@ -2,9 +2,15 @@
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
+import 'package:fixnshop_admin/controller/expenses_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
+import 'package:fixnshop_admin/view/Expenses/expense_all.dart';
+import 'package:fixnshop_admin/view/Expenses/expense_month.dart';
+import 'package:fixnshop_admin/view/Expenses/expense_yday.dart';
+import 'package:fixnshop_admin/view/Expenses/expenses_today.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_all.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
@@ -15,17 +21,21 @@ import 'package:fixnshop_admin/view/Invoices/invoice_payment_all.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_payment_month.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_payment_yesterday.dart';
 import 'package:fixnshop_admin/view/Invoices/tab_item.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment_all.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment_month.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment_yesterday.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoicePaymentManage extends StatelessWidget {
-  InvoicePaymentManage({super.key});
+class ExpenseManage extends StatelessWidget {
+  ExpenseManage({super.key});
 
-  // final InvoiceHistoryController invoiceHistoryController =
-  //     Get.find<InvoiceHistoryController>();
+  final ExpensesController expensesController =
+      Get.find<ExpensesController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -95,14 +105,14 @@ class InvoicePaymentManage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween ,
             children: [
               Text(
-                'Invoice Payment',
+                'Expenses',
                 style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
               ),
                IconButton(
               onPressed: () {
                 // invoiceHistoryController.reset();
-                // invoiceHistoryController.isDataFetched = false;
-                // invoiceHistoryController.fetchinvoices();
+                expensesController.isDataFetched = false;
+                expensesController.fetch_payments();
               },
               icon: Icon(Icons.refresh))
             ],
@@ -144,11 +154,11 @@ class InvoicePaymentManage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: TabBarView(
                           children: [
-                            InvoicePayment(), // Page for "Today" tab
-                            InvoicePaymentYesterday(),
-                            InvoicePaymentMonth(), // Page for "Yesterday" tab
+                            ExpensesToday(), // Page for "Today" tab
+                            ExpenseYday(),
+                            ExpenseMonth(), // Page for "Yesterday" tab
  // Page for "Yesterday" tab
-                            InvoicePaymentAll(), // Page for "All" tab
+                            ExpenseAll(), // Page for "All" tab
                           ],
                         ),
               ),

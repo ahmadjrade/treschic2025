@@ -450,7 +450,11 @@ RxDouble totalrec_yday  = 0.0.obs;
             totaldue.value = 0;
 
             CalTotal();
-            
+            CalTotalMonth();
+            CalTotal_fhome();
+            CalTotalYday();
+            CalTotalall();
+              
             // print('cat');
           }
         } else {
@@ -463,7 +467,7 @@ RxDouble totalrec_yday  = 0.0.obs;
     }
   }
   String result2 = '';
-  Future<void> PayInvDue(String RInv_id,Ammount) async {
+  Future<void> PayInvDue(String RInv_id,Ammount,Invoice_Date) async {
     try {
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
@@ -477,7 +481,8 @@ RxDouble totalrec_yday  = 0.0.obs;
         "Payment_Date":formattedDate,
         "Payment_Time":formattedDate,
         "Username":Username.value,
-      
+              "Invoice_Date":Invoice_Date,
+
 
         
       });

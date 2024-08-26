@@ -4,34 +4,36 @@ import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
+import 'package:fixnshop_admin/controller/rech_invoice_payment_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/invoice_payment_model.dart';
+import 'package:fixnshop_admin/model/rech_invoice_payment_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_payment_month.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoicePaymentMonth extends StatelessWidget {
-  InvoicePaymentMonth({super.key});
+class RechInvoicePaymentAll extends StatelessWidget {
+  RechInvoicePaymentAll({super.key});
 
-  final InvoicePaymentController invoicePaymentController =
-      Get.find<InvoicePaymentController>();
+  final RechInvoicePaymentController rechInvoicePaymentController =
+      Get.find<RechInvoicePaymentController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
-
   @override
   Widget build(BuildContext context) {
-    invoicePaymentController.CalTotalMonth();
-    // invoicePaymentController.reset();
+    rechInvoicePaymentController.CalTotalall();
+    // rechInvoicePaymentController.reset();
 
-    invoicePaymentController.CalTotalMonth();
+    // rechInvoicePaymentController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -66,7 +68,6 @@ class InvoicePaymentMonth extends StatelessWidget {
     }
 
     return Scaffold(
-   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -85,7 +86,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                invoicePaymentController.payments.refresh();
+                                rechInvoicePaymentController.payments.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -95,20 +96,6 @@ class InvoicePaymentMonth extends StatelessWidget {
                             ),
                           );
                         }),
-                        // SizedBox(
-                        //   width: 14,
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        //   child: IconButton(
-                        //     icon: Icon(Icons.qr_code_scanner_rounded),
-                        //     color: Colors.black,
-                        //     onPressed: () {
-                        //       barcodeController.scanBarcodeSearch();
-                        //       //.then((value) => set());
-                        //     },
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -123,57 +110,51 @@ class InvoicePaymentMonth extends StatelessWidget {
                   ),
                   Obx(
                     () {
-                      final List<InvoicePaymentModel> filteredinvoices =
-                          invoicePaymentController.SearchInvoicesMonth(
-                        FilterQuery.text,
-                      );
-                      if (invoicePaymentController.isLoading.value) {
+                      final List<RechInvoicePaymentModel> filteredinvoices =
+                          rechInvoicePaymentController.SearchInvoicesAll(
+                              FilterQuery.text);
+
+                      if (rechInvoicePaymentController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (invoicePaymentController.payments.isEmpty) {
+                      } else if (rechInvoicePaymentController.payments.isEmpty) {
                         return Center(
-                            child: Text('No Payments Yet In This Store ! '));
-                      } else if (filteredinvoices.length == 0) {
-                        return Center(
-                            child: Text('No Payments Yet In This Store ! '));
+                            child: Text('No Payments Yet In This Store!'));
+                      } else if (filteredinvoices.isEmpty) {
+                        return Center(child: Text('No Payments Found!'));
                       } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: filteredinvoices.length,
-                          itemBuilder: (context, index) {
-                            final InvoicePaymentModel invoice =
-                                filteredinvoices[index];
-                            return Container(
-                              //  width: double.infinity,
-                              //   height: 140.0,
-                              color:  Colors.grey.shade300,
-                              margin: EdgeInsets.fromLTRB(14, 0, 14, 10),
-                              //     padding: EdgeInsets.all(35),
-                              alignment: Alignment.center,
-                              child: ListTile(
-                                // leading: Column(
-                                //   children: [
-                                //     Expanded(
-                                //       child: invoice.imageUrl != null
-                                //           ? Image.network(invoice.imageUrl!)
-                                //           : Placeholder(),
-                                //     ),
-                                //   ],
-                                // ),
-                                onLongPress: () {
-                                  //copyToClipboard(invoice.id);
-                                },
-                                title: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                        return Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: filteredinvoices.length <
+                                      rechInvoicePaymentController.itemsToShow.value
+                                  ? filteredinvoices.length
+                                  : rechInvoicePaymentController.itemsToShow.value,
+                              itemBuilder: (context, index) {
+                                final RechInvoicePaymentModel invoice =
+                                    filteredinvoices[index];
+                                return Container(
+                                  color: Colors.grey.shade300,
+                                      
+                                  margin: EdgeInsets.fromLTRB(14, 0, 14, 10),
+                                  child: ListTile(
+                                    onLongPress: () {
+                                      //copyToClipboard(invoice.id);
+                                    },
+                                    title: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
                                           '#' +
-                                              invoice.Invoice_id.toString() +
+                                              invoice.Recharge_Invoice_id.toString() +
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -227,14 +208,13 @@ class InvoicePaymentMonth extends StatelessWidget {
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12),
                                         ),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ],
-                                ),
-
-                                subtitle: Row(
-                                  children: [
-                                    Expanded(
+                                    subtitle: Row(
+                                      children: [
+                                       Expanded(
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -257,8 +237,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                                                     'Payment Ammount:  ' +
                                                         addCommasToNumber(invoice
                                                                 .Ammount)
-                                                            .toString() +
-                                                        '\$',
+                                                           .toString() +
+                                                        ' LL',
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors
@@ -274,27 +254,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                                                         color: Colors
                                                             .blue.shade900),
                                                   ),
-                                                  Text(
-                                                    'Old Due:  ' +
-                                                        (invoice
-                                                                .Old_Due)
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .green.shade900),
-                                                  ),
-                                                  Text(
-                                                                                                      'New Due:  ' +
-                                                    (invoice
-                                                            .New_Due)
-                                                        .toString(),
-                                                                                                      style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors
-                                                        .green.shade900),
-                                                                                                    ),
-                                                  
+                                                 
                                                   // Text(
                                                   //   'Invoice Due US:  ' +
                                                   //       addCommasToNumber(invoice
@@ -331,7 +291,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                                           //       fixedSize:
                                           //           Size(double.maxFinite, 20),
                                           //       backgroundColor:
-                                          //           invoicePaymentController
+                                          //           rechInvoicePaymentController
                                           //                   .ispaid(
                                           //                       invoice.isPaid)
                                           //               ? Colors.green.shade900
@@ -339,7 +299,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                                           //       side: BorderSide(
                                           //         width: 2.0,
                                           //         color:
-                                          //             invoicePaymentController
+                                          //             rechInvoicePaymentController
                                           //                     .ispaid(invoice
                                           //                         .isPaid)
                                           //                 ? Colors
@@ -394,7 +354,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                                           //           Icons
                                           //               .arrow_circle_right_rounded,
                                           //           color:
-                                          //               invoicePaymentController
+                                          //               rechInvoicePaymentController
                                           //                       .ispaid(invoice
                                           //                           .isPaid)
                                           //                   ? Colors.white
@@ -409,16 +369,56 @@ class InvoicePaymentMonth extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    
-                                  ],
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            if (rechInvoicePaymentController.itemsToShow.value <
+                                filteredinvoices.length)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 120.0),
+                                child: OutlinedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    // fixedSize: Size(double.maxFinite,20),
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      width: 2.0,
+                                      color: Colors.green.shade900,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    rechInvoicePaymentController
+                                            .itemsToShow.value +=
+                                        20; // Increase the observable value
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Show More',
+                                        style: TextStyle(
+                                            color: Colors.green.shade900),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Icon(
+                                        Icons.arrow_circle_right_rounded,
+                                        color: Colors.green.shade900,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            );
-                          },
+                          ],
                         );
                       }
                     },
-                  ),
+                  )
                 ],
               ),
               SizedBox(
@@ -440,15 +440,15 @@ class InvoicePaymentMonth extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Total US:',
+                                    'Invoices Total:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoicePaymentController
-                                                .total_month.value)
+                                    addCommasToNumber(rechInvoicePaymentController
+                                                .total_all.value)
                                             .toString() +
-                                        '\$',
+                                        ' LL',
                                     style: TextStyle(
                                         color: Colors.blue.shade900,
                                         fontWeight: FontWeight.bold),
@@ -465,8 +465,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totalrecusd_month.value)
+                              //       addCommasToNumber(rechInvoicePaymentController
+                              //                   .totalrecusd_all.value)
                               //               .toString() +
                               //           '\$',
                               //       style: TextStyle(
@@ -474,7 +474,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           fontWeight: FontWeight.bold),
                               //     )
                               //   ],
-                              // ), Row(
+                              // ),
+                              // Row(
                               //   mainAxisAlignment:
                               //       MainAxisAlignment.spaceBetween,
                               //   children: [
@@ -484,8 +485,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totalreclb_month.value)
+                              //       addCommasToNumber(rechInvoicePaymentController
+                              //                   .totalreclb_all.value)
                               //               .toString() +
                               //           'LL',
                               //       style: TextStyle(
@@ -493,7 +494,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           fontWeight: FontWeight.bold),
                               //     )
                               //   ],
-                              // ), Row(
+                              // ),
+                              // Row(
                               //   mainAxisAlignment:
                               //       MainAxisAlignment.spaceBetween,
                               //   children: [
@@ -503,8 +505,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totalrec_month.value)
+                              //       addCommasToNumber(rechInvoicePaymentController
+                              //                   .totalrec_all.value)
                               //               .toString() +
                               //           '\$',
                               //       style: TextStyle(
@@ -523,8 +525,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totaldue_month.value)
+                              //       addCommasToNumber(rechInvoicePaymentController
+                              //                   .totaldue_all.value)
                               //               .toString() +
                               //           '\$',
                               //       style: TextStyle(

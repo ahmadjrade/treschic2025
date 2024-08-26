@@ -229,6 +229,9 @@ class PurchaseController extends GetxController {
   Future<void> uploadPurchaseToDatabase(
       String Supplier_id, String Supplier_Name, String Supplier_Number) async {
     try {
+       Username = sharedPreferencesController.username;
+      formattedDate = dateController.getFormattedDate();
+      formattedTime = dateController.getFormattedTime();
       // Prepare invoice data
       List<Map<String, dynamic>> purchaseData = [];
 

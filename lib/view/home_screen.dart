@@ -6,10 +6,15 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
+import 'package:fixnshop_admin/controller/expenses_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
+import 'package:fixnshop_admin/controller/rate_controller.dart';
+import 'package:fixnshop_admin/controller/rech_invoice_payment_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/recharge_balance_model.dart';
+import 'package:fixnshop_admin/view/Expenses/expense_manage.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
@@ -17,6 +22,8 @@ import 'package:fixnshop_admin/view/Invoices/invoice_payment_manage.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_payment_manage.dart';
+import 'package:fixnshop_admin/view/Recharge/rech_invoice_payment_manage.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_balances.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_history_manage.dart';
@@ -47,7 +54,15 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<InvoiceHistoryController>();
        final RechargeBalanceController rechargeBalanceController =
       Get.find<RechargeBalanceController>();
-      
+          final RechInvoicePaymentController rechInvoicePaymentController =
+      Get.find<RechInvoicePaymentController>();
+      final RateController rateController =
+      Get.find<RateController>();
+  final ExpensesController expensesController =
+      Get.find<ExpensesController>();
+
+        final InvoicePaymentController invoicePaymentController =
+      Get.find<InvoicePaymentController>();
   int _selectedDestination = 0;
   RxString Username = ''.obs;
   FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
@@ -198,6 +213,35 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _selectedDestination = index;
       });
+    }  else if (index == 10) {
+      Get.to(() => InvoicePaymentManage(
+            
+          ));
+      setState(() {
+        _selectedDestination = index;
+      });
+    } 
+    else if (index == 11) {
+      Get.to(() => PurchasePaymentManage(
+            
+          ));
+      setState(() {
+        _selectedDestination = index;
+      });
+    }  else if (index == 12) {
+      Get.to(() => RechInvoicePaymentManage(
+            
+          ));
+      setState(() {
+        _selectedDestination = index;
+      });
+    } else if (index == 13) {
+      Get.to(() => ExpenseManage(
+            
+          ));
+      setState(() {
+        _selectedDestination = index;
+      });
     } 
     else {}
   }
@@ -215,9 +259,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   }
+    Future<void> refresh_expense() async {
+  expensesController.isDataFetched = false;
+  expensesController.fetch_payments();
+
+
+
+  }
   @override
   Widget build(BuildContext context) {
     Username = sharedPreferencesController.username;
+    invoicePaymentController.CalTotal_fhome();
+    rechInvoicePaymentController.CalTotal_fhome();
+    expensesController.CalTotal_fhome();
+    // rechInvoicePaymentController.ca
     // invoiceHistoryController.reset();
     //     invoiceHistoryController.isDataFetched = false;
     //     invoiceHistoryController.fetchinvoices();
@@ -238,9 +293,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     rechargeBalanceController.isDataFetched = false;
                   rechargeBalanceController.fetch_cart_types();
-                    refresh_recharge().then((value) => rechargeInvoiceHistoryController.CalTotal_fhome());
-  rechargeBalanceController.fetch_cart_types();
-                    refresh_invoice().then((value) => invoiceHistoryController.CalTotal_fhome());
+                    refresh_recharge();
+                    refresh_invoice();
+                    refresh_expense();
 
                     // invoiceHistoryController.reset();
                     // invoiceHistoryController.isDataFetched = false;
@@ -417,7 +472,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Invoice Payments'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
-              selected: _selectedDestination == 5,
+              selected: _selectedDestination == 10,
               onTap: () => selectDestination(10),
             ),
             ListTile(
@@ -425,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Purchase Payments'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
-              selected: _selectedDestination == 6,
+              selected: _selectedDestination == 11,
               onTap: () => selectDestination(11),
             ),
             ListTile(
@@ -433,7 +488,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Recharge Payments'),
               selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
               selectedColor: Colors.white,
-              selected: _selectedDestination == 7,
+              selected: _selectedDestination == 12,
               onTap: () => selectDestination(12),
             ),
             Divider(
@@ -462,10 +517,18 @@ class _HomeScreenState extends State<HomeScreen> {
               selected: _selectedDestination == 9,
               onTap: () => selectDestination(9),
             ),
+             ListTile(
+              leading: Icon(Icons.attach_money_outlined),
+              title: Text('Expenses'),
+              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
+              selectedColor: Colors.white,
+              selected: _selectedDestination == 13,
+              onTap: () => selectDestination(13),
+            ),
           ],
         ),
       ),
-    
+     
       body: PopScope(
         canPop: false,
         child: SafeArea(
@@ -497,6 +560,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Text('No Recharge Balances Yet ! Add Some '));
                           } else {
                             return ListView.builder(
+                              
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: filteredcarts.length,
@@ -506,6 +570,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.symmetric(horizontal:  10.0),
                                   child: Card(
                                     child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.shade100,
+                                        borderRadius: BorderRadius.circular(10)
+                                      ),
                                       
                                       alignment: Alignment.center,
                                       child: 
@@ -538,7 +606,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     // balance.cart_Code,
                                                     ,
                                                     style: TextStyle(
-                                                color: Colors.green.shade900,
+                                                color: Colors.blue.shade900,
                                                 fontWeight: FontWeight.bold),
                                                   ),
                                                 ],
@@ -595,6 +663,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Card(
                       child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(
@@ -668,7 +740,184 @@ class _HomeScreenState extends State<HomeScreen> {
                     dashGapGradient: [Colors.white, Colors.white],
                     dashGapRadius: 1.0,
                   ),
-                ),
+                ), 
+                Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: InputDecorator(
+                              decoration: InputDecoration(
+                                labelText: 'Old Payments',
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(color: Colors.black)),
+                              ),
+                        child: Obx(() {
+                   if (rechargeBalanceController.isLoading.value || invoiceHistoryController.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          } else {
+                            return  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Card(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade100,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Invoice Payment Total:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(
+                                                invoicePaymentController.total_fhome
+                                                    .value)
+                                            .toString() +
+                                        '\$',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Recharge Payments Total:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(
+                                                rechInvoicePaymentController
+                                                    .total_fhome.value / rateController.rateValue.value)
+                                            .toString() +
+                                        '\$',
+                                    style: TextStyle(
+                                        color: Colors.green.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                                                       
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                          } 
+                            
+                  
+                }))),   Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: DottedLine(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.center,
+                    lineLength: double.infinity,
+                    lineThickness: 2.0,
+                    dashLength: 4.0,
+                    dashColor: Colors.black,
+                    dashGradient: [Colors.black, Colors.black],
+                    dashRadius: 1.0,
+                    dashGapLength: 1.0,
+                    dashGapColor: Colors.transparent,
+                    dashGapGradient: [Colors.white, Colors.white],
+                    dashGapRadius: 1.0,
+                  ),
+                ), 
+                Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: InputDecorator(
+                        
+                              decoration: InputDecoration(
+                                labelText: 'Expenses',
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: BorderSide(color: Colors.black)),
+                              ),
+                        child: Obx(() {
+                   if (rechargeBalanceController.isLoading.value || invoiceHistoryController.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          } else {
+                            return  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Card(
+                      child: Container(
+                        decoration: BoxDecoration(
+                                                  color: Colors.red.shade100,
+
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Expenses Total:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+                                  ),
+                                  Text(
+                                    addCommasToNumber(
+                                                expensesController.total_fhome
+                                                    .value)
+                                            .toString() +
+                                        '\$',
+                                    style: TextStyle(
+                                        color: Colors.red.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Text(
+                              //       'Recharge Payments Total:',
+                              //       style:
+                              //           TextStyle(fontWeight: FontWeight.bold),
+                              //     ),
+                              //     Text(
+                              //       addCommasToNumber(
+                              //                   rechInvoicePaymentController
+                              //                       .total_fhome.value / rateController.rateValue.value)
+                              //               .toString() +
+                              //           '\$',
+                              //       style: TextStyle(
+                              //           color: Colors.green.shade900,
+                              //           fontWeight: FontWeight.bold),
+                              //     )
+                              //   ],
+                              // ),
+                                                       
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                          } 
+                            
+                  
+                }))),
+
+
+
                 ],
               ),
          Column(
@@ -697,7 +946,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Text(
                                         addCommasToNumber(
                                                     rechargeInvoiceHistoryController
-                                                        .totalrec_fhome.value + invoiceHistoryController.totalrec_fhome.value)
+                                                        .totalrec_fhome.value + invoiceHistoryController.totalrec_fhome.value + invoicePaymentController.total_fhome.value + (rechInvoicePaymentController.total_fhome.value/ rateController.rateValue.value) - expensesController.total_fhome.value )
                                                 .toString() +
                                             '\$',
                                         style: TextStyle(
@@ -705,7 +954,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontWeight: FontWeight.bold),
                                       )
                                     ],
-                                  ),                             
+                                  ),  
+                                                             
                                 ],
                               ),
                             ),

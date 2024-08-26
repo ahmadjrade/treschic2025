@@ -4,9 +4,11 @@ import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/invoice_payment_model.dart';
+import 'package:fixnshop_admin/model/purchase_payment_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,11 +16,11 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoicePayment extends StatelessWidget {
-  InvoicePayment({super.key});
+class PurchasePayment extends StatelessWidget {
+  PurchasePayment({super.key});
 
-  final InvoicePaymentController invoicePaymentController =
-      Get.find<InvoicePaymentController>();
+  final PurchasePaymentController purchasePaymentController =
+      Get.find<PurchasePaymentController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -28,9 +30,9 @@ class InvoicePayment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // invoicePaymentController.reset();
+    // purchasePaymentController.reset();
 
-    invoicePaymentController.CalTotal();
+    purchasePaymentController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -84,7 +86,7 @@ class InvoicePayment extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                invoicePaymentController.payments.refresh();
+                                purchasePaymentController.payments.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -154,10 +156,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     ],
                   //                   ),
                   //                   value: 'this',
-                  //                   groupValue: invoicePaymentController.Store.value,
+                  //                   groupValue: purchasePaymentController.Store.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Store.value = 'this';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Store.value = 'this';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -176,10 +178,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'other',
-                  //                   groupValue: invoicePaymentController.Store.value,
+                  //                   groupValue: purchasePaymentController.Store.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Store.value = 'other';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Store.value = 'other';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -197,10 +199,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: invoicePaymentController.Store.value,
+                  //                   groupValue: purchasePaymentController.Store.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Store.value = 'all';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Store.value = 'all';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -234,10 +236,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'No',
-                  //                   groupValue: invoicePaymentController.Sold.value,
+                  //                   groupValue: purchasePaymentController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Sold.value = 'No';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Sold.value = 'No';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -256,10 +258,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Yes',
-                  //                   groupValue: invoicePaymentController.Sold.value,
+                  //                   groupValue: purchasePaymentController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Sold.value = 'Yes';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Sold.value = 'Yes';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -277,10 +279,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: invoicePaymentController.Sold.value,
+                  //                   groupValue: purchasePaymentController.Sold.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Sold.value = 'all';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Sold.value = 'all';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -314,10 +316,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'New',
-                  //                   groupValue: invoicePaymentController.Condition.value,
+                  //                   groupValue: purchasePaymentController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Condition.value = 'New';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Condition.value = 'New';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -336,10 +338,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'Used',
-                  //                   groupValue: invoicePaymentController.Condition.value,
+                  //                   groupValue: purchasePaymentController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Condition.value = 'Used';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Condition.value = 'Used';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -357,10 +359,10 @@ class InvoicePayment extends StatelessWidget {
                   //                     style: TextStyle(fontSize: 8),
                   //                   ),
                   //                   value: 'all',
-                  //                   groupValue: invoicePaymentController.Condition.value,
+                  //                   groupValue: purchasePaymentController.Condition.value,
                   //                   onChanged: (value) {
-                  //                     invoicePaymentController.Condition.value = 'all';
-                  //                     invoicePaymentController.searchPhones(
+                  //                     purchasePaymentController.Condition.value = 'all';
+                  //                     purchasePaymentController.searchPhones(
                   //                         FilterQuery.text, Username.value);
 
                   //                     // setState(() {
@@ -386,13 +388,13 @@ class InvoicePayment extends StatelessWidget {
                   ),
                   Obx(
                     () {
-                      final List<InvoicePaymentModel> filteredinvoices =
-                          invoicePaymentController.SearchPayments(
+                      final List<PurchasePaymentModel> filteredinvoices =
+                          purchasePaymentController.SearchPayments(
                         FilterQuery.text,
                       );
-                      if (invoicePaymentController.isLoading.value) {
+                      if (purchasePaymentController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (invoicePaymentController.payments.isEmpty) {
+                      } else if (purchasePaymentController.payments.isEmpty) {
                         return Center(
                             child: Text('No Payment Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
@@ -404,7 +406,7 @@ class InvoicePayment extends StatelessWidget {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: filteredinvoices.length,
                           itemBuilder: (context, index) {
-                            final InvoicePaymentModel invoice =
+                            final PurchasePaymentModel purchase =
                                 filteredinvoices[index];
                             return Container(
                               //  width: double.infinity,
@@ -417,14 +419,14 @@ class InvoicePayment extends StatelessWidget {
                                 // leading: Column(
                                 //   children: [
                                 //     Expanded(
-                                //       child: invoice.imageUrl != null
-                                //           ? Image.network(invoice.imageUrl!)
+                                //       child: purchase.imageUrl != null
+                                //           ? Image.network(purchase.imageUrl!)
                                 //           : Placeholder(),
                                 //     ),
                                 //   ],
                                 // ),
                                 onLongPress: () {
-                                  //copyToClipboard(invoice.id);
+                                  //copyToClipboard(purchase.id);
                                 },
                                 title: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -436,19 +438,19 @@ class InvoicePayment extends StatelessWidget {
                                       children: [
                                         Text(
                                           '#' +
-                                              invoice.Invoice_id.toString() +
+                                              purchase.Purchase_id.toString() +
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
                                         ),
                                         Text(
-                                          invoice.Cus_Name! +
+                                          purchase.Supplier_Name! +
                                               ' ' +
-                                              invoice.Cus_Number!
+                                              purchase.Supplier_Number!
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // purchase.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -461,7 +463,7 @@ class InvoicePayment extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
-                                          invoice.Payment_Date
+                                          purchase.Payment_Date
                                          
                                           ,
                                           style: TextStyle(
@@ -469,10 +471,10 @@ class InvoicePayment extends StatelessWidget {
                                               fontSize: 12),
                                         ),
                                         Text(
-                                          ' ' + Format(invoice.Payment_Time)
+                                          ' ' + Format(purchase.Payment_Time)
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // purchase.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
@@ -480,11 +482,11 @@ class InvoicePayment extends StatelessWidget {
                                         ),
                                         Text(
                                           ' || ' +
-                                              invoice.Username.toUpperCase() +
+                                              purchase.Username.toUpperCase() +
                                               ' Store'
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // purchase.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
@@ -518,7 +520,7 @@ class InvoicePayment extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     'Payment Ammount:  ' +
-                                                        addCommasToNumber(invoice
+                                                        addCommasToNumber(purchase
                                                                 .Ammount)
                                                             .toString() +
                                                         '\$',
@@ -528,9 +530,9 @@ class InvoicePayment extends StatelessWidget {
                                                             .blue.shade900),
                                                   ),
                                                   Text(
-                                                    'Invoice Date:  ' +
-                                                        (invoice
-                                                                .Invoice_Date)
+                                                    'Purchase Date:  ' +
+                                                        (purchase
+                                                                .Purchase_Date)
                                                             .toString(),
                                                     style: TextStyle(
                                                         fontSize: 14,
@@ -539,7 +541,7 @@ class InvoicePayment extends StatelessWidget {
                                                   ),
                                                   Text(
                                                     'Old Due:  ' +
-                                                        (invoice
+                                                        (purchase
                                                                 .Old_Due)
                                                             .toString(),
                                                     style: TextStyle(
@@ -549,7 +551,7 @@ class InvoicePayment extends StatelessWidget {
                                                   ),
                                                   Text(
                                                                                                       'New Due:  ' +
-                                                    (invoice
+                                                    (purchase
                                                             .New_Due)
                                                         .toString(),
                                                                                                       style: TextStyle(
@@ -560,7 +562,7 @@ class InvoicePayment extends StatelessWidget {
                                                   
                                                   // Text(
                                                   //   'Invoice Due US:  ' +
-                                                  //       addCommasToNumber(invoice
+                                                  //       addCommasToNumber(purchase
                                                   //               .Invoice_Due_USD)
                                                   //           .toString() +
                                                   //       '\$',
@@ -571,7 +573,7 @@ class InvoicePayment extends StatelessWidget {
                                                   // ),
                                                   // Text(
                                                   //   'Invoice Due LL:  ' +
-                                                  //       addCommasToNumber(invoice
+                                                  //       addCommasToNumber(purchase
                                                   //               .Invoice_Due_LB)
                                                   //           .toString() +
                                                   //       ' LB',
@@ -594,16 +596,16 @@ class InvoicePayment extends StatelessWidget {
                                           //       fixedSize:
                                           //           Size(double.maxFinite, 20),
                                           //       backgroundColor:
-                                          //           invoicePaymentController
+                                          //           purchasePaymentController
                                           //                   .ispaid(
-                                          //                       invoice.isPaid)
+                                          //                       purchase.isPaid)
                                           //               ? Colors.green.shade900
                                           //               : Colors.red.shade900,
                                           //       side: BorderSide(
                                           //         width: 2.0,
                                           //         color:
-                                          //             invoicePaymentController
-                                          //                     .ispaid(invoice
+                                          //             purchasePaymentController
+                                          //                     .ispaid(purchase
                                           //                         .isPaid)
                                           //                 ? Colors
                                           //                     .green.shade900
@@ -618,25 +620,25 @@ class InvoicePayment extends StatelessWidget {
                                           //     onPressed: () {
                                           //       Get.to(
                                           //           () => InvoiceHistoryItems(
-                                          //                 Invoice_id:
-                                          //                     invoice.Invoice_id
+                                          //                 Purchase_id:
+                                          //                     purchase.Purchase_id
                                           //                         .toString(),
                                           //                 Customer_id:
-                                          //                     invoice.Cus_id
+                                          //                     purchase.Cus_id
                                           //                         .toString(),
                                           //                 Customer_Name:
-                                          //                     invoice.Cus_Name
+                                          //                     purchase.Supplier_Name
                                           //                         .toString(),
                                           //                 Customer_Number:
-                                          //                     invoice.Cus_Number
+                                          //                     purchase.Supplier_Number
                                           //                         .toString(),
                                           //                 Invoice_Total_US:
-                                          //                     invoice.Invoice_Total_Usd
+                                          //                     purchase.Invoice_Total_Usd
                                           //                         .toString(),
-                                          //                 Invoice_Rec_US: invoice
+                                          //                 Invoice_Rec_US: purchase
                                           //                         .Invoice_Rec_Usd
                                           //                     .toString(),
-                                          //                 Invoice_Due_US: invoice
+                                          //                 Invoice_Due_US: purchase
                                           //                         .Invoice_Due_USD
                                           //                     .toString(),
                                           //               ));
@@ -657,8 +659,8 @@ class InvoicePayment extends StatelessWidget {
                                           //           Icons
                                           //               .arrow_circle_right_rounded,
                                           //           color:
-                                          //               invoicePaymentController
-                                          //                       .ispaid(invoice
+                                          //               purchasePaymentController
+                                          //                       .ispaid(purchase
                                           //                           .isPaid)
                                           //                   ? Colors.white
                                           //                   : Colors.white,
@@ -708,7 +710,7 @@ class InvoicePayment extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoicePaymentController
+                                    addCommasToNumber(purchasePaymentController
                                                 .total.value)
                                             .toString() +
                                         '\$',

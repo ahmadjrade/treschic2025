@@ -31,7 +31,7 @@ class InvoicePaymentAll extends StatelessWidget {
     invoicePaymentController.CalTotalall();
     // invoicePaymentController.reset();
 
-    // invoicePaymentController.CalTotal();
+    invoicePaymentController.CalTotalall();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -177,7 +177,7 @@ class InvoicePaymentAll extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
-                                          invoice.Invoice_Date
+                                          invoice.Payment_Date
                                          
                                           ,
                                           style: TextStyle(

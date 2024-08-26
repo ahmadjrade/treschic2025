@@ -804,7 +804,7 @@ class RechargeDue extends StatelessWidget {
                                                                           invoice.Invoice_id
                                                                               .toString(),
                                                                           invoice.Invoice_Due_LB
-                                                                              .toString())
+                                                                              .toString(),invoice.Invoice_Date)
                                                                       .then((value) =>
                                                                           showToast(
                                                                               rechargeInvoiceHistoryController
@@ -857,28 +857,7 @@ class RechargeDue extends StatelessWidget {
                                                           );
                                                         },
                                                       );
-                                                      // Get.to(
-                                                      //     () => invoiceHistoryItems(
-                                                      //           invoice_id:
-                                                      //               invoice.invoice_id
-                                                      //                   .toString(),
-                                                      //                   Customer_id: invoice.Cus_id.toString(),
-                                                      //           Customer_Name:
-                                                      //               invoice.Cus_Name
-                                                      //                   .toString(),
-                                                      //           Customer_Number:
-                                                      //               invoice.Cus_Number
-                                                      //                   .toString(),
-                                                      //           invoice_Total_US:
-                                                      //               invoice.invoice_Total_Usd
-                                                      //                   .toString(),
-                                                      //           invoice_Rec_US: invoice
-                                                      //                   .invoice_Rec_Usd
-                                                      //               .toString(),
-                                                      //           invoice_Due_US: invoice
-                                                      //                   .invoice_Due_USD
-                                                      //               .toString(),
-                                                      //         ));
+                                                      
                                                     },
                                                     child: Row(
                                                       mainAxisAlignment:
@@ -902,9 +881,7 @@ class RechargeDue extends StatelessWidget {
                                                                       .isPaid)
                                                               ? Colors.white
                                                               : Colors.white,
-                                                          //  'Details',
-                                                          //   style: TextStyle(
-                                                          //        color: Colors.red),
+                                                         
                                                         ),
                                                       ],
                                                     )),
@@ -912,126 +889,11 @@ class RechargeDue extends StatelessWidget {
                                             ],
                                           ),
 
-                                          // Text(
-                                          //     'Store: ' +
-                                          //         invoice.Username.toUpperCase() +
-                                          //         ' Store',
-                                          //     style: TextStyle(
-                                          //         fontSize: 14,
-                                          //         color: Colors.black)),
-                                          // Text(
-                                          //   'Sell Price: ' +
-                                          //       invoice.Sell_Price.toString() +
-                                          //       '\$',
-                                          //   style: TextStyle(
-                                          //       color: rechargeInvoiceHistoryController
-                                          //               .issold(invoice.isSold)
-                                          //           ? Colors.black
-                                          //           : Colors.green.shade900),
-                                          // ),
-                                          // Visibility(
-                                          //   visible: rechargeInvoiceHistoryController
-                                          //       .isadmin(Username.value),
-                                          //   child: Text(
-                                          //     'Cost Price: ' +
-                                          //         invoice.Price.toString() +
-                                          //         '\$',
-                                          //     style: TextStyle(
-                                          //         color: rechargeInvoiceHistoryController
-                                          //                 .issold(invoice.isSold)
-                                          //             ? Colors.black
-                                          //             : Colors.red.shade900),
-                                          //   ),
-                                          // ),
-                                          // Visibility(
-                                          //   visible: rechargeInvoiceHistoryController
-                                          //       .isadmin(Username.value),
-                                          //   child: Text(
-                                          //     'Bought From: ' +
-                                          //         invoice.Cus_Name +
-                                          //         ' - ' +
-                                          //         invoice.Cus_Number.toString(),
-                                          //     style: TextStyle(
-                                          //         color: Colors.black),
-                                          //   ),
-                                          // ),
-                                          // Visibility(
-                                          //   visible: rechargeInvoiceHistoryController
-                                          //       .isadmin(Username.value),
-                                          //   child: Text(
-                                          //     'Bought at: ' +
-                                          //         invoice.Buy_Date +
-                                          //         ' - ' +
-                                          //         Format(invoice.Buy_Time),
-                                          //     style: TextStyle(
-                                          //         color: Colors.black),
-                                          //   ),
-                                          // ),
+                              
                                         ],
                                       ),
                                     ),
-                                    // Visibility(
-                                    //   visible: rechargeInvoiceHistoryController
-                                    //       .isadmin(Username.value),
-                                    //   child: IconButton(
-                                    //       onPressed: () {
-                                    //         Get.to(() => PhoneEdit(
-                                    //             Phone_id: invoice.Phone_id,
-                                    //             FilterQuery: invoice.FilterQuery,
-                                    //             IMEI: invoice.IMEI,
-                                    //             Cost_Price: invoice.Price,
-                                    //             Sell_Price: invoice.Sell_Price,
-                                    //             Condition:
-                                    //                 invoice.Phone_Condition,
-                                    //             Capacity: invoice.Capacity,
-                                    //             Note: invoice.Note,Color: invoice.Color_id,));
-                                    //       },
-                                    //       icon: Icon(Icons.edit,
-                                    //           color: rechargeInvoiceHistoryController
-                                    //                   .issold(invoice.isSold)
-                                    //               ? Colors.black
-                                    //               : Colors.red)),
-                                    // )
-                                    // Column(
-                                    //   children: [
-                                    //     Text(
-                                    //       invoice.Sell_Price.toString() + '\$',
-                                    //       style: TextStyle(
-                                    //           fontSize: 17,
-                                    //           color: Colors.green.shade900),
-                                    //     ),
-                                    //     Visibility(
-                                    //       visible:
-                                    //           rechargeInvoiceHistoryController.isadmin(Username.value),
-                                    //       child: Text(
-                                    //         invoice.Price.toString() + '\$',
-                                    //         style: TextStyle(
-                                    //             fontSize: 17,
-                                    //             color: Colors.red.shade900),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
-
-                                    // OutlinedButton(
-                                    //     onPressed: () {
-                                    //       // rechargeInvoiceHistoryController.SelectedPhone.value = invoice;
-                                    //       //       // subcategoryController.selectedSubCategory.value =
-                                    //       //       //     null;
-
-                                    //       // Get.to(() => PhonesListDetail(
-                                    //       //       phone_id:
-                                    //       //           invoice.phone_id.toString(),
-                                    //       //       FilterQuery: invoice.FilterQuery,
-                                    //       //       phone_Color: invoice.phone_Color,
-                                    //       //       phone_LPrice:
-                                    //       //           invoice.phone_LPrice.toString(),
-                                    //       //       phone_MPrice:
-                                    //       //           invoice.phone_MPrice.toString(),
-                                    //       //       phone_Code: invoice.phone_Code,
-                                    //       //     ));
-                                    //     },
-                                    //     child: Icon(Icons.arrow_right)),
+                                   
                                   ],
                                 ),
                               ),

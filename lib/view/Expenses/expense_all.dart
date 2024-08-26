@@ -2,36 +2,39 @@
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
+import 'package:fixnshop_admin/controller/expenses_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/model/expenses_model.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/invoice_payment_model.dart';
+import 'package:fixnshop_admin/model/purchase_payment_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_payment_month.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InvoicePaymentMonth extends StatelessWidget {
-  InvoicePaymentMonth({super.key});
+class ExpenseAll extends StatelessWidget {
+  ExpenseAll({super.key});
 
-  final InvoicePaymentController invoicePaymentController =
-      Get.find<InvoicePaymentController>();
+  final ExpensesController expensesController = Get.find<ExpensesController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
-
   @override
   Widget build(BuildContext context) {
-    invoicePaymentController.CalTotalMonth();
-    // invoicePaymentController.reset();
+    expensesController.CalTotalall();
+    // expensesController.reset();
 
-    invoicePaymentController.CalTotalMonth();
+    expensesController.CalTotalall();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -66,7 +69,6 @@ class InvoicePaymentMonth extends StatelessWidget {
     }
 
     return Scaffold(
-   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -85,7 +87,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                invoicePaymentController.payments.refresh();
+                                expensesController.expenses.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -95,20 +97,6 @@ class InvoicePaymentMonth extends StatelessWidget {
                             ),
                           );
                         }),
-                        // SizedBox(
-                        //   width: 14,
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        //   child: IconButton(
-                        //     icon: Icon(Icons.qr_code_scanner_rounded),
-                        //     color: Colors.black,
-                        //     onPressed: () {
-                        //       barcodeController.scanBarcodeSearch();
-                        //       //.then((value) => set());
-                        //     },
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -123,30 +111,30 @@ class InvoicePaymentMonth extends StatelessWidget {
                   ),
                   Obx(
                     () {
-                      final List<InvoicePaymentModel> filteredinvoices =
-                          invoicePaymentController.SearchInvoicesMonth(
-                        FilterQuery.text,
-                      );
-                      if (invoicePaymentController.isLoading.value) {
+                      final List<ExpensesModel> filteredinvoices =
+                          expensesController
+                              .searchExpensesAll(FilterQuery.text);
+
+            if (expensesController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (invoicePaymentController.payments.isEmpty) {
+                      } else if (expensesController.expenses.isEmpty) {
                         return Center(
-                            child: Text('No Payments Yet In This Store ! '));
+                            child: Text('No Expenses Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
                         return Center(
-                            child: Text('No Payments Yet In This Store ! '));
+                            child: Text('No Expenses Yet In This Store ! '));
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: filteredinvoices.length,
                           itemBuilder: (context, index) {
-                            final InvoicePaymentModel invoice =
+                            final ExpensesModel expense =
                                 filteredinvoices[index];
                             return Container(
                               //  width: double.infinity,
                               //   height: 140.0,
-                              color:  Colors.grey.shade300,
+                              color: Colors.grey.shade300,
                               margin: EdgeInsets.fromLTRB(14, 0, 14, 10),
                               //     padding: EdgeInsets.all(35),
                               alignment: Alignment.center,
@@ -154,14 +142,14 @@ class InvoicePaymentMonth extends StatelessWidget {
                                 // leading: Column(
                                 //   children: [
                                 //     Expanded(
-                                //       child: invoice.imageUrl != null
-                                //           ? Image.network(invoice.imageUrl!)
+                                //       child: expense.imageUrl != null
+                                //           ? Image.network(expense.imageUrl!)
                                 //           : Placeholder(),
                                 //     ),
                                 //   ],
                                 // ),
                                 onLongPress: () {
-                                  //copyToClipboard(invoice.id);
+                                  //copyToClipboard(expense.id);
                                 },
                                 title: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -173,62 +161,51 @@ class InvoicePaymentMonth extends StatelessWidget {
                                       children: [
                                         Text(
                                           '#' +
-                                              invoice.Invoice_id.toString() +
+                                              expense.Expense_id.toString() +
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
                                         ),
-                                        Text(
-                                          invoice.Cus_Name! +
-                                              ' ' +
-                                              invoice.Cus_Number!
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                        Spacer(),
-                                        
-                                      ],
-                                    ),
-                                    Row(
+                                         Row(
                                       children: [
                                         Text(
-                                          invoice.Payment_Date
+                                          expense.Expense_Date
                                          
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12),
+                                              fontSize: 15),
                                         ),
                                         Text(
-                                          ' ' + Format(invoice.Payment_Time)
+                                          ' ' + Format(expense.Expense_Time)
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // expense.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12),
+                                              fontSize: 15),
                                         ),
                                         Text(
                                           ' || ' +
-                                              invoice.Username.toUpperCase() +
+                                              expense.Username.toUpperCase() +
                                               ' Store'
                                           // +
                                           // ' -- ' +
-                                          // invoice.phone_Code,
+                                          // expense.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12),
+                                              fontSize: 15),
                                         ),
                                       ],
                                     ),
+                                        Spacer(),
+                                        
+                                      ],
+                                    ),
+                                   
                                   ],
                                 ),
 
@@ -254,9 +231,19 @@ class InvoicePaymentMonth extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    'Payment Ammount:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Ammount)
+                                                    'Expense Category:  ' +
+                                                        (expense
+                                                                .Exp_Cat_Name)
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors
+                                                            .blue.shade900),
+                                                  ),
+                                                  Text(
+                                                    'Expense Ammount:  ' +
+                                                        addCommasToNumber(expense
+                                                                .Expense_Value)
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
@@ -264,59 +251,12 @@ class InvoicePaymentMonth extends StatelessWidget {
                                                         color: Colors
                                                             .blue.shade900),
                                                   ),
-                                                  Text(
-                                                    'Invoice Date:  ' +
-                                                        (invoice
-                                                                .Invoice_Date)
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .blue.shade900),
-                                                  ),
-                                                  Text(
-                                                    'Old Due:  ' +
-                                                        (invoice
-                                                                .Old_Due)
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .green.shade900),
-                                                  ),
-                                                  Text(
-                                                                                                      'New Due:  ' +
-                                                    (invoice
-                                                            .New_Due)
-                                                        .toString(),
-                                                                                                      style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors
-                                                        .green.shade900),
-                                                                                                    ),
                                                   
-                                                  // Text(
-                                                  //   'Invoice Due US:  ' +
-                                                  //       addCommasToNumber(invoice
-                                                  //               .Invoice_Due_USD)
-                                                  //           .toString() +
-                                                  //       '\$',
-                                                  //   style: TextStyle(
-                                                  //       fontSize: 14,
-                                                  //       color: Colors
-                                                  //           .red.shade900),
-                                                  // ),
-                                                  // Text(
-                                                  //   'Invoice Due LL:  ' +
-                                                  //       addCommasToNumber(invoice
-                                                  //               .Invoice_Due_LB)
-                                                  //           .toString() +
-                                                  //       ' LB',
-                                                  //   style: TextStyle(
-                                                  //       fontSize: 14,
-                                                  //       color: Colors
-                                                  //           .red.shade900),
-                                                  // ),
+                                                 
+                                                  
+                                                                                                  
+                                                  
+                                                
                                                 ],
                                               ),
                                             ],
@@ -326,86 +266,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                                             height: 10,
                                           ),
 
-                                          // OutlinedButton(
-                                          //     style: ElevatedButton.styleFrom(
-                                          //       fixedSize:
-                                          //           Size(double.maxFinite, 20),
-                                          //       backgroundColor:
-                                          //           invoicePaymentController
-                                          //                   .ispaid(
-                                          //                       invoice.isPaid)
-                                          //               ? Colors.green.shade900
-                                          //               : Colors.red.shade900,
-                                          //       side: BorderSide(
-                                          //         width: 2.0,
-                                          //         color:
-                                          //             invoicePaymentController
-                                          //                     .ispaid(invoice
-                                          //                         .isPaid)
-                                          //                 ? Colors
-                                          //                     .green.shade900
-                                          //                 : Colors.red.shade900,
-                                          //       ),
-                                          //       shape: RoundedRectangleBorder(
-                                          //         borderRadius:
-                                          //             BorderRadius.circular(
-                                          //                 15.0),
-                                          //       ),
-                                          //     ),
-                                          //     onPressed: () {
-                                          //       Get.to(
-                                          //           () => InvoiceHistoryItems(
-                                          //                 Invoice_id:
-                                          //                     invoice.Invoice_id
-                                          //                         .toString(),
-                                          //                 Customer_id:
-                                          //                     invoice.Cus_id
-                                          //                         .toString(),
-                                          //                 Customer_Name:
-                                          //                     invoice.Cus_Name
-                                          //                         .toString(),
-                                          //                 Customer_Number:
-                                          //                     invoice.Cus_Number
-                                          //                         .toString(),
-                                          //                 Invoice_Total_US:
-                                          //                     invoice.Invoice_Total_Usd
-                                          //                         .toString(),
-                                          //                 Invoice_Rec_US: invoice
-                                          //                         .Invoice_Rec_Usd
-                                          //                     .toString(),
-                                          //                 Invoice_Due_US: invoice
-                                          //                         .Invoice_Due_USD
-                                          //                     .toString(),
-                                          //               ));
-                                          //     },
-                                          //     child: Row(
-                                          //       mainAxisAlignment:
-                                          //           MainAxisAlignment.center,
-                                          //       children: [
-                                          //         Text(
-                                          //           'Select',
-                                          //           style: TextStyle(
-                                          //               color: Colors.white),
-                                          //         ),
-                                          //         SizedBox(
-                                          //           width: 10,
-                                          //         ),
-                                          //         Icon(
-                                          //           Icons
-                                          //               .arrow_circle_right_rounded,
-                                          //           color:
-                                          //               invoicePaymentController
-                                          //                       .ispaid(invoice
-                                          //                           .isPaid)
-                                          //                   ? Colors.white
-                                          //                   : Colors.white,
-                                          //           //  'Details',
-                                          //           //   style: TextStyle(
-                                          //           //        color: Colors.red),
-                                          //         ),
-                                          //       ],
-                                          //     )),
-
+                                       
                                         ],
                                       ),
                                     ),
@@ -418,7 +279,7 @@ class InvoicePaymentMonth extends StatelessWidget {
                         );
                       }
                     },
-                  ),
+                  )
                 ],
               ),
               SizedBox(
@@ -440,13 +301,13 @@ class InvoicePaymentMonth extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Total US:',
+                                    'Expense Total US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(invoicePaymentController
-                                                .total_month.value)
+                                    addCommasToNumber(expensesController
+                                                .total_all.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -465,8 +326,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totalrecusd_month.value)
+                              //       addCommasToNumber(expensesController
+                              //                   .totalrecusd_all.value)
                               //               .toString() +
                               //           '\$',
                               //       style: TextStyle(
@@ -474,7 +335,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           fontWeight: FontWeight.bold),
                               //     )
                               //   ],
-                              // ), Row(
+                              // ),
+                              // Row(
                               //   mainAxisAlignment:
                               //       MainAxisAlignment.spaceBetween,
                               //   children: [
@@ -484,8 +346,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totalreclb_month.value)
+                              //       addCommasToNumber(expensesController
+                              //                   .totalreclb_all.value)
                               //               .toString() +
                               //           'LL',
                               //       style: TextStyle(
@@ -493,7 +355,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           fontWeight: FontWeight.bold),
                               //     )
                               //   ],
-                              // ), Row(
+                              // ),
+                              // Row(
                               //   mainAxisAlignment:
                               //       MainAxisAlignment.spaceBetween,
                               //   children: [
@@ -503,8 +366,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totalrec_month.value)
+                              //       addCommasToNumber(expensesController
+                              //                   .totalrec_all.value)
                               //               .toString() +
                               //           '\$',
                               //       style: TextStyle(
@@ -523,8 +386,8 @@ class InvoicePaymentMonth extends StatelessWidget {
                               //           TextStyle(fontWeight: FontWeight.bold),
                               //     ),
                               //     Text(
-                              //       addCommasToNumber(invoicePaymentController
-                              //                   .totaldue_month.value)
+                              //       addCommasToNumber(expensesController
+                              //                   .totaldue_all.value)
                               //               .toString() +
                               //           '\$',
                               //       style: TextStyle(

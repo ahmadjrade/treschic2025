@@ -9,6 +9,7 @@ import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/platform_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
@@ -40,6 +41,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
   TextEditingController New_Price = TextEditingController();
 
   TextEditingController New_Qty = TextEditingController();
+  final PlatformController platformController = Get.find<PlatformController>();
 
   final RechargeCartController rechargeCartController =
       Get.find<RechargeCartController>();
@@ -882,7 +884,8 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                         Expanded(
                                             child: TextField(
                                           // controller: i,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType:    platformController.CheckPlatform() ?
+                                                          TextInputType.number : TextInputType.text,
                                           onChanged: (Value) {
                                             if (Value == '') {
                                               //  Get.snackbar('123', '123');
@@ -914,7 +917,8 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                                 fontWeight: FontWeight.bold)),
                                         Expanded(
                                             child: TextField(
-                                          keyboardType: TextInputType.number,
+                                          keyboardType:    platformController.CheckPlatform() ?
+                                                          TextInputType.number : TextInputType.text,
                                           onChanged: (value) {
                                             if (value == '') {
                                               //  Get.snackbar('123', '123');

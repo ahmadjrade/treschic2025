@@ -6,6 +6,7 @@ import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/cart_types_controller.dart';
 import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
+import 'package:fixnshop_admin/controller/platform_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/cart_types_model.dart';
 import 'package:fixnshop_admin/model/recharge_balance_model.dart';
@@ -29,6 +30,8 @@ class RechargeBalance extends StatelessWidget {
       Get.find<RechargeBalanceController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
+       final PlatformController platformController =
+      Get.find<PlatformController>();
   RxString Username = ''.obs;
   TextEditingController Type_Name = TextEditingController();
   TextEditingController New_Balance = TextEditingController();
@@ -206,8 +209,8 @@ class RechargeBalance extends StatelessWidget {
                                                         balance.Credit_Type +
                                                         ' Balance'),
                                                     content: TextField(
-                                                      keyboardType:
-                                                          TextInputType.number,
+                                                      keyboardType: platformController.CheckPlatform() ?
+                                                          TextInputType.number : TextInputType.text,
                                                       controller: Edit_Balance,
                                                       decoration: InputDecoration(
                                                           hintText:

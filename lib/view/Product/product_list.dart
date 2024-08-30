@@ -102,6 +102,7 @@ class ProductList extends StatelessWidget {
         canPop: true,
         onPopInvoked: (didPop) {
           homeController.selectedPageIndex.value = 0;
+          barcodeController.barcode3.value = '';
         },
         child: Column(
           children: [
@@ -112,6 +113,7 @@ class ProductList extends StatelessWidget {
                   Expanded(
                     child: Obx(() {
                       Product_Name.text = barcodeController.barcode3.value;
+
                       return TextField(
                         controller: Product_Name,
                         onChanged: (query) {

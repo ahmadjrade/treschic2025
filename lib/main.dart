@@ -22,6 +22,7 @@ import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
 import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/phone_model_controller.dart';
+import 'package:fixnshop_admin/controller/platform_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/purchase_detail_controller.dart';
@@ -217,7 +218,12 @@ Future<void> main() async {
   Get.lazyPut<ExpensesController>(
     () => ExpensesController(),
     fenix: true,
+  ); Get.lazyPut<PlatformController>(
+    () => PlatformController(),
+    fenix: true,
   ); 
+  final PlatformController platformController =
+      Get.find<PlatformController>();
    final ExpensesController expensesController =
       Get.find<ExpensesController>();
     final PurchasePaymentController purchasePaymentController =

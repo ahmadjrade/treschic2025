@@ -8,6 +8,7 @@ import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/platform_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
@@ -40,7 +41,7 @@ class _NewInvoiceState extends State<NewInvoice> {
   TextEditingController New_Price = TextEditingController();
 
   TextEditingController New_Qty = TextEditingController();
-
+  final PlatformController platformController = Get.find<PlatformController>();
   final InvoiceHistoryController invoiceHistoryController =
       Get.find<InvoiceHistoryController>();
 
@@ -458,8 +459,8 @@ class _NewInvoiceState extends State<NewInvoice> {
                                                               'Update Item Price'),
                                                           content: TextField(
                                                             keyboardType:
-                                                                TextInputType
-                                                                    .number,
+                                                               platformController.CheckPlatform() ?
+                                                          TextInputType.number : TextInputType.text,
                                                             controller:
                                                                 New_Price,
                                                             decoration:
@@ -975,7 +976,8 @@ class _NewInvoiceState extends State<NewInvoice> {
                                         Expanded(
                                             child: TextField(
                                           // controller: i,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: platformController.CheckPlatform() ?
+                                                          TextInputType.number : TextInputType.text,
                                           onChanged: (Value) {
                                             if (Value == '') {
                                               //  Get.snackbar('123', '123');
@@ -1005,7 +1007,8 @@ class _NewInvoiceState extends State<NewInvoice> {
                                         Text('Received LB: '),
                                         Expanded(
                                             child: TextField(
-                                          keyboardType: TextInputType.number,
+                                          keyboardType: platformController.CheckPlatform() ?
+                                                          TextInputType.number : TextInputType.text,
                                           onChanged: (value) {
                                             if (value == '') {
                                               //  Get.snackbar('123', '123');

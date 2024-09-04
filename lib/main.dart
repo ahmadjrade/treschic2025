@@ -12,6 +12,7 @@ import 'package:fixnshop_admin/controller/customer_address_controller.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
 import 'package:fixnshop_admin/controller/expense_category_controller.dart';
 import 'package:fixnshop_admin/controller/expenses_controller.dart';
+import 'package:fixnshop_admin/controller/imoney_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_controller.dart';
 import 'package:fixnshop_admin/controller/insert_recharge_balance.dart';
@@ -221,7 +222,12 @@ Future<void> main() async {
   ); Get.lazyPut<PlatformController>(
     () => PlatformController(),
     fenix: true,
+  ); Get.lazyPut<ImoneyController>(
+    () => ImoneyController(),
+    fenix: true,
   ); 
+   final ImoneyController imoneyController =
+      Get.find<ImoneyController>();
   final PlatformController platformController =
       Get.find<PlatformController>();
    final ExpensesController expensesController =

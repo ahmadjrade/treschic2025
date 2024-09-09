@@ -19,8 +19,8 @@ import 'package:get/get.dart';
 import 'package:clipboard/clipboard.dart';
 
 class ProductList extends StatelessWidget {
-  int isPur;
-  ProductList({super.key, required this.isPur});
+  int isPur, from_home;
+  ProductList({super.key, required this.isPur,required this.from_home});
   final ProductController productController = Get.find<ProductController>();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
   final PurchaseController purchaseController = Get.put(PurchaseController());
@@ -100,10 +100,20 @@ class ProductList extends StatelessWidget {
           )),
       body: PopScope(
         canPop: true,
-        onPopInvoked: (didPop) {
-          homeController.selectedPageIndex.value = 0;
+        onPopInvokedWithResult: (didPop, result) {
+           if(from_home == 1) {
+            homeController.selectedPageIndex.value = 0;
           barcodeController.barcode3.value = '';
-        },
+         
+
+          } else {
+              //  Navigator.of(context).pop();
+                      barcodeController.barcode3.value = '';
+          }
+        },  
+         
+       
+        
         child: Column(
           children: [
             Padding(

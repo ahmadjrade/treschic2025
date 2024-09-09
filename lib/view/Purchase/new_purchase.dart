@@ -193,6 +193,7 @@ int SelectedColorId = 0;
                           onPressed: () {
                             Get.to(() => ProductList(
                                   isPur: 0,
+                                  from_home: 0,
                                 ));
                           },
                         ),

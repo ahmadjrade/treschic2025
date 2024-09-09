@@ -204,6 +204,7 @@ class OldInvoiceUpdate extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                                Get.to(() => ProductList(
+                                from_home: 0,
                                       isPur: 1,
                                     ));
                             },

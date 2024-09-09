@@ -31,8 +31,8 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
 
   final List<Widget> _homeScreenPages = [
     HomeScreen(),
-    ProductList(isPur: 1),
-    CustomerList(),
+    ProductList(isPur: 1,from_home: 1,),
+    CustomerList(from_home: 1,),
     StocksScreen(),
     InsertionScreen(),
   ];
@@ -59,7 +59,7 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
           haptic: true,
           gap: 8,
           color: Colors.black,
-          activeColor: Colors.red.shade900,
+          activeColor: Colors.blue.shade900,
           iconSize: 24,
           tabBackgroundColor: Colors.grey[100]!,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: isIos()),
@@ -71,7 +71,7 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
             GButton(icon: Icons.home, text: 'Home'),
             GButton(icon: Icons.search, text: 'Search'),
             GButton(icon: Icons.add, text: 'Invoice'),
-            GButton(icon: Icons.warehouse, text: 'Data'),
+            GButton(icon: Icons.repartition, text: 'Manage'),
             GButton(icon: Icons.settings, text: 'Repair'),
           ],
         ),

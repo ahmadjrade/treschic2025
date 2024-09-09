@@ -322,6 +322,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                         GestureDetector(
                           onTap: () {
                             Get.to(() => ProductList(
+                              from_home: 0,
                                   isPur: 1,
                                 ));
                           },

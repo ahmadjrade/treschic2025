@@ -339,6 +339,7 @@ class MainApp extends StatelessWidget {
             name: "/Products",
             page: () => ProductList(
                   isPur: 1,
+                  from_home: 0,
                 )),
         GetPage(name: "/Phones", page: () => PhonesList()),
         GetPage(name: "/Suppliers", page: () => SupplierList()),

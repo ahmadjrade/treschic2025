@@ -204,13 +204,14 @@ class PurchaseHistoryController extends GetxController {
   String result2 = '';
   Future<void> PayInvDue(String Pur_id,Ammount,Old_Due,New_Due,Purchase_Date) async {
     try {
-      print(Purchase_Date);
+      
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
       formattedTime = dateController.getFormattedTime();
       String domain = domainModel.domain;
+      print(Pur_id + ' | ' +Ammount + ' | ' + Old_Due + ' | ' + New_Due + ' | ' + Purchase_Date + ' | ' +Username.value + ' | ' + formattedDate + ' | ' + formattedTime)  ;
 
-      String uri = '$domain' + 'insert_pur_payment.php';
+      String uri = '$domain' + 'insert_purchase_payment.php';
       var res = await http.post(Uri.parse(uri), body: {
         "Purchase_id": Pur_id,
         "Ammount": Ammount,
@@ -219,7 +220,7 @@ class PurchaseHistoryController extends GetxController {
         "Username":Username.value,
         "Old_Due":Old_Due,
         "New_Due":New_Due,
-        "P_Date ":Purchase_Date,
+        "Purchase_Date ":Purchase_Date,
 
 
         

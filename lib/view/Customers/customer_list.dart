@@ -5,6 +5,7 @@ import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/model/customer_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:fixnshop_admin/view/Customers/customer_edit.dart';
 import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
 import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
@@ -17,7 +18,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CustomerList extends StatelessWidget {
-  CustomerList({super.key});
+  int from_home;
+  CustomerList({super.key,required this.from_home});
   final CustomerController customerController = Get.find<CustomerController>();
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
@@ -73,10 +75,19 @@ class CustomerList extends StatelessWidget {
         ],
       )),
       body: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          homeController.selectedPageIndex.value = 0;
-        },
+         canPop: true,
+        onPopInvokedWithResult: (didPop, result) {
+           if(from_home == 1) {
+            homeController.selectedPageIndex.value = 0;
+          barcodeController.barcode3.value = '';
+         
+
+          } else {
+              //  Navigator.of(context).pop();
+                      barcodeController.barcode3.value = '';
+          }
+        },  
+         
         child: Column(
           children: [
             Padding(

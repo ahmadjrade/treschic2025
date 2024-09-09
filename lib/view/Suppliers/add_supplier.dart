@@ -28,11 +28,12 @@ class AddSupplier extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('New Supplier'),
+            Text('Suppliers'),
             IconButton(
               color: Colors.white,
               iconSize: 24.0,
@@ -45,12 +46,12 @@ class AddSupplier extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Colors.deepPurple.shade300,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           SizedBox(
-            height: 50,
+            height: 20,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
@@ -127,9 +128,9 @@ class AddSupplier extends StatelessWidget {
               return  OutlinedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.deepPurple.shade300,
+                      backgroundColor: Colors.blue.shade900,
                       side: BorderSide(
-                          width: 2.0, color: Colors.deepPurple.shade300),
+                          width: 2.0, color: Colors.blue.shade900),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -179,7 +180,7 @@ class AddSupplier extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    'Insert Customer',
+                    'Insert Supplier',
                     style: TextStyle(color: Colors.white),
                   ));
             }),
@@ -238,8 +239,8 @@ class AddSupplier extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            iconDisabledColor: Colors.deepPurple.shade300,
-                            iconEnabledColor: Colors.deepPurple.shade300,
+                            iconDisabledColor: Colors.blue.shade900,
+                            iconEnabledColor: Colors.blue.shade900,
                             //  value: categoryController.category.first,
                             onChanged: (SupplierModel? value) {
                              // SelectedCategory = value;

@@ -556,7 +556,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           IconButton(
                               onPressed: () {
-                                Get.to(() => CustomerList());
+                                Get.to(() => CustomerList(from_home: 0,));
                               },
                               icon: Icon(
                                 FontAwesomeIcons.fileInvoiceDollar,

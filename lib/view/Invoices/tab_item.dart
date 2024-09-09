@@ -18,27 +18,27 @@ class TabItem extends StatelessWidget {
         children: [
           Text(
             title,
-            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 12),
           ),
-          count > 0
-              ? Container(
-                  margin: const EdgeInsetsDirectional.only(start: 5),
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      count > 9 ? "9+" : count.toString(),
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
-                )
-              : const SizedBox(width: 0, height: 0),
+          // count > 0
+          //     ? Container(
+          //         margin: const EdgeInsetsDirectional.only(start: 5),
+          //         padding: const EdgeInsets.all(3),
+          //         decoration: BoxDecoration(
+          //           color: Colors.grey.shade200,
+          //           shape: BoxShape.circle,
+          //         ),
+          //         child: Center(
+          //           child: Text(
+          //             count > 9 ? "9+" : count.toString(),
+          //             style: const TextStyle(
+          //               color: Colors.black54,
+          //               fontSize: 10,
+          //             ),
+          //           ),
+          //         ),
+          //       )
+              // : const SizedBox(width: 0, height: 0),
         ],
       ),
     );

@@ -727,6 +727,10 @@ class PurchaseDue extends StatelessWidget {
                                                   showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
+                                                Payment_Ammount
+                                                              .text = Purchase
+                                                                  .Purchase_Due_USD
+                                                              .toString();
                                                 return AlertDialog(
                                                   title: Text(
                                                       'Pay Due'),

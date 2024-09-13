@@ -4,6 +4,7 @@
 import 'dart:ffi';
 
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
+import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/color_model.dart';
@@ -33,7 +34,8 @@ class RechargeInvoiceHistoryController extends GetxController {
   RxString Username = ''.obs;
      RxInt itemsToShow = 20.obs; 
 
-
+ final RateController rateController =
+      Get.find<RateController>();
   //RxString show = 'Yes'.obs;
   void clearSelectedCat() {
     SelectedRechargeInvoice.value = null;
@@ -272,7 +274,7 @@ RxDouble totalrec_yday  = 0.0.obs;
             invoice.Invoice_Date.contains(formattedDate))
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
-      total_fhome.value += totalofinvoices[i].Invoice_Total_Usd;
+      total_fhome.value += totalofinvoices[i].Invoice_Rec_Usd + (totalofinvoices[i].Invoice_Rec_Lb / rateController.rateValue.value );
       totalrecusd_fhome.value += totalofinvoices[i].Invoice_Rec_Usd;
       totaldue_fhome.value += totalofinvoices[i].Invoice_Due_USD;
       totalreclb_fhome.value += totalofinvoices[i].Invoice_Rec_Lb;

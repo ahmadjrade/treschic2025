@@ -128,7 +128,7 @@ class AddCustomer extends StatelessWidget {
               return  OutlinedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.blue.shade900,
+                      backgroundColor: Colors.white,
                       side: BorderSide(
                           width: 2.0, color: Colors.blue.shade900),
                       shape: RoundedRectangleBorder(
@@ -183,7 +183,7 @@ class AddCustomer extends StatelessWidget {
                   },
                   child: Text(
                     'Insert Customer',
-                    style: TextStyle(color: Colors.white,fontSize: 15 ,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.blue.shade900,fontSize: 15 ,fontWeight: FontWeight.bold),
                   ));
             }),
           ),

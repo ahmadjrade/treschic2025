@@ -30,10 +30,11 @@ import 'package:fixnshop_admin/view/Recharge/recharge_balances.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_history_manage.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
+import 'package:fixnshop_admin/view/Repairs/repair_manage.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_product_list.dart';
 import 'package:fixnshop_admin/view/buy_expenses.dart';
 import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
-import 'package:fixnshop_admin/view/Repairs/repair_history.dart';
+import 'package:fixnshop_admin/view/Repairs/pending_repair.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -164,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _selectedDestination = index;
       });
     } else if (index == 1) {
-      Get.to(() => RepairHistory());
+      Get.to(() => RepairManage());
       setState(() {
         _selectedDestination = index;
       });
@@ -538,7 +539,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                height: 10,
+                height: 12,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),

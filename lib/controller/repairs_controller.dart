@@ -1,10 +1,10 @@
 // controllers/item_controller.dart
-// ignore_for_file: non_constant_identifier_names, unnecessary_string_interpolations, prefer_interpolation_to_compose_strings
+// ignore_for_file: non_constant_identifier_names, unnecessary_string_interpolation, prefer_interpolation_to_compose_strings
 
 import 'dart:ffi';
-import 'dart:ui';
 
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
+import 'package:fixnshop_admin/controller/rate_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/color_model.dart';
@@ -14,17 +14,19 @@ import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
 import 'package:fixnshop_admin/model/repairs_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RepairsController extends GetxController {
-  RxList<RepairsModel> repairs = <RepairsModel>[].obs;
+  RxList<RepairsModel> repair = <RepairsModel>[].obs;
+  RxList<RepairsModel> displayedRepairs =
+      <RepairsModel>[].obs; // Displayed repair
   bool isDataFetched = false;
   String result = '';
   RxBool isLoading = false.obs;
-  Rx<RepairsModel?> SelectedRepair = Rx<RepairsModel?>(null);
+  RxBool isFetchingMore = false.obs; // To track loading more data
+  Rx<RepairsModel?> SelectedInvoice = Rx<RepairsModel?>(null);
   RxString Store = 'this'.obs;
   RxString Sold = 'Yes'.obs;
   RxString Condition = 'New'.obs;
@@ -32,16 +34,30 @@ class RepairsController extends GetxController {
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   RxString Username = ''.obs;
+  RxInt itemsToShow = 20.obs;
+  final RateController rateController = Get.find<RateController>();
 
-  //RxString show = 'Yes'.obs;
+  final int itemsPerPage = 20; // Number of items to load per page
+  int currentPage = 1; // To track the current page
+
   void clearSelectedCat() {
-    SelectedRepair.value = null;
-    repairs.clear();
+    SelectedInvoice.value = null;
+    repair.clear();
+    displayedRepairs.clear(); // Clear displayed repair as well
+  }
+
+  void onClose() {
+    itemsToShow.value = 20;
+    super.onClose();
+  }
+
+  void resetItemsToShow() {
+    itemsToShow.value = 20;
   }
 
   void reset() {
     total.value = 0;
-    totalrec.value = 0;
+    totalrecusd.value = 0;
     totaldue.value = 0;
   }
 
@@ -57,34 +73,20 @@ class RepairsController extends GetxController {
     }
   }
 
-  Color getcolor(String Status) {
-  //red is just a sample color
-  Color color;
-  if (Status == 'Pending') {
-          color = Colors.red.shade100;
-
-    } else if (Status == 'Finished'){
-          color = Colors.grey.shade300;
-    }
-      else {
-          color = Colors.green.shade100;
-
-      }
-        return color;
-
-}
-
-  bool ispaid(String Status) {
-    if (Status == 'Pending') {
+  bool status(String sts) {
+    if (sts == 'Finished') {
+      return true;
+    } else {
       return false;
-    } else if (Status == 'Finished'){
-        return true;
-    }
-      else {
-        return false;
+    } 
+  }
 
-      }
-  
+  bool status2(String sts) {
+    if (sts == 'finsihed') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   bool isadmin(username) {
@@ -107,521 +109,315 @@ class RepairsController extends GetxController {
   String formattedDate = '';
   String formattedTime = '';
 
-  List<RepairsModel> searchrepairs(String query) {
+  List<RepairsModel> searchPendingRepairs(String query) {
     String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
     String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
     String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
     String formattedDate = '${dateParts[0]}-$month-$day';
-    // print(formattedDate);
     formattedTime = dateController.getFormattedTime();
     Username = sharedPreferencesController.username;
-    // formattedDate = dateController.getFormattedDate();
-    //   formattedTime = dateController.getFormattedTime();
 
-    return repairs
-        .where((invoice) =>
-            (invoice.Repair_id.toString()).contains(query.toLowerCase()) &&
-                invoice.Username == Username.value ||
-            invoice.Cus_Name.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value ||
-            invoice.Cus_Number.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value)
+    return repair
+        .where((repair) =>
+            (repair.Repair_id.toString()).contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Status == 'Pending' ||
+            repair.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Status == 'Pending' ||
+            repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Status == 'Pending' )
         .toList();
-    // if (Store.value == 'this') {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No'){
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-    //                   invoice.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username &&
-
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username == username
-    //                   ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username == username
-    //                   )
-    //           .toList();
-    //     }
-    //   }
-    // }
-    // else if(Store.value == 'other') {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No') {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Username != username  ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Username != username )
-    //           .toList();
-    //     }
-    //   }
-    // } else  {
-    //   if (Sold.value == 'Yes') {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 1)
-    //           .toList();
-    //     }
-    //   } else if(Sold.value == 'No') {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0 ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.isSold == 0)
-    //           .toList();
-    //     }
-    //   } else {
-    //     if (Condition.value == 'New') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'New' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'New')
-    //           .toList();
-    //     } else if (Condition.value == 'Used') {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'Used' ||
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase()) &&
-    //                   invoice.Phone_Condition == 'Used')
-    //           .toList();
-    //     } else {
-    //       return repairs
-    //           .where((invoice) =>
-    //               (invoice.Brand_Name +
-    //                           ' ' +
-    //                           invoice.Phone_Name +
-    //                           ' ' +
-    //                           invoice.Capacity)
-    //                       .toLowerCase()
-    //                       .contains(query.toLowerCase()) &&
-    //               invoice.IMEI.toLowerCase().contains(query.toLowerCase())
-    //                   )
-    //           .toList();
-    //     }
-    //   }
   }
+
+   List<RepairsModel> searchFinishedRepairs(String query) {
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+
+    return repair
+        .where((repair) =>
+            (repair.Repair_id.toString()).contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Status == 'Finished' ||
+            repair.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Status == 'Finished' ||
+            repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Status == 'Finished' )
+        .toList();
+  }
+
+  List<RepairsModel> SearchInvoicesAll(String query) {
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+
+    return repair
+        .where((repair) =>
+            (repair.Repair_id.toString()).contains(query.toLowerCase()) &&
+                repair.Username == Username.value ||
+            repair.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value ||
+            repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value)
+        .toList();
+  }
+
+  List<RepairsModel> SearchInvoicesMonth(String query) {
+    DateTime now = DateTime.now(); // Get today's date
+    int getMonthNumber(DateTime date) {
+      return date.month;
+    }
+
+    int monthNumber = getMonthNumber(now);
+
+    Username = sharedPreferencesController.username;
+
+    return repair
+        .where((repair) =>
+            (repair.Repair_id.toString()).contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Rec_Date == (monthNumber) ||
+            repair.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Rec_Date == (monthNumber) ||
+            repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                repair.Username == Username.value &&
+                repair.Repair_Rec_Date == (monthNumber))
+        .toList();
+  }
+
+  // List<RepairsModel> SearchDueInvoices(String query) {
+  //   String dateString = dateController.getFormattedDate();
+  //   List<String> dateParts = dateString.split('-');
+  //   String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+  //   String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+  //   String formattedDate = '${dateParts[0]}-$month-$day';
+  //   formattedTime = dateController.getFormattedTime();
+  //   Username = sharedPreferencesController.username;
+
+  //   return repair
+  //       .where((repair) =>
+  //           (repair.Repair_id.toString()).contains(query.toLowerCase()) &&
+  //               repair.Username == Username.value &&
+  //               repair. != 0 ||
+  //           repair.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+  //               repair.Username == Username.value &&
+  //               repair.Invoice_Due_USD != 0 ||
+  //           repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+  //               repair.Username == Username.value &&
+  //               repair.Invoice_Due_USD != 0)
+  //       .toList();
+  // }
 
   RxDouble total = 0.0.obs;
-  RxDouble totalrec = 0.0.obs;
+  RxDouble totalrecusd = 0.0.obs;
   RxDouble totaldue = 0.0.obs;
+  RxDouble totalreclb = 0.0.obs;
+  RxDouble totalrec = 0.0.obs;
 
-  void CalTotal() {
-    Username = sharedPreferencesController.username;
-    String dateString = dateController.getFormattedDate();
-    List<String> dateParts = dateString.split('-');
-    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
-    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
-    String formattedDate = '${dateParts[0]}-$month-$day';
-    // print(formattedDate);
-    formattedTime = dateController.getFormattedTime();
-    Username = sharedPreferencesController.username;
-    total.value = 0;
+  RxDouble total_yday = 0.0.obs;
+  RxDouble totalrecusd_yday = 0.0.obs;
+  RxDouble totaldue_yday = 0.0.obs;
+  RxDouble totalreclb_yday = 0.0.obs;
+  RxDouble totalrec_yday = 0.0.obs;
 
-    List<RepairsModel> totalofrepairs = repairs
-        .where((invoice) =>
-            invoice.Username == Username.value &&
-            invoice.Repair_Rec_Date.contains(formattedDate))
-        .toList();
-    for (int i = 0; i < totalofrepairs.length; i++) {
-      total.value += totalofrepairs[i].Repair_Price;
-      totalrec.value += totalofrepairs[i].Received_Money;
-      totaldue.value += totalofrepairs[i].Repair_Cost;
-    }
-  }
+  RxDouble total_all = 0.0.obs;
+  RxDouble totalrecusd_all = 0.0.obs;
+  RxDouble totaldue_all = 0.0.obs;
+  RxDouble totalreclb_all = 0.0.obs;
+  RxDouble totalrec_all = 0.0.obs;
+
+  RxDouble total_month = 0.0.obs;
+  RxDouble totalrecusd_month = 0.0.obs;
+  RxDouble totaldue_month = 0.0.obs;
+  RxDouble totalreclb_month = 0.0.obs;
+  RxDouble totalrec_month = 0.0.obs;
+
+  RxDouble total_fhome = 0.0.obs;
+  RxDouble totalrecusd_fhome = 0.0.obs;
+  RxDouble totaldue_fhome = 0.0.obs;
+  RxDouble totalreclb_fhome = 0.0.obs;
+  RxDouble totalrec_fhome = 0.0.obs;
+  // void CalTotal_fhome() {
+  //   Username = sharedPreferencesController.username;
+  //   String dateString = dateController.getFormattedDate();
+  //   List<String> dateParts = dateString.split('-');
+  //   String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+  //   String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+  //   String formattedDate = '${dateParts[0]}-$month-$day';
+  //   // print(formattedDate);
+  //   formattedTime = dateController.getFormattedTime();
+  //   Username = sharedPreferencesController.username;
+  //   total_fhome.value = 0;
+  //   totalrecusd_fhome.value = 0;
+  //   totaldue_fhome.value = 0;
+  //   totalreclb_fhome.value = 0;
+  //   totalrec_fhome.value = 0;
+
+  //   List<RepairsModel> totalofinvoices = repair
+  //       .where((repair) =>
+  //           repair.Username == Username.value &&
+  //           repair.Repair_Rec_Date.contains(formattedDate))
+  //       .toList();
+  //   for (int i = 0; i < totalofinvoices.length; i++) {
+  //     total_fhome.value += totalofinvoices[i].price +
+  //         (totalofinvoices[i].Invoice_Rec_Lb / rateController.rateValue.value);
+  //     totalrecusd_fhome.value += totalofinvoices[i].Invoice_Rec_Usd;
+  //     totaldue_fhome.value += totalofinvoices[i].Invoice_Due_USD;
+  //     totalreclb_fhome.value += totalofinvoices[i].Invoice_Rec_Lb;
+  //     totalrec_fhome.value +=
+  //         totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+  //             totalofinvoices[i].Invoice_Rec_Usd;
+  //   }
+  // }
+
+  // void CalTotal() {
+  //   Username = sharedPreferencesController.username;
+  //   String dateString = dateController.getFormattedDate();
+  //   List<String> dateParts = dateString.split('-');
+  //   String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+  //   String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+  //   String formattedDate = '${dateParts[0]}-$month-$day';
+  //   // print(formattedDate);
+  //   formattedTime = dateController.getFormattedTime();
+  //   Username = sharedPreferencesController.username;
+  //   total.value = 0;
+  //   totalrecusd.value = 0;
+  //   totaldue.value = 0;
+  //   totalreclb.value = 0;
+  //   totalrec.value = 0;
+
+  //   List<RepairsModel> totalofinvoices = repair
+  //       .where((repair) =>
+  //           repair.Username == Username.value &&
+  //           repair.Repair_Rec_Date.contains(formattedDate))
+  //       .toList();
+  //   for (int i = 0; i < totalofinvoices.length; i++) {
+  //     total.value += totalofinvoices[i].Invoice_Total_Usd;
+  //     totalrecusd.value += totalofinvoices[i].Invoice_Rec_Usd;
+  //     totaldue.value += totalofinvoices[i].Invoice_Due_USD;
+  //     totalreclb.value += totalofinvoices[i].Invoice_Rec_Lb;
+  //     totalrec.value +=
+  //         totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+  //             totalofinvoices[i].Invoice_Rec_Usd;
+  //   }
+  // }
+
+  // void CalTotalMonth() {
+  //   total_month.value = 0;
+  //   totaldue_month.value = 0;
+  //   totalrecusd_month.value = 0;
+  //   totalreclb_month.value = 0;
+  //   totalrec_month.value = 0;
+  //   Username = sharedPreferencesController.username;
+  //   String dateString = dateController.getFormattedDate();
+  //   List<String> dateParts = dateString.split('-');
+
+  //   // print(formattedDate);
+  //   DateTime now = DateTime.now();
+  //   DateTime yesterday = now.subtract(Duration(days: 1));
+  //   int getMonthNumber(DateTime date) {
+  //     return date.month;
+  //   }
+
+  //   int monthNumber = getMonthNumber(now);
+  //   // Format the date for yesterday
+  //   String day = yesterday.day.toString().padLeft(2, '0');
+  //   String month = yesterday.month.toString().padLeft(2, '0');
+  //   String year = yesterday.year.toString();
+
+  //   formattedDate = '$year-$month-$day';
+  //   formattedTime = dateController.getFormattedTime();
+
+  //   List<RepairsModel> totalofinvoices = repair
+  //       .where((repair) =>
+  //           repair.Username == Username.value &&
+  //           repair.Invoice_Month == (monthNumber))
+  //       .toList();
+  //   for (int i = 0; i < totalofinvoices.length; i++) {
+  //     total_month.value += totalofinvoices[i].Invoice_Total_Usd;
+  //     totalrecusd_month.value += totalofinvoices[i].Invoice_Rec_Usd;
+  //     totaldue_month.value += totalofinvoices[i].Invoice_Due_USD;
+  //     totalreclb_month.value += totalofinvoices[i].Invoice_Rec_Lb;
+  //     totalrec_month.value +=
+  //         totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+  //             totalofinvoices[i].Invoice_Rec_Usd;
+  //   }
+  // }
+
+  // void CalTotalYday() {
+  //   total_yday.value = 0;
+  //   totaldue_yday.value = 0;
+  //   totalrecusd_yday.value = 0;
+  //   totalreclb_yday.value = 0;
+  //   totalrec_yday.value = 0;
+  //   Username = sharedPreferencesController.username;
+  //   String dateString = dateController.getFormattedDate();
+  //   List<String> dateParts = dateString.split('-');
+
+  //   // print(formattedDate);
+  //   DateTime now = DateTime.now();
+  //   DateTime yesterday = now.subtract(Duration(days: 1));
+
+  //   // Format the date for yesterday
+  //   String day = yesterday.day.toString().padLeft(2, '0');
+  //   String month = yesterday.month.toString().padLeft(2, '0');
+  //   String year = yesterday.year.toString();
+
+  //   formattedDate = '$year-$month-$day';
+  //   formattedTime = dateController.getFormattedTime();
+
+  //   List<RepairsModel> totalofinvoices = repair
+  //       .where((repair) =>
+  //           repair.Username == Username.value &&
+  //           repair.Repair_Rec_Date.contains(formattedDate))
+  //       .toList();
+  //   for (int i = 0; i < totalofinvoices.length; i++) {
+  //     total_yday.value += totalofinvoices[i].Invoice_Total_Usd;
+  //     totalrecusd_yday.value += totalofinvoices[i].Invoice_Rec_Usd;
+  //     totaldue_yday.value += totalofinvoices[i].Invoice_Due_USD;
+  //     totalreclb_yday.value += totalofinvoices[i].Invoice_Rec_Lb;
+  //     totalrec_yday.value +=
+  //         totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+  //             totalofinvoices[i].Invoice_Rec_Usd;
+  //   }
+  // }
+
+  // void CalTotalall() {
+  //   total_all.value = 0;
+  //   totaldue_all.value = 0;
+  //   totalrecusd_all.value = 0;
+  //   totalreclb_all.value = 0;
+  //   totalrec_all.value = 0;
+
+  //   Username = sharedPreferencesController.username;
+
+  //   List<RepairsModel> totalofinvoices =
+  //       repair.where((repair) => repair.Username == Username.value).toList();
+  //   for (int i = 0; i < totalofinvoices.length; i++) {
+  //     total_all.value += totalofinvoices[i].Invoice_Total_Usd;
+  //     totalrecusd_all.value += totalofinvoices[i].Invoice_Rec_Usd;
+  //     totaldue_all.value += totalofinvoices[i].Invoice_Due_USD;
+  //     totalreclb_all.value += totalofinvoices[i].Invoice_Rec_Lb;
+
+  //     totalrec_all.value +=
+  //         totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+  //             totalofinvoices[i].Invoice_Rec_Usd;
+  //   }
+  // }
 
   void fetchrepairs() async {
     Username = sharedPreferencesController.username;
@@ -637,24 +433,22 @@ class RepairsController extends GetxController {
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           final List<dynamic> data = jsonData;
-          //  final List<dynamic> data = json.decode(response.body);
-          repairs.assignAll(
+          repair.assignAll(
               data.map((item) => RepairsModel.fromJson(item)).toList());
-          //category = data.map((item) => Product_Details.fromJson(item)).toList();
           isDataFetched = true;
+          // Initially display the first batch of repair
+          displayedRepairs.assignAll(repair.take(itemsPerPage));
+          currentPage = 1; // Reset page count
           isLoading.value = false;
 
-          if (repairs.isEmpty) {
+          if (repair.isEmpty) {
             print(0);
           } else {
-            isDataFetched = true;
-            result == 'success';
-            total.value = 0;
-            totalrec.value = 0;
-            totaldue.value = 0;
-
-            CalTotal();
-            // print('cat');
+            // CalTotal();
+            // CalTotalMonth();
+            // CalTotal_fhome();
+            // CalTotalYday();
+            // CalTotalall();
           }
         } else {
           result == 'fail';
@@ -665,4 +459,56 @@ class RepairsController extends GetxController {
       }
     }
   }
+
+  Future<void> loadMoreRepairs() async {
+    if (!isFetchingMore.value && displayedRepairs.length < repair.length) {
+      isFetchingMore.value = true;
+      int startIndex = currentPage * itemsPerPage;
+      int endIndex = startIndex + itemsPerPage;
+      if (endIndex > repair.length) {
+        endIndex = repair.length;
+      }
+
+      // Simulate a delay for loading more data
+      await Future.delayed(Duration(seconds: 2));
+
+      displayedRepairs.addAll(repair.sublist(startIndex, endIndex));
+      currentPage++;
+      isFetchingMore.value = false;
+    }
+  }
+
+  String result2 = '';
+  // Future<void> PayInvDue(
+  //     String Inv_id, Ammount, Old_Due, New_Due, Cus_id, String Date) async {
+  //   try {
+  //     Username = sharedPreferencesController.username;
+  //     formattedDate = dateController.getFormattedDate();
+  //     formattedTime = dateController.getFormattedTime();
+  //     String domain = domainModel.domain;
+
+  //     String uri = '$domain' + 'insert_inv_payment.php';
+  //     var res = await http.post(Uri.parse(uri), body: {
+  //       "Repair_id": Inv_id,
+  //       "Ammount": Ammount,
+  //       "Payment_Date": formattedDate,
+  //       "Payment_Time": formattedDate,
+  //       "Username": Username.value,
+  //       "Old_Due": Old_Due,
+  //       "New_Due": New_Due,
+  //       "Cus_id": Cus_id,
+  //       "Repair_Rec_Date": Date,
+  //     });
+  //     // print(Ty + Card_Name + Card_Cost + Card_Price);
+  //     var response = json.decode(json.encode(res.body));
+
+  //     print(response);
+  //     result2 = response;
+  //     if (response.toString().trim() == 'Payment inserted successfully.') {
+  //       //  result = 'refresh';
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }

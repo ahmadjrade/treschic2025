@@ -108,8 +108,8 @@ class PurchaseHistoryController extends GetxController {
                     .contains(query.toLowerCase()) &&
                 pruchase.Username == Username.value)
         .toList();
-  
   }
+
   List<PurchaseModel> SearchDuePurchases(String query) {
     String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
@@ -124,15 +124,19 @@ class PurchaseHistoryController extends GetxController {
             (purchase.Purchase_id.toString()).contains(query.toLowerCase()) &&
                 purchase.Username == Username.value &&
                 purchase.Purchase_Due_USD != 0 ||
-            purchase.Supplier_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                 purchase.Username == Username.value &&
-                purchase.Purchase_Due_USD != 0 || 
-            purchase.Supplier_Number!.toLowerCase().contains(query.toLowerCase()) &&
-                 purchase.Username == Username.value &&
+            purchase.Supplier_Name!
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) &&
+                purchase.Username == Username.value &&
+                purchase.Purchase_Due_USD != 0 ||
+            purchase.Supplier_Number!
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) &&
+                purchase.Username == Username.value &&
                 purchase.Purchase_Due_USD != 0)
         .toList();
-    
   }
+
   RxDouble total = 0.0.obs;
   RxDouble totalrec = 0.0.obs;
   RxDouble totaldue = 0.0.obs;
@@ -201,31 +205,43 @@ class PurchaseHistoryController extends GetxController {
       }
     }
   }
+
   String result2 = '';
-  Future<void> PayInvDue(String Pur_id,Ammount,Old_Due,New_Due,Purchase_Date) async {
+  Future<void> PayInvDue(
+      String Pur_id, Ammount, Old_Due, New_Due, Purchase_Date) async {
     try {
-      
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
       formattedTime = dateController.getFormattedTime();
       String domain = domainModel.domain;
-      print(Pur_id + ' | ' +Ammount + ' | ' + Old_Due + ' | ' + New_Due + ' | ' + Purchase_Date + ' | ' +Username.value + ' | ' + formattedDate + ' | ' + formattedTime)  ;
+      print(Pur_id +
+          ' | ' +
+          Ammount +
+          ' | ' +
+          Old_Due +
+          ' | ' +
+          New_Due +
+          ' | ' +
+          Purchase_Date +
+          ' | ' +
+          Username.value +
+          ' | ' +
+          formattedDate +
+          ' | ' +
+          formattedTime);
 
-      String uri = '$domain' + 'insert_purchase_payment.php';
+      String uri = '$domain' + 'insert_pur_payment.php';
       var res = await http.post(Uri.parse(uri), body: {
         "Purchase_id": Pur_id,
         "Ammount": Ammount,
-        "Payment_Date":formattedDate,
-        "Payment_Time":formattedDate,
-        "Username":Username.value,
-        "Old_Due":Old_Due,
-        "New_Due":New_Due,
-        "Purchase_Date ":Purchase_Date,
-
-
-        
+        "Payment_Date": formattedDate,
+        "Payment_Time": formattedDate,
+        "Username": Username.value,
+        "Old_Due": Old_Due,
+        "New_Due": New_Due,
+        "Purchase_Date": Purchase_Date,
       });
-     // print(Ty + Card_Name + Card_Cost + Card_Price);
+      // print(Ty + Card_Name + Card_Cost + Card_Price);
       var response = json.decode(json.encode(res.body));
 
       print(response);
@@ -235,6 +251,6 @@ class PurchaseHistoryController extends GetxController {
       }
     } catch (e) {
       print(e);
-    } 
+    }
   }
 }

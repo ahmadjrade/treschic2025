@@ -100,7 +100,7 @@ class ProductList extends StatelessWidget {
           )),
       body: PopScope(
         canPop: true,
-        onPopInvokedWithResult: (didPop, result) {
+        onPopInvoked: ( result) {
            if(from_home == 1) {
             homeController.selectedPageIndex.value = 0;
           barcodeController.barcode3.value = '';

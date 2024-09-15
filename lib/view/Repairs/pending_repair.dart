@@ -28,6 +28,12 @@ class PendingRepairs extends StatelessWidget {
     repairsController.reset();
 
     //repairsController.CalTotal();
+    Future<void> showToast(result) async {
+      final snackBar2 = SnackBar(
+        content: Text(result),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+    }
 
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
@@ -84,22 +90,18 @@ class PendingRepairs extends StatelessWidget {
                               repairsController.repair.refresh();
                             },
                             decoration: InputDecoration(
-                              labelText:
-                                  'Search by ID,Customer Name or Number',
+                              labelText: 'Search by ID,Customer Name or Number',
                               prefixIcon: Icon(Icons.search),
                             ),
                           ),
                         );
                       }),
-                   
                     ],
                   ),
                 ),
-        
                 SizedBox(
                   height: 5,
                 ),
-        
                 Obx(
                   () {
                     final List<RepairsModel> filteredrepairs =
@@ -136,8 +138,7 @@ class PendingRepairs extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -179,8 +180,7 @@ class PendingRepairs extends StatelessWidget {
                                                 fontSize: 10),
                                           ),
                                           Text(
-                                            ' ' +
-                                                Format(repair.Repair_Rec_Time)
+                                            ' ' + Format(repair.Repair_Rec_Time)
                                             // +
                                             // ' -- ' +
                                             // repair.phone_Code,
@@ -191,8 +191,7 @@ class PendingRepairs extends StatelessWidget {
                                           ),
                                           Text(
                                             ' || ' +
-                                                repair.Username
-                                                    .toUpperCase() +
+                                                repair.Username.toUpperCase() +
                                                 ' Store'
                                             // +
                                             // ' -- ' +
@@ -230,7 +229,7 @@ class PendingRepairs extends StatelessWidget {
                                           dashGapRadius: 1.0,
                                         ),
                                       ),
-        
+
                                       Row(
                                         children: [
                                           Expanded(
@@ -243,11 +242,9 @@ class PendingRepairs extends StatelessWidget {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-        
                                                 Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
                                                       children: [
@@ -255,8 +252,8 @@ class PendingRepairs extends StatelessWidget {
                                                           'Phone Model: ',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -265,20 +262,19 @@ class PendingRepairs extends StatelessWidget {
                                                           repair.Phone_Model,
                                                           style: TextStyle(
                                                               fontSize: 14,
-                                                              color: Colors
-                                                                  .black),
+                                                              color:
+                                                                  Colors.black),
                                                         ),
                                                       ],
                                                     ),
-        
                                                     Row(
                                                       children: [
                                                         Text(
                                                           'Phone Issue: ',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -287,8 +283,8 @@ class PendingRepairs extends StatelessWidget {
                                                           repair.Phone_Issue,
                                                           style: TextStyle(
                                                               fontSize: 14,
-                                                              color: Colors
-                                                                  .black),
+                                                              color:
+                                                                  Colors.black),
                                                         ),
                                                       ],
                                                     ),
@@ -298,8 +294,8 @@ class PendingRepairs extends StatelessWidget {
                                                           'Phone IMEI: ',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -308,8 +304,8 @@ class PendingRepairs extends StatelessWidget {
                                                           repair.Phone_IMEI,
                                                           style: TextStyle(
                                                               fontSize: 14,
-                                                              color: Colors
-                                                                  .black),
+                                                              color:
+                                                                  Colors.black),
                                                         ),
                                                       ],
                                                     ),
@@ -319,8 +315,8 @@ class PendingRepairs extends StatelessWidget {
                                                           'Repair Note: ',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -329,8 +325,8 @@ class PendingRepairs extends StatelessWidget {
                                                           repair.Repair_Note,
                                                           style: TextStyle(
                                                               fontSize: 14,
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
@@ -343,8 +339,7 @@ class PendingRepairs extends StatelessWidget {
                                                           'Repair Total US:  ',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Colors
-                                                                  .blue
+                                                              color: Colors.blue
                                                                   .shade900,
                                                               fontWeight:
                                                                   FontWeight
@@ -357,13 +352,11 @@ class PendingRepairs extends StatelessWidget {
                                                               '\$',
                                                           style: TextStyle(
                                                               fontSize: 14,
-                                                              color: Colors
-                                                                  .blue
+                                                              color: Colors.blue
                                                                   .shade900),
                                                         ),
                                                       ],
                                                     ),
-                                                   
                                                     Row(
                                                       children: [
                                                         Text(
@@ -393,75 +386,414 @@ class PendingRepairs extends StatelessWidget {
                                                         ),
                                                       ],
                                                     ),
-        
                                                   ],
                                                 ),
-        
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-        
-
                                               ],
                                             ),
                                           ),
-                                       
                                         ],
                                       ),
-                                      OutlinedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            fixedSize:
-                                                Size(double.maxFinite, 20),
-                                            backgroundColor: Colors.orange.shade600,
-                                            side: BorderSide(
-                                              width: 2.0,
-                                              color: Colors.orange.shade600,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(14.0),
-                                            ),
+
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  fixedSize: Size(
+                                                      double.maxFinite, 20),
+                                                  backgroundColor:
+                                                      Colors.blue.shade100,
+                                                  side: BorderSide(
+                                                    width: 2.0,
+                                                    color: Colors.blue.shade100,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            14.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Get.to(() => RepairDetails(
+                                                      Repair_id: repair
+                                                          .Repair_id.toString(),
+                                                      Cus_id: repair.Cus_id
+                                                          .toString(),
+                                                      Cus_Name: repair.Cus_Name,
+                                                      Cus_Number:
+                                                          repair.Cus_Number,
+                                                      Rec_usd:
+                                                          repair.Received_Money
+                                                              .toString(),
+                                                      Total_usd:
+                                                          repair.Repair_Price
+                                                              .toString(),
+                                                      Phone:
+                                                          repair.Phone_Model));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Select',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .blue.shade900),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Icon(
+                                                      Icons
+                                                          .arrow_circle_right_rounded,
+                                                      color: repairsController
+                                                              .status(repair
+                                                                  .Repair_Status)
+                                                          ? Colors.blue.shade900
+                                                          : Colors
+                                                              .blue.shade900,
+                                                      //  'Details',
+                                                      //   style: TextStyle(
+                                                      //        color: Colors.red),
+                                                    ),
+                                                  ],
+                                                )),
                                           ),
-                                          onPressed: () {
-                                            Get.to(() => RepairDetails(
-                                                Repair_id: repair.Repair_id
-                                                    .toString(),
-                                                Cus_id:
-                                                    repair.Cus_id.toString(),
-                                                Cus_Name: repair.Cus_Name,
-                                                Cus_Number: repair.Cus_Number,
-                                                Rec_usd: repair.Received_Money
-                                                    .toString(),
-                                                Total_usd: repair.Repair_Price
-                                                    .toString(),
-                                                Phone: repair.Phone_Model));
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Select',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Icon(
-                                                Icons
-                                                    .arrow_circle_right_rounded,
-                                                color: repairsController
-                                                        .status(repair
-                                                            .Repair_Status)
-                                                    ? Colors.white
-                                                    : Colors.white,
-                                                //  'Details',
-                                                //   style: TextStyle(
-                                                //        color: Colors.red),
-                                              ),
-                                            ],
-                                          )),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  fixedSize: Size(
+                                                      double.maxFinite, 20),
+                                                  backgroundColor:
+                                                      Colors.red.shade200,
+                                                  side: BorderSide(
+                                                    width: 2.0,
+                                                    color: Colors.red.shade200,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            14.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                                      barrierDismissible: false,
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              'Confirm Repair Rejection ?'),
+                                                          // content: setupAlertDialoadContainer(),
+
+                                                          actions: [
+                                                            Center(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: OutlinedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          fixedSize: Size(
+                                                                              double.infinity,
+                                                                              20),
+                                                                          backgroundColor: Colors
+                                                                              .green
+                                                                              .shade100,
+                                                                          side: BorderSide(
+                                                                              width: 2.0,
+                                                                              color: Colors.green.shade100),
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(32.0),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child: Text(
+                                                                          'No',
+                                                                          style:
+                                                                              TextStyle(color: Colors.green.shade900),
+                                                                        )),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 20,
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: OutlinedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          fixedSize: Size(
+                                                                              double.infinity,
+                                                                              20),
+                                                                          backgroundColor: Colors
+                                                                              .red
+                                                                              .shade100,
+                                                                          side: BorderSide(
+                                                                              width: 2.0,
+                                                                              color: Colors.red.shade100),
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(32.0),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                       
+                                                                          showDialog(
+                                                                              // The user CANNOT close this dialog  by pressing outsite it
+                                                                              barrierDismissible: false,
+                                                                              context: context,
+                                                                              builder: (_) {
+                                                                                return Dialog(
+                                                                                  // The background color
+                                                                                  backgroundColor: Colors.white,
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.symmetric(vertical: 20),
+                                                                                    child: Column(
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      children: [
+                                                                                        // The loading indicator
+                                                                                        CircularProgressIndicator(),
+                                                                                        SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+                                                                                        // Some text
+                                                                                        Text('Loading')
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                );
+                                                                              });
+                                                                          repairsController.UpdateRepair(repair.Repair_id.toString(), 'Rejected')
+                                                                              .then((value) => Navigator.of(context).pop())
+                                                                              .then((value) => Navigator.of(context).pop())
+                                                                              .then((value) => showToast(repairsController.Update_result))
+                                                                              .then((value) => repairsController.isDataFetched = false)
+                                                                              .then((value) => repairsController.fetchrepairs());
+                                                                          // Navigator.of(context).pop();
+                                                                        },
+                                                                        child: Text(
+                                                                          'Yes',
+                                                                          style:
+                                                                              TextStyle(color: Colors.red.shade900),
+                                                                        )),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Reject',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .red.shade900),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Icon(
+                                                      Icons.cancel,
+                                                      color: repairsController
+                                                              .status(repair
+                                                                  .Repair_Status)
+                                                          ? Colors.red.shade900
+                                                          : Colors.red.shade900,
+                                                      //  'Details',
+                                                      //   style: TextStyle(
+                                                      //        color: Colors.red),
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  fixedSize: Size(
+                                                      double.maxFinite, 20),
+                                                  backgroundColor:
+                                                      Colors.green.shade100,
+                                                  side: BorderSide(
+                                                    width: 2.0,
+                                                    color:
+                                                        Colors.green.shade100,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            14.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                   showDialog(
+                                                      barrierDismissible: false,
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              'Confirm Repair Finishing ?'),
+                                                          // content: setupAlertDialoadContainer(),
+
+                                                          actions: [
+                                                            Center(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: OutlinedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          fixedSize: Size(
+                                                                              double.infinity,
+                                                                              20),
+                                                                          backgroundColor: Colors
+                                                                              .red
+                                                                              .shade100,
+                                                                          side: BorderSide(
+                                                                              width: 2.0,
+                                                                              color: Colors.red.shade100),
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(32.0),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child: Text(
+                                                                          'No',
+                                                                          style:
+                                                                              TextStyle(color: Colors.red.shade900),
+                                                                        )),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 20,
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: OutlinedButton(
+                                                                        style: ElevatedButton.styleFrom(
+                                                                          fixedSize: Size(
+                                                                              double.infinity,
+                                                                              20),
+                                                                          backgroundColor: Colors
+                                                                              .green
+                                                                              .shade100,
+                                                                          side: BorderSide(
+                                                                              width: 2.0,
+                                                                              color: Colors.green.shade100),
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(32.0),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed: () {
+                                                                          
+                                                                          showDialog(
+                                                                              // The user CANNOT close this dialog  by pressing outsite it
+                                                                              barrierDismissible: false,
+                                                                              context: context,
+                                                                              builder: (_) {
+                                                                                return Dialog(
+                                                                                  // The background color
+                                                                                  backgroundColor: Colors.white,
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.symmetric(vertical: 20),
+                                                                                    child: Column(
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      children: [
+                                                                                        // The loading indicator
+                                                                                        CircularProgressIndicator(),
+                                                                                        SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+                                                                                        // Some text
+                                                                                        Text('Loading')
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                );
+                                                                              });
+                                                                          repairsController.UpdateRepair(repair.Repair_id.toString(), 'Finished')
+                                                                              .then((value) => Navigator.of(context).pop())
+                                                                              .then((value) => Navigator.of(context).pop())
+                                                                              .then((value) => showToast(repairsController.Update_result))
+                                                                              .then((value) => repairsController.isDataFetched = false)
+                                                                              .then((value) => repairsController.fetchrepairs());
+                                                                          // Navigator.of(context).pop();
+                                                                        },
+                                                                        child: Text(
+                                                                          'Yes',
+                                                                          style:
+                                                                              TextStyle(color: Colors.green.shade900),
+                                                                        )),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Finish',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .green.shade900),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Icon(
+                                                      Icons.done,
+                                                      color: repairsController
+                                                              .status(repair
+                                                                  .Repair_Status)
+                                                          ? Colors
+                                                              .green.shade900
+                                                          : Colors
+                                                              .green.shade900,
+                                                      //  'Details',
+                                                      //   style: TextStyle(
+                                                      //        color: Colors.red),
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -490,13 +822,11 @@ class PendingRepairs extends StatelessWidget {
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Repairs Total US:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   addCommasToNumber(
@@ -510,17 +840,15 @@ class PendingRepairs extends StatelessWidget {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Repairs Recieved US:',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  addCommasToNumber(repairsController
-                                              .totalrec.value)
+                                  addCommasToNumber(
+                                              repairsController.totalrec.value)
                                           .toString() +
                                       '\$',
                                   style: TextStyle(
@@ -557,7 +885,6 @@ class PendingRepairs extends StatelessWidget {
                 );
               }),
             ),
-           
           ],
         ),
       ),

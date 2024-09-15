@@ -5,8 +5,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
 import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
 import 'package:fixnshop_admin/view/Customers/customer_list.dart';
+import 'package:fixnshop_admin/view/Repairs/customer_list_frepair.dart';
 import 'package:fixnshop_admin/view/home_screen.dart';
-import 'package:fixnshop_admin/view/Repairs/insertion_screen.dart';
+import 'package:fixnshop_admin/view/Repairs/insert_repair.dart';
 import 'package:fixnshop_admin/view/Product/product_list.dart';
 import 'package:fixnshop_admin/view/search_screen.dart';
 import 'package:fixnshop_admin/view/settings_screen.dart';
@@ -34,7 +35,7 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
     ProductList(isPur: 1,from_home: 1,),
     CustomerList(from_home: 1,),
     StocksScreen(),
-    InsertionScreen(),
+    CustomerListFrepair(),
   ];
 
   double isIos() {

@@ -21,8 +21,13 @@ import '../../controller/supplier_controller.dart';
 import '../../model/category_model.dart';
 import '../../model/sub_category_model.dart';
 
-class InsertionScreen extends StatelessWidget {
-  InsertionScreen({super.key});
+class InsertRepair extends StatelessWidget {
+  String Cus_id, Cus_Name, Cus_Number;
+  InsertRepair(
+      {super.key,
+      required this.Cus_id,
+      required this.Cus_Name,
+      required this.Cus_Number});
 
   final DateTimeController dateController = DateTimeController();
   String formattedDate = '';
@@ -38,7 +43,7 @@ class InsertionScreen extends StatelessWidget {
   final RepairsController repairsController = Get.find<RepairsController>();
 
   final SupplierController supplierController = Get.find<SupplierController>();
-      final HomeController homeController = Get.find<HomeController>();
+  final HomeController homeController = Get.find<HomeController>();
 
   CategoryModel? SelectedCategory;
   String cusname = '';
@@ -97,27 +102,28 @@ class InsertionScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Repair Service'),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Text(
-                    '$formattedDate',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Text(
-                    '$formattedTime',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-              ],
-            ),
+            Text('Repair Ticket'),
+            // Row(
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            //       child: Text(
+            //         '$formattedDate',
+            //         style: TextStyle(fontSize: 14),
+            //       ),
+            //     ),
+            //     SizedBox(width: 5,),
+            //     Padding(
+            //       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            //       child: Text(
+            //         '$formattedTime',
+            //         style: TextStyle(fontSize: 14),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             IconButton(
-              color: Colors.white,
+              color: Colors.blue.shade900,
               iconSize: 24.0,
               onPressed: () {
                 customerController.isDataFetched = false;
@@ -136,135 +142,50 @@ class InsertionScreen extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Colors.deepPurple.shade300,
+        backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.white,
       body: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          homeController.selectedPageIndex.value = 0;
-
-        },
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 00, 00.0),
-          child: SingleChildScrollView(
-              child: Center(
-            child: Column(
+        canPop: true,
+        onPopInvoked: (didPop) {},
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
               children: [
                 SizedBox(
                   height: 10,
                 ),
-                Row(children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: TextFormField(
-                        //maxLength: 15,
-                        controller: numberController,
-                        onFieldSubmitted: (value) {
-                          customerController.searchCustomer(numberController);
-                        },
-                        //controller: Product_Name,
-                        decoration: InputDecoration(
-                          //helperText: '*',
-
-                          hintText: '03123456',
-                          labelText: "Customer Phone Number ",
-                          labelStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                          fillColor: Colors.black,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 2.0,
-                            ),
-                          ),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: TextFormField(
+                    readOnly: true,
+                    initialValue: '$Cus_Name || $Cus_Number',
+                    //controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: "Customer Name ",
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                      fillColor: Colors.black,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 2.0,
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 25, 0),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          color: Colors.black,
-                          iconSize: 24.0,
-                          icon: Icon(CupertinoIcons.add),
-                          onPressed: () {
-                            //customerController.searchCustomer(numberController);
-                            Get.toNamed('/NewCustomer');
-                          },
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        IconButton(
-                          color: Colors.black,
-                          iconSize: 24.0,
-                          icon: Icon(CupertinoIcons.check_mark),
-                          onPressed: () {
-                            customerController.searchCustomer(numberController);
-                          },
-                        ),
-                      ],
-                    ),
-                  )
-                ]),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                        child: Obx(
-                          () {
-                            // Display the result of the search
-                            nameController.text =
-                                '${customerController.result.value}';
-                            idController.text =
-                                '${customerController.result2.value}';
-                            return TextFormField(
-                              readOnly: true,
-                              // initialValue: ,
-                              controller: nameController,
-                              decoration: InputDecoration(
-                                labelText: "Customer Name ",
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                fillColor: Colors.black,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2.0,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
                 SizedBox(
                   height: 10,
@@ -634,91 +555,90 @@ class InsertionScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: GetBuilder<InsertRepairController>(
-                      builder: (insertrepairController) {
-                    return OutlinedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(double.maxFinite, 50),
-                          backgroundColor: Colors.deepPurple.shade300,
-                          side: BorderSide(
-                              width: 2.0, color: Colors.deepPurple.shade300),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (idController.text == '' &&
-                              nameController.text == '' &&
-                              numberController.text == '') {
-                            showToast('Please Add Customer Number ');
-                          } else if (SelectedPhoneName == '') {
-                            showToast('Add Phone Model ');
-                          } else if (phoneIssue.text == '') {
-                            showToast('Add Phone Issue');
-                          } else {
-                            showDialog(
-                                // The user CANNOT close this dialog  by pressing outsite it
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (_) {
-                                  return Dialog(
-                                    // The background color
-                                    backgroundColor: Colors.white,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          // The loading indicator
-                                          CircularProgressIndicator(),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
-                                          // Some text
-                                          Text('Loading')
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
-                            insertrepairController.UploadRepair(
-                                    idController.text,
-                                    numberController.text,
-                                    nameController.text,
-                                    SelectedPhoneName,
-                                    phonePassowrd.text,
-                                    phoneIMEI.text,
-                                    phoneIssue.text,
-                                    note.text,
-                                    receiviedMoney.text)
-                                .then((value) => Navigator.of(context).pop())
-                                .then((value) =>
-                                    repairsController.isDataFetched = false)
-                                .then(
-                                    (Value) => repairsController.fetchrepairs())
-                                .then((value) => clear())
-                                .then((value) =>
-                                    showToast(insertrepairController.result));
-                          }
-                        },
-                        child: Text(
-                          'Insert Repair',
-                          style: TextStyle(color: Colors.white),
-                        ));
-                  }),
-                ),
-                SizedBox(
-                  height: 20,
-                )
               ],
             ),
-          )),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: GetBuilder<InsertRepairController>(
+                  builder: (insertrepairController) {
+                return OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(double.maxFinite, 50),
+                      backgroundColor: Colors.green.shade100,
+                      side: BorderSide(
+                          width: 2.0, color: Colors.green.shade100),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (idController.text == '' &&
+                          nameController.text == '' &&
+                          numberController.text == '') {
+                        showToast('Please Add Customer Number ');
+                      } else if (SelectedPhoneName == '') {
+                        showToast('Add Phone Model ');
+                      } else if (phoneIssue.text == '') {
+                        showToast('Add Phone Issue');
+                      } else {
+                        showDialog(
+                            // The user CANNOT close this dialog  by pressing outsite it
+                            barrierDismissible: false,
+                          context: context,
+                            builder: (_) {
+                              return Dialog(
+                                // The background color
+                                backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // The loading indicator
+                                      CircularProgressIndicator(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      // Some text
+                                      Text('Loading')
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                        insertrepairController.UploadRepair(
+                                idController.text,
+                                numberController.text,
+                                nameController.text,
+                                SelectedPhoneName,
+                                phonePassowrd.text,
+                                phoneIMEI.text,
+                                phoneIssue.text,
+                                note.text,
+                                receiviedMoney.text)
+                            .then((value) => Navigator.of(context).pop())
+                            .then((value) =>
+                                repairsController.isDataFetched = false)
+                            .then((Value) => repairsController.fetchrepairs())
+                            .then((value) => clear())
+                            .then((value) =>
+                                showToast(insertrepairController.result));
+                      }
+                    },
+                    child: Text(
+                      'Insert Repair',
+                      style: TextStyle(color: Colors.green.shade900),
+                    ));
+              }),
+            ),
+            SizedBox(
+              height: 5,
+            )
+          ],
         ),
       ),
     );

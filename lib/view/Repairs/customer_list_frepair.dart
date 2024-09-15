@@ -9,6 +9,7 @@ import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:fixnshop_admin/view/Customers/customer_edit.dart';
 import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
 import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
+import 'package:fixnshop_admin/view/Repairs/insert_repair.dart';
 import 'package:fixnshop_admin/view/home_screen.dart';
 import 'package:fixnshop_admin/view/home_screen_manage.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +18,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class CustomerList extends StatelessWidget {
-  int from_home;
-  CustomerList({super.key,required this.from_home});
+class CustomerListFrepair extends StatelessWidget {
+  
+  CustomerListFrepair({super.key});
   final CustomerController customerController = Get.find<CustomerController>();
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
@@ -35,10 +36,11 @@ class CustomerList extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
           title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Customer List'),
+          Text('Customers List | Repair'),
           // IconButton(
           //   color: Colors.deepPurple,
           //   iconSize: 24.0,
@@ -76,16 +78,12 @@ class CustomerList extends StatelessWidget {
       )),
       body: PopScope(
          canPop: true,
-        onPopInvoked: ( result) {
-           if(from_home == 1) {
-            homeController.selectedPageIndex.value = 0;
-          barcodeController.barcode3.value = '';
-         
+        onPopInvoked: (result) {
+                      homeController.selectedPageIndex.value = 0;
 
-          } else {
               //  Navigator.of(context).pop();
                       barcodeController.barcode3.value = '';
-          }
+          
         },  
          
         child: Column(
@@ -279,10 +277,10 @@ class CustomerList extends StatelessWidget {
                                           style: ElevatedButton.styleFrom(
                                             //fixedSize: Size(200, 20),
                                             backgroundColor:
-                                                Colors.red.shade900,
+                                                Colors.blue.shade100,
                                             side: BorderSide(
                                               width: 2.0,
-                                              color: Colors.red.shade900,
+                                              color: Colors.blue.shade100,
                                             ),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -305,14 +303,14 @@ class CustomerList extends StatelessWidget {
                                               Text(
                                                 'Edit',
                                                 style: TextStyle(
-                                                    color: Colors.white),
+                                                    color: Colors.blue.shade900),
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Icon(
                                                 Icons.edit,
-                                                color: Colors.white, size: 15,
+                                                color: Colors.blue.shade900, size: 15,
                                                 //  'Details',
                                                 //   style: TextStyle(
                                                 //        color: Colors.red),
@@ -331,7 +329,7 @@ class CustomerList extends StatelessWidget {
                                                 Colors.green.shade100,
                                             side: BorderSide(
                                               width: 2.0,
-                                              color: Color.fromRGBO(230, 244, 234, 1),
+                                              color: Colors.green.shade100,
                                             ),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -339,14 +337,13 @@ class CustomerList extends StatelessWidget {
                                             ),
                                           ),
                                           onPressed: () {
-                                            Get.to(() => NewInvoice(
+                                            Get.to(() => InsertRepair(
                                                   Cus_id: customer.Cus_id
                                                       .toString(),
                                                   Cus_Name: customer.Cus_Name,
                                                   Cus_Number:
                                                       customer.Cus_Number,
-                                                  Cus_Due: customer.Cus_Due_USD
-                                                      .toString(),
+                                                  
                                                 ));
                                           },
                                           child: Row(
@@ -364,7 +361,7 @@ class CustomerList extends StatelessWidget {
                                               Icon(
                                                 Icons
                                                     .arrow_circle_right_rounded,
-                                                color: Colors.white, size: 15,
+                                                color: Colors.green.shade900, size: 15,
                                                 //  'Details',
                                                 //   style: TextStyle(
                                                 //        color: Colors.red),

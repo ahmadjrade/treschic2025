@@ -19,8 +19,11 @@ import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_all.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_month.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_yesterday.dart';
+import 'package:fixnshop_admin/view/Repairs/all_repairs.dart';
+import 'package:fixnshop_admin/view/Repairs/delivered_repairs.dart';
 import 'package:fixnshop_admin/view/Repairs/finished_repairs.dart';
 import 'package:fixnshop_admin/view/Repairs/pending_repair.dart';
+import 'package:fixnshop_admin/view/Repairs/rejected_repairs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -92,7 +95,7 @@ class RepairManage extends StatelessWidget {
 
     return DefaultTabController(
       
-      length: 4,
+      length: 5,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -101,7 +104,7 @@ class RepairManage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Repairs Management',
+                'Repairs Management' ,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
               IconButton(
@@ -117,7 +120,7 @@ class RepairManage extends StatelessWidget {
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(40),
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
               child: Container(
                 height: 40,
                 margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -126,17 +129,22 @@ class RepairManage extends StatelessWidget {
                   color: Colors.green.shade100,
                 ),
                 child: TabBar(
+                  
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicator: const BoxDecoration(
+                    
                     color: Colors.green,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   labelColor: Colors.white,
+
                   unselectedLabelColor: Colors.black54,
                   tabs: [
-                    TabItem(title: 'Pending', count: 0),
-                    TabItem(title: 'Finished', count: 0),
-                    TabItem(title: 'Rejected', count: 0),
+                    TabItem(title: 'Pen', count: 0),
+                    TabItem(title: 'Fin', count: 0),
+                    TabItem(title: 'Del', count: 0),
+
+                    TabItem(title: 'Rej', count: 0),
                     TabItem(title: 'All', count: 0),
                   ],
                 ),
@@ -146,14 +154,16 @@ class RepairManage extends StatelessWidget {
         ),
         body: Padding(
 
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(5.0),
           child: TabBarView(
             children: [
               PendingRepairs(), // Page for "Today" tab
               FinishedRepairs(),
-              RechargeInvoiceHistoryMonth(), // Page for "Yesterday" tab
+                            DeliveredRepairs(), // Page for "Yesterday" tab
+
+              RejectedRepairs(), // Page for "Yesterday" tab
               // Page for "Yesterday" tab
-              RechargeInvoiceHistoryAll(), // Page for "All" tab
+              AllRepairs(), // Page for "All" tab
             ],
           ),
         ),

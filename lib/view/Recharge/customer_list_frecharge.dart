@@ -9,17 +9,18 @@ import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:fixnshop_admin/view/Customers/customer_edit.dart';
 import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
 import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
+import 'package:fixnshop_admin/view/Repairs/insert_repair.dart';
 import 'package:fixnshop_admin/view/home_screen.dart';
 import 'package:fixnshop_admin/view/home_screen_manage.dart';
+import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class CustomerList extends StatelessWidget {
-  int from_home;
-  CustomerList({super.key,required this.from_home});
+class CustomerListFrecharge extends StatelessWidget {
+  CustomerListFrecharge({super.key});
   final CustomerController customerController = Get.find<CustomerController>();
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
@@ -35,59 +36,57 @@ class CustomerList extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Customer List'),
-          // IconButton(
-          //   color: Colors.deepPurple,
-          //   iconSize: 24.0,
-          //   onPressed: () {
-          //     Get.toNamed('/NewCat');
-          //   },
-          //   icon: Icon(CupertinoIcons.add),
-          // ),
-          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                color: Colors.deepPurple,
-                iconSize: 24.0,
-                onPressed: () {
-                  Get.toNamed('/NewCustomer');
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
-                },
-                icon: Icon(CupertinoIcons.add),
+              Text(
+                'Customers List | Recharge',
+                style: TextStyle(fontSize: 17),
               ),
-              IconButton(
-                color: Colors.deepPurple,
-                iconSize: 24.0,
-                onPressed: () {
-                  customerController.isDataFetched = false;
-                  customerController.fetchcustomers();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
-                },
-                icon: Icon(CupertinoIcons.refresh),
+              // IconButton(
+              //   color: Colors.deepPurple,
+              //   iconSize: 24.0,
+              //   onPressed: () {
+              //     Get.toNamed('/NewCat');
+              //   },
+              //   icon: Icon(CupertinoIcons.add),
+              // ),
+              Row(
+                children: [
+                  IconButton(
+                    color: Colors.deepPurple,
+                    iconSize: 24.0,
+                    onPressed: () {
+                      Get.toNamed('/NewCustomer');
+                      // categoryController.isDataFetched =false;
+                      // categoryController.fetchcategories();
+                    },
+                    icon: Icon(CupertinoIcons.add),
+                  ),
+                  IconButton(
+                    color: Colors.deepPurple,
+                    iconSize: 24.0,
+                    onPressed: () {
+                      customerController.isDataFetched = false;
+                      customerController.fetchcustomers();
+                      // categoryController.isDataFetched =false;
+                      // categoryController.fetchcategories();
+                    },
+                    icon: Icon(CupertinoIcons.refresh),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
-      )),
+          )),
       body: PopScope(
-         canPop: true,
-        onPopInvoked: ( result) {
-           if(from_home == 1) {
-            homeController.selectedPageIndex.value = 0;
-          barcodeController.barcode3.value = '';
-         
+        canPop: true,
+        onPopInvoked: (result) {
+          homeController.selectedPageIndex.value = 0;
 
-          } else {
-              //  Navigator.of(context).pop();
-                      barcodeController.barcode3.value = '';
-          }
-        },  
-         
+          //  Navigator.of(context).pop();
+          barcodeController.barcode3.value = '';
+        },
         child: Column(
           children: [
             Padding(
@@ -103,6 +102,50 @@ class CustomerList extends StatelessWidget {
                   prefixIcon: Icon(Icons.search),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: OutlinedButton(
+                  style: ElevatedButton.styleFrom(
+                    //fixedSize: Size(200, 20),
+                    backgroundColor: Colors.green.shade100,
+                    side: BorderSide(
+                      width: 2.0,
+                      color: Colors.green.shade100,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Get.to(() => NewRechargeInvoice(
+                          Cus_id: '',
+                          Cus_Name: '',
+                          Cus_Number: '',
+                        ));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No Dues',
+                        style: TextStyle(color: Colors.green.shade900),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(
+                        Icons.arrow_circle_right_rounded,
+                        color: Colors.green.shade900, size: 15,
+                        //  'Details',
+                        //   style: TextStyle(
+                        //        color: Colors.red),
+                      ),
+                    ],
+                  )),
             ),
             SizedBox(
               height: 10,
@@ -142,10 +185,12 @@ class CustomerList extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Row(
+
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Icon(
+                                          Row(
+                                            children: [ Icon(
                                             Icons.perm_contact_cal,
                                             color: Colors.blue.shade900,
                                             size: 13,
@@ -154,7 +199,7 @@ class CustomerList extends StatelessWidget {
                                             width: 10,
                                           ),
                                           Text(
-                                            customer.Cus_Name.toUpperCase()
+                                            customer.Cus_Name.toUpperCase() + ' || '
                                             // +
                                             // ' -- ' +
                                             // customer.Product_Code,
@@ -163,62 +208,9 @@ class CustomerList extends StatelessWidget {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15),
+                                                
                                           ),
-                                        ],
-                                      ),
-                                      Row(
-                                        // crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.attach_money,
-                                                color: Colors.red.shade900,
-                                                size: 12,
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                'Due US: ' +
-                                                    addCommasToNumber(customer
-                                                            .Cus_Due_USD)
-                                                        .toString() +
-                                                    ' \$'
-                                                // +
-                                                // ' -- ' +
-                                                // customer.Product_Code,
-                                                ,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.phone,
-                                            color: Colors.green.shade900,
-                                            size: 13,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
+                                         
                                           Text(
                                             customer.Cus_Number
                                             // +
@@ -228,9 +220,13 @@ class CustomerList extends StatelessWidget {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15),
+                                          ),],
                                           ),
+                                          
+                                        
                                         ],
                                       ),
+                                            
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -258,9 +254,11 @@ class CustomerList extends StatelessWidget {
                                           ),
                                         ],
                                       ),
+                                      
                                     ],
                                   ),
                                 ),
+                               
                                 //Text(customer.Cus_Due_USD.toString()),
                               ],
                             ),
@@ -305,14 +303,16 @@ class CustomerList extends StatelessWidget {
                                               Text(
                                                 'Edit',
                                                 style: TextStyle(
-                                                    color: Colors.blue.shade900 ),
+                                                    color:
+                                                        Colors.blue.shade900),
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Icon(
                                                 Icons.edit,
-                                                color: Colors.blue.shade900, size: 15,
+                                                color: Colors.blue.shade900,
+                                                size: 15,
                                                 //  'Details',
                                                 //   style: TextStyle(
                                                 //        color: Colors.red),
@@ -339,14 +339,12 @@ class CustomerList extends StatelessWidget {
                                             ),
                                           ),
                                           onPressed: () {
-                                            Get.to(() => NewInvoice(
+                                            Get.to(() => NewRechargeInvoice(
                                                   Cus_id: customer.Cus_id
                                                       .toString(),
                                                   Cus_Name: customer.Cus_Name,
                                                   Cus_Number:
                                                       customer.Cus_Number,
-                                                  Cus_Due: customer.Cus_Due_USD
-                                                      .toString(),
                                                 ));
                                           },
                                           child: Row(
@@ -356,7 +354,8 @@ class CustomerList extends StatelessWidget {
                                               Text(
                                                 'Select',
                                                 style: TextStyle(
-                                                    color: Colors.green.shade900),
+                                                    color:
+                                                        Colors.green.shade900),
                                               ),
                                               SizedBox(
                                                 width: 5,
@@ -364,7 +363,8 @@ class CustomerList extends StatelessWidget {
                                               Icon(
                                                 Icons
                                                     .arrow_circle_right_rounded,
-                                                color: Colors.green.shade900  , size: 15,
+                                                color: Colors.green.shade900,
+                                                size: 15,
                                                 //  'Details',
                                                 //   style: TextStyle(
                                                 //        color: Colors.red),

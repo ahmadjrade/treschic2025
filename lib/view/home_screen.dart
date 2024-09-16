@@ -25,6 +25,7 @@ import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_payment_manage.dart';
+import 'package:fixnshop_admin/view/Recharge/customer_list_frecharge.dart';
 import 'package:fixnshop_admin/view/Recharge/rech_invoice_payment_manage.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_balances.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
@@ -33,7 +34,7 @@ import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_manage.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_product_list.dart';
 import 'package:fixnshop_admin/view/buy_expenses.dart';
-import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
+import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
 import 'package:fixnshop_admin/view/Repairs/pending_repair.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -170,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _selectedDestination = index;
       });
     } else if (index == 2) {
-      Get.to(() => NewRechargeInvoice());
+      Get.to(() => CustomerListFrecharge());
       setState(() {
         _selectedDestination = index;
       });
@@ -570,7 +571,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           IconButton(
                               onPressed: () {
-                                Get.to(() => NewRechargeInvoice());
+                                Get.to(() => CustomerListFrecharge());
                               },
                               icon: Icon(
                                 FontAwesomeIcons.moneyBillTrendUp,
@@ -609,94 +610,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              // SizedBox(height: 10,),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // SizedBox(height: 12,),
-                      //   Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      //     child: InputDecorator(
-                      //             decoration: InputDecoration(
-                      //               labelText: 'Recharge Balances',
-                      //               enabledBorder: OutlineInputBorder(
-                      //                   borderRadius: BorderRadius.circular(15.0),
-                      //                   borderSide: BorderSide(color: Colors.black)),
-                      //             ),
-                      //       child: Obx(
-                      //       () {
-                      //         final List<RechargeBalanceModel> filteredcarts =
-                      //             rechargeBalanceController.searchTypes(Username.value);
-                      //         if (rechargeBalanceController.isLoading.value) {
-                      //           return Center(child: CircularProgressIndicator());
-                      //         } else if (rechargeBalanceController.balance.isEmpty) {
-                      //           return Center(
-                      //               child: Text('No Recharge Balances Yet ! Add Some '));
-                      //         } else {
-                      //           return ListView.builder(
-
-                      //             physics: NeverScrollableScrollPhysics(),
-                      //             shrinkWrap: true,
-                      //             itemCount: filteredcarts.length,
-                      //             itemBuilder: (context, index) {
-                      //               final RechargeBalanceModel balance = filteredcarts[index];
-                      //               return Padding(
-                      //                 padding: const EdgeInsets.symmetric(horizontal:  10.0),
-                      //                 child: Card(
-                      //                   child: Container(
-                      //                     decoration: BoxDecoration(
-                      //                       color: Colors.blue.shade100,
-                      //                       borderRadius: BorderRadius.circular(10)
-                      //                     ),
-
-                      //                     alignment: Alignment.center,
-                      //                     child:
-
-                      //                           Padding(
-                      //                             padding: const EdgeInsets.all(15.0),
-                      //                             child: Row(
-                      //                               mainAxisAlignment:
-                      //                                   MainAxisAlignment.spaceBetween,
-                      //                               children: [
-                      //                                 Row(
-                      //                                   children: [
-
-                      //                                     Text(
-                      //                                       balance.Credit_Type
-
-                      //                                       ,
-                      //                                       style: TextStyle(
-                      //                                           fontWeight: FontWeight.bold,
-                      //                                            ),
-                      //                                     ),
-                      //                                   ],
-                      //                                 ),
-                      //                                 Text(
-                      //                                   addCommasToNumber(balance.Credit_Balance)
-                      //                                       .toString()
-                      //                                   // +
-                      //                                   // ' -- ' +
-                      //                                   // balance.cart_Code,
-                      //                                   ,
-                      //                                   style: TextStyle(
-                      //                               color: Colors.blue.shade900,
-                      //                               fontWeight: FontWeight.bold),
-                      //                                 ),
-                      //                               ],
-                      //                             ),
-                      //                           ),
-
-                      //                   ),
-                      //                 ),
-                      //               );
-                      //             },
-                      //           );
-                      //         }
-                      //       },
-                      //                         ),
-                      //     ),
-                      //   ),
+                      
                       SizedBox(
                         height: 15,
                       ),

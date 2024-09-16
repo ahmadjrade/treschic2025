@@ -20,7 +20,7 @@ import 'package:clipboard/clipboard.dart';
 
 class ProductList extends StatelessWidget {
   int isPur, from_home;
-  ProductList({super.key, required this.isPur,required this.from_home});
+  ProductList({super.key, required this.isPur, required this.from_home});
   final ProductController productController = Get.find<ProductController>();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
   final PurchaseController purchaseController = Get.put(PurchaseController());
@@ -32,8 +32,6 @@ class ProductList extends StatelessWidget {
   RxString Username = ''.obs;
   TextEditingController Product_Name = TextEditingController();
 
-
-  
   Future<void> set() async {
     Product_Name.text = barcodeController.barcode3.value;
     productController.searchProducts(Product_Name.text);
@@ -100,20 +98,15 @@ class ProductList extends StatelessWidget {
           )),
       body: PopScope(
         canPop: true,
-        onPopInvoked: ( result) {
-           if(from_home == 1) {
+        onPopInvoked: (result) {
+          if (from_home == 1) {
             homeController.selectedPageIndex.value = 0;
-          barcodeController.barcode3.value = '';
-         
-
+            barcodeController.barcode3.value = '';
           } else {
-              //  Navigator.of(context).pop();
-                      barcodeController.barcode3.value = '';
+            //  Navigator.of(context).pop();
+            barcodeController.barcode3.value = '';
           }
-        },  
-         
-       
-        
+        },
         child: Column(
           children: [
             Padding(
@@ -226,16 +219,24 @@ class ProductList extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text('Product Code:  ' +
-                                          product.Product_Code +
-                                          '\nCategory: ' +
-                                          product.Product_Cat +
-                                          ' || ' +
-                                          product.PRoduct_Sub_Cat +
-                                          ' || ' +
-                                          product.Product_Brand),
+                                          product.Product_Code),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                         Text('Category: ' +
+                                              product.Product_Cat +
+                                              ' || ' +
+                                              product.PRoduct_Sub_Cat +
+                                              ' || ' +
+                                              product.Product_Brand),
+                                        ],
+                                      ),
+
                                       //Text('Brand: ' + product.Product_Brand),
 
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Max Price: ' +
@@ -278,7 +279,7 @@ class ProductList extends StatelessWidget {
                                                   // fixedSize:
                                                   //     Size(double.maxFinite, 20),
                                                   backgroundColor:
-                                                      Colors.red.shade900,
+                                                      Colors.red.shade100,
                                                   side: BorderSide(
                                                     width: 2.0,
                                                     color: Colors.red.shade900,
@@ -355,7 +356,8 @@ class ProductList extends StatelessWidget {
                                                   children: [
                                                     Icon(
                                                       Icons.qr_code,
-                                                      color: Colors.white,
+                                                      color:
+                                                          Colors.red.shade900,
                                                       //  'Details',
                                                       //   style: TextStyle(
                                                       //        color: Colors.red),
@@ -372,10 +374,11 @@ class ProductList extends StatelessWidget {
                                                   // fixedSize:
                                                   //     Size(double.maxFinite, 20),
                                                   backgroundColor:
-                                                      Colors.red.shade900,
+                                                      Colors.green.shade100,
                                                   side: BorderSide(
                                                     width: 2.0,
-                                                    color: Colors.red.shade900,
+                                                    color:
+                                                        Colors.green.shade900,
                                                   ),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
@@ -400,7 +403,8 @@ class ProductList extends StatelessWidget {
                                                   children: [
                                                     Icon(
                                                       Icons.add,
-                                                      color: Colors.white,
+                                                      color:
+                                                          Colors.green.shade900,
                                                       //  'Details',
                                                       //   style: TextStyle(
                                                       //        color: Colors.red),
@@ -417,10 +421,10 @@ class ProductList extends StatelessWidget {
                                                   // fixedSize:
                                                   //     Size(double.maxFinite, 20),
                                                   backgroundColor:
-                                                      Colors.red.shade900,
+                                                      Colors.blue.shade100,
                                                   side: BorderSide(
                                                     width: 2.0,
-                                                    color: Colors.red.shade900,
+                                                    color: Colors.blue.shade900,
                                                   ),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
@@ -455,7 +459,8 @@ class ProductList extends StatelessWidget {
                                                     Icon(
                                                       Icons
                                                           .arrow_circle_right_rounded,
-                                                      color: Colors.white,
+                                                      color:
+                                                          Colors.blue.shade900,
                                                       //  'Details',
                                                       //   style: TextStyle(
                                                       //        color: Colors.red),

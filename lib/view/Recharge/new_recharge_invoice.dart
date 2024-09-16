@@ -29,8 +29,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class NewRechargeInvoice extends StatefulWidget {
+  String Cus_id,Cus_Name,Cus_Number;
+
+  
   NewRechargeInvoice({
     super.key,
+    required this.Cus_id,required this.Cus_Name,required this.Cus_Number
   });
 
   @override
@@ -218,34 +222,15 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
           backgroundColor: Colors.grey.shade100,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('New Recharge Invoice'),
-              // IconButton(
-              //   color: Colors.deepPurple,
-              //   iconSize: 24.0,
-              //   onPressed: () {
-              //     Get.toNamed('/NewCat');
-              //   },
-              //   icon: Icon(CupertinoIcons.add),
-              // ),
-
-              // IconButton(
-              //   color: Colors.deepPurple,
-              //   iconSize: 24.0,
-              //   onPressed: () {
-              //     Get.toNamed('/BuyAccessories');
-              //     // productController.isDataFetched = false;
-              //     // productController.fetchproducts();
-              //     // categoryController.isDataFetched =false;
-              //     // categoryController.fetchcategories();
-              //   },
-              //   icon: Icon(CupertinoIcons.add),
-              // ),
+              Text('Recharge Invoice'),
+             
               IconButton(
                 color: Colors.deepPurple,
                 iconSize: 24.0,
@@ -253,27 +238,12 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                   //  refreshProducts();
                   refreshRate();
 
-                  // Get.toNamed('/BuyAccessories');
-                  // productController.isDataFetched = false;
-                  // productController.fetchproducts();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
+                
+                
                 },
                 icon: Icon(CupertinoIcons.refresh),
               ),
-              // IconButton(
-              //   color: Colors.deepPurple,
-              //   iconSize: 24.0,
-              //   onPressed: () {
-              //     rechargeDetailController.reset();
-              //     // Get.toNamed('/BuyAccessories');
-              //     // productController.isDataFetched = false;
-              //     // productController.fetchproducts();
-              //     // categoryController.isDataFetched =false;
-              //     // categoryController.fetchcategories();
-              //   },
-              //   icon: Icon(CupertinoIcons.radiowaves_left),
-              // ),
+             
             ],
           )),
       body: SafeArea(
@@ -281,18 +251,17 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  height: 5,
-                ),
+                
                 Column(
                   children: [
                     OutlinedButton(
                         style: ElevatedButton.styleFrom(
                           fixedSize: Size(double.maxFinite, 50),
-                          backgroundColor: Colors.deepPurple.shade300,
+                          backgroundColor: Colors.blue.shade100,
                           side: BorderSide(
-                              width: 2.0, color: Colors.deepPurple.shade300),
+                              width: 2.0, color: Colors.blue.shade100),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
@@ -305,106 +274,20 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                           children: [
                             Text(
                               'Get Cards',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.blue.shade900),
                             ),
                             SizedBox(
                               width: 15,
                             ),
-                            Icon(Icons.arrow_circle_right, color: Colors.white)
+                            Icon(Icons.arrow_circle_right, color: Colors.blue.shade900)
                           ],
                         )),
                     SizedBox(
                       height: 15,
                     ),
-
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //         child: TextFormField(
-                    //       controller: Product_Code,
-                    //       onChanged: (value) {},
-                    //       decoration: InputDecoration(
-                    //         labelText: "Product Code ",
-                    //         labelStyle: TextStyle(
-                    //           color: Colors.black,
-                    //         ),
-                    //         fillColor: Colors.black,
-                    //         focusedBorder: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(15.0),
-                    //           borderSide: BorderSide(
-                    //             color: Colors.black,
-                    //           ),
-                    //         ),
-                    //         enabledBorder: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(15.0),
-                    //           borderSide: BorderSide(
-                    //             color: Colors.black,
-                    //             width: 2.0,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     )),
-                    //     IconButton(
-                    //       icon: Icon(Icons.search),
-                    //       color: Colors.black,
-                    //       onPressed: () {
-                    //         Get.to(() => ProductList(
-                    //               isPur: 1,
-                    //             ));
-                    //       },
-                    //     ),
-                    //     IconButton(
-                    //       icon: Icon(Icons.check),
-                    //       color: Colors.black,
-                    //       onPressed: () {
-                    //         rechargeDetailController.fetchProduct(Product_Code.text);
-                    //       },
-                    //     ),
-
-                    //     // Expanded(
-                    //     //   child: Padding(
-                    //     //     padding: EdgeInsets.symmetric(horizontal: 25),
-                    //     //     child: TextFormField(
-                    //     //       controller: Product_Code,
-                    //     //       decoration: InputDecoration(
-                    //     //         labelText: "Product Code ",
-                    //     //         labelStyle: TextStyle(
-                    //     //           color: Colors.black,
-                    //     //         ),
-                    //     //         fillColor: Colors.black,
-                    //     //         focusedBorder: OutlineInputBorder(
-                    //     //           borderRadius: BorderRadius.circular(15.0),
-                    //     //           borderSide: BorderSide(
-                    //     //             color: Colors.black,
-                    //     //           ),
-                    //     //         ),
-                    //     //         enabledBorder: OutlineInputBorder(
-                    //     //           borderRadius: BorderRadius.circular(15.0),
-                    //     //           borderSide: BorderSide(
-                    //     //             color: Colors.black,
-                    //     //             width: 2.0,
-                    //     //           ),
-                    //     //         ),
-                    //     //       ),
-                    //     //     ),
-                    //     //   ),
-                    //     // ),
-                    //     SizedBox(
-                    //       width: 5,
-                    //     ),
-                    //     Padding(
-                    //       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    //       child: IconButton(
-                    //         icon: Icon(Icons.qr_code_scanner_rounded),
-                    //         color: Colors.black,
-                    //         onPressed: () {
-                    //           barcodeController.scanBarcodeInv();
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-
+          
+                   
+          
                     SizedBox(
                       height: 20,
                     ),
@@ -512,7 +395,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                                                 title: Text(
                                                                     'Remove Item?'),
                                                                 // content: setupAlertDialoadContainer(),
-
+          
                                                                 actions: [
                                                                   Center(
                                                                     child: Row(
@@ -558,7 +441,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                                                                 rechargeCartController.calculateTotalLb();
                                                                                 rechargeCartController.calculateTotalQty();
                                                                                 rechargeCartController.calculateDueLB();
-
+          
                                                                                 // _showeditAlertDialog(
                                                                                 //     context,
                                                                                 //     product_info[index]
@@ -652,7 +535,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                         ),
                       ]);
                     }),
-
+          
                     SizedBox(
                       height: 20,
                     ),
@@ -820,57 +703,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                     ),
                                   ),
                                 ),
-                                // Card(
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.all(8.0),
-                                //     child: Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text('Invoice Due USD: '),
-                                //         GestureDetector(
-
-                                //           child: Text(
-                                //             addCommasToNumber(double.tryParse(
-                                //                     CalDue(
-                                //                         rechargeDetailController
-                                //                             .DueLB.value,
-                                //                         rateController.rateValue
-                                //                             .value))!) +
-                                //                 ' \$',
-                                //             style: TextStyle(
-                                //                 color: Colors.green.shade900),
-                                //           ),
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                                // Card(
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.all(8.0),
-                                //     child: Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text('Invoice Due LB: '),
-                                //         GestureDetector(
-                                //           onLongPress: () {
-                                //             copyToClipboard(
-                                //                 rechargeDetailController.DueLB.value);
-                                //           },
-                                //           child: Text(
-                                //             addCommasToNumber(rechargeDetailController
-                                //                     .DueLB.value) +
-                                //                 ' \LB',
-                                //             style: TextStyle(
-                                //                 color: Colors.green.shade900),
-                                //           ),
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
+                                
                                 Card(
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -895,7 +728,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                               rechargeCartController
                                                       .ReceivedUSD.value =
                                                   double.tryParse(Value)!;
-
+          
                                               rechargeCartController
                                                   .calculateDueLB();
                                             }
@@ -947,280 +780,127 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                     SizedBox(
                       height: 10,
                     ),
-                    Obx(() {
-                      return Visibility(
-                        visible: rechargeCartController.isDue.value,
-                        child: Container(
-                          width: double.infinity,
-                          //     height: double.maxFinite,
-                          child: InputDecorator(
-                            decoration: InputDecoration(
-                              labelText: 'Customer Information',
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(color: Colors.black)),
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(children: [
-                                  Expanded(
-                                    child: TextFormField(
-                                      //maxLength: 15,
-                                      controller: rechargeCartController
-                                          .numberController,
-                                      onFieldSubmitted: (value) {
-                                        customerController.searchCustomer(
-                                            rechargeCartController
-                                                .numberController);
-                                      },
-                                      //controller: Product_Name,
-                                      decoration: InputDecoration(
-                                        //helperText: '*',
-
-                                        hintText: '03123456',
-                                        labelText: "Customer Phone Number ",
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        fillColor: Colors.black,
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                            width: 2.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          color: Colors.black,
-                                          iconSize: 24.0,
-                                          icon: Icon(CupertinoIcons.add),
-                                          onPressed: () {
-                                            //customerController.searchCustomer(numberController);
-                                            Get.toNamed('/NewCustomer');
-                                          },
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        IconButton(
-                                          color: Colors.black,
-                                          iconSize: 24.0,
-                                          icon: Icon(CupertinoIcons.check_mark),
-                                          onPressed: () {
-                                            customerController
-                                                .searchCustomerforDue(
-                                                    rechargeCartController
-                                                        .numberController);
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ]),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 0, 0),
-                                        child: Obx(
-                                          () {
-                                            // Display the result of the search
-                                            rechargeCartController
-                                                    .nameController.text =
-                                                '${customerController.result3.value}';
-                                            rechargeCartController
-                                                    .idController.text =
-                                                '${customerController.result4.value}';
-                                            rechargeCartController
-                                                    .duelbController.text =
-                                                '${customerController.result5.value}';
-                                            rechargeCartController
-                                                    .dueUsdController.text =
-                                                '${customerController.result6.value}';
-                                            return TextFormField(
-                                              readOnly: true,
-                                              // initialValue: ,
-                                              controller: rechargeCartController
-                                                  .nameController,
-                                              decoration: InputDecoration(
-                                                labelText: "Customer Name ",
-                                                labelStyle: TextStyle(
-                                                  color: Colors.black,
-                                                ),
-                                                fillColor: Colors.black,
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                  borderSide: BorderSide(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                  borderSide: BorderSide(
-                                                    color: Colors.black,
-                                                    width: 2.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    OutlinedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(double.maxFinite, 50),
-                          backgroundColor: Colors.deepPurple.shade300,
-                          side: BorderSide(
-                              width: 2.0, color: Colors.deepPurple.shade300),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (rechargeCartController.InvoiceCards.isNotEmpty) {
-                            if (Platform.isAndroid) {
-                              showDialog(
-                                  // The user CANNOT close this dialog  by pressing outsite it
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) {
-                                    return Dialog(
-                                      // The background color
-                                      backgroundColor: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // The loading indicator
-                                            CircularProgressIndicator(),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            // Some text
-                                            Text('Loading')
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                              rechargeCartController
-                                  .uploadInvoiceToDatabase()
-                                  .then((value) =>
-                                      showToast(rechargeCartController.result))
-                                  .then((value) => CheckPrinter());
-                            } else {
-                              showDialog(
-                                  // The user CANNOT close this dialog  by pressing outsite it
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) {
-                                    return Dialog(
-                                      // The background color
-                                      backgroundColor: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // The loading indicator
-                                            CircularProgressIndicator(),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            // Some text
-                                            Text('Loading')
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                              rechargeCartController
-                                  .uploadInvoiceToDatabase()
-                                  .then((value) =>
-                                      showToast(rechargeCartController.result))
-                                  .then((value) => refresh_history()
-                                  
-                                      .then((value) => rechargeCartController
-                                          .isDataFetched = false)
-                                      .then((value) => rechargeCartController
-                                          .fetch_recharge_carts())
-                                      .then((value) =>
-                                          rechargeCartController.reset())
-                                      .then((value) =>
-                                          rechargeCartController.reset())
-                                      .then((value) =>
-                                          rechargeCartController.reset())
-                                          
-                                      .then((value) =>
-                                          Navigator.of(context).pop())
-                                      .then(
-                                          (value) => Navigator.of(context).pop())
-                                      .then((value) => Navigator.of(context).pop()).then((value) => rechargeInvoiceHistoryController
-                                          .CalTotal_fhome()));
-                            }
-                          } else {
-                            Get.snackbar('No Products Added!', 'Add Products ');
-                          }
-                        },
-                        child: Text(
-                          'Insert Invoice',
-                          style: TextStyle(color: Colors.white),
-                        )),
+                    
+          
+                    
                     SizedBox(
                       height: 40,
                     ),
-
+          
                     // SizedBox(
                     //   height: 40,
                     // ),
                   ],
+                  
                 ),
+                Column(
+                      children: [
+                        OutlinedButton(
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: Size(double.maxFinite, 50),
+                              backgroundColor: Colors.blue.shade100,
+                              side: BorderSide(
+                                  width: 2.0, color: Colors.blue.shade100),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (rechargeCartController.InvoiceCards.isNotEmpty) {
+                                if (Platform.isAndroid) {
+                                  showDialog(
+                                      // The user CANNOT close this dialog  by pressing outsite it
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (_) {
+                                        return Dialog(
+                                          // The background color
+                                          backgroundColor: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                // The loading indicator
+                                                CircularProgressIndicator(),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                // Some text
+                                                Text('Loading')
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                  rechargeCartController
+                                      .uploadInvoiceToDatabase()
+                                      .then((value) =>
+                                          showToast(rechargeCartController.result))
+                                      .then((value) => CheckPrinter());
+                                } else {
+                                  showDialog(
+                                      // The user CANNOT close this dialog  by pressing outsite it
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (_) {
+                                        return Dialog(
+                                          // The background color
+                                          backgroundColor: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                // The loading indicator
+                                                CircularProgressIndicator(),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                // Some text
+                                                Text('Loading')
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                  rechargeCartController
+                                      .uploadInvoiceToDatabase()
+                                      .then((value) =>
+                                          showToast(rechargeCartController.result))
+                                      .then((value) => refresh_history()
+                                      
+                                          .then((value) => rechargeCartController
+                                              .isDataFetched = false)
+                                          .then((value) => rechargeCartController
+                                              .fetch_recharge_carts())
+                                          .then((value) =>
+                                              rechargeCartController.reset())
+                                          .then((value) =>
+                                              rechargeCartController.reset())
+                                          .then((value) =>
+                                              rechargeCartController.reset())
+                                              
+                                          .then((value) =>
+                                              Navigator.of(context).pop())
+                                          .then(
+                                              (value) => Navigator.of(context).pop())
+                                          .then((value) => Navigator.of(context).pop()).then((value) => rechargeInvoiceHistoryController
+                                              .CalTotal_fhome()));
+                                }
+                              } else {
+                                Get.snackbar('No Products Added!', 'Add Products ');
+                              }
+                            },
+                            child: Text(
+                              'Insert Invoice',
+                              style: TextStyle(color: Colors.blue.shade900),
+                            )),
+                      ],
+                    ),
+                    SizedBox(height: 5,)
               ],
             ),
           ),

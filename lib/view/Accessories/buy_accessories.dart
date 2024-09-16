@@ -121,37 +121,15 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
             ),
           ],
         ),
-        backgroundColor: Colors.deepPurple.shade300,
+        backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          // Obx(() {
-          //   if (controller.imagePath.value.isEmpty) {
-          //     return Text('No image selected');
-          //   } else {
-          //     return SizedBox(
-          //       height: 200,
-          //       width: 200,
-          //       child: Image.file(
-          //         File(controller.imagePath.value),
-          //         width: 300,
-          //         height: 300,
-          //       ),
-          //     );
-          //   }
-          // }),
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     await controller.getImageFromCamera();
-          //   },
-          //   child: Text('Take Photo'),
-          // ),
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     await controller.getImageFromGallery();
-          //   },
-          //   child: Text('Choose from Gallery'),
-          // ),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                   
           SizedBox(
             height: 20,
           ),
@@ -735,16 +713,21 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
           SizedBox(
             height: 30,
           ),
-          Padding(
+
+              ],
+            )
+            ,Column(
+              children: [
+                 Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: GetBuilder<InsertProductController>(
                 builder: (insertProductController) {
               return OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(double.maxFinite, 50),
-                    backgroundColor: Colors.deepPurple.shade300,
+                    backgroundColor: Colors.blue.shade100,
                     side: BorderSide(
-                        width: 2.0, color: Colors.deepPurple.shade300),
+                        width: 2.0, color: Colors.blue.shade100),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -833,10 +816,42 @@ class _BuyAccessoriesState extends State<BuyAccessories> {
                   },
                   child: Text(
                     'Insert Product',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.blue.shade900),
                   ));
             }),
           ),
+          SizedBox(height: 5,)
+              ],
+            )
+          // Obx(() {
+          //   if (controller.imagePath.value.isEmpty) {
+          //     return Text('No image selected');
+          //   } else {
+          //     return SizedBox(
+          //       height: 200,
+          //       width: 200,
+          //       child: Image.file(
+          //         File(controller.imagePath.value),
+          //         width: 300,
+          //         height: 300,
+          //       ),
+          //     );
+          //   }
+          // }),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     await controller.getImageFromCamera();
+          //   },
+          //   child: Text('Take Photo'),
+          // ),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     await controller.getImageFromGallery();
+          //   },
+          //   child: Text('Choose from Gallery'),
+          // ),
+         
+         
 
           //Text(Quantities.toString())
         ]),

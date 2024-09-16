@@ -21,6 +21,7 @@ import 'package:fixnshop_admin/view/Product/product_list.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_payment_manage.dart';
+import 'package:fixnshop_admin/view/Recharge/customer_list_frecharge.dart';
 import 'package:fixnshop_admin/view/Recharge/rech_invoice_payment_manage.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_balances.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
@@ -28,7 +29,7 @@ import 'package:fixnshop_admin/view/Recharge/recharge_history_manage.dart';
 import 'package:fixnshop_admin/view/Suppliers/add_supplier.dart';
 import 'package:fixnshop_admin/view/Suppliers/supplier_list.dart';
 import 'package:fixnshop_admin/view/buy_expenses.dart';
-import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
+import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -631,7 +632,7 @@ class StocksScreen extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {
-                                Get.to(() => NewRechargeInvoice(                                ));
+                                Get.to(() => CustomerListFrecharge(                                ));
                               },
                               icon: Icon(
                                 FontAwesomeIcons.fileInvoiceDollar,

@@ -37,14 +37,7 @@ class RechargeTypes extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Card Types'),
-          // IconButton(
-          //   color: Colors.deepPurple,
-          //   iconSize: 24.0,
-          //   onPressed: () {
-          //     Get.toNamed('/NewCat');
-          //   },
-          //   icon: Icon(CupertinoIcons.add),
-          // ),
+        
           Row(
             children: [
               IconButton(
@@ -52,8 +45,7 @@ class RechargeTypes extends StatelessWidget {
                 iconSize: 24.0,
                 onPressed: () {
                   Get.to(AddRechargeType());
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
+                 
                 },
                 icon: Icon(CupertinoIcons.add),
               ),
@@ -63,8 +55,7 @@ class RechargeTypes extends StatelessWidget {
                 onPressed: () {
                   cartTypesController.isDataFetched = false;
                   cartTypesController.fetch_cart_types();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
+                  
                 },
                 icon: Icon(CupertinoIcons.refresh),
               ),
@@ -74,43 +65,8 @@ class RechargeTypes extends StatelessWidget {
       )),
       body: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         child: Obx(() {
-          //           Type_Name.text = barcodeController.barcode3.value;
-          //           return TextField(
-          //             controller: Type_Name,
-          //             onChanged: (query) {
-          //               cartTypesController.carts.refresh();
-          //             },
-          //             decoration: InputDecoration(
-          //               labelText: 'Search by Name or Code',
-          //               prefixIcon: Icon(Icons.search),
-          //             ),
-          //           );
-          //         }),
-          //       ),
-          //       SizedBox(
-          //         width: 15,
-          //       ),
-          //       Padding(
-          //         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-          //         child: IconButton(
-          //           icon: Icon(Icons.qr_code_scanner_rounded),
-          //           color: Colors.black,
-          //           onPressed: () {
-          //             barcodeController
-          //                 .scanBarcodeSearch()
-          //                 .then((value) => set());
-          //           },
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+         
+        
           SizedBox(
             height: 10,
           ),
@@ -129,15 +85,18 @@ class RechargeTypes extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final CartTypeModel cart = filteredcarts[index];
                       return Container(
+                       
                         //  width: double.infinity,
                         //   height: 150.0,
-                        color: Colors.grey.shade200,
+                        color: Colors.blue.shade100,
                         margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
                         //     padding: EdgeInsets.all(35),
                         alignment: Alignment.center,
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: ListTile(
+
+                            
                             onTap: () {
                               Get.to(() => RechargeCarts(
                                             Type_id: cart.Type_id,
@@ -164,9 +123,7 @@ class RechargeTypes extends StatelessWidget {
                                         errorWidget: (context, url, error) =>
                                             Icon(Icons.error),
                                       ),
-                            // onLongPress: () {
-                            //   copyToClipboard(cart.cart_Code);
-                            // },
+                           
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -184,10 +141,10 @@ class RechargeTypes extends StatelessWidget {
                                     style: ElevatedButton.styleFrom(
                                       //fixedSize: Size(200, 20),
                                       backgroundColor:
-                                          Colors.deepPurpleAccent.shade200,
+                                          Colors.blue.shade100,
                                       side: BorderSide(
                                         width: 2.0,
-                                        color: Colors.deepPurpleAccent.shade200,
+                                        color: Colors.blue.shade100,
                                       ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -204,209 +161,16 @@ class RechargeTypes extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        // Text(
-                                        //   'Select',
-                                        //   style: TextStyle(color: Colors.white),
-                                        // ),
-                                        // SizedBox(
-                                        //   width: 5,
-                                        // ),
+                                       
                                         Icon(Icons.arrow_circle_right_rounded,
-                                            color: Colors.white
-                                            //  'Details',
-                                            //   style: TextStyle(
-                                            //        color: Colors.red),
+                                            color: Colors.blue.shade900
+                                        
                                             ),
                                       ],
                                     )),
                               ],
                             ),
-                            // trailing: Column(
-                            //   children: [
-                            //     OutlinedButton(
-                            //       onPressed: () {},
-                            //       child: Row(
-                            //         children: [
-                            //           Text('Select'),
-                            //           Icon(Icons.arrow_forward_ios)
-                            //         ],
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // subtitle: Row(
-                            //   children: [
-                            //     Expanded(
-                            //       child: Column(
-                            //         crossAxisAlignment: CrossAxisAlignment.start,
-                            //         mainAxisAlignment: MainAxisAlignment.start,
-                            //         children: [
-                            //           SizedBox(
-                            //             height: 10,
-                            //           ),
-                            //         ],
-                            //       ),
-                            //     ),
-                            //     // Column(
-                            //     //   children: [
-                            //     //     Visibility(
-                            //     //       visible: !cartTypesController
-                            //     //           .isadmin(Username.value),
-                            //     //       child: OutlinedButton(
-                            //     //           onPressed: () {
-                            //     //             // cartTypesController.SelectedPhone.value = cart;
-                            //     //             //       // subcategoryController.selectedSubCategory.value =
-                            //     //             //       //     null;
-                            //     //             showDialog(
-                            //     //                 barrierDismissible: false,
-                            //     //                 context: context,
-                            //     //                 builder: (BuildContext context) {
-                            //     //                   return AlertDialog(
-                            //     //                     title: SizedBox(
-                            //     //                       child: BarcodeWidget(
-                            //     //                         barcode:
-                            //     //                             Barcode.code128(),
-                            //     //                         data:
-                            //     //                             cart.t,
-                            //     //                       ),
-                            //     //                     ),
-                            //     //                     // content: setupAlertDialoadContainer(),
-
-                            //     //                     actions: [
-                            //     //                       Center(
-                            //     //                         child: Row(
-                            //     //                           mainAxisAlignment:
-                            //     //                               MainAxisAlignment
-                            //     //                                   .spaceBetween,
-                            //     //                           children: [
-                            //     //                             Expanded(
-                            //     //                               child:
-                            //     //                                   OutlinedButton(
-                            //     //                                       style: ElevatedButton
-                            //     //                                           .styleFrom(
-                            //     //                                         fixedSize: Size(
-                            //     //                                             double
-                            //     //                                                 .infinity,
-                            //     //                                             20),
-                            //     //                                         backgroundColor:
-                            //     //                                             Colors
-                            //     //                                                 .red,
-                            //     //                                         side: BorderSide(
-                            //     //                                             width:
-                            //     //                                                 2.0,
-                            //     //                                             color:
-                            //     //                                                 Colors.red),
-                            //     //                                         shape:
-                            //     //                                             RoundedRectangleBorder(
-                            //     //                                           borderRadius:
-                            //     //                                               BorderRadius.circular(32.0),
-                            //     //                                         ),
-                            //     //                                       ),
-                            //     //                                       onPressed:
-                            //     //                                           () {
-                            //     //                                         Navigator.of(
-                            //     //                                                 context)
-                            //     //                                             .pop();
-                            //     //                                       },
-                            //     //                                       child: Text(
-                            //     //                                         'Close',
-                            //     //                                         style: TextStyle(
-                            //     //                                             color:
-                            //     //                                                 Colors.white),
-                            //     //                                       )),
-                            //     //                             ),
-                            //     //                           ],
-                            //     //                         ),
-                            //     //                       )
-                            //     //                     ],
-                            //     //                   );
-                            //     //                 });
-                            //     //           },
-                            //     //           child: Icon(
-                            //     //             Icons.qr_code,
-                            //     //             size: 20,
-                            //     //           )),
-                            //     //     ),
-                            //     //     Visibility(
-                            //     //       visible: !cartTypesController
-                            //     //           .isadmin(Username.value),
-                            //     //       child: OutlinedButton(
-                            //     //           onPressed: () {
-                            //     //             // cartTypesController.SelectedPhone.value = cart;
-                            //     //             //       // subcategoryController.selectedSubCategory.value =
-                            //     //             //       //     null;
-                            //     //             invoiceController.fetchcart(
-                            //     //                 cart.cart_Code);
-                            //     //           },
-                            //     //           child: Icon(
-                            //     //             Icons.add,
-                            //     //             size: 20,
-                            //     //           )),
-                            //     //     ),
-                            //     //     OutlinedButton(
-                            //     //         onPressed: () {
-                            //     //           // cartTypesController.SelectedPhone.value = cart;
-                            //     //           //       // subcategoryController.selectedSubCategory.value =
-                            //     //           //       //     null;
-
-                            //     //           Get.to(() => RechargeDetail(
-                            //     //                 cart_id:
-                            //     //                     cart.cart_id.toString(),
-                            //     //                 Type_Name:
-                            //     //                     cart.Type_Name,
-                            //     //                 cart_Color:
-                            //     //                     cart.cart_Color,
-                            //     //                 cart_LPrice: cart
-                            //     //                     .cart_LPrice.toString(),
-                            //     //                 cart_MPrice: cart
-                            //     //                     .cart_MPrice
-                            //     //                     .toString(),
-                            //     //                 cart_Code:
-                            //     //                     cart.cart_Code,
-                            //     //               ));
-                            //     //         },
-                            //     //         child: Icon(
-                            //     //           Icons.arrow_right,
-                            //     //           size: 20,
-                            //     //         )),
-                            //     //     Visibility(
-                            //     //       visible: cartTypesController
-                            //     //           .isadmin(Username.value),
-                            //     //       child: OutlinedButton(
-                            //     //           onPressed: () {
-                            //     //             // cartTypesController.SelectedPhone.value = cart;
-                            //     //             //       // subcategoryController.selectedSubCategory.value =
-                            //     //             //       //     null;
-
-                            //     //             Get.to(() => cartEdit(
-                            //     //                   cart_id: cart.cart_id,
-                            //     //                   Type_Name:
-                            //     //                       cart.Type_Name,
-                            //     //                   P_Color:
-                            //     //                       (cart.cart_Color),
-                            //     //                   P_Code: cart.cart_Code,
-                            //     //                   MPrice: cart.cart_MPrice
-                            //     //                       .toString(),
-                            //     //                   LPrice: cart.cart_LPrice
-                            //     //                       .toString(),
-                            //     //                   Cost_Price: cart.cart_Cost
-                            //     //                       .toString(),
-                            //     //                   SubCategory:
-                            //     //                       cart.cart_Sub_Cat_id,
-                            //     //                   Category:
-                            //     //                       cart.cart_Cat_id,
-                            //     //                   Brand: cart.cart_Brand,
-                            //     //                 ));
-                            //     //           },
-                            //     //           child: Icon(
-                            //     //             Icons.edit,
-                            //     //             size: 20,
-                            //     //           )),
-                            //     //     ),
-                            //     //   ],
-                            //     // ),
-                            //   ],
-                            // ),
+                            
                           ),
                         ),
                       );
@@ -424,9 +188,9 @@ class RechargeTypes extends StatelessWidget {
             child: OutlinedButton(
                       style: ElevatedButton.styleFrom(
                         fixedSize: Size(double.maxFinite, 50),
-                        backgroundColor: Colors.green.shade900,
+                        backgroundColor: Colors.blue.shade100,
                         side: BorderSide(
-                            width: 2.0, color: Colors.deepPurple.shade900),
+                            width: 2.0, color: Colors.blue.shade100),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
@@ -434,7 +198,7 @@ class RechargeTypes extends StatelessWidget {
                 onPressed: ()  {
                                   Navigator.of(context).pop();
             
-              }, child: Text('Done',style: TextStyle(color: Colors.white),)),
+              }, child: Text('Done',style: TextStyle(color: Colors.blue.shade900),)),
           ),
             SizedBox(height: 30,),
         ],

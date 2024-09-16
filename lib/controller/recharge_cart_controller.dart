@@ -16,7 +16,7 @@ import 'package:fixnshop_admin/model/domain.dart';
 
 import 'package:fixnshop_admin/model/recharge_cart_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:fixnshop_admin/view/new_recharge_invoice.dart';
+import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';

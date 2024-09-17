@@ -590,7 +590,7 @@ class RechargeCartController extends GetxController {
   String formattedTime = '';
   String lastId = '';
 
-  Future<void> uploadInvoiceToDatabase() async {
+  Future<void> uploadInvoiceToDatabase(Cus_id,Cus_Name,Cus_Number) async {
     try {
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
@@ -624,9 +624,9 @@ class RechargeCartController extends GetxController {
           'Invoice_Rec_Lb': ReceivedLb.value,
           'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
           'Invoice_Due_LB': DueLB.value,
-          'Cus_id': idController.text,
-          'Cus_Name': nameController.text,
-          'Cus_Number': numberController.text,
+          'Cus_id': Cus_id,
+          'Cus_Name': Cus_Name,
+          'Cus_Number': Cus_Number,
           'Invoice_Date': formattedDate,
           'Invoice_Time': formattedTime,
           'isPaid': isPaid(DueLB.value / rateController.rateValue.value),

@@ -142,10 +142,12 @@ class CustomerList extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Row(
+
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Icon(
+                                          Row(
+                                            children: [ Icon(
                                             Icons.perm_contact_cal,
                                             color: Colors.blue.shade900,
                                             size: 13,
@@ -154,7 +156,7 @@ class CustomerList extends StatelessWidget {
                                             width: 10,
                                           ),
                                           Text(
-                                            customer.Cus_Name.toUpperCase()
+                                            customer.Cus_Name.toUpperCase() + ' || '
                                             // +
                                             // ' -- ' +
                                             // customer.Product_Code,
@@ -163,62 +165,9 @@ class CustomerList extends StatelessWidget {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15),
+                                                
                                           ),
-                                        ],
-                                      ),
-                                      Row(
-                                        // crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.attach_money,
-                                                color: Colors.red.shade900,
-                                                size: 12,
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                'Due US: ' +
-                                                    addCommasToNumber(customer
-                                                            .Cus_Due_USD)
-                                                        .toString() +
-                                                    ' \$'
-                                                // +
-                                                // ' -- ' +
-                                                // customer.Product_Code,
-                                                ,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.phone,
-                                            color: Colors.green.shade900,
-                                            size: 13,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
+                                         
                                           Text(
                                             customer.Cus_Number
                                             // +
@@ -228,9 +177,13 @@ class CustomerList extends StatelessWidget {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15),
+                                          ),],
                                           ),
+                                          
+                                        
                                         ],
                                       ),
+                                            
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -244,9 +197,9 @@ class CustomerList extends StatelessWidget {
                                             width: 10,
                                           ),
                                           Text(
-                                            'Due LB: ' +
+                                            'Due US: ' +
                                                 addCommasToNumber(
-                                                        customer.Cus_Due_LB)
+                                                        customer.Cus_Due_USD)
                                                     .toString()
                                             // +
                                             // ' -- ' +
@@ -258,9 +211,11 @@ class CustomerList extends StatelessWidget {
                                           ),
                                         ],
                                       ),
+                                      
                                     ],
                                   ),
                                 ),
+                               
                                 //Text(customer.Cus_Due_USD.toString()),
                               ],
                             ),
@@ -305,14 +260,16 @@ class CustomerList extends StatelessWidget {
                                               Text(
                                                 'Edit',
                                                 style: TextStyle(
-                                                    color: Colors.blue.shade900 ),
+                                                    color:
+                                                        Colors.blue.shade900),
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Icon(
                                                 Icons.edit,
-                                                color: Colors.blue.shade900, size: 15,
+                                                color: Colors.blue.shade900,
+                                                size: 15,
                                                 //  'Details',
                                                 //   style: TextStyle(
                                                 //        color: Colors.red),
@@ -345,8 +302,7 @@ class CustomerList extends StatelessWidget {
                                                   Cus_Name: customer.Cus_Name,
                                                   Cus_Number:
                                                       customer.Cus_Number,
-                                                  Cus_Due: customer.Cus_Due_USD
-                                                      .toString(),
+                                                      Cus_Due: customer.Cus_Due_USD.toString(),
                                                 ));
                                           },
                                           child: Row(
@@ -356,7 +312,8 @@ class CustomerList extends StatelessWidget {
                                               Text(
                                                 'Select',
                                                 style: TextStyle(
-                                                    color: Colors.green.shade900),
+                                                    color:
+                                                        Colors.green.shade900),
                                               ),
                                               SizedBox(
                                                 width: 5,
@@ -364,7 +321,8 @@ class CustomerList extends StatelessWidget {
                                               Icon(
                                                 Icons
                                                     .arrow_circle_right_rounded,
-                                                color: Colors.green.shade900  , size: 15,
+                                                color: Colors.green.shade900,
+                                                size: 15,
                                                 //  'Details',
                                                 //   style: TextStyle(
                                                 //        color: Colors.red),

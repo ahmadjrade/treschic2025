@@ -835,7 +835,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                         );
                                       });
                                   rechargeCartController
-                                      .uploadInvoiceToDatabase()
+                                      .uploadInvoiceToDatabase(widget.Cus_id,widget.Cus_Name,widget.Cus_Number)
                                       .then((value) =>
                                           showToast(rechargeCartController.result))
                                       .then((value) => CheckPrinter());
@@ -867,7 +867,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                                         );
                                       });
                                   rechargeCartController
-                                      .uploadInvoiceToDatabase()
+                                      .uploadInvoiceToDatabase(widget.Cus_id,widget.Cus_Name,widget.Cus_Number)
                                       .then((value) =>
                                           showToast(rechargeCartController.result))
                                       .then((value) => refresh_history()

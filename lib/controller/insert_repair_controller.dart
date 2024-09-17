@@ -19,7 +19,7 @@ class InsertRepairController extends GetxController {
   String formattedDate = '';
   String formattedTime = '';
   Future<void> UploadRepair(String Cus_id,
-      String Customer_Number, String Customer_Name,String Phone_Model,String Phone_Password,String IMEI,String Phone_Issue,String Note,String Receivied_Money) async {
+      String Customer_Number, String Customer_Name,String Phone_Model,String Phone_Password,String IMEI,String Phone_Issue,String Note,String Receivied_Money,String Repair_Price) async {
     try {
         Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
@@ -37,6 +37,8 @@ class InsertRepairController extends GetxController {
         "Phone_Issue": Phone_Issue,
         "Note": Note,  
         "Receivied_Money": Receivied_Money,
+                "Repair_Price": Repair_Price,
+
         "Repair_Rec_Date": formattedDate,     
         "Repair_Rec_Time": formattedTime,
 

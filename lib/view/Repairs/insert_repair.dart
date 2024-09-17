@@ -60,6 +60,7 @@ class InsertRepair extends StatelessWidget {
   final TextEditingController phoneModel = TextEditingController();
   final TextEditingController note = TextEditingController();
   final TextEditingController receiviedMoney = TextEditingController();
+  final TextEditingController repairPrice = TextEditingController();
 
   final BrandControllerPhones brandController =
       Get.find<BrandControllerPhones>();
@@ -550,6 +551,34 @@ class InsertRepair extends StatelessWidget {
                           ),
                         ),
                       ),
+                      SizedBox(width: 10,),
+                        Expanded(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          //  initialValue: '0',
+                          controller: repairPrice,
+                          decoration: InputDecoration(
+                            labelText: "Repair Price ",
+                            labelStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                            fillColor: Colors.black,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 2.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
 
                       //Checkbox(),
                     ],
@@ -575,11 +604,7 @@ class InsertRepair extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      if (idController.text == '' &&
-                          nameController.text == '' &&
-                          numberController.text == '') {
-                        showToast('Please Add Customer Number ');
-                      } else if (SelectedPhoneName == '') {
+                      if (SelectedPhoneName == '') {
                         showToast('Add Phone Model ');
                       } else if (phoneIssue.text == '') {
                         showToast('Add Phone Issue');
@@ -611,22 +636,23 @@ class InsertRepair extends StatelessWidget {
                               );
                             });
                         insertrepairController.UploadRepair(
-                                idController.text,
-                                numberController.text,
-                                nameController.text,
+                                Cus_id,
+                                Cus_Name,
+                                Cus_Number,
                                 SelectedPhoneName,
                                 phonePassowrd.text,
                                 phoneIMEI.text,
                                 phoneIssue.text,
                                 note.text,
-                                receiviedMoney.text)
+                                receiviedMoney.text,
+                                repairPrice.text)
                             .then((value) => Navigator.of(context).pop())
                             .then((value) =>
                                 repairsController.isDataFetched = false)
                             .then((Value) => repairsController.fetchrepairs())
                             .then((value) => clear())
                             .then((value) =>
-                                showToast(insertrepairController.result));
+                                showToast(insertrepairController.result)).then((value) => Navigator.of(context).pop());
                       }
                     },
                     child: Text(

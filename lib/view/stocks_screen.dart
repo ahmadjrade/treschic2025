@@ -16,6 +16,7 @@ import 'package:fixnshop_admin/view/Invoices/invoice_payment_manage.dart';
 import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
 import 'package:fixnshop_admin/view/Phones/add_phone_model.dart';
 import 'package:fixnshop_admin/view/Phones/buy_phone.dart';
+import 'package:fixnshop_admin/view/Phones/customer_list_fphones.dart';
 import 'package:fixnshop_admin/view/Phones/phones_list.dart';
 import 'package:fixnshop_admin/view/Product/product_list.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
@@ -363,7 +364,7 @@ class StocksScreen extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {
-                                Get.to(() => BuyPhone(                                ));
+                                Get.to(() => CustomerListFPhones(                                ));
                               },
                               icon: Icon(
                                 FontAwesomeIcons.mobile,

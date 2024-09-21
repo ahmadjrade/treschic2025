@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                           controller: usernameController,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Email',
+                            hintText: 'Username',
                           ),
                         ),
                       ))),
@@ -81,9 +81,9 @@ class LoginScreen extends StatelessWidget {
                 child: OutlinedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.deepPurple.shade300,
+                      backgroundColor: Colors.blue.shade100,
                       side: BorderSide(
-                          width: 2.0, color: Colors.deepPurple.shade300),
+                          width: 2.0, color: Colors.blue.shade100),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -110,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                     },
                     child: Text(
                       'Login',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.blue.shade900),
                     )),
               )
             ],

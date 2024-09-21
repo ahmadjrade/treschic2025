@@ -324,7 +324,7 @@ class MainApp extends StatelessWidget {
       getPages: [
         GetPage(name: "/LoginScreen", page: () => LoginScreen()),
         GetPage(name: "/HomeScreenManage", page: () => HomeScreenManage()),
-        GetPage(name: "/BuyPhone", page: () => BuyPhone()),
+        GetPage(name: "/BuyPhone", page: () => BuyPhone(Cus_id: '',Cus_Name: '',Cus_Number: '',)),
         GetPage(name: "/BuyAccessories", page: () => BuyAccessories()),
         GetPage(name: "/BuyExpenses", page: () => BuyExpenses()),
         GetPage(name: "/BuyTools", page: () => BuyTools()),

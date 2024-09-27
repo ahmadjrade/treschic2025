@@ -61,11 +61,9 @@ class _BuyPhoneState extends State<BuyPhone> {
     '1TB',
     '2TB',
   ];
-  //int? SelectMonth = 1;
   int SelectedCapacityIndex = 0;
   String SelectedCapacity = '';
   
-  //int? SelectMonth = 1;
 
   BrandModelPhones? SelectedBrand;
   int SelectedBrandId = 0;
@@ -84,7 +82,6 @@ class _BuyPhoneState extends State<BuyPhone> {
   void initState() {
     formattedDate = DateFormat('yyyy/MM/dd').format(now);
     formattedTime = DateFormat('HH:mm a').format(now);
-    // TODO: implement initState
     super.initState();
   }
 

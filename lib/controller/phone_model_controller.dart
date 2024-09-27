@@ -10,6 +10,8 @@ import 'dart:convert';
 class PhoneModelController extends GetxController {
   RxList<PhoneModelsModel> phone_model = <PhoneModelsModel>[].obs;
   bool isDataFetched = false;
+    RxBool isLoading = false.obs;
+
   String result = '';
     Rx<PhoneModelsModel?> SelectedPhoneModel = Rx<PhoneModelsModel?>(null);
 
@@ -22,9 +24,20 @@ class PhoneModelController extends GetxController {
   }
 
   void closeLoading() {}
+
+
+  List<PhoneModelsModel> searchProducts(String query) {
+    return phone_model
+        .where((phone) =>
+            phone.Phone_Name.toLowerCase().contains(query.toLowerCase()) )
+        .toList();
+  }
+
   void fetchphonemodel() async {
     if (!isDataFetched) {
       try {
+                isLoading.value = true;
+
         String domain = domainModel.domain;
         final response =
             await http.get(Uri.parse('$domain' + 'fetch_phone_model.php'));
@@ -41,6 +54,8 @@ class PhoneModelController extends GetxController {
             print(0);
           } else {
             isDataFetched = true;
+                      isLoading.value = false;
+
             result == 'success';
             print(1);
           }

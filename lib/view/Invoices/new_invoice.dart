@@ -20,16 +20,29 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class NewInvoice extends StatefulWidget {
-  String Cus_id, Cus_Name, Cus_Number, Cus_Due;
+  String Cus_id,
+      Cus_Name,
+      Cus_Number,
+      Cus_Due,
+      Driver_id,
+      Driver_Name,
+      Driver_Number,
+      isDel;
+
   NewInvoice(
       {super.key,
       required this.Cus_id,
       required this.Cus_Name,
       required this.Cus_Number,
-      required this.Cus_Due});
+      required this.Cus_Due,
+      required this.Driver_id,
+      required this.Driver_Name,
+      required this.Driver_Number,
+      required this.isDel});
 
   @override
   State<NewInvoice> createState() => _NewInvoiceState();
@@ -52,6 +65,7 @@ class _NewInvoiceState extends State<NewInvoice> {
       Get.find<InvoiceDetailController>();
 
   TextEditingController Product_Code = TextEditingController();
+  TextEditingController Delivery_Code = TextEditingController();
 
   // final InvoiceController invoiceController = Get.put(InvoiceController());
   final RateController rateController = Get.find<RateController>();
@@ -62,6 +76,14 @@ class _NewInvoiceState extends State<NewInvoice> {
 
   double CalPrice(qty, up) {
     return TP = qty * up;
+  }
+
+  bool isDelivery(isDel) {
+    if (isDel == '1') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   String addCommasToNumber(double value) {
@@ -322,7 +344,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                         GestureDetector(
                           onTap: () {
                             Get.to(() => ProductList(
-                              from_home: 0,
+                                  from_home: 0,
                                   isPur: 1,
                                 ));
                           },
@@ -387,6 +409,44 @@ class _NewInvoiceState extends State<NewInvoice> {
                           ),
                         ),
                       ],
+                    ),
+                    Visibility(
+                      visible: isDelivery(widget.isDel),
+                      child: SizedBox(
+                        height: 10,
+                      ),
+                    ),
+                    Visibility(
+                      visible: isDelivery(widget.isDel),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: TextFormField(
+                            controller: Delivery_Code,
+                            onChanged: (value) {},
+                            decoration: InputDecoration(
+                              labelText: "Delivery Code ",
+                              labelStyle: TextStyle(
+                                color: Colors.black,
+                              ),
+                              fillColor: Colors.black,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
+                          )),
+                        ],
+                      ),
                     ),
 
                     SizedBox(
@@ -459,9 +519,12 @@ class _NewInvoiceState extends State<NewInvoice> {
                                                           title: Text(
                                                               'Update Item Price'),
                                                           content: TextField(
-                                                            keyboardType:
-                                                               platformController.CheckPlatform() ?
-                                                          TextInputType.number : TextInputType.text,
+                                                            keyboardType: platformController
+                                                                    .CheckPlatform()
+                                                                ? TextInputType
+                                                                    .number
+                                                                : TextInputType
+                                                                    .text,
                                                             controller:
                                                                 New_Price,
                                                             decoration:
@@ -836,6 +899,46 @@ class _NewInvoiceState extends State<NewInvoice> {
                                     ),
                                   ),
                                 ),
+                                Visibility(
+                                  visible: isDelivery(widget.isDel),
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Driver Name: '),
+                                          Text(
+                                            widget.Driver_Name,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: isDelivery(widget.isDel),
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Driver Number: '),
+                                          Text(
+                                            widget.Driver_Number,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                                 Obx(() {
                                   if (rateController.isLoading.value) {
                                     return Center(
@@ -966,66 +1069,76 @@ class _NewInvoiceState extends State<NewInvoice> {
                                     ),
                                   ),
                                 ),
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Received USD: '),
-                                        Expanded(
-                                            child: TextField(
-                                          // controller: i,
-                                          keyboardType: platformController.CheckPlatform() ?
-                                                          TextInputType.number : TextInputType.text,
-                                          onChanged: (Value) {
-                                            if (Value == '') {
-                                              //  Get.snackbar('123', '123');
-                                              invoiceController.resetRecUsd();
-                                            } else {
-                                              invoiceController
-                                                      .ReceivedUSD.value =
-                                                  double.tryParse(Value)!;
-                                              invoiceController
-                                                  .calculateDueUSD();
-                                              invoiceController
-                                                  .calculateDueLB();
-                                            }
-                                          },
-                                        )),
-                                      ],
+                                Visibility(
+                                  visible: !isDelivery(widget.isDel),
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Received USD: '),
+                                          Expanded(
+                                              child: TextField(
+                                            // controller: i,
+                                            keyboardType: platformController
+                                                    .CheckPlatform()
+                                                ? TextInputType.number
+                                                : TextInputType.text,
+                                            onChanged: (Value) {
+                                              if (Value == '') {
+                                                //  Get.snackbar('123', '123');
+                                                invoiceController.resetRecUsd();
+                                              } else {
+                                                invoiceController
+                                                        .ReceivedUSD.value =
+                                                    double.tryParse(Value)!;
+                                                invoiceController
+                                                    .calculateDueUSD();
+                                                invoiceController
+                                                    .calculateDueLB();
+                                              }
+                                            },
+                                          )),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Received LB: '),
-                                        Expanded(
-                                            child: TextField(
-                                          keyboardType: platformController.CheckPlatform() ?
-                                                          TextInputType.number : TextInputType.text,
-                                          onChanged: (value) {
-                                            if (value == '') {
-                                              //  Get.snackbar('123', '123');
-                                              invoiceController.resetRecLb();
-                                            } else {
-                                              invoiceController
-                                                      .ReceivedLb.value =
-                                                  double.tryParse(value)!;
-                                              invoiceController
-                                                  .calculateDueLB();
-                                              invoiceController
-                                                  .calculateDueUSD();
-                                            }
-                                          },
-                                        )),
-                                      ],
+                                Visibility(
+                                  visible: !isDelivery(widget.isDel),
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Received LB: '),
+                                          Expanded(
+                                              child: TextField(
+                                            keyboardType: platformController
+                                                    .CheckPlatform()
+                                                ? TextInputType.number
+                                                : TextInputType.text,
+                                            onChanged: (value) {
+                                              if (value == '') {
+                                                //  Get.snackbar('123', '123');
+                                                invoiceController.resetRecLb();
+                                              } else {
+                                                invoiceController
+                                                        .ReceivedLb.value =
+                                                    double.tryParse(value)!;
+                                                invoiceController
+                                                    .calculateDueLB();
+                                                invoiceController
+                                                    .calculateDueUSD();
+                                              }
+                                            },
+                                          )),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -1040,99 +1153,222 @@ class _NewInvoiceState extends State<NewInvoice> {
                     OutlinedButton(
                         style: ElevatedButton.styleFrom(
                           fixedSize: Size(double.maxFinite, 50),
-                          backgroundColor: Colors.deepPurple.shade300,
+                          backgroundColor: Colors.blue.shade100,
                           side: BorderSide(
-                              width: 2.0, color: Colors.deepPurple.shade300),
+                              width: 2.0, color: Colors.blue.shade100),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
                         ),
                         onPressed: () {
                           if (invoiceController.invoiceItems.isNotEmpty) {
-                            if (Platform.isAndroid) {
-                              showDialog(
-                                  // The user CANNOT close this dialog  by pressing outsite it
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) {
-                                    return Dialog(
-                                      // The background color
-                                      backgroundColor: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // The loading indicator
-                                            CircularProgressIndicator(),
-                                            SizedBox(
-                                              height: 15,
+                            if (widget.isDel == '1') {
+                              if (Delivery_Code.text != '') {
+                                if (Platform.isAndroid) {
+                                  showDialog(
+                                      // The user CANNOT close this dialog  by pressing outsite it
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (_) {
+                                        return Dialog(
+                                          // The background color
+                                          backgroundColor: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                // The loading indicator
+                                                CircularProgressIndicator(),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                // Some text
+                                                Text('Loading')
+                                              ],
                                             ),
-                                            // Some text
-                                            Text('Loading')
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                              invoiceController
-                                  .uploadInvoiceToDatabase(
-                                      widget.Cus_id.toString(),
-                                      widget.Cus_Name,
-                                      widget.Cus_Number)
-                                  .then((value) =>
-                                      showToast(invoiceController.result))
-                                  .then((value) => CheckPrinter(widget.Cus_Name,
-                                      widget.Cus_Number, widget.Cus_Due)).then((value)=> invoiceHistoryController.CalTotal_fhome());
+                                          ),
+                                        );
+                                      });
+                                  invoiceController
+                                      .uploadInvoiceToDatabase(
+                                          widget.Cus_id.toString(),
+                                          widget.Cus_Name,
+                                          widget.Cus_Number,
+                                          widget.Driver_id,
+                                          widget.Driver_Name,
+                                          widget.Driver_Number,
+                                          widget.isDel,
+                                          Delivery_Code.text)
+                                      .then((value) =>
+                                          showToast(invoiceController.result))
+                                      .then((value) => CheckPrinter(
+                                          widget.Cus_Name,
+                                          widget.Cus_Number,
+                                          widget.Cus_Due))
+                                      .then((value) => invoiceHistoryController
+                                          .CalTotal_fhome());
+                                } else {
+                                  showDialog(
+                                      // The user CANNOT close this dialog  by pressing outsite it
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (_) {
+                                        return Dialog(
+                                          // The background color
+                                          backgroundColor: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                // The loading indicator
+                                                CircularProgressIndicator(),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                // Some text
+                                                Text('Loading')
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                  invoiceController
+                                      .uploadInvoiceToDatabase(
+                                          widget.Cus_id.toString(),
+                                          widget.Cus_Name,
+                                          widget.Cus_Number,
+                                          widget.Driver_id,
+                                          widget.Driver_Name,
+                                          widget.Driver_Number,
+                                          widget.isDel,
+                                          Delivery_Code.text)
+                                      .then((value) =>
+                                          showToast(invoiceController.result))
+                                      .then((value) => refreshProducts()
+                                          .then((value) => invoiceHistoryController
+                                              .isDataFetched = false)
+                                          .then((value) =>
+                                              invoiceHistoryController
+                                                  .fetchinvoices())
+                                          .then((value) => invoiceDetailController
+                                              .isDataFetched = false)
+                                          .then((value) =>
+                                              invoiceDetailController.fetchinvoicesdetails())
+                                          .then((value) => invoiceController.reset())
+                                          .then((value) => invoiceController.reset())
+                                          .then((value) => invoiceController.reset())
+                                          .then((value) => Navigator.pop(context))
+                                          .then((value) => Navigator.pop(context))
+                                          .then((value) => invoiceHistoryController.CalTotal_fhome()));
+                                }
+                              } else {
+                                showToast('Please add Delivery Code');
+                              }
                             } else {
-                              showDialog(
-                                  // The user CANNOT close this dialog  by pressing outsite it
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) {
-                                    return Dialog(
-                                      // The background color
-                                      backgroundColor: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // The loading indicator
-                                            CircularProgressIndicator(),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            // Some text
-                                            Text('Loading')
-                                          ],
+                              if (Platform.isAndroid) {
+                                showDialog(
+                                    // The user CANNOT close this dialog  by pressing outsite it
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (_) {
+                                      return Dialog(
+                                        // The background color
+                                        backgroundColor: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              // The loading indicator
+                                              CircularProgressIndicator(),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              // Some text
+                                              Text('Loading')
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  });
-                              invoiceController
-                                  .uploadInvoiceToDatabase(
-                                      widget.Cus_id.toString(),
-                                      widget.Cus_Name,
-                                      widget.Cus_Number)
-                                  .then((value) =>
-                                      showToast(invoiceController.result))
-                                  .then((value) => refreshProducts()
-                                      .then((value) => invoiceHistoryController
-                                          .isDataFetched = false)
-                                      .then((value) => invoiceHistoryController
-                                          .fetchinvoices())
-                                      .then((value) => invoiceDetailController
-                                          .isDataFetched = false)
-                                      .then((value) => invoiceDetailController
-                                          .fetchinvoicesdetails())
-                                      .then((value) => invoiceController.reset())
-                                      .then((value) => invoiceController.reset())
-                                      .then((value) => invoiceController.reset())
-                                      .then((value) => Navigator.pop(context))
-                                      .then((value) => Navigator.pop(context)).then((value)=> invoiceHistoryController.CalTotal_fhome()));
+                                      );
+                                    });
+                                invoiceController
+                                    .uploadInvoiceToDatabase(
+                                        widget.Cus_id.toString(),
+                                        widget.Cus_Name,
+                                        widget.Cus_Number,
+                                        widget.Driver_id,
+                                        widget.Driver_Name,
+                                        widget.Driver_Number,
+                                        widget.isDel,
+                                          Delivery_Code.text)
+                                    .then((value) =>
+                                        showToast(invoiceController.result))
+                                    .then((value) => CheckPrinter(
+                                        widget.Cus_Name,
+                                        widget.Cus_Number,
+                                        widget.Cus_Due))
+                                    .then((value) => invoiceHistoryController
+                                        .CalTotal_fhome());
+                              } else {
+                                showDialog(
+                                    // The user CANNOT close this dialog  by pressing outsite it
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (_) {
+                                      return Dialog(
+                                        // The background color
+                                        backgroundColor: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              // The loading indicator
+                                              CircularProgressIndicator(),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              // Some text
+                                              Text('Loading')
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                invoiceController
+                                    .uploadInvoiceToDatabase(
+                                        widget.Cus_id.toString(),
+                                        widget.Cus_Name,
+                                        widget.Cus_Number,
+                                        widget.Driver_id,
+                                        widget.Driver_Name,
+                                        widget.Driver_Number,
+                                        widget.isDel,
+                                          Delivery_Code.text)
+                                    .then((value) =>
+                                        showToast(invoiceController.result))
+                                    .then((value) => refreshProducts()
+                                        .then((value) => invoiceHistoryController
+                                            .isDataFetched = false)
+                                        .then((value) => invoiceHistoryController
+                                            .fetchinvoices())
+                                        .then((value) => invoiceDetailController
+                                            .isDataFetched = false)
+                                        .then((value) => invoiceDetailController
+                                            .fetchinvoicesdetails())
+                                        .then((value) => invoiceController.reset())
+                                        .then((value) => invoiceController.reset())
+                                        .then((value) => invoiceController.reset())
+                                        .then((value) => Navigator.pop(context))
+                                        .then((value) => Navigator.pop(context))
+                                        .then((value) => invoiceHistoryController.CalTotal_fhome()));
+                              }
                             }
                           } else {
                             //    showToast('Add Products');
@@ -1141,7 +1377,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                         },
                         child: Text(
                           'Insert Invoice',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blue.shade900),
                         )),
 
                     SizedBox(

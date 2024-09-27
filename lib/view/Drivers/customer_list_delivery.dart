@@ -20,8 +20,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class CustomerListFPhones extends StatelessWidget {
-  CustomerListFPhones({super.key});
+class CustomerListFDelivery extends StatelessWidget {
+  String Driver_id,Driver_Name,Driver_Number;
+  CustomerListFDelivery({super.key, required this.Driver_id,required this.Driver_Name,required this.Driver_Number});
   final CustomerController customerController = Get.find<CustomerController>();
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
@@ -42,7 +43,7 @@ class CustomerListFPhones extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Customers List | Phones',
+                'Customers List | Delivery',
                 style: TextStyle(fontSize: 17),
               ),
               // IconButton(
@@ -129,7 +130,18 @@ class CustomerListFPhones extends StatelessWidget {
                           //     padding: EdgeInsets.all(35),
                           alignment: Alignment.center,
                           child: ListTile(
-                            
+                            onTap: () {
+                              Get.to(() => NewInvoice(
+                                    Cus_id: customer.Cus_id.toString(),
+                                    Cus_Name: customer.Cus_Name,
+                                    Cus_Number: customer.Cus_Number,
+                                    Cus_Due: customer.Cus_Due_USD.toString(),
+                                  isDel: '1',
+                                                      Driver_id: Driver_id,
+                                                      Driver_Name: Driver_Name,
+                                                      Driver_Number: Driver_Number
+                                  ));
+                            },
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -291,12 +303,17 @@ class CustomerListFPhones extends StatelessWidget {
                                             ),
                                           ),
                                           onPressed: () {
-                                            Get.to(() => BuyPhone(
+                                            Get.to(() => NewInvoice(
                                                   Cus_id: customer.Cus_id
                                                       .toString(),
                                                   Cus_Name: customer.Cus_Name,
                                                   Cus_Number:
                                                       customer.Cus_Number,
+                                                      Cus_Due: customer.Cus_Due_USD.toString(),
+                                                      isDel: '1',
+                                                      Driver_id: Driver_id,
+                                                      Driver_Name: Driver_Name,
+                                                      Driver_Number: Driver_Number
                                                 ));
                                           },
                                           child: Row(

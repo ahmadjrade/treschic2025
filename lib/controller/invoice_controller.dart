@@ -40,6 +40,15 @@ class InvoiceController extends GetxController {
   RxDouble DueUSD = 0.0.obs;
   RxDouble DueLB = 0.0.obs;
 
+
+  String Inv_type(isDel) { 
+    String type = '';
+    if(isDel == '1') { 
+      return type = 'Delivery';
+    } else { 
+      return type = 'Store';
+    }
+  }
   void reset() {
     DueLB.value = 0;
     DueUSD.value = 0;
@@ -592,81 +601,94 @@ class InvoiceController extends GetxController {
 
   String lastId = '';
   Future<void> uploadInvoiceToDatabase(
-      String Cus_id, String Cus_Name, String Cus_Number) async {
-    try {
-      Username = sharedPreferencesController.username;
-      formattedDate = dateController.getFormattedDate();
-      formattedTime = dateController.getFormattedTime();
-      // Prepare invoice data
-      List<Map<String, dynamic>> invoiceData = [];
+  String Cus_id,
+  String Cus_Name,
+  String Cus_Number,
+  String Driver_id,
+  String Driver_Name,
+  String Driver_Number,
+  String isDel,
+  String Delivery_Code
+) async {
+  try {
+    print(Driver_id + Driver_Name + Driver_Number + isDel);
+    Username = sharedPreferencesController.username;
+    formattedDate = dateController.getFormattedDate();
+    formattedTime = dateController.getFormattedTime();
 
-      for (ProductDetailModel product in invoiceItems) {
-        invoiceData.add({
-          'Store_id': product.Product_Store,
-          'Product_id': product.Product_id,
-          'Product_Name': product.Product_Name,
-          'Product_Qty': product.quantity.value,
-          'Product_UP': product.product_MPrice,
-          'Product_TP': (product.quantity.value * product.product_MPrice),
-          'Product_Code': product.Product_Code,
-          'Product_Color': product.Product_Color,
-          'isPhone': product.isPhone
-        });
-      }
+    // Prepare invoice data
+    List<Map<String, dynamic>> invoiceData = [];
 
-      // Send invoice data to PHP script
-      String domain = domainModel.domain;
-      String uri = '$domain/insert_invoice.php';
-      final response = await http.post(
-        Uri.parse(uri),
-        body: jsonEncode({
-          'Invoice_Store': Username.value,
-          'item_count': totalQty.value,
-          'Invoice_Total_USD': totalUsd.value,
-          'Invoice_Total_Lb': totalLb.value,
-          'Invoice_Rec_Usd': ReceivedUSD.value,
-          'Invoice_Rec_Lb': ReceivedLb.value,
-          'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
-          'Invoice_Due_LB': DueLB.value,
-          'Cus_id': Cus_id,
-          'Cus_Name': Cus_Name,
-          'Cus_Number': Cus_Number,
-          'Invoice_Date': formattedDate,
-          'Invoice_Time': formattedTime,
-          'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
-          'Invoice_Type': 'Store',
-          'Invoice_Rate': rateController.rateValue.value,
-          'invoiceItems': invoiceData,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        // Parse the JSON response
-        Map<String, dynamic> responseData = jsonDecode(response.body);
-        if (responseData['status'] == 'success') {
-          // Data successfully sent to the API
-          lastId = responseData['lastId'].toString();
-          print('Data sent successfully. Last Inserted ID: $lastId');
-          result = 'Invoice Sent Successfully';
-
-          // Continue with the rest of the logic if needed
-        } else {
-          // Handle the error returned by the PHP script
-          print('Error: ${responseData['message']}');
-          result = 'Invoice Sending Failed: ${responseData['message']}';
-        }
-      } else {
-        // Error occurred while sending the data
-        print('Error sending data. StatusCode: ${response.statusCode}');
-        result = 'Invoice Sending Failed';
-      }
-    } catch (error) {
-      // Exception occurred while sending the data
-      print('Exception: $error');
-      result = 'Exception: $error';
+    for (ProductDetailModel product in invoiceItems) {
+      invoiceData.add({
+        'Store_id': product.Product_Store,
+        'Product_id': product.Product_id,
+        'Product_Name': product.Product_Name,
+        'Product_Qty': product.quantity.value,
+        'Product_UP': product.product_MPrice,
+        'Product_TP': (product.quantity.value * product.product_MPrice),
+        'Product_Code': product.Product_Code,
+        'Product_Color': product.Product_Color,
+        'isPhone': product.isPhone
+      });
     }
+
+    // Send invoice data to PHP script
+    String domain = domainModel.domain;
+    String uri = '$domain/insert_invoice.php';
+    final response = await http.post(
+      Uri.parse(uri),
+      body: jsonEncode({
+        'Invoice_Store': Username.value,
+        'item_count': totalQty.value,
+        'Invoice_Total_USD': totalUsd.value,
+        'Invoice_Total_Lb': totalLb.value,
+        'Invoice_Rec_Usd': ReceivedUSD.value,
+        'Invoice_Rec_Lb': ReceivedLb.value,
+        'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
+        'Invoice_Due_LB': DueLB.value,
+        'Cus_id': Cus_id,
+        'Cus_Name': Cus_Name,
+        'Cus_Number': Cus_Number,
+        'Invoice_Date': formattedDate,
+        'Invoice_Time': formattedTime,
+        'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
+        'Invoice_Type': Inv_type(isDel),
+        'Driver_id': Driver_id,
+        'Invoice_Rate': rateController.rateValue.value,
+        'Driver_Name': Driver_Name,
+        'Driver_Number': Driver_Number,
+        'isDelivery': isDel,
+        'Delivery_Code': Delivery_Code,
+        'invoiceItems': invoiceData,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response on success
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (responseData['status'] == 'success') {
+        lastId = responseData['lastId'].toString();
+        print('Data sent successfully. Last Inserted ID: $lastId');
+        result = 'Invoice Sent Successfully';
+      } else {
+        print('Error: ${responseData['message']}');
+        result = 'Invoice Sending Failed: ${responseData['message']}';
+      }
+    } else {
+      // Handle the error response from the server (e.g., 400 Bad Request)
+      Map<String, dynamic> errorData = jsonDecode(response.body);
+      print('Error: ${errorData['message']}');
+      result = 'Invoice Sending Failed: ${errorData['message']}';
+    }
+  } catch (error) {
+    // Handle any exceptions that occur during the request
+    print('Exception: $error');
+    result = 'Exception: $error';
   }
+}
+
 
   Future<void> uploadOldInvoiceToDatabase(String Inv_id) async {
     try {

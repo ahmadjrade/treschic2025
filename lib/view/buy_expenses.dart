@@ -14,11 +14,12 @@ import '../controller/insert_expense_controller.dart';
 class BuyExpenses extends StatelessWidget {
   BuyExpenses({super.key});
 
-  final ExpenseCategoryController expenseCategoryController = Get.find<ExpenseCategoryController>();
-ExpenseCategoryModel? SelectedExpenseCategory;
-String SelectedExpId = '';
+  final ExpenseCategoryController expenseCategoryController =
+      Get.find<ExpenseCategoryController>();
+  ExpenseCategoryModel? SelectedExpenseCategory;
+  String SelectedExpId = '';
   final ExpensesController expensesController = Get.find<ExpensesController>();
-
+  TextEditingController Exp_Cat_Name = TextEditingController();
   final InsertExpenseController insertexpenseController =
       Get.put(InsertExpenseController());
   final DateTimeController dateController = DateTimeController();
@@ -44,33 +45,34 @@ String SelectedExpId = '';
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Buy Expenses'),
+            Text('Insert Expense'),
             Column(
               children: [
-                Text(
-                  formattedDate,
-                  style: TextStyle(fontSize: 15),
-                ),
-                Text(
-                  formattedTime,
-                  style: TextStyle(fontSize: 15),
-                ),
+                // Text(
+                //   formattedDate,
+                //   style: TextStyle(fontSize: 15),
+                // ),
+                // Text(
+                //   formattedTime,
+                //   style: TextStyle(fontSize: 15),
+                // ),
               ],
             )
           ],
         ),
-        backgroundColor: Colors.deepPurple.shade300,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(children: [
           SizedBox(
             height: 20,
           ),
-            Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
@@ -82,7 +84,8 @@ String SelectedExpId = '';
                         child: CircularProgressIndicator(),
                       );
                       // patientsController.fetchpatients();
-                    } else if (expenseCategoryController.expense_category.isEmpty) {
+                    } else if (expenseCategoryController
+                        .expense_category.isEmpty) {
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,6 +97,7 @@ String SelectedExpId = '';
                     } else {
                       return DropdownButtonFormField<ExpenseCategoryModel>(
                         decoration: InputDecoration(
+                          hintText: 'Select a Category',
                           labelText: "Expense Categories",
                           labelStyle: TextStyle(
                             color: Colors.black,
@@ -113,23 +117,24 @@ String SelectedExpId = '';
                             ),
                           ),
                         ),
-                        iconDisabledColor: Colors.deepPurple.shade300,
-                        iconEnabledColor: Colors.deepPurple.shade300,
+                        iconDisabledColor: Colors.blue.shade900,
+                        iconEnabledColor: Colors.blue.shade900,
                         //  value: categoryController.category.first,
                         onChanged: (ExpenseCategoryModel? value) {
-                          expenseCategoryController.SelectedCategory.value = value;
-                        
+                          expenseCategoryController.SelectedCategory.value =
+                              value;
 
                           SelectedExpenseCategory = value;
-                          SelectedExpId = (SelectedExpenseCategory?.Exp_Cat_id).toString();
+                          SelectedExpId =
+                              (SelectedExpenseCategory?.Exp_Cat_id).toString();
                           print(SelectedExpId);
                         },
                         items: expenseCategoryController.expense_category
-                            
-                            .map((cat) => DropdownMenuItem<ExpenseCategoryModel>(
-                                  value: cat,
-                                  child: Text(cat.Exp_Cat_Name),
-                                ))
+                            .map(
+                                (cat) => DropdownMenuItem<ExpenseCategoryModel>(
+                                      value: cat,
+                                      child: Text(cat.Exp_Cat_Name),
+                                    ))
                             .toList(),
                       );
                     }
@@ -142,7 +147,88 @@ String SelectedExpId = '';
                   color: Colors.blueAccent,
                   iconSize: 24.0,
                   onPressed: () {
-                    Get.toNamed('/NewCat');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Add Expense Category'),
+                          content: TextFormField(
+                            //  maxLength: 15,
+
+                            keyboardType: TextInputType.number,
+                            controller: Exp_Cat_Name,
+                            decoration: InputDecoration(
+                                hintText: 'Enter Category Name'),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                if (Exp_Cat_Name.text != '') {
+                                  showDialog(
+                                      // The user CANNOT close this dialog  by pressing outsite it
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (_) {
+                                        return Dialog(
+                                          // The background color
+                                          backgroundColor: Colors.white,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                // The loading indicator
+                                                CircularProgressIndicator(),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                // Some text
+                                                Text('Loading')
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                  expenseCategoryController
+                                          .InsertExpenseCategory(
+                                              Exp_Cat_Name.text)
+                                      .then((value) => expenseCategoryController
+                                          .isDataFetched = false)
+                                      .then((value) => expenseCategoryController
+                                          .fetchcategories())
+                                      .then((value) =>
+                                          Navigator.of(context).pop())
+                                      .then((value) =>
+                                          Navigator.of(context).pop())
+                                          .then((value) => Exp_Cat_Name.clear())
+                                      .then((value) => showToast(
+                                          expenseCategoryController.result2));
+                                          
+                                } else {
+                                  showToast('Write Category Name');
+                                }
+
+                                // Do something with the text, e.g., save it
+                                //  String enteredText = _textEditingController.text;
+                                //  print('Entered text: $enteredText');
+                                // Close the dialog
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                     // colorController.isDataFetched = false;
                     // colorController.fetchcolors();
                     // //Quantities.clear();
@@ -153,8 +239,10 @@ String SelectedExpId = '';
                 ),
               ),
             ],
-          ),              SizedBox(height: 20,),
-
+          ),
+          SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: TextFormField(
@@ -229,89 +317,91 @@ String SelectedExpId = '';
           SizedBox(
             height: 20,
           ),
-            Obx(
-              () { return
-               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  // Text(
-                                  //   'Condition ? ',
-                                  //   style: TextStyle(
-                                  //     fontSize: 15,
-                                  //     fontWeight: FontWeight.w600,
-                                  //   ),
-                                  // ),
-                                  Expanded(
-                                    child: RadioListTile(
-                                      title: Column(
-                                        children: [
-                                          Text(
-                                           'USD',
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                      value: 'Usd',
-                                      groupValue: expensesController.Currency.value,
-                                      onChanged: (value) {
-                                        expensesController.Currency.value = 'Usd';
-                                       
-              
-                                        // setState(() {
-                                        //   // havePassword = false;
-                                        //   Condition = value.toString();
-                                        //   // Password.text = 'No Password';
-                                        // });
-                                      },
-                                    ),
-                                  ),
-                                 Expanded(
-                                    child: RadioListTile(
-                                      title: Column(
-                                        children: [
-                                          Text(
-                                           'Lebanese',
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                      value: 'Lb',
-                                      groupValue: expensesController.Currency.value,
-                                      onChanged: (value) {
-                                        expensesController.Currency.value = 'Lb';
-                                       
-              
-                                        // setState(() {
-                                        //   // havePassword = false;
-                                        //   Condition = value.toString();
-                                        //   // Password.text = 'No Password';
-                                        // });
-                                      },
-                                    ),
-                                  ),
-                                  
-                                ],
-                              );}
-            ),
-                            SizedBox(height: 20,),
-           Padding(
-             padding: const EdgeInsets.symmetric(horizontal: 25.0),
-             child: OutlinedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.deepPurple.shade300,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.deepPurple.shade300),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
+          Obx(() {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                // Text(
+                //   'Condition ? ',
+                //   style: TextStyle(
+                //     fontSize: 15,
+                //     fontWeight: FontWeight.w600,
+                //   ),
+                // ),
+                Expanded(
+                  child: RadioListTile(
+                    activeColor: Colors.blue.shade900,
+                    selectedTileColor: Colors.blue.shade900,
+                    title: Column(
+                      children: [
+                        Text(
+                          'USD',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
                     ),
+                    value: 'Usd',
+                    groupValue: expensesController.Currency.value,
+                    onChanged: (value) {
+                      expensesController.Currency.value = 'Usd';
+
+                      // setState(() {
+                      //   // havePassword = false;
+                      //   Condition = value.toString();
+                      //   // Password.text = 'No Password';
+                      // });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile(
+                    activeColor: Colors.blue.shade900,
+                    selectedTileColor: Colors.blue.shade900,
+                    //fillColor: Colors.blue.shade900,
+                    title: Column(
+                      children: [
+                        Text(
+                          'Lebanese',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                    value: 'Lb',
+                    groupValue: expensesController.Currency.value,
+                    onChanged: (value) {
+                      expensesController.Currency.value = 'Lb';
+
+                      // setState(() {
+                      //   // havePassword = false;
+                      //   Condition = value.toString();
+                      //   // Password.text = 'No Password';
+                      // });
+                    },
+                  ),
+                ),
+              ],
+            );
+          }),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: OutlinedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(double.maxFinite, 50),
+                  backgroundColor: Colors.blue.shade100,
+                  side: BorderSide(width: 2.0, color: Colors.blue.shade100),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
                 onPressed: () {
                   //final DateTimeController dateController = DateTimeController();
-             
+
                   if (Expense_Desc == '') {
                     showToast('Please add Expense Description');
                   } else if (Expense_Value.text == 0) {
@@ -342,17 +432,17 @@ String SelectedExpId = '';
                             ),
                           );
                         });
-                    insertexpenseController.UploadExpense(
-                            Expense_Desc, Expense_Value.text,SelectedExpId.toString())
+                    insertexpenseController.UploadExpense(Expense_Desc,
+                            Expense_Value.text, SelectedExpId.toString())
                         .then((value) => Navigator.of(context).pop())
                         .then((value) => Navigator.of(context).pop());
                   }
                 },
                 child: Text(
                   'Buy',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.blue.shade900),
                 )),
-           )
+          )
         ]),
       ),
     );

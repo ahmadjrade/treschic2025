@@ -156,7 +156,7 @@ class RechargeBalance extends StatelessWidget {
                         child: Card(
                           child: Container(
                             decoration: BoxDecoration(
-                                color: Colors.blue.shade100,
+                                //color: Colors.blue.shade100,
                                 borderRadius: BorderRadius.circular(10)),
                             alignment: Alignment.center,
                             child: Padding(
@@ -315,10 +315,10 @@ class RechargeBalance extends StatelessWidget {
                                           style: ElevatedButton.styleFrom(
                                             //fixedSize: Size(200, 20),
                                             backgroundColor:
-                                                Colors.red.shade900,
+                                                Colors.blue.shade100,
                                             side: BorderSide(
                                               width: 2.0,
-                                              color: Colors.red.shade900,
+                                              color: Colors.blue.shade900,
                                             ),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -338,13 +338,13 @@ class RechargeBalance extends StatelessWidget {
                                               Text(
                                                 'History',
                                                 style: TextStyle(
-                                                    color: Colors.white),
+                                                    color: Colors.blue.shade900),
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               Icon(Icons.history,
-                                                  color: Colors.white
+                                                  color: Colors.blue.shade900
                                                   //  'Details',
                                                   //   style: TextStyle(
                                                   //        color: Colors.red),
@@ -360,7 +360,7 @@ class RechargeBalance extends StatelessWidget {
                                           style: ElevatedButton.styleFrom(
                                             //fixedSize: Size(200, 20),
                                             backgroundColor:
-                                                Colors.green.shade900,
+                                                Colors.green.shade100,
                                             side: BorderSide(
                                               width: 2.0,
                                               color: Colors.green.shade900,
@@ -486,7 +486,7 @@ class RechargeBalance extends StatelessWidget {
                                               Text(
                                                 'Top Up',
                                                 style: TextStyle(
-                                                    color: Colors.white),
+                                                    color: Colors.green.shade900),
                                               ),
                                               SizedBox(
                                                 width: 5,
@@ -494,7 +494,7 @@ class RechargeBalance extends StatelessWidget {
                                               Icon(
                                                   Icons
                                                       .arrow_circle_right_rounded,
-                                                  color: Colors.white
+                                                  color: Colors.green.shade900
                                                   //  'Details',
                                                   //   style: TextStyle(
                                                   //        color: Colors.red),

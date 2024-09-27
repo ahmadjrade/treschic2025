@@ -8,6 +8,7 @@ import 'package:fixnshop_admin/view/Category/category_list.dart';
 import 'package:fixnshop_admin/view/Colors/add_color.dart';
 import 'package:fixnshop_admin/view/Customers/add_customer.dart';
 import 'package:fixnshop_admin/view/Customers/customer_list.dart';
+import 'package:fixnshop_admin/view/Drivers/add_driver.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
@@ -18,6 +19,7 @@ import 'package:fixnshop_admin/view/Phones/add_phone_model.dart';
 import 'package:fixnshop_admin/view/Phones/buy_phone.dart';
 import 'package:fixnshop_admin/view/Phones/customer_list_fphones.dart';
 import 'package:fixnshop_admin/view/Phones/phones_list.dart';
+import 'package:fixnshop_admin/view/Phones/supplier_list_fphones.dart';
 import 'package:fixnshop_admin/view/Product/product_list.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
@@ -238,7 +240,7 @@ class StocksScreen extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {
-                                // Get.to(() => AddColor());
+                                Get.to(() => AddDriver());
                               },
                               icon: Icon(
                                 Icons.drive_eta_rounded,
@@ -360,6 +362,20 @@ class StocksScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Column(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Get.to(() => SupplierListFPhone(
+                                  ));
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.fileInvoiceDollar,
+                                color: Colors.blue.shade700,
+                              )),
+                          Text('New')
+                        ],
+                      ),
                       Column(
                         children: [
                           IconButton(

@@ -133,6 +133,10 @@ class CustomerList extends StatelessWidget {
                                     Cus_Name: customer.Cus_Name,
                                     Cus_Number: customer.Cus_Number,
                                     Cus_Due: customer.Cus_Due_USD.toString(),
+                                    Driver_id: '',
+                                    Driver_Name: '',
+                                    Driver_Number: '',
+                                    isDel: '0',
                                   ));
                             },
                             title: Row(
@@ -303,6 +307,10 @@ class CustomerList extends StatelessWidget {
                                                   Cus_Number:
                                                       customer.Cus_Number,
                                                       Cus_Due: customer.Cus_Due_USD.toString(),
+                                                       Driver_id: '',
+                                    Driver_Name: '',
+                                    Driver_Number: '',
+                                    isDel: '0',
                                                 ));
                                           },
                                           child: Row(

@@ -12,6 +12,8 @@ class ExpenseCategoryController extends GetxController {
   RxList<ExpenseCategoryModel> expense_category = <ExpenseCategoryModel>[].obs;
   bool isDataFetched = false;
   String result = '';
+    String result2 = '';
+
   RxBool isLoading = false.obs;
   Rx<ExpenseCategoryModel?> SelectedCategory = Rx<ExpenseCategoryModel?>(null);
 
@@ -34,7 +36,32 @@ class ExpenseCategoryController extends GetxController {
             expense_category.Exp_Cat_Name.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
+   Future<void> InsertExpenseCategory(String Exp_Cat_Name) async {
+    //     .then((value) => showToast(
+    //         productDetailController
+    //             .result2))
+    try {
+      //   Username = sharedPreferencesController.username;
+      // formattedDate = dateController.getFormattedDate();
+      // formattedTime = dateController.getFormattedTime();
+      String domain = domainModel.domain;
 
+      String uri = '$domain' + 'insert_expense_category.php';
+      var res = await http.post(Uri.parse(uri), body: {
+        "Exp_Cat_Name": Exp_Cat_Name,
+      });
+      // print(Ty + Card_Name + Card_Cost + Card_Price);
+      var response = json.decode(json.encode(res.body));
+
+      print(response);
+      result2 = response;
+      if (response.toString().trim() == 'Card Type inserted successfully.') {
+        //  result = 'refresh';
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
   void fetchcategories() async {
     if (!isDataFetched) {
       try {
@@ -69,5 +96,8 @@ class ExpenseCategoryController extends GetxController {
         print(e);
       }
     }
+
+    
+
   }
 }

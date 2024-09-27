@@ -170,14 +170,7 @@ class CustomerListFrecharge extends StatelessWidget {
                           //     padding: EdgeInsets.all(35),
                           alignment: Alignment.center,
                           child: ListTile(
-                            onTap: () {
-                              Get.to(() => NewInvoice(
-                                    Cus_id: customer.Cus_id.toString(),
-                                    Cus_Name: customer.Cus_Name,
-                                    Cus_Number: customer.Cus_Number,
-                                    Cus_Due: customer.Cus_Due_USD.toString(),
-                                  ));
-                            },
+                           
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

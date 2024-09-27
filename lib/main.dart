@@ -10,6 +10,7 @@ import 'package:fixnshop_admin/controller/color_controller.dart';
 import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
 import 'package:fixnshop_admin/controller/customer_address_controller.dart';
 import 'package:fixnshop_admin/controller/customer_controller.dart';
+import 'package:fixnshop_admin/controller/driver_controller.dart';
 import 'package:fixnshop_admin/controller/expense_category_controller.dart';
 import 'package:fixnshop_admin/controller/expenses_controller.dart';
 import 'package:fixnshop_admin/controller/imoney_controller.dart';
@@ -225,7 +226,12 @@ Future<void> main() async {
   ); Get.lazyPut<ImoneyController>(
     () => ImoneyController(),
     fenix: true,
+  ); Get.lazyPut<DriverController>(
+    () => DriverController(),
+    fenix: true,
   ); 
+  final DriverController driverController =
+      Get.find<DriverController>();
    final ImoneyController imoneyController =
       Get.find<ImoneyController>();
   final PlatformController platformController =

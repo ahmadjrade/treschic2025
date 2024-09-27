@@ -498,6 +498,16 @@ class InvoiceHistory extends StatelessWidget {
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12),
+                                        ), Text(
+                                          ' || ' +
+                                              invoice.Invoice_Type!
+                                          // +
+                                          // ' -- ' +
+                                          // invoice.phone_Code,
+                                          ,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12),
                                         ),
                                       ],
                                     ),

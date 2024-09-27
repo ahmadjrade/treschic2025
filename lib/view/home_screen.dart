@@ -16,6 +16,7 @@ import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.da
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/recharge_balance_model.dart';
 import 'package:fixnshop_admin/view/Customers/customer_list.dart';
+import 'package:fixnshop_admin/view/Drivers/drivers_list.dart';
 import 'package:fixnshop_admin/view/Expenses/expense_manage.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
@@ -562,9 +563,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               icon: Icon(
                                 FontAwesomeIcons.fileInvoiceDollar,
-                                color: Colors.green.shade700,
+                                color: Colors.green.shade900,
                               )),
                           Text('Invoice')
+                        ],
+                      ),Column(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Get.to(() => DriversList());
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.fileInvoiceDollar,
+                                color: Colors.green.shade900,
+                              )),
+                          Text('Delivery Invoice')
                         ],
                       ),
                       Column(
@@ -575,7 +588,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               icon: Icon(
                                 FontAwesomeIcons.moneyBillTrendUp,
-                                color: Colors.green.shade700,
+                                color: Colors.green.shade900,
                               )),
                           Text('Recharge')
                         ],
@@ -588,7 +601,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               icon: Icon(
                                 FontAwesomeIcons.dollarSign,
-                                color: Colors.red.shade700,
+                                color: Colors.red.shade900,
                               )),
                           Text('Expense')
                         ],
@@ -601,7 +614,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               icon: Icon(
                                 FontAwesomeIcons.creditCard,
-                                color: Colors.blue.shade700,
+                                color: Colors.blue.shade900,
                               )),
                           Text('Balance')
                         ],
@@ -705,7 +718,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         .black,
                                                                     width: 2.0,
                                                                   ),
-                                                                ),
+                                                                ), 
                                                               ),
                                                             ),
                                                             SizedBox(height: 20,),

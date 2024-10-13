@@ -166,6 +166,26 @@ class InvoiceHistoryController extends GetxController {
                 invoice.Username == Username.value )
         .toList();
   }
+  List<InvoiceModel> SearchInvoicesAllForCustomer(String query,cus_id) {
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+
+    return invoices
+        .where((invoice) =>
+            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
+                invoice.Username == Username.value && invoice.Cus_Name == cus_id  ||
+            invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value && invoice.Cus_Name == cus_id ||
+            invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value  && invoice.Cus_Name == cus_id )
+        .toList();
+  }
+
 
 List<InvoiceModel> SearchInvoicesMonth(String query) {
   DateTime now = DateTime.now(); // Get today's date
@@ -384,6 +404,7 @@ RxDouble totalrec_yday  = 0.0.obs;
 
     }
   }
+  
   void CalTotalall() {
     total_all.value = 0;
     totaldue_all.value = 0;
@@ -398,6 +419,32 @@ RxDouble totalrec_yday  = 0.0.obs;
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
             invoice.Username == Username.value 
+          )
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_all .value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_all .value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_all .value += totalofinvoices[i].Invoice_Due_USD;
+            totalreclb_all .value += totalofinvoices[i].Invoice_Rec_Lb;
+
+      totalrec_all .value += totalofinvoices[i].Invoice_Rec_Lb/totalofinvoices[i].Inv_Rate + totalofinvoices[i].Invoice_Rec_Usd;
+
+    }
+  }
+  void CalTotalallforcustomer(cus_name) {
+    total_all.value = 0;
+    totaldue_all.value = 0;
+    totalrecusd_all.value = 0;
+    totalreclb_all.value = 0;
+    totalrec_all.value = 0 ;
+
+    Username = sharedPreferencesController.username;
+
+
+  
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value && invoice.Cus_Name == cus_name
           )
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {

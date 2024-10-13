@@ -324,13 +324,7 @@ class BuyExpenses extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                // Text(
-                //   'Condition ? ',
-                //   style: TextStyle(
-                //     fontSize: 15,
-                //     fontWeight: FontWeight.w600,
-                //   ),
-                // ),
+                       
                 Expanded(
                   child: RadioListTile(
                     activeColor: Colors.blue.shade900,

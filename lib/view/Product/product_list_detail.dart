@@ -103,7 +103,7 @@ class ProductListDetail extends StatelessWidget {
             ),
             TextFormField(
               //maxLength: 15,
-              initialValue: Product_Name,
+              initialValue: '#' + Product_id + ' ' + Product_Name,
               readOnly: true,
               //controller: Product_Name,
               decoration: InputDecoration(
@@ -280,179 +280,182 @@ class ProductListDetail extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final ProductDetailModel product =
                             filteredproducts[index];
-                        return Container(
-                          color: Colors.grey.shade200,
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          //     padding: EdgeInsets.all(35),
-                          alignment: Alignment.center,
-                          child: ExpansionTile(
-                            collapsedTextColor: Colors.black,
-                            textColor: Colors.black,
-                            backgroundColor: Colors.deepPurple.shade100,
-                            //   collapsedBackgroundColor: Colors.white,
-                            trailing: Text(
-                              product.Product_Quantity.toString() + ' PCS',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            title: Text(
-                              product.Product_Store,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 17),
-                            ),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 0.0),
-                                child: Column(
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                            child: Column(
+                              children: [
+                                Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Visibility(
-                                      visible: productDetailController
-                                          .isadmin(Username.value),
-                                      child: IconButton(
-                                          color: Colors.red,
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Update Item Quantity'),
-                                                  content: TextField(
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    controller: New_Qty,
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            'Enter New Quantity'),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        if (New_Qty.text !=
-                                                            '') {
-                                                          showDialog(
-                                                              // The user CANNOT close this dialog  by pressing outsite it
-                                                              barrierDismissible:
-                                                                  false,
-                                                              context: context,
-                                                              builder: (_) {
-                                                                return Dialog(
-                                                                  // The background color
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical:
-                                                                            20),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children: [
-                                                                        // The loading indicator
-                                                                        CircularProgressIndicator(),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
-                                                                        // Some text
-                                                                        Text(
-                                                                            'Loading')
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              });
-                                                          productDetailController.UpdateProductQty(
-                                                                  product.PD_id
-                                                                      .toString(),
-                                                                  New_Qty.text)
-                                                              .then((value) => showToast(
-                                                                  productDetailController
-                                                                      .result2))
-                                                              .then((value) =>
-                                                                  productDetailController
-                                                                          .isDataFetched =
-                                                                      false)
-                                                              .then((value) =>
-                                                                  productDetailController
-                                                                      .fetchproductdetails())
-                                                              .then((value) =>
-                                                                  Navigator.of(context)
-                                                                      .pop())
-                                                              .then((value) =>
-                                                                  Navigator.of(context).pop());
-
-                                                          New_Qty.clear();
-                                                        } else {
-                                                          Get.snackbar('Error',
-                                                              'Add New Quantity');
-                                                        }
-
-                                                        // Do something with the text, e.g., save it
-                                                        //  String enteredText = _textEditingController.text;
-                                                        //  print('Entered text: $enteredText');
-                                                        // Close the dialog
-                                                      },
-                                                      child: Text('OK'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          icon: Icon(Icons.edit)),
+                                    Text(
+                                      product.Product_Store + ' Store',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
                                     ),
-                                    Text('Total Quantity Bought: ' +
+                                    Text(
+                                      product.Product_Quantity.toString() +
+                                          ' PCS',
+                                      style: TextStyle(
+                                          color: Colors.green.shade900,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Bought: ' +
                                         product.Product_Max_Quantity
                                             .toString()),
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    Text('Total Quantity Sold: ' +
+                                    Text('Sold: ' +
                                         product.Product_Sold_Quantity
                                             .toString()),
                                     SizedBox(
-                                      height: 20,
+                                      height: 5,
                                     ),
-                                    // Text('id' + product.PD_id.toString()),
-                                    // SizedBox(
-                                    //   height: 20,
-                                    // ),
-
-                                    // Text('Total Price of Treatment:  ${treatments.!}\$ '),
+                                    Text('Transfered: ' +
+                                        product.Product_Transfered_Qty
+                                            .toString()),
                                   ],
                                 ),
-                              )
-                            ],
-                            //  subtitle: Text(product.Product_Brand),
-                            // trailing: OutlinedButton(
-                            //   onPressed: () {
+                                Visibility(
+                                  visible: productDetailController
+                                      .isadmin(Username.value),
+                                  child: IconButton(
+                                      color: Colors.red,
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title:
+                                                  Text('Update Item Quantity'),
+                                              content: TextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                controller: New_Qty,
+                                                decoration: InputDecoration(
+                                                    hintText:
+                                                        'Enter New Quantity'),
+                                              ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    if (New_Qty.text != '') {
+                                                      showDialog(
+                                                          // The user CANNOT close this dialog  by pressing outsite it
+                                                          barrierDismissible:
+                                                              false,
+                                                          context: context,
+                                                          builder: (_) {
+                                                            return Dialog(
+                                                              // The background color
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            20),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    // The loading indicator
+                                                                    CircularProgressIndicator(),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          15,
+                                                                    ),
+                                                                    // Some text
+                                                                    Text(
+                                                                        'Loading')
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                      productDetailController
+                                                              .UpdateProductQty(
+                                                                  product.PD_id
+                                                                      .toString(),
+                                                                  New_Qty.text)
+                                                          .then((value) =>
+                                                              showToast(
+                                                                  productDetailController
+                                                                      .result2))
+                                                          .then((value) =>
+                                                              productDetailController
+                                                                      .isDataFetched =
+                                                                  false)
+                                                          .then((value) =>
+                                                              productDetailController
+                                                                  .fetchproductdetails())
+                                                          .then((value) =>
+                                                              Navigator.of(context).pop())
+                                                          .then((value) => Navigator.of(context).pop());
 
-                            //     // productController.SelectedPhone.value = product;
-                            //     //       // product_detailsController.selectedproduct_details.value =
-                            //     //       //     null;
+                                                      New_Qty.clear();
+                                                    } else {
+                                                      Get.snackbar('Error',
+                                                          'Add New Quantity');
+                                                    }
 
-                            //               Get.to(() => ProductListDetail(Product_id: product.Product_id.toString(), Product_Name: product.Product_Name,Product_Color: product.Product_Color,));
-                            //   },
-                            //   child: Text('Select')),
-                            // // Add more properties as needed
+                                                    // Do something with the text, e.g., save it
+                                                    //  String enteredText = _textEditingController.text;
+                                                    //  print('Entered text: $enteredText');
+                                                    // Close the dialog
+                                                  },
+                                                  child: Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: Icon(Icons.edit)),
+                                ),
+                              ],
+                            ),
                           ),
+                          // collapsedTextColor: Colors.black,
+                          // textColor: Colors.black,
+                          // backgroundColor: Colors.deepPurple.shade100,
+                          //   collapsedBackgroundColor: Colors.white,
+                          // trailing:
+                          // title:
+
+                          //  subtitle: Text(product.Product_Brand),
+                          // trailing: OutlinedButton(
+                          //   onPressed: () {
+
+                          //     // productController.SelectedPhone.value = product;
+                          //     //       // product_detailsController.selectedproduct_details.value =
+                          //     //       //     null;
+
+                          //               Get.to(() => ProductListDetail(Product_id: product.Product_id.toString(), Product_Name: product.Product_Name,Product_Color: product.Product_Color,));
+                          //   },
+                          //   child: Text('Select')),
+                          // // Add more properties as needed
                         );
                       },
                     );

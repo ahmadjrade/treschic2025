@@ -1,19 +1,395 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, avoid_print
 
+import 'package:fixnshop_admin/controller/login_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/controller/stores_controller.dart';
+import 'package:fixnshop_admin/controller/sub_category_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_detail_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_history_controller.dart';
+import 'package:fixnshop_admin/controller/users_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'package:fixnshop_admin/controller/barcode_controller.dart';
+import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
+import 'package:fixnshop_admin/controller/brand_controller.dart';
+import 'package:fixnshop_admin/controller/brand_controller_phones.dart';
+import 'package:fixnshop_admin/controller/cart_types_controller.dart';
+import 'package:fixnshop_admin/controller/category_controller.dart';
+import 'package:fixnshop_admin/controller/color_controller.dart';
+import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
+import 'package:fixnshop_admin/controller/customer_address_controller.dart';
+import 'package:fixnshop_admin/controller/customer_controller.dart';
+import 'package:fixnshop_admin/controller/driver_controller.dart';
+import 'package:fixnshop_admin/controller/expense_category_controller.dart';
+import 'package:fixnshop_admin/controller/expenses_controller.dart';
+import 'package:fixnshop_admin/controller/imoney_controller.dart';
+import 'package:fixnshop_admin/controller/insert_product_detail_controller.dart';
+import 'package:fixnshop_admin/controller/insert_product_controller.dart';
+import 'package:fixnshop_admin/controller/insert_recharge_balance.dart';
+import 'package:fixnshop_admin/controller/insert_repair_product_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
+import 'package:fixnshop_admin/controller/login_controller.dart';
+import 'package:fixnshop_admin/controller/phone_controller.dart';
+import 'package:fixnshop_admin/controller/phone_model_controller.dart';
+import 'package:fixnshop_admin/controller/platform_controller.dart';
+import 'package:fixnshop_admin/controller/product_controller.dart';
+import 'package:fixnshop_admin/controller/product_detail_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_detail_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
+import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
+import 'package:fixnshop_admin/controller/rate_controller.dart';
+import 'package:fixnshop_admin/controller/rech_invoice_payment_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
+import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_detail_controller.dart';
+import 'package:fixnshop_admin/controller/repairs_controller.dart';
+import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/controller/supplier_controller.dart';
+import 'package:fixnshop_admin/controller/topup_history_controller.dart';
+import 'package:fixnshop_admin/view/Brands/add_brand.dart';
+import 'package:fixnshop_admin/view/Category/add_category.dart';
+import 'package:fixnshop_admin/view/Colors/add_color.dart';
+import 'package:fixnshop_admin/view/Customers/add_customer.dart';
+import 'package:fixnshop_admin/view/Phones/add_phone_model.dart';
+import 'package:fixnshop_admin/view/Category/category_list.dart';
+import 'package:fixnshop_admin/view/Repairs/buy_repair_product.dart';
+import 'package:fixnshop_admin/view/Suppliers/add_supplier.dart';
+import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
+import 'package:fixnshop_admin/view/buy_expenses.dart';
+import 'package:fixnshop_admin/view/Phones/buy_phone.dart';
+import 'package:fixnshop_admin/view/buy_tools.dart';
+import 'package:fixnshop_admin/view/home_screen_manage.dart';
+import 'package:fixnshop_admin/view/login_screen.dart';
+import 'package:fixnshop_admin/view/Phones/phones_list.dart';
+import 'package:fixnshop_admin/view/Product/product_list.dart';
+import 'package:fixnshop_admin/view/Suppliers/supplier_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
-  final SharedPreferencesController sharedPreferencesController =
-      Get.find<SharedPreferencesController>();
-
+  final LoginController loginController = Get.find<LoginController>();
   //double screenWidth = MediaQuery.of(context).size.width;
   //double screenHeight = MediaQuery.of(context).size.height;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut<ColorController>(
+      () => ColorController(),
+      fenix: true,
+    );
+    Get.lazyPut<StoresController>(
+      () => StoresController(),
+      fenix: true,
+    );
+    Get.lazyPut<CategoryController>(
+      () => CategoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<SubCategoryController>(
+      () => SubCategoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<SupplierController>(
+      () => SupplierController(),
+      fenix: true,
+    );
+    Get.lazyPut<InsertProductController>(
+      () => InsertProductController(),
+      fenix: true,
+    );
+    Get.lazyPut<CustomerController>(
+      () => CustomerController(),
+      fenix: true,
+    );
+    Get.lazyPut<BrandController>(
+      () => BrandController(),
+      fenix: true,
+    );
+    Get.lazyPut<BrandControllerPhones>(
+      () => BrandControllerPhones(),
+      fenix: true,
+    );
+    Get.lazyPut<PhoneModelController>(
+      () => PhoneModelController(),
+      fenix: true,
+    );
+    Get.lazyPut<ProductController>(
+      () => ProductController(),
+      fenix: true,
+    );
+    Get.lazyPut<InsertProductDetailController>(
+      () => InsertProductDetailController(),
+      fenix: true,
+    );
+    Get.lazyPut<SharedPreferencesController>(
+      () => SharedPreferencesController(),
+      fenix: true,
+    );
+    Get.lazyPut<ProductDetailController>(
+      () => ProductDetailController(),
+      fenix: true,
+    );
+    Get.lazyPut<InvoiceDetailController>(
+      () => InvoiceDetailController(),
+      fenix: true,
+    );
+    Get.lazyPut<BarcodeController>(
+      () => BarcodeController(),
+      fenix: true,
+    );
+    Get.lazyPut<RateController>(
+      () => RateController(),
+      fenix: true,
+    );
+    Get.lazyPut<PhoneController>(
+      () => PhoneController(),
+      fenix: true,
+    );
+    Get.lazyPut<InvoiceHistoryController>(
+      () => InvoiceHistoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<InvoiceController>(
+      () => InvoiceController(),
+      fenix: true,
+    );
+    Get.lazyPut<ExpenseCategoryController>(
+      () => ExpenseCategoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<RepairsController>(
+      () => RepairsController(),
+      fenix: true,
+    );
+    Get.lazyPut<CartTypesController>(
+      () => CartTypesController(),
+      fenix: true,
+    );
+    Get.lazyPut<RechargeCartController>(
+      () => RechargeCartController(),
+      fenix: true,
+    );
+    Get.lazyPut<InsertRepairProductController>(
+      () => InsertRepairProductController(),
+      fenix: true,
+    );
+    Get.lazyPut<RechargeInvoiceHistoryController>(
+      () => RechargeInvoiceHistoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<PurchaseHistoryController>(
+      () => PurchaseHistoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<RechargeDetailController>(
+      () => RechargeDetailController(),
+      fenix: true,
+    );
+    Get.lazyPut<PurchaseDetailController>(
+      () => PurchaseDetailController(),
+      fenix: true,
+    );
+    Get.lazyPut<BluetoothController>(
+      () => BluetoothController(),
+      fenix: true,
+    );
+    Get.lazyPut<RechargeBalanceController>(
+      () => RechargeBalanceController(),
+      fenix: true,
+    );
+    Get.lazyPut<InsertRechargeBalance>(
+      () => InsertRechargeBalance(),
+      fenix: true,
+    );
+    Get.lazyPut<TopupHistoryController>(
+      () => TopupHistoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<CustomerAddressController>(
+      () => CustomerAddressController(),
+      fenix: true,
+    );
+
+    Get.lazyPut<RepairProductController>(
+      () => RepairProductController(),
+      fenix: true,
+    );
+    Get.lazyPut<RepairProductDetailController>(
+      () => RepairProductDetailController(),
+      fenix: true,
+    );
+    Get.lazyPut<InvoicePaymentController>(
+      () => InvoicePaymentController(),
+      fenix: true,
+    );
+    Get.lazyPut<RechInvoicePaymentController>(
+      () => RechInvoicePaymentController(),
+      fenix: true,
+    );
+    Get.lazyPut<PurchasePaymentController>(
+      () => PurchasePaymentController(),
+      fenix: true,
+    );
+    Get.lazyPut<ExpensesController>(
+      () => ExpensesController(),
+      fenix: true,
+    );
+    Get.lazyPut<PlatformController>(
+      () => PlatformController(),
+      fenix: true,
+    );
+    Get.lazyPut<ImoneyController>(
+      () => ImoneyController(),
+      fenix: true,
+    );
+    Get.lazyPut<DriverController>(
+      () => DriverController(),
+      fenix: true,
+    );
+    Get.lazyPut<UsersControllers>(
+      () => UsersControllers(),
+      fenix: true,
+    );
+    Get.lazyPut<TransferController>(
+      () => TransferController(),
+      fenix: true,
+    );
+    Get.lazyPut<TransferHistoryController>(
+      () => TransferHistoryController(),
+      fenix: true,
+    );
+    Get.lazyPut<TransferDetailController>(
+      () => TransferDetailController(),
+      fenix: true,
+    );
+    final TransferHistoryController transferHistoryController =
+        Get.find<TransferHistoryController>();
+    final TransferDetailController transferDetailController =
+        Get.find<TransferDetailController>();
+    final UsersControllers usersControllers = Get.find<UsersControllers>();
+    final DriverController driverController = Get.find<DriverController>();
+    final ImoneyController imoneyController = Get.find<ImoneyController>();
+    final PlatformController platformController =
+        Get.find<PlatformController>();
+    final ExpensesController expensesController =
+        Get.find<ExpensesController>();
+    final PurchasePaymentController purchasePaymentController =
+        Get.find<PurchasePaymentController>();
+    final RechInvoicePaymentController rechInvoicePaymentController =
+        Get.find<RechInvoicePaymentController>();
+    final InvoicePaymentController invoicePaymentController =
+        Get.find<InvoicePaymentController>();
+    final RepairProductDetailController repairProductDetailController =
+        Get.find<RepairProductDetailController>();
+    final RepairProductController repairProductController =
+        Get.find<RepairProductController>();
+    final CustomerAddressController customerAddressController =
+        Get.find<CustomerAddressController>();
+    final BluetoothController bluetoothController =
+        Get.find<BluetoothController>();
+    final RechargeBalanceController rechargeBalanceController =
+        Get.find<RechargeBalanceController>();
+
+    final PurchaseDetailController purchaseDetailController =
+        Get.find<PurchaseDetailController>();
+    final RechargeDetailController rechargeDetailController =
+        Get.find<RechargeDetailController>();
+    final PurchaseHistoryController purchaseHistoryController =
+        Get.find<PurchaseHistoryController>();
+    final RechargeCartController rechargeCartController =
+        Get.find<RechargeCartController>();
+    final PhoneController phoneController = Get.find<PhoneController>();
+    final InvoiceController invoiceController = Get.find<InvoiceController>();
+    final RepairsController repairsController = Get.find<RepairsController>();
+    final CartTypesController cartTypesController =
+        Get.find<CartTypesController>();
+
+    //final InvoiceController invoiceController = Get.find<InvoiceController>();
+    final RateController rateController = Get.find<RateController>();
+    final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
+        Get.find<RechargeInvoiceHistoryController>();
+
+    final BarcodeController barcodeController = Get.find<BarcodeController>();
+    final InvoiceDetailController invoiceDetailController =
+        Get.find<InvoiceDetailController>();
+
+    final ProductDetailController productDetailController =
+        Get.find<ProductDetailController>();
+    final InsertProductDetailController insertProductDetailController =
+        Get.find<InsertProductDetailController>();
+    final InsertRechargeBalance insertRechargeBalance =
+        Get.find<InsertRechargeBalance>();
+    final SharedPreferencesController sharedPreferencesController =
+        Get.find<SharedPreferencesController>();
+
+    final ProductController productController = Get.find<ProductController>();
+
+    final BrandControllerPhones brandControllerPhones =
+        Get.find<BrandControllerPhones>();
+
+    final BrandController brandController = Get.find<BrandController>();
+    final PhoneModelController phoneModelController =
+        Get.find<PhoneModelController>();
+
+    final SubCategoryController subcategoryController =
+        Get.find<SubCategoryController>();
+    final InvoiceHistoryController invoiceHistoryController =
+        Get.find<InvoiceHistoryController>();
+    final CustomerController customerController =
+        Get.find<CustomerController>();
+    final CategoryController categoryController =
+        Get.find<CategoryController>();
+    final SupplierController supplierController =
+        Get.find<SupplierController>();
+    final ColorController colorController = Get.find<ColorController>();
+    final InsertProductController insertProductController =
+        Get.find<InsertProductController>();
+    final InsertRepairProductController insertRepairProductController =
+        Get.find<InsertRepairProductController>();
+    final StoresController storesController = Get.find<StoresController>();
+    Get.putAsync<SharedPreferencesController>(
+        () async => SharedPreferencesController());
+    final sharedPreferenecesController =
+        Get.find<SharedPreferencesController>();
+    sharedPreferenecesController.loadUsernameFromSharedPreferences();
+
+    bool checkResponse(String result) {
+      print(result);
+      if (result == 'success') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    Future<void> showToast(result) async {
+      final snackBar2 = SnackBar(
+        content: Text(result),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+    }
+
+    Future<void> Close() async {
+      Navigator.of(context).pop();
+      showToast('Login Failed');
+    }
+
+    Future<void> Navigate() async {
+      Navigator.of(context).pop();
+      showToast('Login Success');
+      sharedPreferencesController.setUsername(usernameController.text);
+      Get.toNamed('HomeScreenManage');
+    }
+
     usernameController.text = 'hara';
     passwordController.text = '123';
     return Scaffold(
@@ -82,31 +458,62 @@ class LoginScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(double.maxFinite, 50),
                       backgroundColor: Colors.blue.shade100,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.blue.shade100),
+                      side: BorderSide(width: 2.0, color: Colors.blue.shade100),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
                     onPressed: () {
-                      if (usernameController.text.trim() == 'hara' &&
-                          passwordController.text.trim() == '123') {
-                        sharedPreferencesController
-                            .setUsername(usernameController.text);
-                        Get.toNamed('HomeScreenManage');
-                      } else if (usernameController.text.trim() == 'beirut' &&
-                          passwordController.text.trim() == '123') {
-                        sharedPreferencesController
-                            .setUsername(usernameController.text);
-                        Get.toNamed('HomeScreenManage');
-                      } else if (usernameController.text.trim() == 'admin' &&
-                          passwordController.text.trim() == '123') {
-                        sharedPreferencesController
-                            .setUsername(usernameController.text);
-                        Get.toNamed('HomeScreenManage');
-                      } else {
-                        print('Error');
-                      }
+                      showDialog(
+                          // The user CANNOT close this dialog  by pressing outsite it
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (_) {
+                            return Dialog(
+                              // The background color
+                              backgroundColor: Colors.white,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // The loading indicator
+                                    CircularProgressIndicator(),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    // Some text
+                                    Text('Loading')
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                      loginController
+                          .loginUser(
+                              usernameController.text, passwordController.text)
+                          .then((value) => checkResponse(loginController.result)
+                              ? Navigate()
+                              : Close());
+                      // if (usernameController.text.trim() == 'hara' &&
+                      //     passwordController.text.trim() == '123') {
+                      //   sharedPreferencesController
+                      //       .setUsername(usernameController.text);
+                      //   Get.toNamed('HomeScreenManage');
+                      // } else if (usernameController.text.trim() == 'beirut' &&
+                      //     passwordController.text.trim() == '123') {
+                      //   sharedPreferencesController
+                      //       .setUsername(usernameController.text);
+                      //   Get.toNamed('HomeScreenManage');
+                      // } else if (usernameController.text.trim() == 'admin' &&
+                      //     passwordController.text.trim() == '123') {
+                      //   sharedPreferencesController
+                      //       .setUsername(usernameController.text);
+                      //   Get.toNamed('HomeScreenManage');
+                      // } else {
+                      //   print('Error');
+                      // }
                     },
                     child: Text(
                       'Login',

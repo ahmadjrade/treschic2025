@@ -1,6 +1,7 @@
 import 'package:fixnshop_admin/controller/bulk_phone_purchase_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_controller.dart';
 import 'package:get/get.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 
@@ -10,10 +11,13 @@ class BarcodeController extends GetxController {
   RxString barcode3 = ''.obs;
   RxString barcode4 = ''.obs;
   RxString purchase_phone_barcode = ''.obs;
+  RxString transfer_item_barcode = ''.obs;
+  final TransferController transferController = Get.put(TransferController());
 
   final InvoiceController invoiceController = Get.put(InvoiceController());
   final ProductController productController = Get.find<ProductController>();
-  final BulkPhonePurchaseController bulkPhonePurchaseController = Get.put(BulkPhonePurchaseController());
+  final BulkPhonePurchaseController bulkPhonePurchaseController =
+      Get.put(BulkPhonePurchaseController());
 
   Future<void> scanBarcode() async {
     try {
@@ -35,11 +39,21 @@ class BarcodeController extends GetxController {
     }
   }
 
+  Future<void> scanBarcodeTransfer() async {
+    try {
+      ScanResult result = await BarcodeScanner.scan();
+      transfer_item_barcode.value = result.rawContent;
+      transferController.fetchProduct(transfer_item_barcode.value);
+    } catch (e) {
+      print('Error scanning barcode: $e');
+    }
+  }
+
   Future<void> scanBarcodeSearch() async {
     try {
       ScanResult result = await BarcodeScanner.scan();
       barcode3.value = result.rawContent;
-      
+
       //productController.products.refresh();
 
 //invoiceController.fetchProduct(barcode2.value);
@@ -47,11 +61,12 @@ class BarcodeController extends GetxController {
       print('Error scanning barcode: $e');
     }
   }
+
   Future<void> scanBarcodePhone() async {
     try {
       ScanResult result = await BarcodeScanner.scan();
       barcode4.value = result.rawContent;
-      
+
       //productController.products.refresh();
 
 //invoiceController.fetchProduct(barcode2.value);
@@ -59,19 +74,19 @@ class BarcodeController extends GetxController {
       print('Error scanning barcode: $e');
     }
   }
-    Future<void> scanBarcodePhonePurchase(item) async {
+
+  Future<void> scanBarcodePhonePurchase(item) async {
     try {
       ScanResult result = await BarcodeScanner.scan();
       purchase_phone_barcode.value = result.rawContent;
-      if(purchase_phone_barcode.value != '') {
-          if(purchase_phone_barcode.value.length ==15 ) {
-                    bulkPhonePurchaseController.UpdatePhoneImei(item, purchase_phone_barcode.value);
-                    purchase_phone_barcode.value == '';
-
-          } else {
-                    Get.snackbar('Error', 'IMEI MUST HAVE 15 NUMBERS');
-
-          }
+      if (purchase_phone_barcode.value != '') {
+        if (purchase_phone_barcode.value.length == 15) {
+          bulkPhonePurchaseController.UpdatePhoneImei(
+              item, purchase_phone_barcode.value);
+          purchase_phone_barcode.value == '';
+        } else {
+          Get.snackbar('Error', 'IMEI MUST HAVE 15 NUMBERS');
+        }
       } else {
         Get.snackbar('Error', 'Couldn\'t Read IMEI');
       }
@@ -82,5 +97,4 @@ class BarcodeController extends GetxController {
       print('Error scanning barcode: $e');
     }
   }
-  
 }

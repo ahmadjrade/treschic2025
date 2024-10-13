@@ -10,6 +10,8 @@ class ProductDetailModel {
   final int Product_Quantity;
   final int Product_Max_Quantity;
   final int Product_Sold_Quantity;
+  final int Product_Transfered_Qty;
+
   final String Product_Store;
   final String Username;
 
@@ -18,8 +20,7 @@ class ProductDetailModel {
 
   RxDouble _product_MPrice;
   RxInt quantity;
-    final int isPhone;
-
+  final int isPhone;
 
   ProductDetailModel({
     required this.PD_id,
@@ -30,6 +31,7 @@ class ProductDetailModel {
     required this.Product_Quantity,
     required this.Product_Max_Quantity,
     required this.Product_Sold_Quantity,
+    required this.Product_Transfered_Qty,
     required double Product_LPrice,
     required double Product_MPrice, // Change type to double
     required double Product_Cost, // Change type to double
@@ -37,8 +39,7 @@ class ProductDetailModel {
     required this.Product_Store,
     required this.Username,
     required this.quantity,
-        required this.isPhone,
-
+    required this.isPhone,
   })  : _product_MPrice = Product_MPrice.obs,
         _product_Cost = Product_Cost.obs,
         _Product_LPrice = Product_Cost.obs; // Initialize RxDouble
@@ -69,6 +70,8 @@ class ProductDetailModel {
       Product_Quantity: json['Product_Quantity'],
       Product_Max_Quantity: json['Product_Max_Quantity'],
       Product_Sold_Quantity: json['Product_Sold_Quantity'],
+      Product_Transfered_Qty: json['Product_Transfered_Qty'],
+
       Product_LPrice: json['Product_LPrice'].toDouble(),
       Product_MPrice: json['Product_MPrice'].toDouble(), // Convert to double
       Product_Store: json['Store_Name'],
@@ -77,8 +80,7 @@ class ProductDetailModel {
 
       quantity: 1.obs,
 
-            isPhone: json['isPhone'],
-
+      isPhone: json['isPhone'],
     );
   }
 }

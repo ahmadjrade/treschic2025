@@ -3,24 +3,20 @@
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/model/purchase_history_model.dart';
-import 'package:fixnshop_admin/model/purchase_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
-import 'package:fixnshop_admin/view/purchase/purchase_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class PurchaseHistory extends StatelessWidget {
-  PurchaseHistory({super.key});
+class InvoiceHistoryYesterday extends StatelessWidget {
+  InvoiceHistoryYesterday({super.key});
 
-  final PurchaseHistoryController purchaseHistoryController =
-      Get.find<PurchaseHistoryController>();
+  final InvoiceHistoryController invoiceHistoryController =
+      Get.find<InvoiceHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -30,9 +26,10 @@ class PurchaseHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // purchaseHistoryController.reset();
+    invoiceHistoryController.CalTotalYday();
+    // invoiceHistoryController.reset();
 
-    // purchaseHistoryController.CalTotal();
+    // invoiceHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -86,7 +83,7 @@ class PurchaseHistory extends StatelessWidget {
                               controller: FilterQuery,
                               onChanged: (query) {
                                 //print(formattedDate);
-                                purchaseHistoryController.pruchases.refresh();
+                                invoiceHistoryController.invoices.refresh();
                               },
                               decoration: InputDecoration(
                                 labelText:
@@ -96,290 +93,14 @@ class PurchaseHistory extends StatelessWidget {
                             ),
                           );
                         }),
-                        // SizedBox(
-                        //   width: 14,
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        //   child: IconButton(
-                        //     icon: Icon(Icons.qr_code_scanner_rounded),
-                        //     color: Colors.black,
-                        //     onPressed: () {
-                        //       barcodeController.scanBarcodeSearch();
-                        //       //.then((value) => set());
-                        //     },
-                        //   ),
-                        // ),
+                        
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Val == 0;
-                  //     // categoryController.f =false;
-                  //     // categoryController.fetchcategories();
-                  //   },
-                  //   child: Icon(CupertinoIcons.list_bullet),
-                  // ),
-
-                  // Obx(
-                  //   () {
-                  //     return Visibility(
-                  //       visible: true,
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 14,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Column(
-                  //                     children: [
-                  //                       Text(
-                  //                         Username.value.toUpperCase() +
-                  //                             ' Store',
-                  //                         style: TextStyle(fontSize: 8),
-                  //                       ),
-                  //                     ],
-                  //                   ),
-                  //                   value: 'this',
-                  //                   groupValue: purchaseHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Store.value = 'this';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'OTHER STORE',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'other',
-                  //                   groupValue: purchaseHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Store.value = 'other';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: purchaseHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Store.value = 'all';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 14,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'Listed',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'No',
-                  //                   groupValue: purchaseHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Sold.value = 'No';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'SOLD',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'Yes',
-                  //                   groupValue: purchaseHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Sold.value = 'Yes';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: purchaseHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Sold.value = 'all';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 14,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'New',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'New',
-                  //                   groupValue: purchaseHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Condition.value = 'New';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'Used',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'Used',
-                  //                   groupValue: purchaseHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Condition.value = 'Used';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: purchaseHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     purchaseHistoryController.Condition.value = 'all';
-                  //                     purchaseHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                  
                   SizedBox(
                     height: 5,
                   ),
@@ -388,13 +109,13 @@ class PurchaseHistory extends StatelessWidget {
                   ),
                   Obx(
                     () {
-                      final List<PurchaseModel> filteredinvoices =
-                          purchaseHistoryController.searchPurchases(
+                      final List<InvoiceModel> filteredinvoices =
+                          invoiceHistoryController.SearchInvoicesYesterday(
                         FilterQuery.text,
                       );
-                      if (purchaseHistoryController.isLoading.value) {
+                      if (invoiceHistoryController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (purchaseHistoryController.pruchases.isEmpty) {
+                      } else if (invoiceHistoryController.invoices.isEmpty) {
                         return Center(
                             child: Text('No Invoices Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
@@ -406,13 +127,13 @@ class PurchaseHistory extends StatelessWidget {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: filteredinvoices.length,
                           itemBuilder: (context, index) {
-                            final PurchaseModel purchase =
+                            final InvoiceModel invoice =
                                 filteredinvoices[index];
                             return Container(
                               //  width: double.infinity,
                               //   height: 140.0,
-                              color: purchaseHistoryController
-                                      .ispaid(purchase.isPaid)
+                              color: invoiceHistoryController
+                                      .ispaid(invoice.isPaid)
                                   ? Colors.grey.shade300
                                   : Colors.red.shade100,
                               margin: EdgeInsets.fromLTRB(14, 0, 14, 10),
@@ -422,14 +143,14 @@ class PurchaseHistory extends StatelessWidget {
                                 // leading: Column(
                                 //   children: [
                                 //     Expanded(
-                                //       child: purchase.imageUrl != null
-                                //           ? Image.network(purchase.imageUrl!)
+                                //       child: invoice.imageUrl != null
+                                //           ? Image.network(invoice.imageUrl!)
                                 //           : Placeholder(),
                                 //     ),
                                 //   ],
                                 // ),
                                 onLongPress: () {
-                                  //copyToClipboard(purchase.id);
+                                  //copyToClipboard(invoice.id);
                                 },
                                 title: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -441,19 +162,19 @@ class PurchaseHistory extends StatelessWidget {
                                       children: [
                                         Text(
                                           '#' +
-                                              purchase.Purchase_id.toString() +
+                                              invoice.Invoice_id.toString() +
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 17),
                                         ),
                                         Text(
-                                          purchase.Supplier_Name! +
+                                          invoice.Cus_Name! +
                                               ' ' +
-                                              purchase.Supplier_Number!
+                                              invoice.Cus_Number!
                                           // +
                                           // ' -- ' +
-                                          // purchase.phone_Code,
+                                          // invoice.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -462,8 +183,8 @@ class PurchaseHistory extends StatelessWidget {
                                         Spacer(),
                                         Icon(
                                           Icons.paid,
-                                          color: purchaseHistoryController
-                                                  .ispaid(purchase.isPaid)
+                                          color: invoiceHistoryController
+                                                  .ispaid(invoice.isPaid)
                                               ? Colors.green.shade900
                                               : Colors.red.shade900,
                                         )
@@ -472,20 +193,20 @@ class PurchaseHistory extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
-                                          purchase.Purchase_Date
+                                          invoice.Invoice_Date
                                           // +
                                           // ' -- ' +
-                                          // purchase.phone_Code,
+                                          // invoice.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12),
                                         ),
                                         Text(
-                                          ' ' + Format(purchase.Purchase_Time)
+                                          ' ' + Format(invoice.Invoice_Time)
                                           // +
                                           // ' -- ' +
-                                          // purchase.phone_Code,
+                                          // invoice.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
@@ -493,18 +214,26 @@ class PurchaseHistory extends StatelessWidget {
                                         ),
                                         Text(
                                           ' || ' +
-                                              purchase.Username.toUpperCase() +
+                                              invoice.Username.toUpperCase() +
                                               ' Store'
                                           // +
                                           // ' -- ' +
-                                          // purchase.phone_Code,
+                                          // invoice.phone_Code,
+                                          ,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12),
+                                        ), Text(
+                                          ' || ' +
+                                              invoice.Invoice_Type!
+                                          // +
+                                          // ' -- ' +
+                                          // invoice.phone_Code,
                                           ,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12),
                                         ),
-                                          // +
-                                          
                                       ],
                                     ),
                                   ],
@@ -532,9 +261,9 @@ class PurchaseHistory extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    'purchase Total US:  ' +
-                                                        addCommasToNumber(purchase
-                                                                .Purchase_Total_USD)
+                                                    'Invoice Total US:  ' +
+                                                        addCommasToNumber(invoice
+                                                                .Invoice_Total_Usd)
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
@@ -543,9 +272,9 @@ class PurchaseHistory extends StatelessWidget {
                                                             .blue.shade900),
                                                   ),
                                                   Text(
-                                                    'purchase Total LL:  ' +
-                                                        addCommasToNumber(purchase
-                                                                .Purchase_Total_LB)
+                                                    'Invoice Total LL:  ' +
+                                                        addCommasToNumber(invoice
+                                                                .Invoice_Total_Lb)
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
@@ -554,9 +283,9 @@ class PurchaseHistory extends StatelessWidget {
                                                             .blue.shade900),
                                                   ),
                                                   Text(
-                                                    'purchase Rec US:  ' +
-                                                        addCommasToNumber(purchase
-                                                                .Purchase_Rec_USD )
+                                                    'Invoice Rec US:  ' +
+                                                        addCommasToNumber(invoice
+                                                                .Invoice_Rec_Usd)
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
@@ -565,9 +294,9 @@ class PurchaseHistory extends StatelessWidget {
                                                             .green.shade900),
                                                   ),
                                                   Text(
-                                                    'purchase Rec LL:  ' +
-                                                        addCommasToNumber(purchase
-                                                                .Purchase_Rec_LB)
+                                                    'Invoice Rec LL:  ' +
+                                                        addCommasToNumber(invoice
+                                                                .Invoice_Rec_Lb)
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
@@ -576,9 +305,9 @@ class PurchaseHistory extends StatelessWidget {
                                                             .green.shade900),
                                                   ),
                                                   Text(
-                                                    'purchase Due US:  ' +
-                                                        addCommasToNumber(purchase
-                                                                .Purchase_Due_USD)
+                                                    'Invoice Due US:  ' +
+                                                        addCommasToNumber(invoice
+                                                                .Invoice_Due_USD)
                                                             .toString() +
                                                         '\$',
                                                     style: TextStyle(
@@ -587,9 +316,9 @@ class PurchaseHistory extends StatelessWidget {
                                                             .red.shade900),
                                                   ),
                                                   Text(
-                                                    'purchase Due LL:  ' +
-                                                        addCommasToNumber(purchase
-                                                                .Purchase_Due_LB)
+                                                    'Invoice Due LL:  ' +
+                                                        addCommasToNumber(invoice
+                                                                .Invoice_Due_LB)
                                                             .toString() +
                                                         ' LB',
                                                     style: TextStyle(
@@ -611,16 +340,16 @@ class PurchaseHistory extends StatelessWidget {
                                                 fixedSize:
                                                     Size(double.maxFinite, 20),
                                                 backgroundColor:
-                                                    purchaseHistoryController
+                                                    invoiceHistoryController
                                                             .ispaid(
-                                                                purchase.isPaid)
+                                                                invoice.isPaid)
                                                         ? Colors.green.shade900
                                                         : Colors.red.shade900,
                                                 side: BorderSide(
                                                   width: 2.0,
                                                   color:
-                                                      purchaseHistoryController
-                                                              .ispaid(purchase
+                                                      invoiceHistoryController
+                                                              .ispaid(invoice
                                                                   .isPaid)
                                                           ? Colors
                                                               .green.shade900
@@ -634,24 +363,27 @@ class PurchaseHistory extends StatelessWidget {
                                               ),
                                               onPressed: () {
                                                 Get.to(
-                                                    () => PurchaseHistoryItems(
-                                                          Purchase_id: purchase
-                                                                  .Purchase_id
-                                                              .toString(),
-                                                          Supplier_Name: purchase
-                                                                  .Supplier_Name
-                                                              .toString(),
-                                                          Supplier_Number: purchase
-                                                                  .Supplier_Number
-                                                              .toString(),
-                                                          purchase_Total_US:
-                                                              purchase.Purchase_Total_USD
+                                                    () => InvoiceHistoryItems(
+                                                          Invoice_id:
+                                                              invoice.Invoice_id
                                                                   .toString(),
-                                                          purchase_Rec_US: purchase
-                                                                  .Purchase_Rec_USD
+                                                          Customer_id:
+                                                              invoice.Cus_id
+                                                                  .toString(),
+                                                          Customer_Name:
+                                                              invoice.Cus_Name
+                                                                  .toString(),
+                                                          Customer_Number:
+                                                              invoice.Cus_Number
+                                                                  .toString(),
+                                                          Invoice_Total_US:
+                                                              invoice.Invoice_Total_Usd
+                                                                  .toString(),
+                                                          Invoice_Rec_US: invoice
+                                                                  .Invoice_Rec_Usd
                                                               .toString(),
-                                                          purchase_Due_US: purchase
-                                                                  .Purchase_Due_USD
+                                                          Invoice_Due_US: invoice
+                                                                  .Invoice_Due_USD
                                                               .toString(),
                                                         ));
                                               },
@@ -671,19 +403,17 @@ class PurchaseHistory extends StatelessWidget {
                                                     Icons
                                                         .arrow_circle_right_rounded,
                                                     color:
-                                                        purchaseHistoryController
-                                                                .ispaid(purchase
+                                                        invoiceHistoryController
+                                                                .ispaid(invoice
                                                                     .isPaid)
                                                             ? Colors.white
                                                             : Colors.white,
-                                                    //  'Details',
-                                                    //   style: TextStyle(
-                                                    //        color: Colors.red),
+                                                   
                                                   ),
                                                 ],
                                               )),
 
-                                          
+                                         
                                         ],
                                       ),
                                     ),
@@ -722,8 +452,8 @@ class PurchaseHistory extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(purchaseHistoryController
-                                                .total.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .total_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -742,8 +472,8 @@ class PurchaseHistory extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(purchaseHistoryController
-                                                .totalrec.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .totalrecusd_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -751,7 +481,7 @@ class PurchaseHistory extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ),Row(
+                              ), Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -761,17 +491,16 @@ class PurchaseHistory extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(purchaseHistoryController
-                                                .totalrec.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .totalreclb_yday.value)
                                             .toString() +
-                                        ' LL',
+                                        'LL',
                                     style: TextStyle(
                                         color: Colors.green.shade900,
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ),
-                              Row(
+                              ), Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -781,8 +510,8 @@ class PurchaseHistory extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(purchaseHistoryController
-                                                .totalrec.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .totalrec_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
@@ -796,13 +525,13 @@ class PurchaseHistory extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Due Us:',
+                                    'Invoices Due US:',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(purchaseHistoryController
-                                                .totaldue.value)
+                                    addCommasToNumber(invoiceHistoryController
+                                                .totaldue_yday.value)
                                             .toString() +
                                         '\$',
                                     style: TextStyle(

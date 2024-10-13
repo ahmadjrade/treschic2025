@@ -20,7 +20,7 @@ import 'package:intl/intl.dart';
 import '../model/product_model.dart';
 import 'package:http/http.dart' as http;
 
-class InvoiceController extends GetxController {
+class TransferController extends GetxController {
   final ProductDetailController productDetailController =
       Get.find<ProductDetailController>();
   final PhoneController phoneController = Get.find<PhoneController>();
@@ -28,107 +28,22 @@ class InvoiceController extends GetxController {
       Get.find<SharedPreferencesController>();
   final RateController rateController = Get.find<RateController>();
   RxString Username = ''.obs;
-  RxList<ProductDetailModel> invoiceItems = <ProductDetailModel>[].obs;
-  RxDouble totalUsd = 0.0.obs;
-  RxDouble totalLb = 0.0.obs;
-  RxDouble invoice_due = 0.0.obs;
-  RxDouble totalQty = 0.0.obs;
-  RxDouble ReceivedUSD = 0.0.obs;
-  RxDouble ReceivedLb = 0.0.obs;
-  RxDouble ReturnUSD = 0.0.obs;
-  RxDouble ReturnLB = 0.0.obs;
-  RxDouble DueUSD = 0.0.obs;
-  RxDouble DueLB = 0.0.obs;
+  RxList<ProductDetailModel> TransferItems = <ProductDetailModel>[].obs;
 
-  String Inv_type(isDel) {
-    String type = '';
-    if (isDel == '1') {
-      return type = 'Delivery';
-    } else {
-      return type = 'Store';
-    }
-  }
+  RxDouble totalQty = 0.0.obs;
 
   void reset() {
-    DueLB.value = 0;
-    DueUSD.value = 0;
-    ReceivedUSD.value = 0;
-    ReceivedLb.value = 0;
-    calculateDueUSD();
-    calculateDueLB();
-
-    ReturnLB.value = 0;
-    ReturnUSD.value = 0;
-    invoice_due.value = 0;
-    totalLb.value = 0;
-    totalUsd.value = 0;
-    totalQty.value = 0;
-
-    calculateTotal();
-    calculateTotalLb();
-    calculateTotalQty();
-
-    for (int i = 0; i < invoiceItems.length; i++) {
-      invoiceItems[i].quantity.value = 1;
+    for (int i = 0; i < TransferItems.length; i++) {
+      TransferItems[i].quantity.value = 1;
     }
-    invoiceItems.clear();
-  }
-
-  void resetRecUsd() {
-    ReceivedUSD.value = 0.0;
-    calculateDueUSD();
-    calculateDueLB();
-  }
-
-  void resetRecLb() {
-    ReceivedLb.value = 0.0;
-    calculateDueUSD();
-    calculateDueLB();
-  }
-
-  void calculateDueUSD() {
-    DueUSD.value = 0.0;
-    DueUSD.value = totalUsd.value -
-        (ReceivedUSD.value +
-            (ReceivedLb.value / rateController.rateValue.value));
-  }
-
-  void calculateDueLB() {
-    DueLB.value = 0.0;
-    DueLB.value = totalLb.value -
-        (ReceivedLb.value +
-            (ReceivedUSD.value * rateController.rateValue.value));
-  }
-
-  void calculateTotal() {
-    totalUsd.value = 0.0;
-    for (var item in invoiceItems) {
-      totalUsd.value += item.product_MPrice * item.quantity.value;
-    }
-  }
-
-  void calculateTotalLb() {
-    totalLb.value = 0.0;
-    for (var item in invoiceItems) {
-      totalLb.value += (item.product_MPrice * item.quantity.value) *
-          rateController.rateValue.value;
-    }
+    TransferItems.clear();
   }
 
   void calculateTotalQty() {
     totalQty.value = 0.0;
-    for (var item in invoiceItems) {
+    for (var item in TransferItems) {
       totalQty.value += item.quantity.value;
     }
-  }
-
-  void updateItemPrice(ProductDetailModel item, double newPrice) {
-    item.product_MPrice = newPrice;
-    calculateTotal();
-    calculateTotalLb();
-    calculateTotalQty();
-    calculateDueUSD();
-    calculateDueLB();
   }
 
   void UpdateQty(ProductDetailModel product, qty) {
@@ -136,20 +51,14 @@ class InvoiceController extends GetxController {
       Get.snackbar('Error', 'This Quantity is not available');
     } else {
       product.quantity.value = qty;
-      calculateTotalLb();
-      calculateDueUSD();
-      calculateDueLB();
-      calculateTotal();
+
       calculateTotalQty();
     }
   }
 
   void IncreaseQty(ProductDetailModel product) {
     product.quantity += 1;
-    calculateTotalLb();
-    calculateDueUSD();
-    calculateDueLB();
-    calculateTotal();
+
     calculateTotalQty();
   }
 
@@ -158,20 +67,13 @@ class InvoiceController extends GetxController {
       Get.snackbar('Error', 'Product Quantity Can\'t Be Zero.');
     } else {
       product.quantity -= 1;
-      calculateTotalLb();
-      calculateDueUSD();
-      calculateDueLB();
-      calculateTotal();
+
       calculateTotalQty();
     }
   }
 
   void recalculateAll() {
-    calculateTotal();
-    calculateTotalLb();
     calculateTotalQty();
-    calculateDueUSD();
-    calculateDueLB();
   }
 
   void fetchProduct(String productCodeController) {
@@ -179,9 +81,9 @@ class InvoiceController extends GetxController {
     PhoneModel? phone = _findPhone(productCodeController);
 
     if (product != null) {
-      _addProductToInvoice(product);
+      _addProductToTransfer(product);
     } else if (phone != null) {
-      _addPhoneToInvoice(phone);
+      _addPhoneToTransfer(phone);
     } else {
       Get.snackbar('Product Not Found',
           'The product with the provided code does not exist.',
@@ -213,8 +115,8 @@ class InvoiceController extends GetxController {
     return null;
   }
 
-  void _addProductToInvoice(ProductDetailModel product) {
-    if (invoiceItems.contains(product)) {
+  void _addProductToTransfer(ProductDetailModel product) {
+    if (TransferItems.contains(product)) {
       if (product.quantity.value == product.Product_Quantity) {
         Get.snackbar('Product Already Added', 'Max Quantity Reached.',
             snackPosition: SnackPosition.BOTTOM,
@@ -228,19 +130,19 @@ class InvoiceController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2));
     } else {
-      invoiceItems.add(product);
+      TransferItems.add(product);
       recalculateAll();
       Get.snackbar(
-          'Product Added To Invoice', 'Product Code ${product.Product_Code}',
+          'Product Added To Transfer', 'Product Code ${product.Product_Code}',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2));
     }
   }
 
-  void _addPhoneToInvoice(PhoneModel phone) {
-    if (invoiceItems.any((item) => item.Product_Code == phone.IMEI)) {
+  void _addPhoneToTransfer(PhoneModel phone) {
+    if (TransferItems.any((item) => item.Product_Code == phone.IMEI)) {
       var existingItem =
-          invoiceItems.firstWhere((item) => item.Product_Code == phone.IMEI);
+          TransferItems.firstWhere((item) => item.Product_Code == phone.IMEI);
       if (existingItem.quantity.value == existingItem.Product_Quantity) {
         Get.snackbar('Product Already Added', 'Max Quantity Reached.',
             snackPosition: SnackPosition.BOTTOM,
@@ -250,7 +152,7 @@ class InvoiceController extends GetxController {
         recalculateAll();
       }
     } else {
-      invoiceItems.add(ProductDetailModel(
+      TransferItems.add(ProductDetailModel(
           PD_id: 0,
           Product_id: phone.Phone_id,
           Product_Name: phone.Phone_Name,
@@ -268,7 +170,7 @@ class InvoiceController extends GetxController {
           quantity: 1.obs,
           isPhone: 1)); // Assuming quantity is represented by Sell_Price
       recalculateAll();
-      Get.snackbar('Phone Added To Invoice', 'Product Code ${phone.IMEI}',
+      Get.snackbar('Phone Added To Transfer', 'Product Code ${phone.IMEI}',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2));
     }
@@ -292,12 +194,14 @@ class InvoiceController extends GetxController {
   final BluetoothController bluetoothController =
       Get.find<BluetoothController>();
 
-  Future<void> PrintReceipt(Cus_Name, Cus_Number, Cus_Due) async {
+  Future<void> PrintReceipt() async {
     final profile = await CapabilityProfile.load();
     final PaperSize paper = PaperSize.mm80;
 
-    final List<int> bytes =
-        await ReceiptDesign(paper, profile, Cus_Name, Cus_Number, Cus_Due);
+    final List<int> bytes = await ReceiptDesign(
+      paper,
+      profile,
+    );
     if (bluetoothController!.isConnected &&
         bluetoothController!.connection != null) {
       try {
@@ -311,8 +215,10 @@ class InvoiceController extends GetxController {
     }
   }
 
-  Future<List<int>> ReceiptDesign(PaperSize paper, CapabilityProfile profile,
-      Cus_Name, Cus_Number, Cus_Due) async {
+  Future<List<int>> ReceiptDesign(
+    PaperSize paper,
+    CapabilityProfile profile,
+  ) async {
     final Generator ticket = Generator(paper, profile);
     List<int> bytes = [];
     //List Name = ['123', '1234', '12345'];
@@ -340,13 +246,13 @@ class InvoiceController extends GetxController {
     //     styles: PosStyles(align: PosAlign.center), linesAfter: 0);
     bytes += ticket.feed(1);
     bytes += ticket.text(
-      'Invoice ID #$lastId',
+      'Transfer ID #$lastId',
       styles: PosStyles(align: PosAlign.center, bold: true),
       linesAfter: 1,
     );
     //bytes += ticket.qrcode(lastId);
     bytes += ticket.hr(ch: '*', linesAfter: 1);
-    bytes += ticket.text('Invoice Type: ' + 'Store',
+    bytes += ticket.text('Transfer Type: ' + 'Store',
         styles: PosStyles(align: PosAlign.center, bold: true), linesAfter: 0);
     // bytes += ticket.text('Paid In: ' + Currency,
     //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
@@ -380,19 +286,7 @@ class InvoiceController extends GetxController {
     //       styles: PosStyles(align: PosAlign.center),
     //       linesAfter: 1);
     // }
-    if (Cus_Number != '000000') {
-      bytes += ticket.text(
-          'Customer Name: ' + Cus_Name + '\nCustomer Number: ' + Cus_Number,
-          styles: PosStyles(align: PosAlign.center, bold: true),
-          linesAfter: 1);
-      bytes += ticket.text(
-          'UNPAID DUES: ' + addCommasToNumber(double.tryParse(Cus_Due)!) + '\$',
-          styles: PosStyles(
-            align: PosAlign.center,
-            bold: true,
-          ),
-          linesAfter: 1);
-    }
+
     bytes += ticket.text(
         'USD Rate: ' + (rateController.rateValue.value.toString()),
         styles: PosStyles(align: PosAlign.center, bold: true),
@@ -426,35 +320,35 @@ class InvoiceController extends GetxController {
     ]);
     bytes += ticket.hr(ch: '=', linesAfter: 1);
 
-    for (int i = 0; i < invoiceItems.length; i++) {
-      print(invoiceItems);
+    for (int i = 0; i < TransferItems.length; i++) {
+      print(TransferItems);
       bytes += ticket.row([
         PosColumn(
-            text: invoiceItems[i].quantity.toString(),
+            text: TransferItems[i].quantity.toString(),
             width: 1,
             styles: PosStyles(bold: true)),
         PosColumn(
-            text: invoiceItems[i].Product_Code,
+            text: TransferItems[i].Product_Code,
             width: 5,
             styles: PosStyles(bold: true)),
         PosColumn(
-            text: invoiceItems[i].Product_Color,
+            text: TransferItems[i].Product_Color,
             width: 2,
             styles: PosStyles(bold: true)),
         PosColumn(
-            text: invoiceItems[i].product_MPrice.toString(),
+            text: TransferItems[i].product_MPrice.toString(),
             width: 2,
             styles: PosStyles(align: PosAlign.right, bold: true)),
         PosColumn(
-            text: (invoiceItems[i].quantity.value *
-                    invoiceItems[i].product_MPrice)
+            text: (TransferItems[i].quantity.value *
+                    TransferItems[i].product_MPrice)
                 .toString(),
             width: 2,
             styles: PosStyles(align: PosAlign.right, bold: true)),
       ]);
       bytes += ticket.row([
         PosColumn(
-            text: '  ' + invoiceItems[i].Product_Name.toString(),
+            text: '  ' + TransferItems[i].Product_Name.toString(),
             width: 12,
             styles: PosStyles(align: PosAlign.left, bold: true)),
       ]);
@@ -463,116 +357,6 @@ class InvoiceController extends GetxController {
 
     bytes += ticket.hr(ch: '=', linesAfter: 1);
 
-    bytes += ticket.row([
-      PosColumn(
-          text: 'TOTAL USD',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(totalUsd.value) + ' USD',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              bold: true)),
-    ]);
-
-    bytes += ticket.row([
-      PosColumn(
-          text: 'TOTAL LL',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(totalLb.value) + ' LL',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              bold: true)),
-    ]);
-
-    bytes += ticket.row([
-      PosColumn(
-          text: 'Received Usd',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(ReceivedUSD.value) + ' USD',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              bold: true)),
-    ]);
-    bytes += ticket.row([
-      PosColumn(
-          text: 'Received LL',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(ReceivedLb.value) + ' LL',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              bold: true)),
-    ]);
-
-    bytes += ticket.row([
-      PosColumn(
-          text: 'Due Usd',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(DueUSD.value) + ' USD',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              bold: true)),
-    ]);
-    bytes += ticket.row([
-      PosColumn(
-          text: 'Due LL',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(DueLB.value) + ' LL',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              width: PosTextSize.size1,
-              bold: true)),
-    ]);
-    bytes += ticket.hr(ch: '=', linesAfter: 1);
-    bytes += ticket.row([
-      PosColumn(
-          text: 'New Due',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(DueUSD.value + double.tryParse(Cus_Due)!) +
-              ' USD',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              bold: true,
-              width: PosTextSize.size1)),
-    ]);
     bytes += ticket.hr(ch: '=', linesAfter: 1);
     bytes += ticket.feed(2);
     bytes += ticket.text('Thank you!',
@@ -583,7 +367,7 @@ class InvoiceController extends GetxController {
     bytes += ticket.text(timestamp,
         styles: PosStyles(align: PosAlign.center), linesAfter: 2);
 
-    // bytes += ticket.text('Invoice #' + last_id.toString(),
+    // bytes += ticket.text('Transfer #' + last_id.toString(),
     //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
 
     // bytes += ticket.qrcode(last_id.toString());
@@ -601,67 +385,44 @@ class InvoiceController extends GetxController {
   }
 
   String lastId = '';
-  Future<void> uploadInvoiceToDatabase(
-      String Cus_id,
-      String Cus_Name,
-      String Cus_Number,
-      String Driver_id,
-      String Driver_Name,
-      String Driver_Number,
-      String isDel,
-      String Delivery_Code) async {
+  Future<void> uploadTransferToDatabase(
+    String Store_id,
+  ) async {
     try {
-      print(Driver_id + Driver_Name + Driver_Number + isDel);
+      // print(Driver_id + Driver_Name + Driver_Number + isDel);
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
       formattedTime = dateController.getFormattedTime();
 
-      // Prepare invoice data
-      List<Map<String, dynamic>> invoiceData = [];
+      // Prepare Transfer data
+      List<Map<String, dynamic>> TransferData = [];
 
-      for (ProductDetailModel product in invoiceItems) {
-        invoiceData.add({
-          'Store_id': product.Product_Store,
+      for (ProductDetailModel product in TransferItems) {
+        TransferData.add({
           'Product_id': product.Product_id,
+          'Product_Detail_id': product.PD_id,
           'Product_Name': product.Product_Name,
           'Product_Qty': product.quantity.value,
-          'Product_UP': product.product_MPrice,
-          'Product_TP': (product.quantity.value * product.product_MPrice),
           'Product_Code': product.Product_Code,
           'Product_Color': product.Product_Color,
-          'Product_Cost': product.product_Cost,
+          'from_store': Username.value,
+          'to_store': Store_id,
           'isPhone': product.isPhone
         });
       }
 
-      // Send invoice data to PHP script
+      // Send Transfer data to PHP script
       String domain = domainModel.domain;
-      String uri = '$domain/insert_invoice.php';
+      String uri = '$domain/insert_transfer.php';
       final response = await http.post(
         Uri.parse(uri),
         body: jsonEncode({
-          'Invoice_Store': Username.value,
-          'item_count': totalQty.value,
-          'Invoice_Total_USD': totalUsd.value,
-          'Invoice_Total_Lb': totalLb.value,
-          'Invoice_Rec_Usd': ReceivedUSD.value,
-          'Invoice_Rec_Lb': ReceivedLb.value,
-          'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
-          'Invoice_Due_LB': DueLB.value,
-          'Cus_id': Cus_id,
-          'Cus_Name': Cus_Name,
-          'Cus_Number': Cus_Number,
-          'Invoice_Date': formattedDate,
-          'Invoice_Time': formattedTime,
-          'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
-          'Invoice_Type': Inv_type(isDel),
-          'Driver_id': Driver_id,
-          'Invoice_Rate': rateController.rateValue.value,
-          'Driver_Name': Driver_Name,
-          'Driver_Number': Driver_Number,
-          'isDelivery': isDel,
-          'Delivery_Code': Delivery_Code,
-          'invoiceItems': invoiceData,
+          'Transfer_FStore': Username.value,
+          'Transfer_TStore': Store_id,
+          'item_Count': totalQty.value,
+          'Transfer_Date': formattedDate,
+          'Transfer_Time': formattedTime,
+          'TransferItems': TransferData,
         }),
         headers: {'Content-Type': 'application/json'},
       );
@@ -672,16 +433,16 @@ class InvoiceController extends GetxController {
         if (responseData['status'] == 'success') {
           lastId = responseData['lastId'].toString();
           print('Data sent successfully. Last Inserted ID: $lastId');
-          result = 'Invoice Sent Successfully';
+          result = 'Transfer Sent Successfully';
         } else {
           print('Error: ${responseData['message']}');
-          result = 'Invoice Sending Failed: ${responseData['message']}';
+          result = 'Transfer Sending Failed: ${responseData['message']}';
         }
       } else {
         // Handle the error response from the server (e.g., 400 Bad Request)
         Map<String, dynamic> errorData = jsonDecode(response.body);
         print('Error: ${errorData['message']}');
-        result = 'Invoice Sending Failed: ${errorData['message']}';
+        result = 'Transfer Sending Failed: ${errorData['message']}';
       }
     } catch (error) {
       // Handle any exceptions that occur during the request
@@ -690,64 +451,58 @@ class InvoiceController extends GetxController {
     }
   }
 
-  Future<void> uploadOldInvoiceToDatabase(String Inv_id) async {
-    try {
-      Username = sharedPreferencesController.username;
-      formattedDate = dateController.getFormattedDate();
-      formattedTime = dateController.getFormattedTime();
-      // Prepare invoice data
-      List<Map<String, dynamic>> invoiceData = [];
+  // Future<void> uploadOldTransferToDatabase(String Inv_id) async {
+  //   try {
+  //     Username = sharedPreferencesController.username;
+  //     formattedDate = dateController.getFormattedDate();
+  //     formattedTime = dateController.getFormattedTime();
+  //     // Prepare Transfer data
+  //     List<Map<String, dynamic>> TransferData = [];
 
-      for (ProductDetailModel product in invoiceItems) {
-        invoiceData.add({
-          'Invoice_id': Inv_id,
-          'Store_id': product.Product_Store,
-          'Product_id': product.Product_id,
-          'Product_Name': product.Product_Name,
-          'Product_Qty': product.quantity.value,
-          'Product_UP': product.product_MPrice,
-          'Product_TP': (product.quantity.value * product.product_MPrice),
-          'Product_Code': product.Product_Code,
-          'Product_Color': product.Product_Color,
-        });
-      }
+  //     for (ProductDetailModel product in TransferItems) {
+  //       TransferData.add({
+  //         'Transfer_id': Inv_id,
+  //         'Store_id': product.Product_Store,
+  //         'Product_id': product.Product_id,
+  //         'Product_Name': product.Product_Name,
+  //         'Product_Qty': product.quantity.value,
+  //         'Product_UP': product.product_MPrice,
+  //         'Product_TP': (product.quantity.value * product.product_MPrice),
+  //         'Product_Code': product.Product_Code,
+  //         'Product_Color': product.Product_Color,
+  //       });
+  //     }
 
-      // Send invoice data to PHP script
-      String domain = domainModel.domain;
-      String uri = '$domain' 'insert_in_oldinvoice.php';
-      final response = await http.post(
-        Uri.parse(uri),
-        body: jsonEncode({
-          'Inv_id': Inv_id,
-          'item_count': totalQty.value,
-          'Invoice_Total_USD': totalUsd.value,
-          'Invoice_Total_Lb': totalLb.value,
-          'Invoice_Rec_Usd': ReceivedUSD.value,
-          'Invoice_Rec_Lb': ReceivedLb.value,
-          'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
-          'Invoice_Due_LB': DueLB.value,
-          'Invoice_Date': formattedDate,
-          'Invoice_Time': formattedTime,
-          'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
-          'invoiceItems': invoiceData,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
+  //     // Send Transfer data to PHP script
+  //     String domain = domainModel.domain;
+  //     String uri = '$domain' 'insert_in_oldTransfer.php';
+  //     final response = await http.post(
+  //       Uri.parse(uri),
+  //       body: jsonEncode({
+  //         'Inv_id': Inv_id,
+  //         'item_count': totalQty.value,
 
-      if (response.statusCode == 200) {
-        // Data successfully sent to the API
-        print('Data sent successfully');
-        result = 'Invoice Sent Successfully';
+  //         'Transfer_Date': formattedDate,
+  //         'Transfer_Time': formattedTime,
+  //         'TransferItems': TransferData,
+  //       }),
+  //       headers: {'Content-Type': 'application/json'},
+  //     );
 
-        // Continue with the rest of the logic if needed
-      } else {
-        // Error occurred while sending the data
-        print('Error sending data. StatusCode: ${response.statusCode}');
-        result = 'Invoice Sending Failed';
-      }
-    } catch (error) {
-      // Exception occurred while sending the data
-      print('Exception: $error');
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       // Data successfully sent to the API
+  //       print('Data sent successfully');
+  //       result = 'Transfer Sent Successfully';
+
+  //       // Continue with the rest of the logic if needed
+  //     } else {
+  //       // Error occurred while sending the data
+  //       print('Error sending data. StatusCode: ${response.statusCode}');
+  //       result = 'Transfer Sending Failed';
+  //     }
+  //   } catch (error) {
+  //     // Exception occurred while sending the data
+  //     print('Exception: $error');
+  //   }
+  // }
 }

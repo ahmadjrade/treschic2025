@@ -802,7 +802,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                                                                       invoiceController
                                                                               .invoiceItems[
                                                                           index],
-                                                                      double.tryParse(
+                                                                      int.tryParse(
                                                                           New_Qty
                                                                               .text)!);
                                                                   Navigator.of(

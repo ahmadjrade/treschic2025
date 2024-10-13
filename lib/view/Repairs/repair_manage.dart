@@ -14,7 +14,7 @@ import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_month.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_yesterday.dart';
 import 'package:fixnshop_admin/view/Invoices/tab_item.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
+import 'package:fixnshop_admin/view/Purchase/purchase_history11.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_all.dart';
 import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_month.dart';

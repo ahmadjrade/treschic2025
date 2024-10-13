@@ -8,6 +8,7 @@ import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/purchase_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_controller.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
 import 'package:fixnshop_admin/view/Product/product_edit.dart';
 import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
@@ -25,6 +26,7 @@ class ProductList extends StatelessWidget {
   final BarcodeController barcodeController = Get.find<BarcodeController>();
   final PurchaseController purchaseController = Get.put(PurchaseController());
   final HomeController homeController = Get.find<HomeController>();
+  final TransferController transferController = Get.find<TransferController>();
 
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
@@ -200,7 +202,12 @@ class ProductList extends StatelessWidget {
                               copyToClipboard(product.Product_Code);
                             },
                             title: Text(
-                              product.Product_Name + ' ' + product.Product_Color
+                              '#' +
+                                  product.Product_id.toString() +
+                                  ' ' +
+                                  product.Product_Name +
+                                  ' ' +
+                                  product.Product_Color
                               // +
                               // ' -- ' +
                               // product.Product_Code,
@@ -221,9 +228,10 @@ class ProductList extends StatelessWidget {
                                       Text('Product Code:  ' +
                                           product.Product_Code),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                         Text('Category: ' +
+                                          Text('Category: ' +
                                               product.Product_Cat +
                                               ' || ' +
                                               product.PRoduct_Sub_Cat +
@@ -389,6 +397,10 @@ class ProductList extends StatelessWidget {
                                                 onPressed: () {
                                                   if (isPur == 1) {
                                                     invoiceController
+                                                        .fetchProduct(product
+                                                            .Product_Code);
+                                                  } else if (isPur == 3) {
+                                                    transferController
                                                         .fetchProduct(product
                                                             .Product_Code);
                                                   } else {

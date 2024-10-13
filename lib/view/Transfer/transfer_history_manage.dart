@@ -3,9 +3,8 @@
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
-import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_history_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_all.dart';
@@ -13,48 +12,47 @@ import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_month.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_yesterday.dart';
 import 'package:fixnshop_admin/view/Invoices/tab_item.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history11.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_all.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_month.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history_yesterday.dart';
+import 'package:fixnshop_admin/view/Transfer/transfer_history.dart';
+import 'package:fixnshop_admin/view/Transfer/transfer_history_all.dart';
+import 'package:fixnshop_admin/view/Transfer/transfer_history_month.dart';
+import 'package:fixnshop_admin/view/Transfer/transfer_history_yesterday.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class RechargeHistoryManage extends StatelessWidget {
-  RechargeHistoryManage({super.key});
+class TransferHistoryManage extends StatelessWidget {
+  TransferHistoryManage({super.key});
 
-  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
-      Get.find<RechargeInvoiceHistoryController>();
+  final TransferHistoryController transferHistoryController =
+      Get.find<TransferHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
-            String Today = '';
-                        String Yesterday = '';
-
+  String Today = '';
+  String Yesterday = '';
 
   @override
   Widget build(BuildContext context) {
-     DateTime now = DateTime.now();
-             Today = DateFormat('EEEE').format(now) ;
-     DateTime yday = now.subtract(Duration(days: 1));
-     String getMonthName(DateTime date) {
-  return DateFormat('MMMM').format(date);
-}
-      String monthName = getMonthName(now);
+    DateTime now = DateTime.now();
+    Today = DateFormat('EEEE').format(now);
+    DateTime yday = now.subtract(Duration(days: 1));
+    String getMonthName(DateTime date) {
+      return DateFormat('MMMM').format(date);
+    }
+
+    String monthName = getMonthName(now);
 
     // Getting the name of the day for yesterday
-     Yesterday = DateFormat('EEEE').format(yday);
+    Yesterday = DateFormat('EEEE').format(yday);
 
-    // rechargeInvoiceHistoryController.reset();
+    // transferHistoryController.reset();
 
-    // rechargeInvoiceHistoryController.CalTotal();
+    // transferHistoryController.CalTotal();
     void copyToClipboard(CopiedText) {
       Clipboard.setData(ClipboardData(text: CopiedText));
       // Show a snackbar or any other feedback that the text has been copied.
@@ -83,31 +81,29 @@ class RechargeHistoryManage extends StatelessWidget {
       return time8Hour;
     }
 
-          
     String addCommasToNumber(double value) {
       final formatter = NumberFormat('#,##0.00');
       return formatter.format(value);
     }
-    
 
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Recharge History',
-                style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
+                'Transfer History',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
-               IconButton(
-              onPressed: () {
-                rechargeInvoiceHistoryController.reset();
-                rechargeInvoiceHistoryController.isDataFetched = false;
-                rechargeInvoiceHistoryController.fetchrechargeInvoice();
-              },
-              icon: Icon(Icons.refresh))
+              IconButton(
+                  onPressed: () {
+                    transferHistoryController.reset();
+                    transferHistoryController.isDataFetched = false;
+                    transferHistoryController.fetchtransfer();
+                  },
+                  icon: Icon(Icons.refresh))
             ],
           ),
           centerTitle: true,
@@ -133,8 +129,7 @@ class RechargeHistoryManage extends StatelessWidget {
                   tabs: [
                     TabItem(title: Today, count: 0),
                     TabItem(title: Yesterday, count: 0),
-                                        TabItem(title:  monthName, count: 0),
-
+                    TabItem(title: monthName, count: 0),
                     TabItem(title: 'All', count: 0),
                   ],
                 ),
@@ -142,20 +137,19 @@ class RechargeHistoryManage extends StatelessWidget {
             ),
           ),
         ),
-      body: 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TabBarView(
-                          children: [
-                            RechargeInvoiceHistory(), // Page for "Today" tab
-                            RechargeInvoiceHistoryYesterday(),
-                            RechargeInvoiceHistoryMonth(), // Page for "Yesterday" tab
- // Page for "Yesterday" tab
-                            RechargeInvoiceHistoryAll(), // Page for "All" tab
-                          ],
-                        ),
-              ),
-              
-    ),);
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TabBarView(
+            children: [
+              transferHistory(), // Page for "Today" tab
+              TransferHistoryYday(), // Page for "Today" tab
+              transferHistoryMonth(), // Page for "Today" tab
+              // Page for "Yesterday" tab
+              TransferHistoryAll(), // Page for "Today" tab
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

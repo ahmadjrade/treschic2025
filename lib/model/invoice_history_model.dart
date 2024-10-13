@@ -14,6 +14,8 @@ class InvoiceHistoryModel {
   RxDouble _Product_UP;
   RxDouble _Product_TP;
   final String Invoice_Date;
+  final int isPaid;
+  final String Username;
 
   InvoiceHistoryModel({
     required this.Invoice_Detail_id,
@@ -26,7 +28,10 @@ class InvoiceHistoryModel {
     required this.Product_Quantity,
     required double product_UP, // Change type to double
     required double product_TP, // Change type to double
-    required this.Invoice_Date,
+    required this.Invoice_Date,  
+      required this.isPaid,
+      required this.Username,
+
   })  : _Product_TP = product_TP.obs,
         _Product_UP = product_TP.obs; // Initialize RxDouble
 
@@ -51,6 +56,9 @@ class InvoiceHistoryModel {
       product_UP: json['Product_UP'].toDouble(),
       product_TP: json['Product_TP'].toDouble(),
       Invoice_Date: json['Invoice_Date'],
+            isPaid: json['isPaid'],
+            Username: json['Username'],
+
     );
   }
 }

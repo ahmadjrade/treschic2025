@@ -80,13 +80,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'New')
@@ -98,13 +98,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'Used')
@@ -116,12 +116,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 1 ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 1)
               .toList();
@@ -134,13 +134,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'New')
@@ -152,13 +152,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'Used')
@@ -170,12 +170,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 0 ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       product.isSold == 0)
               .toList();
@@ -188,13 +188,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                      
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       
                       product.Phone_Condition == 'New')
@@ -206,13 +206,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username &&
                       
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username &&
                       
                       product.Phone_Condition == 'Used')
@@ -224,12 +224,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username == username 
                       ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username == username 
                       )
               .toList();
@@ -244,13 +244,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'New')
@@ -262,13 +262,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'Used')
@@ -280,12 +280,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 1 ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 1)
               .toList();
@@ -298,13 +298,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'New')
@@ -316,13 +316,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'Used')
@@ -334,12 +334,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 0 ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.isSold == 0)
               .toList();
@@ -352,12 +352,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.Phone_Condition == 'New')
               .toList();
@@ -368,12 +368,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username &&
                       product.Phone_Condition == 'Used')
               .toList();
@@ -384,11 +384,11 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Username != username  ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Username != username )
               .toList();
         }
@@ -402,13 +402,13 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       
                       product.isSold == 1 &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'New')
               .toList();
@@ -419,12 +419,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.isSold == 1 &&
                       product.Phone_Condition == 'Used')
               .toList();
@@ -435,11 +435,11 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.isSold == 1 ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.isSold == 1)
               .toList();
         }
@@ -451,12 +451,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'New')
               .toList();
@@ -467,12 +467,12 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.isSold == 0 &&
                       product.Phone_Condition == 'Used')
               .toList();
@@ -483,11 +483,11 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.isSold == 0 ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.isSold == 0)
               .toList();
         }
@@ -499,11 +499,11 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Phone_Condition == 'New' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Phone_Condition == 'New')
               .toList();
         } else if (Condition.value == 'Used') {
@@ -513,11 +513,11 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
                       product.Phone_Condition == 'Used' ||
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) &&
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) &&
                       product.Phone_Condition == 'Used')
               .toList();
         } else {
@@ -527,10 +527,10 @@ class PhoneController extends GetxController {
                               ' ' +
                               product.Phone_Name +
                               ' ' +
-                              product.Capacity)
+                              product.Phone_Capacity)
                           .toLowerCase()
                           .contains(query.toLowerCase()) &&
-                  product.IMEI.toLowerCase().contains(query.toLowerCase()) 
+                  product.Phone_IMEI.toLowerCase().contains(query.toLowerCase()) 
                       )
               .toList();
         }
@@ -544,7 +544,7 @@ class PhoneController extends GetxController {
     total.value = 0;
     List<PhoneModel> unsoldPhones = phones.where((phone) => phone.isSold == 0).toList();
     for(int i = 0; i < unsoldPhones.length; i++) {
-      total.value += unsoldPhones[i].Price;
+      total.value += unsoldPhones[i].Phone_Price;
     }
   }
   void fetchphones() async {

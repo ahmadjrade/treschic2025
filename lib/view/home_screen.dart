@@ -315,10 +315,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     Future<void> Navigate() async {
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      await sharedPreferencesController
+          .deleteAllData(); // Delete all stored data
+      Get.offAllNamed('LoginScreen');
 
-      Navigator.of(context).pop();
       showToast('Logout Success');
     }
 
@@ -517,13 +517,22 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             SizedBox(
-              height: 75,
+              height: 46,
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'AJTech | $Username Store',
-                //style: textTheme.headline6,
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'AJTECH -- ${sharedPreferencesController.userRole.value}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  Text(
+                      '${sharedPreferencesController.storeName.value} Store | ${sharedPreferencesController.storeNumber.value}'), // Display store name
+
+                  Text('${sharedPreferencesController.location.value}'),
+                ],
               ),
             ),
             Divider(
@@ -538,16 +547,16 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: Icon(Icons.phonelink_setup_sharp),
               title: Text('Repairs'),
               selected: _selectedDestination == 1,
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               onTap: () => selectDestination(1),
             ),
             ListTile(
               leading: Icon(Icons.monetization_on),
               title: Text('Recharge'),
               selected: _selectedDestination == 2,
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               onTap: () => selectDestination(2),
             ),
             Divider(
@@ -564,31 +573,31 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: Icon(Icons.history_outlined),
               title: Text('Invoice History'),
               selected: _selectedDestination == 0,
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               onTap: () => selectDestination(0),
             ),
             ListTile(
               leading: Icon(Icons.history_outlined),
               title: Text('Recharge History'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 3,
               onTap: () => selectDestination(3),
             ),
             ListTile(
               leading: Icon(Icons.history_outlined),
               title: Text('Purchase History'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 4,
               onTap: () => selectDestination(4),
             ),
             ListTile(
               leading: Icon(Icons.history_outlined),
               title: Text('Invoice History By Customer'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 14,
               onTap: () => selectDestination(14),
             ),
@@ -605,24 +614,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: Icon(Icons.payment),
               title: Text('Invoice Due'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 5,
               onTap: () => selectDestination(5),
             ),
             ListTile(
               leading: Icon(Icons.payment),
               title: Text('Purchase Due'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 6,
               onTap: () => selectDestination(6),
             ),
             ListTile(
               leading: Icon(Icons.payment),
               title: Text('Recharge Due'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 7,
               onTap: () => selectDestination(7),
             ),
@@ -639,24 +648,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: Icon(Icons.payment),
               title: Text('Invoice Payments'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 10,
               onTap: () => selectDestination(10),
             ),
             ListTile(
               leading: Icon(Icons.payment),
               title: Text('Purchase Payments'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 11,
               onTap: () => selectDestination(11),
             ),
             ListTile(
               leading: Icon(Icons.payment),
               title: Text('Recharge Payments'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 12,
               onTap: () => selectDestination(12),
             ),
@@ -673,48 +682,48 @@ class _HomeScreenState extends State<HomeScreen> {
             // ListTile(
             //   leading: Icon(Icons.attach_money_outlined),
             //   title: Text('Recharge Balances'),
-            //   selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-            //   selectedColor: Colors.white,
+            //   selectedTileColor: Colors.green.shade100,
+            //   selectedColor: Colors.green.shade900,
             //   selected: _selectedDestination == 8,
             //   onTap: () => selectDestination(8),
             // ),
             ListTile(
               leading: Icon(Icons.attach_money_outlined),
               title: Text('Repair Prodcuts'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 9,
               onTap: () => selectDestination(9),
             ),
             ListTile(
               leading: Icon(Icons.attach_money_outlined),
               title: Text('Expenses'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 13,
               onTap: () => selectDestination(13),
             ),
             ListTile(
               leading: Icon(Icons.attach_money_outlined),
               title: Text('Stores'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 15,
               onTap: () => selectDestination(15),
             ),
             ListTile(
               leading: Icon(Icons.attach_money_outlined),
               title: Text('Transfer'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 16,
               onTap: () => selectDestination(16),
             ),
             ListTile(
               leading: Icon(Icons.attach_money_outlined),
               title: Text('Transfer History'),
-              selectedTileColor: Color.fromRGBO(13, 134, 151, 1),
-              selectedColor: Colors.white,
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 17,
               onTap: () => selectDestination(17),
             ),

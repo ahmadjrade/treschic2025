@@ -40,8 +40,13 @@ import 'package:fixnshop_admin/controller/repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/repair_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/repairs_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/controller/stores_controller.dart';
 import 'package:fixnshop_admin/controller/supplier_controller.dart';
 import 'package:fixnshop_admin/controller/topup_history_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_detail_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_history_controller.dart';
+import 'package:fixnshop_admin/controller/users_controller.dart';
 import 'package:fixnshop_admin/view/Brands/add_brand.dart';
 import 'package:fixnshop_admin/view/Category/add_category.dart';
 import 'package:fixnshop_admin/view/Colors/add_color.dart';
@@ -66,17 +71,300 @@ import 'controller/sub_category_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+  Get.lazyPut<ColorController>(
+    () => ColorController(),
+    fenix: true,
+  );
+  Get.lazyPut<StoresController>(
+    () => StoresController(),
+    fenix: true,
+  );
+  Get.lazyPut<CategoryController>(
+    () => CategoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<SubCategoryController>(
+    () => SubCategoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<SupplierController>(
+    () => SupplierController(),
+    fenix: true,
+  );
+  Get.lazyPut<InsertProductController>(
+    () => InsertProductController(),
+    fenix: true,
+  );
+  Get.lazyPut<CustomerController>(
+    () => CustomerController(),
+    fenix: true,
+  );
+  Get.lazyPut<BrandController>(
+    () => BrandController(),
+    fenix: true,
+  );
+  Get.lazyPut<BrandControllerPhones>(
+    () => BrandControllerPhones(),
+    fenix: true,
+  );
+  Get.lazyPut<PhoneModelController>(
+    () => PhoneModelController(),
+    fenix: true,
+  );
+  Get.lazyPut<ProductController>(
+    () => ProductController(),
+    fenix: true,
+  );
+  Get.lazyPut<InsertProductDetailController>(
+    () => InsertProductDetailController(),
+    fenix: true,
+  );
+
+  Get.lazyPut<ProductDetailController>(
+    () => ProductDetailController(),
+    fenix: true,
+  );
+  Get.lazyPut<InvoiceDetailController>(
+    () => InvoiceDetailController(),
+    fenix: true,
+  );
+  Get.lazyPut<BarcodeController>(
+    () => BarcodeController(),
+    fenix: true,
+  );
+  Get.lazyPut<RateController>(
+    () => RateController(),
+    fenix: true,
+  );
+  Get.lazyPut<PhoneController>(
+    () => PhoneController(),
+    fenix: true,
+  );
+  Get.lazyPut<InvoiceHistoryController>(
+    () => InvoiceHistoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<InvoiceController>(
+    () => InvoiceController(),
+    fenix: true,
+  );
+  Get.lazyPut<ExpenseCategoryController>(
+    () => ExpenseCategoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<RepairsController>(
+    () => RepairsController(),
+    fenix: true,
+  );
+  Get.lazyPut<CartTypesController>(
+    () => CartTypesController(),
+    fenix: true,
+  );
+  Get.lazyPut<RechargeCartController>(
+    () => RechargeCartController(),
+    fenix: true,
+  );
+  Get.lazyPut<InsertRepairProductController>(
+    () => InsertRepairProductController(),
+    fenix: true,
+  );
+  Get.lazyPut<RechargeInvoiceHistoryController>(
+    () => RechargeInvoiceHistoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<PurchaseHistoryController>(
+    () => PurchaseHistoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<RechargeDetailController>(
+    () => RechargeDetailController(),
+    fenix: true,
+  );
+  Get.lazyPut<PurchaseDetailController>(
+    () => PurchaseDetailController(),
+    fenix: true,
+  );
+  Get.lazyPut<BluetoothController>(
+    () => BluetoothController(),
+    fenix: true,
+  );
+  Get.lazyPut<RechargeBalanceController>(
+    () => RechargeBalanceController(),
+    fenix: true,
+  );
+  Get.lazyPut<InsertRechargeBalance>(
+    () => InsertRechargeBalance(),
+    fenix: true,
+  );
+  Get.lazyPut<TopupHistoryController>(
+    () => TopupHistoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<CustomerAddressController>(
+    () => CustomerAddressController(),
+    fenix: true,
+  );
+
+  Get.lazyPut<RepairProductController>(
+    () => RepairProductController(),
+    fenix: true,
+  );
+  Get.lazyPut<RepairProductDetailController>(
+    () => RepairProductDetailController(),
+    fenix: true,
+  );
+  Get.lazyPut<InvoicePaymentController>(
+    () => InvoicePaymentController(),
+    fenix: true,
+  );
+  Get.lazyPut<RechInvoicePaymentController>(
+    () => RechInvoicePaymentController(),
+    fenix: true,
+  );
+  Get.lazyPut<PurchasePaymentController>(
+    () => PurchasePaymentController(),
+    fenix: true,
+  );
+  Get.lazyPut<ExpensesController>(
+    () => ExpensesController(),
+    fenix: true,
+  );
+  Get.lazyPut<PlatformController>(
+    () => PlatformController(),
+    fenix: true,
+  );
+  Get.lazyPut<ImoneyController>(
+    () => ImoneyController(),
+    fenix: true,
+  );
+  Get.lazyPut<DriverController>(
+    () => DriverController(),
+    fenix: true,
+  );
+  Get.lazyPut<UsersControllers>(
+    () => UsersControllers(),
+    fenix: true,
+  );
+  Get.lazyPut<TransferController>(
+    () => TransferController(),
+    fenix: true,
+  );
+  Get.lazyPut<TransferHistoryController>(
+    () => TransferHistoryController(),
+    fenix: true,
+  );
+  Get.lazyPut<TransferDetailController>(
+    () => TransferDetailController(),
+    fenix: true,
+  );
   Get.lazyPut<LoginController>(
     () => LoginController(),
     fenix: true,
-  ); 
-  
-  runApp(const MainApp());
+  );
+  Get.lazyPut<SharedPreferencesController>(
+    () => SharedPreferencesController(),
+    fenix: true,
+  );
+  final TransferHistoryController transferHistoryController =
+      Get.find<TransferHistoryController>();
+  final TransferDetailController transferDetailController =
+      Get.find<TransferDetailController>();
+  final UsersControllers usersControllers = Get.find<UsersControllers>();
+  final DriverController driverController = Get.find<DriverController>();
+  final ImoneyController imoneyController = Get.find<ImoneyController>();
+  final PlatformController platformController = Get.find<PlatformController>();
+  final ExpensesController expensesController = Get.find<ExpensesController>();
+  final PurchasePaymentController purchasePaymentController =
+      Get.find<PurchasePaymentController>();
+  final RechInvoicePaymentController rechInvoicePaymentController =
+      Get.find<RechInvoicePaymentController>();
+  final InvoicePaymentController invoicePaymentController =
+      Get.find<InvoicePaymentController>();
+  final RepairProductDetailController repairProductDetailController =
+      Get.find<RepairProductDetailController>();
+  final RepairProductController repairProductController =
+      Get.find<RepairProductController>();
+  final CustomerAddressController customerAddressController =
+      Get.find<CustomerAddressController>();
+  final BluetoothController bluetoothController =
+      Get.find<BluetoothController>();
+  final RechargeBalanceController rechargeBalanceController =
+      Get.find<RechargeBalanceController>();
+
+  final PurchaseDetailController purchaseDetailController =
+      Get.find<PurchaseDetailController>();
+  final RechargeDetailController rechargeDetailController =
+      Get.find<RechargeDetailController>();
+  final PurchaseHistoryController purchaseHistoryController =
+      Get.find<PurchaseHistoryController>();
+  final RechargeCartController rechargeCartController =
+      Get.find<RechargeCartController>();
+  final PhoneController phoneController = Get.find<PhoneController>();
+  final InvoiceController invoiceController = Get.find<InvoiceController>();
+  final RepairsController repairsController = Get.find<RepairsController>();
+  final CartTypesController cartTypesController =
+      Get.find<CartTypesController>();
+
+  //final InvoiceController invoiceController = Get.find<InvoiceController>();
+  final RateController rateController = Get.find<RateController>();
+  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
+      Get.find<RechargeInvoiceHistoryController>();
+
+  final BarcodeController barcodeController = Get.find<BarcodeController>();
+  final InvoiceDetailController invoiceDetailController =
+      Get.find<InvoiceDetailController>();
+
+  final ProductDetailController productDetailController =
+      Get.find<ProductDetailController>();
+  final InsertProductDetailController insertProductDetailController =
+      Get.find<InsertProductDetailController>();
+  final InsertRechargeBalance insertRechargeBalance =
+      Get.find<InsertRechargeBalance>();
+  final SharedPreferencesController sharedPreferencesController =
+      Get.find<SharedPreferencesController>();
+
+  final ProductController productController = Get.find<ProductController>();
+
+  final BrandControllerPhones brandControllerPhones =
+      Get.find<BrandControllerPhones>();
+
+  final BrandController brandController = Get.find<BrandController>();
+  final PhoneModelController phoneModelController =
+      Get.find<PhoneModelController>();
+
+  final SubCategoryController subcategoryController =
+      Get.find<SubCategoryController>();
+  final InvoiceHistoryController invoiceHistoryController =
+      Get.find<InvoiceHistoryController>();
+  final CustomerController customerController = Get.find<CustomerController>();
+  final CategoryController categoryController = Get.find<CategoryController>();
+  final SupplierController supplierController = Get.find<SupplierController>();
+  final ColorController colorController = Get.find<ColorController>();
+  final InsertProductController insertProductController =
+      Get.find<InsertProductController>();
+  final InsertRepairProductController insertRepairProductController =
+      Get.find<InsertRepairProductController>();
+  final StoresController storesController = Get.find<StoresController>();
+
+  // Initialize the SharedPreferencesController
+
+  // Load session data from SharedPreferences
+
+  // Load all stored data from SharedPreferences
+  await sharedPreferencesController.loadAllData();
+
+  // Check if session exists
+  bool hasSession = sharedPreferencesController.session.value.isNotEmpty;
+
+  runApp(MainApp(
+    hasSession: hasSession,
+  ));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final bool hasSession;
+
+  const MainApp({super.key, required this.hasSession});
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +373,19 @@ class MainApp extends StatelessWidget {
     //colorController.fetchcolors;
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      // home: LoginScreen(),
+      initialRoute: hasSession ? 'HomeScreenManage' : 'LoginScreen',
+
       getPages: [
         GetPage(name: "/LoginScreen", page: () => LoginScreen()),
         GetPage(name: "/HomeScreenManage", page: () => HomeScreenManage()),
-        GetPage(name: "/BuyPhone", page: () => BuyPhone(Cus_id: '',Cus_Name: '',Cus_Number: '',)),
+        GetPage(
+            name: "/BuyPhone",
+            page: () => BuyPhone(
+                  Cus_id: '',
+                  Cus_Name: '',
+                  Cus_Number: '',
+                )),
         GetPage(name: "/BuyAccessories", page: () => BuyAccessories()),
         GetPage(name: "/BuyExpenses", page: () => BuyExpenses()),
         GetPage(name: "/BuyTools", page: () => BuyTools()),

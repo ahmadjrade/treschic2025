@@ -27,6 +27,11 @@ class LoginController extends GetxController {
     print(isDataFetched);
   }
 
+  String token = '',
+      role = '',
+      Store_Number = '',
+      Store_Name = '',
+      Store_Location = '';
   Future<void> loginUser(String username, String password) async {
     String domain = domainModel.domain;
     String uri = '$domain/login.php';
@@ -45,10 +50,12 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         if (jsonData['status'] == 'success') {
-          String role = jsonData['role']; // Retrieve the user role
-
-          String token =
-          jsonData['token']; // Assuming the token is returned as 'token'
+          role = jsonData['role']; // Retrieve the user role
+          Store_Name = jsonData['s_name'];
+          Store_Number = jsonData['s_num'];
+          Store_Location = jsonData['s_loc'];
+          token =
+              jsonData['token']; // Assuming the token is returned as 'token'
           result = 'success';
           // Save the token in SharedPreferences
           SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -57,6 +64,10 @@ class LoginController extends GetxController {
           await prefs.setString('token', token); // Store the token securely
           print(token);
           print(role);
+          print(Store_Location);
+          print(Store_Name);
+          print(Store_Number);
+
           print('Login successful, token saved');
         } else {
           print('Login failed: ${jsonData['message']}');
@@ -68,33 +79,33 @@ class LoginController extends GetxController {
       print('Exception: $e');
     }
   }
+
   String result2 = '';
+
   Future<void> logoutUser() async {
-  String domain = domainModel.domain;
-  String uri = '$domain/logout.php';
-  result2 = '';
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('token');
+    String domain = domainModel.domain;
+    String uri = '$domain/logout.php';
+    result2 = '';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
 
-  // Send a logout request to invalidate the token
-  final response = await http.post(
-    Uri.parse(uri),
-    body: jsonEncode({
-      'token': token, // Send the token for invalidation
-    }),
-    headers: {'Content-Type': 'application/json'},
-  );
+    // Send a logout request to invalidate the token
+    final response = await http.post(
+      Uri.parse(uri),
+      body: jsonEncode({
+        'token': token, // Send the token for invalidation
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
 
-  if (response.statusCode == 200) {
-    result2 = 'success';
-    // Clear token and role after a successful server-side logout
-    await prefs.remove('token');
-    await prefs.remove('role');
-    print('User logged out, token and role cleared');
-  } else {
-    print('Logout failed with status: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      result2 = 'success';
+      // Clear token and role after a successful server-side logout
+      await prefs.remove('token');
+      await prefs.remove('role');
+      print('User logged out, token and role cleared');
+    } else {
+      print('Logout failed with status: ${response.statusCode}');
+    }
   }
-}
-
-
 }

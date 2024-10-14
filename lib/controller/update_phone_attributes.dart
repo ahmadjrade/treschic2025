@@ -13,13 +13,12 @@ class UpdatePhoneController extends GetxController {
   String result = '';
 
   Future<void> UpdatePhone(
-      String Phone_id,String IMEI,String Note,String Cost,String Sell_Price,String Capacity,String Color,String Condition) async {
+      String Phone_id,String IMEI,String Cost,String Sell_Price,String Capacity,String Color,String Condition) async {
     try {
       String domain = domainModel.domain;
       String uri = '$domain' + 'update_phone.php';
        print(Phone_id);
        print(IMEI);
-       print(Note);
        print(Cost);
        print(Sell_Price);
        print(Capacity);
@@ -30,7 +29,6 @@ class UpdatePhoneController extends GetxController {
 
         "Phone_id": Phone_id,
         "IMEI": IMEI,
-        "Note": Note,
          "Cost": Cost,
          "Sell_Price": Sell_Price,
         "Capacity": Capacity,
@@ -41,7 +39,6 @@ class UpdatePhoneController extends GetxController {
       var response = json.decode(json.encode(res.body));
       Phone_id = '';
       IMEI = '';
-      Note = '';
       Cost= '';
       Sell_Price = '';
       Capacity= '';

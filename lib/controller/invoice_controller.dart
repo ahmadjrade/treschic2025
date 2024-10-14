@@ -203,10 +203,10 @@ class InvoiceController extends GetxController {
   PhoneModel? _findPhone(String productCode) {
     Username.value = sharedPreferencesController.username.value;
     for (var phone in phoneController.phones) {
-      if (phone.IMEI == productCode &&
+      if (phone.Phone_IMEI == productCode &&
           phone.Username.toLowerCase() == Username.value.toLowerCase() &&
           phone.isSold == 0) {
-        // Assuming productCode matches IMEI for PhoneModel
+        // Assuming productCode matches Phone_IMEI for PhoneModel
         return phone;
       }
     }
@@ -238,9 +238,9 @@ class InvoiceController extends GetxController {
   }
 
   void _addPhoneToInvoice(PhoneModel phone) {
-    if (invoiceItems.any((item) => item.Product_Code == phone.IMEI)) {
-      var existingItem =
-          invoiceItems.firstWhere((item) => item.Product_Code == phone.IMEI);
+    if (invoiceItems.any((item) => item.Product_Code == phone.Phone_IMEI)) {
+      var existingItem = invoiceItems
+          .firstWhere((item) => item.Product_Code == phone.Phone_IMEI);
       if (existingItem.quantity.value == existingItem.Product_Quantity) {
         Get.snackbar('Product Already Added', 'Max Quantity Reached.',
             snackPosition: SnackPosition.BOTTOM,
@@ -254,7 +254,7 @@ class InvoiceController extends GetxController {
           PD_id: 0,
           Product_id: phone.Phone_id,
           Product_Name: phone.Phone_Name,
-          Product_Code: phone.IMEI,
+          Product_Code: phone.Phone_IMEI,
           Product_Color: phone.Color,
           Product_Quantity: 1,
           Product_Max_Quantity: 1,
@@ -262,13 +262,13 @@ class InvoiceController extends GetxController {
           Product_Transfered_Qty: 1,
           Product_LPrice: 0,
           Product_MPrice: double.tryParse(phone.Sell_Price.toString())!,
-          Product_Cost: double.tryParse(phone.Price.toString())!,
+          Product_Cost: double.tryParse(phone.Phone_Price.toString())!,
           Product_Store: phone.Username,
           Username: phone.Username,
           quantity: 1.obs,
           isPhone: 1)); // Assuming quantity is represented by Sell_Price
       recalculateAll();
-      Get.snackbar('Phone Added To Invoice', 'Product Code ${phone.IMEI}',
+      Get.snackbar('Phone Added To Invoice', 'Product Code ${phone.Phone_IMEI}',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2));
     }

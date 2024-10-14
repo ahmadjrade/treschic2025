@@ -82,280 +82,8 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut<ColorController>(
-      () => ColorController(),
-      fenix: true,
-    );
-    Get.lazyPut<StoresController>(
-      () => StoresController(),
-      fenix: true,
-    );
-    Get.lazyPut<CategoryController>(
-      () => CategoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<SubCategoryController>(
-      () => SubCategoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<SupplierController>(
-      () => SupplierController(),
-      fenix: true,
-    );
-    Get.lazyPut<InsertProductController>(
-      () => InsertProductController(),
-      fenix: true,
-    );
-    Get.lazyPut<CustomerController>(
-      () => CustomerController(),
-      fenix: true,
-    );
-    Get.lazyPut<BrandController>(
-      () => BrandController(),
-      fenix: true,
-    );
-    Get.lazyPut<BrandControllerPhones>(
-      () => BrandControllerPhones(),
-      fenix: true,
-    );
-    Get.lazyPut<PhoneModelController>(
-      () => PhoneModelController(),
-      fenix: true,
-    );
-    Get.lazyPut<ProductController>(
-      () => ProductController(),
-      fenix: true,
-    );
-    Get.lazyPut<InsertProductDetailController>(
-      () => InsertProductDetailController(),
-      fenix: true,
-    );
-    Get.lazyPut<SharedPreferencesController>(
-      () => SharedPreferencesController(),
-      fenix: true,
-    );
-    Get.lazyPut<ProductDetailController>(
-      () => ProductDetailController(),
-      fenix: true,
-    );
-    Get.lazyPut<InvoiceDetailController>(
-      () => InvoiceDetailController(),
-      fenix: true,
-    );
-    Get.lazyPut<BarcodeController>(
-      () => BarcodeController(),
-      fenix: true,
-    );
-    Get.lazyPut<RateController>(
-      () => RateController(),
-      fenix: true,
-    );
-    Get.lazyPut<PhoneController>(
-      () => PhoneController(),
-      fenix: true,
-    );
-    Get.lazyPut<InvoiceHistoryController>(
-      () => InvoiceHistoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<InvoiceController>(
-      () => InvoiceController(),
-      fenix: true,
-    );
-    Get.lazyPut<ExpenseCategoryController>(
-      () => ExpenseCategoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<RepairsController>(
-      () => RepairsController(),
-      fenix: true,
-    );
-    Get.lazyPut<CartTypesController>(
-      () => CartTypesController(),
-      fenix: true,
-    );
-    Get.lazyPut<RechargeCartController>(
-      () => RechargeCartController(),
-      fenix: true,
-    );
-    Get.lazyPut<InsertRepairProductController>(
-      () => InsertRepairProductController(),
-      fenix: true,
-    );
-    Get.lazyPut<RechargeInvoiceHistoryController>(
-      () => RechargeInvoiceHistoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<PurchaseHistoryController>(
-      () => PurchaseHistoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<RechargeDetailController>(
-      () => RechargeDetailController(),
-      fenix: true,
-    );
-    Get.lazyPut<PurchaseDetailController>(
-      () => PurchaseDetailController(),
-      fenix: true,
-    );
-    Get.lazyPut<BluetoothController>(
-      () => BluetoothController(),
-      fenix: true,
-    );
-    Get.lazyPut<RechargeBalanceController>(
-      () => RechargeBalanceController(),
-      fenix: true,
-    );
-    Get.lazyPut<InsertRechargeBalance>(
-      () => InsertRechargeBalance(),
-      fenix: true,
-    );
-    Get.lazyPut<TopupHistoryController>(
-      () => TopupHistoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<CustomerAddressController>(
-      () => CustomerAddressController(),
-      fenix: true,
-    );
+    final sharedPreferencesController = Get.put(SharedPreferencesController());
 
-    Get.lazyPut<RepairProductController>(
-      () => RepairProductController(),
-      fenix: true,
-    );
-    Get.lazyPut<RepairProductDetailController>(
-      () => RepairProductDetailController(),
-      fenix: true,
-    );
-    Get.lazyPut<InvoicePaymentController>(
-      () => InvoicePaymentController(),
-      fenix: true,
-    );
-    Get.lazyPut<RechInvoicePaymentController>(
-      () => RechInvoicePaymentController(),
-      fenix: true,
-    );
-    Get.lazyPut<PurchasePaymentController>(
-      () => PurchasePaymentController(),
-      fenix: true,
-    );
-    Get.lazyPut<ExpensesController>(
-      () => ExpensesController(),
-      fenix: true,
-    );
-    Get.lazyPut<PlatformController>(
-      () => PlatformController(),
-      fenix: true,
-    );
-    Get.lazyPut<ImoneyController>(
-      () => ImoneyController(),
-      fenix: true,
-    );
-    Get.lazyPut<DriverController>(
-      () => DriverController(),
-      fenix: true,
-    );
-    Get.lazyPut<UsersControllers>(
-      () => UsersControllers(),
-      fenix: true,
-    );
-    Get.lazyPut<TransferController>(
-      () => TransferController(),
-      fenix: true,
-    );
-    Get.lazyPut<TransferHistoryController>(
-      () => TransferHistoryController(),
-      fenix: true,
-    );
-    Get.lazyPut<TransferDetailController>(
-      () => TransferDetailController(),
-      fenix: true,
-    );
-    final TransferHistoryController transferHistoryController =
-        Get.find<TransferHistoryController>();
-    final TransferDetailController transferDetailController =
-        Get.find<TransferDetailController>();
-    final UsersControllers usersControllers = Get.find<UsersControllers>();
-    final DriverController driverController = Get.find<DriverController>();
-    final ImoneyController imoneyController = Get.find<ImoneyController>();
-    final PlatformController platformController =
-        Get.find<PlatformController>();
-    final ExpensesController expensesController =
-        Get.find<ExpensesController>();
-    final PurchasePaymentController purchasePaymentController =
-        Get.find<PurchasePaymentController>();
-    final RechInvoicePaymentController rechInvoicePaymentController =
-        Get.find<RechInvoicePaymentController>();
-    final InvoicePaymentController invoicePaymentController =
-        Get.find<InvoicePaymentController>();
-    final RepairProductDetailController repairProductDetailController =
-        Get.find<RepairProductDetailController>();
-    final RepairProductController repairProductController =
-        Get.find<RepairProductController>();
-    final CustomerAddressController customerAddressController =
-        Get.find<CustomerAddressController>();
-    final BluetoothController bluetoothController =
-        Get.find<BluetoothController>();
-    final RechargeBalanceController rechargeBalanceController =
-        Get.find<RechargeBalanceController>();
-
-    final PurchaseDetailController purchaseDetailController =
-        Get.find<PurchaseDetailController>();
-    final RechargeDetailController rechargeDetailController =
-        Get.find<RechargeDetailController>();
-    final PurchaseHistoryController purchaseHistoryController =
-        Get.find<PurchaseHistoryController>();
-    final RechargeCartController rechargeCartController =
-        Get.find<RechargeCartController>();
-    final PhoneController phoneController = Get.find<PhoneController>();
-    final InvoiceController invoiceController = Get.find<InvoiceController>();
-    final RepairsController repairsController = Get.find<RepairsController>();
-    final CartTypesController cartTypesController =
-        Get.find<CartTypesController>();
-
-    //final InvoiceController invoiceController = Get.find<InvoiceController>();
-    final RateController rateController = Get.find<RateController>();
-    final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
-        Get.find<RechargeInvoiceHistoryController>();
-
-    final BarcodeController barcodeController = Get.find<BarcodeController>();
-    final InvoiceDetailController invoiceDetailController =
-        Get.find<InvoiceDetailController>();
-
-    final ProductDetailController productDetailController =
-        Get.find<ProductDetailController>();
-    final InsertProductDetailController insertProductDetailController =
-        Get.find<InsertProductDetailController>();
-    final InsertRechargeBalance insertRechargeBalance =
-        Get.find<InsertRechargeBalance>();
-    final SharedPreferencesController sharedPreferencesController =
-        Get.find<SharedPreferencesController>();
-
-    final ProductController productController = Get.find<ProductController>();
-
-    final BrandControllerPhones brandControllerPhones =
-        Get.find<BrandControllerPhones>();
-
-    final BrandController brandController = Get.find<BrandController>();
-    final PhoneModelController phoneModelController =
-        Get.find<PhoneModelController>();
-
-    final SubCategoryController subcategoryController =
-        Get.find<SubCategoryController>();
-    final InvoiceHistoryController invoiceHistoryController =
-        Get.find<InvoiceHistoryController>();
-    final CustomerController customerController =
-        Get.find<CustomerController>();
-    final CategoryController categoryController =
-        Get.find<CategoryController>();
-    final SupplierController supplierController =
-        Get.find<SupplierController>();
-    final ColorController colorController = Get.find<ColorController>();
-    final InsertProductController insertProductController =
-        Get.find<InsertProductController>();
-    final InsertRepairProductController insertRepairProductController =
-        Get.find<InsertRepairProductController>();
-    final StoresController storesController = Get.find<StoresController>();
     Get.putAsync<SharedPreferencesController>(
         () async => SharedPreferencesController());
     final sharedPreferenecesController =
@@ -383,10 +111,16 @@ class LoginScreen extends StatelessWidget {
       showToast('Login Failed');
     }
 
-    Future<void> Navigate() async {
+    Future<void> Navigate(token, number, name, loc, role) async {
       Navigator.of(context).pop();
       showToast('Login Success');
       sharedPreferencesController.setUsername(usernameController.text);
+      sharedPreferencesController.setSession(token); // Save the session
+      sharedPreferencesController.setStoreNumber(number); // Save store number
+      sharedPreferencesController.setLocation(loc); // Save location
+      sharedPreferencesController.setStoreName(name); // Save store name
+      sharedPreferencesController.setUserRole(role); // Save user role
+
       Get.toNamed('HomeScreenManage');
     }
 
@@ -494,7 +228,12 @@ class LoginScreen extends StatelessWidget {
                           .loginUser(
                               usernameController.text, passwordController.text)
                           .then((value) => checkResponse(loginController.result)
-                              ? Navigate()
+                              ? Navigate(
+                                  loginController.token,
+                                  loginController.Store_Number,
+                                  loginController.Store_Name,
+                                  loginController.Store_Location,
+                                  loginController.role)
                               : Close());
                       // if (usernameController.text.trim() == 'hara' &&
                       //     passwordController.text.trim() == '123') {

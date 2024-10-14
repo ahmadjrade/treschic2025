@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, non_constant_identifier_names
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
@@ -34,7 +35,7 @@ class _PhonesListState extends State<PhonesList> {
 
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
-
+  final InvoiceController invoiceController = Get.find<InvoiceController>();
   RxString Username = ''.obs;
   bool isVisible = false;
 
@@ -46,18 +47,26 @@ class _PhonesListState extends State<PhonesList> {
 
   int Val = 0;
 
+  bool isSupplier(sup_id) {
+    if (sup_id != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if(Username.value != 'admin') {
- phoneController.Condition.value ='all';
-    phoneController.Store.value = 'this';
-    phoneController.Sold.value = 'No';
+    if (Username.value != 'admin') {
+      phoneController.Condition.value = 'all';
+      phoneController.Store.value = 'this';
+      phoneController.Sold.value = 'No';
     } else {
-       phoneController.Condition.value ='all';
-    phoneController.Store.value = 'all';
-    phoneController.Sold.value = 'No';
+      phoneController.Condition.value = 'all';
+      phoneController.Store.value = 'all';
+      phoneController.Sold.value = 'No';
     }
-   
+
     Username = sharedPreferencesController.username;
     phoneController.CalTotal();
     void copyToClipboard(CopiedText) {
@@ -65,7 +74,7 @@ class _PhonesListState extends State<PhonesList> {
       // Show a snackbar or any other feedback that the text has been copied.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Phone IMEI copied to clipboard'),
+          content: Text('Phone Phone_IMEI copied to clipboard'),
         ),
       );
     }
@@ -86,15 +95,6 @@ class _PhonesListState extends State<PhonesList> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Phones List'),
-          // IconButton(
-          //   color: Colors.deepPurple,
-          //   iconSize: 24.0,
-          //   onPressed: () {
-          //     Get.toNamed('/NewCat');
-          //   },
-          //   icon: Icon(CupertinoIcons.add),
-          // ),
-
           Row(
             children: [
               IconButton(
@@ -143,7 +143,7 @@ class _PhonesListState extends State<PhonesList> {
                                 phoneController.phones.refresh();
                               },
                               decoration: InputDecoration(
-                                labelText: 'Search by Phone Name or IMEI',
+                                labelText: 'Search by Phone Name or Phone_IMEI',
                                 prefixIcon: Icon(Icons.search),
                               ),
                             ),
@@ -167,9 +167,7 @@ class _PhonesListState extends State<PhonesList> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   // ElevatedButton(
                   //   onPressed: () {
                   //     Val == 0;
@@ -435,11 +433,9 @@ class _PhonesListState extends State<PhonesList> {
                     },
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   Obx(
                     () {
                       final List<PhoneModel> filteredCategories =
@@ -456,186 +452,330 @@ class _PhonesListState extends State<PhonesList> {
                           itemCount: filteredCategories.length,
                           itemBuilder: (context, index) {
                             final PhoneModel phone = filteredCategories[index];
-                            return Container(
-                              //  width: double.infinity,
-                              //   height: 150.0,
-                              color: phoneController.issold(phone.isSold)
-                                  ? Colors.red.shade100
-                                  : Colors.grey.shade200,
-                              margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                              //     padding: EdgeInsets.all(35),
-                              alignment: Alignment.center,
-                              child: ListTile(
-                                // leading: Column(
-                                //   children: [
-                                //     Expanded(
-                                //       child: phone.imageUrl != null
-                                //           ? Image.network(phone.imageUrl!)
-                                //           : Placeholder(),
-                                //     ),
-                                //   ],
-                                // ),
-                                onLongPress: () {
-                                  copyToClipboard(phone.IMEI);
-                                },
-                                title: Text(
-                                  phone.Brand_Name +
-                                      ' ' +
-                                      phone.Phone_Name +
-                                      ' ' +
-                                      phone.Color +
-                                      ' ' +
-                                      phone.Capacity +
-                                      ' ' +
-                                      '  |  ' +
-                                      phone.Phone_Condition
-                                  // +
-                                  // ' -- ' +
-                                  // phone.phone_Code,
-                                  ,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17),
-                                ),
-                                subtitle: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'IMEI:  ' +
-                                                phone.IMEI +
-                                                '\nNote: ' +
-                                                phone.Note,
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                color: Colors.black),
-                                          ),
-                                          Text(
-                                              'Store: ' +
-                                                  phone.Username.toUpperCase() +
-                                                  ' Store',
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.black)),
-                                          Text(
-                                            'Sell Price: ' +
-                                                phone.Sell_Price.toString() +
-                                                '\$',
-                                            style: TextStyle(
-                                                color: phoneController
-                                                        .issold(phone.isSold)
-                                                    ? Colors.black
-                                                    : Colors.green.shade900),
-                                          ),
-                                          Visibility(
-                                            visible: phoneController
-                                                .isadmin(Username.value),
-                                            child: Text(
-                                              'Cost Price: ' +
-                                                  phone.Price.toString() +
-                                                  '\$',
-                                              style: TextStyle(
-                                                  color: phoneController
-                                                          .issold(phone.isSold)
-                                                      ? Colors.black
-                                                      : Colors.red.shade900),
-                                            ),
-                                          ),
-                                          Visibility(
-                                            visible: phoneController
-                                                .isadmin(Username.value),
-                                            child: Text(
-                                              'Bought From: ' +
-                                                  phone.Cus_Name +
-                                                  ' - ' +
-                                                  phone.Cus_Number.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                          Visibility(
-                                            visible: phoneController
-                                                .isadmin(Username.value),
-                                            child: Text(
-                                              'Bought at: ' +
-                                                  phone.Buy_Date +
-                                                  ' - ' +
-                                                  Format(phone.Buy_Time),
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: phoneController
-                                          .isadmin(Username.value),
-                                      child: IconButton(
-                                          onPressed: () {
-                                            Get.to(() => PhoneEdit(
-                                                Phone_id: phone.Phone_id,
-                                                Phone_Name: phone.Phone_Name,
-                                                IMEI: phone.IMEI,
-                                                Cost_Price: phone.Price,
-                                                Sell_Price: phone.Sell_Price,
-                                                Condition:
+                            return GestureDetector(
+                              onDoubleTap: () {
+                                invoiceController
+                                    .fetchProduct(phone.Phone_IMEI);
+                              },
+                              onLongPress: () {
+                                copyToClipboard(phone.Phone_IMEI);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 10, 20, 10),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                '#' +
+                                                    phone.Phone_id.toString() +
+                                                    ' ' +
+                                                    phone.Brand_Name +
+                                                    ' ' +
+                                                    phone.Phone_Name +
+                                                    ' ' +
+                                                    phone.Color +
+                                                    ' ' +
+                                                    phone.Phone_Capacity +
+                                                    ' ' +
                                                     phone.Phone_Condition,
-                                                Capacity: phone.Capacity,
-                                                Note: phone.Note,Color: phone.Color_id,));
-                                          },
-                                          icon: Icon(Icons.edit,
-                                              color: phoneController
-                                                      .issold(phone.isSold)
-                                                  ? Colors.black
-                                                  : Colors.red)),
-                                    )
-                                    // Column(
-                                    //   children: [
-                                    //     Text(
-                                    //       phone.Sell_Price.toString() + '\$',
-                                    //       style: TextStyle(
-                                    //           fontSize: 17,
-                                    //           color: Colors.green.shade900),
-                                    //     ),
-                                    //     Visibility(
-                                    //       visible:
-                                    //           phoneController.isadmin(Username.value),
-                                    //       child: Text(
-                                    //         phone.Price.toString() + '\$',
-                                    //         style: TextStyle(
-                                    //             fontSize: 17,
-                                    //             color: Colors.red.shade900),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'IMEI: ' + phone.Phone_IMEI,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
+                                        Visibility(
+                                          visible: sharedPreferencesController
+                                              .isAdmin(),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Purchase Price: ' +
+                                                        phone.Phone_Price
+                                                            .toString() +
+                                                        '\$',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.red.shade900,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: 15),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Sell Price: ' +
+                                                        phone.Sell_Price
+                                                            .toString() +
+                                                        '\$',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.red.shade900,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: 15),
+                                                  ),
+                                                ],
+                                              ),
+                                              Visibility(
+                                                visible: isSupplier(
+                                                    phone.Supplier_id),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        'Bought From Supplier : #' +
+                                                            phone.Supplier_id
+                                                                .toString() +
+                                                            ' | ${phone.Supplier_Name} | ${phone.Supplier_Number}',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            fontSize: 15),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Visibility(
+                                                visible: !isSupplier(
+                                                    phone.Supplier_id),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        'Bought From Customer: #' +
+                                                            phone.Cus_id
+                                                                .toString() +
+                                                            ' | ${phone.Cus_Name} | ${phone.Cus_Number}',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            fontSize: 15),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Visibility(
+                                                visible:
+                                                    sharedPreferencesController
+                                                        .isAdmin(),
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      Get.to(() => PhoneEdit(
+                                                            Phone_id:
+                                                                phone.Phone_id,
+                                                            Phone_Name: phone
+                                                                .Phone_Name,
+                                                            IMEI: phone
+                                                                .Phone_IMEI,
+                                                            Cost_Price: phone
+                                                                .Phone_Price,
+                                                            Sell_Price: phone
+                                                                .Sell_Price!,
+                                                            Condition: phone
+                                                                .Phone_Condition,
+                                                            Capacity: phone
+                                                                .Phone_Capacity,
+                                                            Color: phone
+                                                                .Phone_Color_id,
+                                                          ));
+                                                    },
+                                                    icon: Icon(Icons.edit,
+                                                        color: phoneController
+                                                                .issold(phone
+                                                                    .isSold)
+                                                            ? Colors.black
+                                                            : Colors.red)),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  // leading: Column(
+                                  //   children: [
+                                  //     Expanded(
+                                  //       child: phone.imageUrl != null
+                                  //           ? Image.network(phone.imageUrl!)
+                                  //           : Placeholder(),
+                                  //     ),
+                                  //   ],
+                                  // ),
 
-                                    // OutlinedButton(
-                                    //     onPressed: () {
-                                    //       // phoneController.SelectedPhone.value = phone;
-                                    //       //       // subcategoryController.selectedSubCategory.value =
-                                    //       //       //     null;
+                                  // subtitle: Row(
+                                  //   children: [
+                                  //     Expanded(
+                                  //       child: Column(
+                                  //         crossAxisAlignment:
+                                  //             CrossAxisAlignment.start,
+                                  //         mainAxisAlignment:
+                                  //             MainAxisAlignment.start,
+                                  //         children: [
+                                  //           Text(
+                                  //             'Phone_IMEI:  ' + phone.Phone_IMEI,
+                                  //             style: TextStyle(
+                                  //                 fontSize: 13,
+                                  //                 color: Colors.black),
+                                  //           ),
+                                  //           Text(
+                                  //               'Store: ' +
+                                  //                   phone.Username.toUpperCase() +
+                                  //                   ' Store',
+                                  //               style: TextStyle(
+                                  //                   fontSize: 13,
+                                  //                   color: Colors.black)),
+                                  //           Text(
+                                  //             'Sell Phone_Price: ' +
+                                  //                 phone.Sell_Price.toString() +
+                                  //                 '\$',
+                                  //             style: TextStyle(
+                                  //                 color: phoneController
+                                  //                         .issold(phone.isSold)
+                                  //                     ? Colors.black
+                                  //                     : Colors.green.shade900),
+                                  //           ),
+                                  //           Visibility(
+                                  //             visible: phoneController
+                                  //                 .isadmin(Username.value),
+                                  //             child: Text(
+                                  //               'Cost Phone_Price: ' +
+                                  //                   phone.Phone_Price.toString() +
+                                  //                   '\$',
+                                  //               style: TextStyle(
+                                  //                   color: phoneController
+                                  //                           .issold(phone.isSold)
+                                  //                       ? Colors.black
+                                  //                       : Colors.red.shade900),
+                                  //             ),
+                                  //           ),
+                                  //           Visibility(
+                                  //             visible: phoneController
+                                  //                 .isadmin(Username.value),
+                                  //             child: Text(
+                                  //               'Bought From: ' +
+                                  //                   phone.Cus_Name! +
+                                  //                   ' - ' +
+                                  //                   phone.Cus_Number.toString(),
+                                  //               style: TextStyle(
+                                  //                   color: Colors.black),
+                                  //             ),
+                                  //           ),
+                                  //           Visibility(
+                                  //             visible: phoneController
+                                  //                 .isadmin(Username.value),
+                                  //             child: Text(
+                                  //               'Bought at: ' +
+                                  //                   phone.Buy_Date +
+                                  //                   ' - ' +
+                                  //                   Format(phone.Buy_Time),
+                                  //               style: TextStyle(
+                                  //                   color: Colors.black),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //     Visibility(
+                                  //       visible: phoneController
+                                  //           .isadmin(Username.value),
+                                  //       child: IconButton(
+                                  //           onPressed: () {
+                                  //             Get.to(() => PhoneEdit(
+                                  //                   Phone_id: phone.Phone_id,
+                                  //                   Phone_Name: phone.Phone_Name,
+                                  //                   IMEI: phone.Phone_IMEI,
+                                  //                   Cost_Price: phone.Phone_Price,
+                                  //                   Sell_Price: phone.Sell_Price!,
+                                  //                   Condition:
+                                  //                       phone.Phone_Condition,
+                                  //                   Capacity:
+                                  //                       phone.Phone_Capacity,
+                                  //                   Color: phone.Phone_Color_id,
+                                  //                 ));
+                                  //           },
+                                  //           icon: Icon(Icons.edit,
+                                  //               color: phoneController
+                                  //                       .issold(phone.isSold)
+                                  //                   ? Colors.black
+                                  //                   : Colors.red)),
+                                  //     )
+                                  //     // Column(
+                                  //     //   children: [
+                                  //     //     Text(
+                                  //     //       phone.Sell_Phone_Price.toString() + '\$',
+                                  //     //       style: TextStyle(
+                                  //     //           fontSize: 17,
+                                  //     //           color: Colors.green.shade900),
+                                  //     //     ),
+                                  //     //     Visibility(
+                                  //     //       visible:
+                                  //     //           phoneController.isadmin(Username.value),
+                                  //     //       child: Text(
+                                  //     //         phone.Phone_Price.toString() + '\$',
+                                  //     //         style: TextStyle(
+                                  //     //             fontSize: 17,
+                                  //     //             color: Colors.red.shade900),
+                                  //     //       ),
+                                  //     //     ),
+                                  //     //   ],
+                                  //     // ),
 
-                                    //       // Get.to(() => PhonesListDetail(
-                                    //       //       phone_id:
-                                    //       //           phone.phone_id.toString(),
-                                    //       //       Phone_Name: phone.Phone_Name,
-                                    //       //       phone_Color: phone.phone_Color,
-                                    //       //       phone_LPrice:
-                                    //       //           phone.phone_LPrice.toString(),
-                                    //       //       phone_MPrice:
-                                    //       //           phone.phone_MPrice.toString(),
-                                    //       //       phone_Code: phone.phone_Code,
-                                    //       //     ));
-                                    //     },
-                                    //     child: Icon(Icons.arrow_right)),
-                                  ],
+                                  //     // OutlinedButton(
+                                  //     //     onPressed: () {
+                                  //     //       // phoneController.SelectedPhone.value = phone;
+                                  //     //       //       // subcategoryController.selectedSubCategory.value =
+                                  //     //       //       //     null;
+
+                                  //     //       // Get.to(() => PhonesListDetail(
+                                  //     //       //       phone_id:
+                                  //     //       //           phone.phone_id.toString(),
+                                  //     //       //       Phone_Name: phone.Phone_Name,
+                                  //     //       //       phone_Color: phone.phone_Color,
+                                  //     //       //       phone_LPhone_Price:
+                                  //     //       //           phone.phone_LPhone_Price.toString(),
+                                  //     //       //       phone_MPhone_Price:
+                                  //     //       //           phone.phone_MPhone_Price.toString(),
+                                  //     //       //       phone_Code: phone.phone_Code,
+                                  //     //       //     ));
+                                  //     //     },
+                                  //     //     child: Icon(Icons.arrow_right)),
+                                  //   ],
+                                  // ),
                                 ),
                               ),
                             );

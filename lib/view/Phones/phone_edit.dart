@@ -11,9 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PhoneEdit extends StatefulWidget {
-  int Phone_id, Cost_Price, Sell_Price, Color;
+  int Phone_id,  Color;
+  double Cost_Price, Sell_Price;
   String Phone_Name;
-  String IMEI, Condition, Capacity, Note;
+  String IMEI, Condition, Capacity;
 
   PhoneEdit(
       {super.key,
@@ -24,7 +25,6 @@ class PhoneEdit extends StatefulWidget {
       required this.Sell_Price,
       required this.Capacity,
       required this.Condition,
-      required this.Note,
       required this.Color});
 
   @override
@@ -60,7 +60,6 @@ class _PhoneEditState extends State<PhoneEdit> {
   @override
   Widget build(BuildContext context) {
     String New_IMEI = widget.IMEI,
-        New_Note = widget.Note,
         New_Cost = widget.Cost_Price.toString(),
         New_Sell = widget.Sell_Price.toString();
     // Phone_Condition = widget.Condition;
@@ -174,43 +173,7 @@ class _PhoneEditState extends State<PhoneEdit> {
                 SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  //maxLength: 15,
-                  initialValue: widget.Note,
-                  maxLines: 2,
-                  readOnly: phoneController.iseditable.value,
-                  onChanged: (value) {
-                    New_Note = value;
-                    print(New_Note);
-                  },
-                  //controller: Product_Name,
-                  decoration: InputDecoration(
-                    //helperText: '*',
-
-                    //  hintText: '03123456',
-                    labelText: "Note",
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    fillColor: Colors.black,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderSide: BorderSide(
-                        color: Colors.black,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderSide: BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+                
                 Row(
                   children: [
                     Expanded(
@@ -522,7 +485,6 @@ class _PhoneEditState extends State<PhoneEdit> {
                       updatePhoneController.UpdatePhone(
                               widget.Phone_id.toString(),
                               New_IMEI,
-                              New_Note,
                               New_Cost,
                               New_Sell,
                               widget.Capacity,

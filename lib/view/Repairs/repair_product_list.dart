@@ -7,6 +7,7 @@ import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/purchase_controller.dart';
+import 'package:fixnshop_admin/controller/repair_controller.dart';
 import 'package:fixnshop_admin/controller/repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
@@ -23,8 +24,8 @@ import 'package:get/get.dart';
 import 'package:clipboard/clipboard.dart';
 
 class RepairProductList extends StatelessWidget {
-  int isPur;
-  RepairProductList({super.key, required this.isPur});
+  int isPur, isCreated;
+  RepairProductList({super.key, required this.isPur, required this.isCreated});
   final RepairProductController repairProductController =
       Get.find<RepairProductController>();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
@@ -33,7 +34,7 @@ class RepairProductList extends StatelessWidget {
 
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
-  final InvoiceController invoiceController = Get.find<InvoiceController>();
+  final RepairController repairController = Get.find<RepairController>();
   RxString Username = ''.obs;
   TextEditingController Product_Name = TextEditingController();
 
@@ -41,6 +42,14 @@ class RepairProductList extends StatelessWidget {
     Product_Name.text = barcodeController.barcode3.value;
     repairProductController.searchProducts(Product_Name.text);
     repairProductController.repair_products.refresh();
+  }
+
+  bool isCr(int iscreated) {
+    if (iscreated == 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -352,47 +361,54 @@ class RepairProductList extends StatelessWidget {
                                           SizedBox(
                                             width: 5,
                                           ),
-                                          Expanded(
-                                            child: OutlinedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  // fixedSize:
-                                                  //     Size(double.maxFinite, 20),
-                                                  backgroundColor:
-                                                      Colors.red.shade900,
-                                                  side: BorderSide(
-                                                    width: 2.0,
-                                                    color: Colors.red.shade900,
-                                                  ),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.0),
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  if (isPur == 1) {
-                                                    invoiceController
-                                                        .fetchProduct(product
-                                                            .Repair_p_code);
-                                                  } else {
-                                                    purchaseController
-                                                        .fetchProduct(product
-                                                            .Repair_p_code);
-                                                  }
-                                                },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.add,
-                                                      color: Colors.white,
-                                                      //  'Details',
-                                                      //   style: TextStyle(
-                                                      //        color: Colors.red),
+                                          Visibility(
+                                            visible: isCr(isCreated),
+                                            child: Expanded(
+                                              child: OutlinedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    // fixedSize:
+                                                    //     Size(double.maxFinite, 20),
+                                                    backgroundColor:
+                                                        Colors.red.shade900,
+                                                    side: BorderSide(
+                                                      width: 2.0,
+                                                      color:
+                                                          Colors.red.shade900,
                                                     ),
-                                                  ],
-                                                )),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    if (isPur == 1) {
+                                                      repairController
+                                                          .fetchProduct(product
+                                                              .Repair_p_code);
+                                                    } else {
+                                                      purchaseController
+                                                          .fetchProduct(product
+                                                              .Repair_p_code);
+                                                    }
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.add,
+                                                        color: Colors.white,
+                                                        //  'Details',
+                                                        //   style: TextStyle(
+                                                        //        color: Colors.red),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ),
                                           ),
                                           SizedBox(
                                             width: 5,

@@ -36,6 +36,7 @@ import 'package:fixnshop_admin/controller/rech_invoice_payment_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
+import 'package:fixnshop_admin/controller/repair_controller.dart';
 import 'package:fixnshop_admin/controller/repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/repair_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/repairs_controller.dart';
@@ -265,6 +266,10 @@ Future<void> main() async {
     () => SharedPreferencesController(),
     fenix: true,
   );
+   Get.lazyPut<RepairController>(
+    () => RepairController(),
+    fenix: true,
+  );
   final TransferHistoryController transferHistoryController =
       Get.find<TransferHistoryController>();
   final TransferDetailController transferDetailController =
@@ -402,7 +407,11 @@ class MainApp extends StatelessWidget {
                   isPur: 1,
                   from_home: 0,
                 )),
-        GetPage(name: "/Phones", page: () => PhonesList()),
+        GetPage(
+            name: "/Phones",
+            page: () => PhonesList(
+                  isTransfer: false,
+                )),
         GetPage(name: "/Suppliers", page: () => SupplierList()),
         GetPage(name: "/BuyRepairProducts", page: () => BuyRepairProduct()),
 

@@ -692,11 +692,11 @@ class _InvoiceHistoryItemsState extends State<InvoiceTodayItems> {
                       itemBuilder: (context, index) {
                         final InvoiceHistoryModel invoice =
                             filtereditems[index];
-                        return Container(
+                        return Card(
                           color: ispaid(invoice.isPaid),
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           //     padding: EdgeInsets.all(35),
-                          alignment: Alignment.center,
+                          // alignment: Alignment.center,
                           child: ExpansionTile(
                             collapsedTextColor: Colors.black,
                             textColor: Colors.black,

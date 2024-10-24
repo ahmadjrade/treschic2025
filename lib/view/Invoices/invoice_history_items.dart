@@ -32,7 +32,8 @@ class InvoiceHistoryItems extends StatefulWidget {
       Customer_Number,
       Invoice_Total_US,
       Invoice_Rec_US,
-      Invoice_Due_US;
+      Invoice_Due_US,
+      rate;
   InvoiceHistoryItems(
       {super.key,
       required this.Invoice_id,
@@ -41,7 +42,8 @@ class InvoiceHistoryItems extends StatefulWidget {
       required this.Customer_Number,
       required this.Invoice_Total_US,
       required this.Invoice_Rec_US,
-      required this.Invoice_Due_US});
+      required this.Invoice_Due_US,
+      required this.rate});
 
   @override
   State<InvoiceHistoryItems> createState() => _InvoiceHistoryItemsState();
@@ -71,27 +73,6 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
 
   final BluetoothController bluetoothController =
       Get.find<BluetoothController>();
-
-  Future<void> CheckPrinter() async {
-    if (bluetoothController!.connection == null ||
-        !bluetoothController!.connection!.isConnected) {
-      List<BluetoothDevice> devices = [];
-      try {
-        devices = await FlutterBluetoothSerial.instance.getBondedDevices();
-      } catch (e) {
-        print('Error getting devices: $e');
-      }
-
-      if (devices.isNotEmpty) {
-        await showAvailableDevices();
-      } else {
-        print('No bonded devices available');
-      }
-    } else {
-      print('Already connected');
-      // chec();
-    }
-  }
 
   Future<void> showAvailableDevices() async {
     List<BluetoothDevice> devices = [];
@@ -131,9 +112,7 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
                             ],
                           ),
                           onTap: () async {
-                            await bluetoothController!
-                                .connectToDevice(device)
-                                .then((value) => CheckPrinter());
+                            await bluetoothController!.connectToDevice(device);
                             Navigator.pop(
                                 context); // Close the dialog after connecting
                           },
@@ -165,6 +144,14 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
         );
       },
     );
+  }
+
+  bool checkPhone(int isPhone) {
+    if (isPhone == 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // TextEditingController Customer_Name = TextEditingController();
@@ -199,405 +186,438 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
           .toList();
     }
 
-    Future<List<int>> ReceiptDesign(
-      PaperSize paper,
-      CapabilityProfile profile,
-    ) async {
-      final Generator ticket = Generator(paper, profile);
-      List<int> bytes = [];
-      //List Name = ['123', '1234', '12345'];
-
-      ////final ByteData data = await rootBundle.load('images/test.png');
-      ///final Uint8List imageBytes = data.buffer.asUint8List();
-      //final im.Image? image = im.decodeImage(imageBytes);
-      // bytes += ticket.image(image!); // Add the image to the bytes list
-      bytes += ticket.text('AJTECH',
-          styles: PosStyles(
-            align: PosAlign.center,
-            bold: true,
-            height: PosTextSize.size2,
-            width: PosTextSize.size2,
-          ),
-          linesAfter: 1);
-
-      bytes += ticket.text(Username.toUpperCase() + ' Store',
-          styles: PosStyles(align: PosAlign.center, bold: true));
-      //bytes += ticket.text(Store_Loc!, styles: PosStyles(align: PosAlign.center));
-
-      bytes += ticket.text('+961/81214404',
-          styles: PosStyles(align: PosAlign.center, bold: true));
-      // bytes += ticket.text('Web: www.treschiclb.com',
-      //     styles: PosStyles(align: PosAlign.center), linesAfter: 0);
-      bytes += ticket.feed(1);
-      bytes += ticket.text(
-        'Invoice ID #${widget.Invoice_id}',
-        styles: PosStyles(align: PosAlign.center, bold: true),
-        linesAfter: 1,
-      );
-      //bytes += ticket.qrcode(lastId);
-      bytes += ticket.hr(ch: '*', linesAfter: 1);
-      bytes += ticket.text('Invoice Type: ' + 'Store',
-          styles: PosStyles(align: PosAlign.center, bold: true), linesAfter: 0);
-      // bytes += ticket.text('Paid In: ' + Currency,
-      //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-      // if (Delivery_Code.text != '') {
-      //   bytes += ticket.text('Delivery Code: ' + Delivery_Code.text,
-      //       styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-      // }
-      // if (Delivery_Code.text != '') {
-      //   bytes += ticket.text(
-      //       'Delivery Company Name: ' +
-      //           Cus_Name +
-      //           '\nDelivery Company Number: ' +
-      //           Cus_Number,
-      //       styles: PosStyles(align: PosAlign.center),
-      //       linesAfter: 1);
-
-      //   bytes += ticket.text(
-      //       'Reciever Name: ' +
-      //           C_Customer_Name.text +
-      //           '\nReciever Company Number: ' +
-      //           C_Customer_Number.text,
-      //       styles: PosStyles(align: PosAlign.center),
-      //       linesAfter: 1);
-
-      //   bytes += ticket.text('Reciever Address: ' + Cus_address.text,
-      //       styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-      // }
-      // if (Delivery_Code.text == '') {
-      //   bytes += ticket.text(
-      //       'Customer Name: ' + Cus_Name + '\nCustomer Number: ' + Cus_Number,
-      //       styles: PosStyles(align: PosAlign.center),
-      //       linesAfter: 1);
-      // }
-      if (widget.Customer_Name != '000000') {
-        bytes += ticket.text(
-            'Customer Name: ' +
-                widget.Customer_Name +
-                '\nCustomer Number: ' +
-                widget.Customer_Number,
-            styles: PosStyles(align: PosAlign.center, bold: true),
-            linesAfter: 1);
-        // bytes += ticket.text(
-        //     'UNPAID DUES: ' +
-        //         addCommasToNumber(double.tryParse(Customer_Due)!) +
-        //         '\$',
-        //     styles: PosStyles(
-        //       align: PosAlign.center,
-        //       bold: true,
-        //     ),
-        //     linesAfter: 1);
-      }
-      // bytes += ticket.text(
-      //     'USD Rate: ' + (rateController.rateValue.value.toString()),
-      //     styles: PosStyles(align: PosAlign.center, bold: true),
-      //     linesAfter: 0);
-
-      // bytes += ticket.beep();
-      //   bytes += ticket.image();
-
-      bytes += ticket.hr();
-      bytes += ticket.row([
-        PosColumn(
-            text: 'Qty',
-            width: 1,
-            styles: PosStyles(align: PosAlign.left, bold: true)),
-        PosColumn(
-            text: 'Item',
-            width: 5,
-            styles: PosStyles(align: PosAlign.left, bold: true)),
-        PosColumn(
-            text: 'Color',
-            width: 2,
-            styles: PosStyles(align: PosAlign.left, bold: true)),
-        PosColumn(
-            text: 'UP',
-            width: 2,
-            styles: PosStyles(align: PosAlign.right, bold: true)),
-        PosColumn(
-            text: 'TP',
-            width: 2,
-            styles: PosStyles(align: PosAlign.right, bold: true)),
-      ]);
-      bytes += ticket.hr(ch: '=', linesAfter: 1);
-
-      for (int i = 0;
-          i <
-              invoiceDetailController.invoice_detail
-                  .where((invoice_detail) =>
-                      invoice_detail.Invoice_id ==
-                          int.tryParse(widget.Invoice_id) &&
-                      (invoice_detail.Product_Name.toLowerCase()
-                              .contains(filter.value.toLowerCase()) ||
-                          invoice_detail.Product_Code.toLowerCase()
-                              .contains(filter.value.toLowerCase())))
-                  .toList()
-                  .length;
-          i++) {
-        print(filteredProductDetails);
-        bytes += ticket.row([
-          PosColumn(
-              text: invoiceDetailController.invoice_detail
-                  .where((invoice_detail) =>
-                      invoice_detail.Invoice_id ==
-                          int.tryParse(widget.Invoice_id) &&
-                      (invoice_detail.Product_Name.toLowerCase()
-                              .contains(filter.value.toLowerCase()) ||
-                          invoice_detail.Product_Code.toLowerCase()
-                              .contains(filter.value.toLowerCase())))
-                  .toList()[i]
-                  .Product_Quantity
-                  .toString(),
-              width: 1,
-              styles: PosStyles(bold: true)),
-          PosColumn(
-              text: invoiceDetailController.invoice_detail
-                  .where((invoice_detail) =>
-                      invoice_detail.Invoice_id ==
-                          int.tryParse(widget.Invoice_id) &&
-                      (invoice_detail.Product_Name.toLowerCase()
-                              .contains(filter.value.toLowerCase()) ||
-                          invoice_detail.Product_Code.toLowerCase()
-                              .contains(filter.value.toLowerCase())))
-                  .toList()[i]
-                  .Product_Code,
-              width: 5,
-              styles: PosStyles(bold: true)),
-          PosColumn(
-              text: invoiceDetailController.invoice_detail
-                  .where((invoice_detail) =>
-                      invoice_detail.Invoice_id ==
-                          int.tryParse(widget.Invoice_id) &&
-                      (invoice_detail.Product_Name.toLowerCase()
-                              .contains(filter.value.toLowerCase()) ||
-                          invoice_detail.Product_Code.toLowerCase()
-                              .contains(filter.value.toLowerCase())))
-                  .toList()[i]
-                  .Product_Color,
-              width: 2,
-              styles: PosStyles(bold: true)),
-          PosColumn(
-              text: invoiceDetailController.invoice_detail
-                  .where((invoice_detail) =>
-                      invoice_detail.Invoice_id ==
-                          int.tryParse(widget.Invoice_id) &&
-                      (invoice_detail.Product_Name.toLowerCase()
-                              .contains(filter.value.toLowerCase()) ||
-                          invoice_detail.Product_Code.toLowerCase()
-                              .contains(filter.value.toLowerCase())))
-                  .toList()[i]
-                  .product_TP
-                  .toString(),
-              width: 2,
-              styles: PosStyles(align: PosAlign.right, bold: true)),
-          PosColumn(
-              text: (invoiceDetailController.invoice_detail
-                      .where((invoice_detail) =>
-                          invoice_detail.Invoice_id ==
-                              int.tryParse(widget.Invoice_id) &&
-                          (invoice_detail.Product_Name.toLowerCase()
-                                  .contains(filter.value.toLowerCase()) ||
-                              invoice_detail.Product_Code.toLowerCase()
-                                  .contains(filter.value.toLowerCase())))
-                      .toList()[i]
-                      .product_TP)
-                  .toString(),
-              width: 2,
-              styles: PosStyles(align: PosAlign.right, bold: true)),
-        ]);
-        bytes += ticket.row([
-          PosColumn(
-              text: '  ' +
-                  invoiceDetailController.invoice_detail
-                      .where((invoice_detail) =>
-                          invoice_detail.Invoice_id ==
-                              int.tryParse(widget.Invoice_id) &&
-                          (invoice_detail.Product_Name.toLowerCase()
-                                  .contains(filter.value.toLowerCase()) ||
-                              invoice_detail.Product_Code.toLowerCase()
-                                  .contains(filter.value.toLowerCase())))
-                      .toList()[i]
-                      .Product_Name
-                      .toString(),
-              width: 12,
-              styles: PosStyles(align: PosAlign.left, bold: true)),
-        ]);
-        bytes += ticket.hr(ch: ' ', linesAfter: 0);
-      }
-
-      bytes += ticket.hr(ch: '=', linesAfter: 1);
-
-      bytes += ticket.row([
-        PosColumn(
-            text: 'TOTAL USD',
-            width: 6,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-        PosColumn(
-            text: addCommasToNumber(double.tryParse(widget.Invoice_Total_US)!) +
-                ' USD',
-            width: 6,
-            styles: PosStyles(
-                align: PosAlign.right,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-      ]);
-
-      bytes += ticket.row([
-        PosColumn(
-            text: 'TOTAL LL',
-            width: 6,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-        PosColumn(
-            text: addCommasToNumber(double.tryParse(widget.Invoice_Total_US)!) +
-                ' LL',
-            width: 6,
-            styles: PosStyles(
-                align: PosAlign.right,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-      ]);
-
-      bytes += ticket.row([
-        PosColumn(
-            text: 'Received Usd',
-            width: 6,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-        PosColumn(
-            text: addCommasToNumber(double.tryParse(widget.Invoice_Rec_US)!) +
-                ' USD',
-            width: 6,
-            styles: PosStyles(
-                align: PosAlign.right,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-      ]);
-      bytes += ticket.row([
-        PosColumn(
-            text: 'Received LL',
-            width: 6,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-        PosColumn(
-            text: addCommasToNumber(double.tryParse(widget.Invoice_Total_US)!) +
-                ' LL',
-            width: 6,
-            styles: PosStyles(
-                align: PosAlign.right,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-      ]);
-
-      bytes += ticket.row([
-        PosColumn(
-            text: 'Due Usd',
-            width: 6,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-        PosColumn(
-            text: addCommasToNumber(double.tryParse(widget.Invoice_Due_US)!) +
-                ' USD',
-            width: 6,
-            styles: PosStyles(
-                align: PosAlign.right,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-      ]);
-      bytes += ticket.row([
-        PosColumn(
-            text: 'Due LL',
-            width: 6,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-        PosColumn(
-            text: addCommasToNumber(double.tryParse(widget.Invoice_Due_US)!) +
-                ' LL',
-            width: 6,
-            styles: PosStyles(
-                align: PosAlign.right,
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-      ]);
-      bytes += ticket.hr(ch: '=', linesAfter: 1);
-      bytes += ticket.row([
-        PosColumn(
-            text: 'New Due',
-            width: 6,
-            styles: PosStyles(
-                height: PosTextSize.size1,
-                width: PosTextSize.size1,
-                bold: true)),
-        // PosColumn(
-        //     text: addCommasToNumber(double.tryParse(Invoice_Due_US)! +
-        //             double.tryParse(Cus_Due)!) +
-        //         ' USD',
-        //     width: 6,
-        //     styles: PosStyles(
-        //         align: PosAlign.right,
-        //         height: PosTextSize.size1,
-        //         bold: true,
-        //         width: PosTextSize.size1)),
-      ]);
-      bytes += ticket.hr(ch: '=', linesAfter: 1);
-      bytes += ticket.feed(2);
-      bytes += ticket.text('Thank you!',
-          styles: PosStyles(align: PosAlign.center, bold: true));
-      final now = DateTime.now();
-      final formatter = DateFormat('MM/dd/yyyy H:m');
-      final String timestamp = formatter.format(now);
-      bytes += ticket.text(timestamp,
-          styles: PosStyles(align: PosAlign.center), linesAfter: 2);
-
-      // bytes += ticket.text('Invoice #' + last_id.toString(),
-      //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-
-      // bytes += ticket.qrcode(last_id.toString());
-      bytes += ticket.feed(1);
-      bytes += ticket.cut();
-
-      ticket.feed(2);
-      ticket.cut();
-      return bytes;
-    }
-
-    Future<void> PrintReceipt() async {
-      final profile = await CapabilityProfile.load();
-      final PaperSize paper = PaperSize.mm80;
-
-      final List<int> bytes = await ReceiptDesign(paper, profile);
-      if (bluetoothController!.isConnected &&
-          bluetoothController!.connection != null) {
+    Future<void> CheckPrinter() async {
+      if (bluetoothController!.connection == null ||
+          !bluetoothController!.connection!.isConnected) {
+        List<BluetoothDevice> devices = [];
         try {
-          bluetoothController!.connection!.output
-              .add(Uint8List.fromList(bytes));
-          await bluetoothController!.connection!.output.allSent;
+          devices = await FlutterBluetoothSerial.instance.getBondedDevices();
         } catch (e) {
-          print('Error printing: $e');
+          print('Error getting devices: $e');
+        }
+
+        if (devices.isNotEmpty) {
+          await showAvailableDevices();
+        } else {
+          print('No bonded devices available');
         }
       } else {
-        print('Error: Not connected to a Bluetooth device');
+        print('Already connected');
+        print(filteredProductDetails());
+        invoiceDetailController.PrintReceipt(
+            widget.Customer_id,
+            widget.Customer_Name,
+            widget.Customer_Number,
+            widget.Invoice_id,
+            widget.rate,
+            widget.Invoice_Total_US,
+            widget.Invoice_Total_US,
+            widget.Invoice_Rec_US,
+            widget.Invoice_Rec_US,
+            widget.Invoice_Due_US,
+            widget.Invoice_Due_US,
+            filteredProductDetails());
       }
     }
+    // Future<List<int>> ReceiptDesign(
+    //   PaperSize paper,
+    //   CapabilityProfile profile,
+    // ) async {
+    //   final Generator ticket = Generator(paper, profile);
+    //   List<int> bytes = [];
+    //   //List Name = ['123', '1234', '12345'];
+
+    //   ////final ByteData data = await rootBundle.load('images/test.png');
+    //   ///final Uint8List imageBytes = data.buffer.asUint8List();
+    //   //final im.Image? image = im.decodeImage(imageBytes);
+    //   // bytes += ticket.image(image!); // Add the image to the bytes list
+    //   bytes += ticket.text('AJTECH',
+    //       styles: PosStyles(
+    //         align: PosAlign.center,
+    //         bold: true,
+    //         height: PosTextSize.size2,
+    //         width: PosTextSize.size2,
+    //       ),
+    //       linesAfter: 1);
+
+    //   bytes += ticket.text(Username.toUpperCase() + ' Store',
+    //       styles: PosStyles(align: PosAlign.center, bold: true));
+    //   //bytes += ticket.text(Store_Loc!, styles: PosStyles(align: PosAlign.center));
+
+    //   bytes += ticket.text('+961/81214404',
+    //       styles: PosStyles(align: PosAlign.center, bold: true));
+    //   // bytes += ticket.text('Web: www.treschiclb.com',
+    //   //     styles: PosStyles(align: PosAlign.center), linesAfter: 0);
+    //   bytes += ticket.feed(1);
+    //   bytes += ticket.text(
+    //     'Invoice ID #${widget.Invoice_id}',
+    //     styles: PosStyles(align: PosAlign.center, bold: true),
+    //     linesAfter: 1,
+    //   );
+    //   //bytes += ticket.qrcode(lastId);
+    //   bytes += ticket.hr(ch: '*', linesAfter: 1);
+    //   bytes += ticket.text('Invoice Type: ' + 'Store',
+    //       styles: PosStyles(align: PosAlign.center, bold: true), linesAfter: 0);
+    //   // bytes += ticket.text('Paid In: ' + Currency,
+    //   //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
+    //   // if (Delivery_Code.text != '') {
+    //   //   bytes += ticket.text('Delivery Code: ' + Delivery_Code.text,
+    //   //       styles: PosStyles(align: PosAlign.center), linesAfter: 1);
+    //   // }
+    //   // if (Delivery_Code.text != '') {
+    //   //   bytes += ticket.text(
+    //   //       'Delivery Company Name: ' +
+    //   //           Cus_Name +
+    //   //           '\nDelivery Company Number: ' +
+    //   //           Cus_Number,
+    //   //       styles: PosStyles(align: PosAlign.center),
+    //   //       linesAfter: 1);
+
+    //   //   bytes += ticket.text(
+    //   //       'Reciever Name: ' +
+    //   //           C_Customer_Name.text +
+    //   //           '\nReciever Company Number: ' +
+    //   //           C_Customer_Number.text,
+    //   //       styles: PosStyles(align: PosAlign.center),
+    //   //       linesAfter: 1);
+
+    //   //   bytes += ticket.text('Reciever Address: ' + Cus_address.text,
+    //   //       styles: PosStyles(align: PosAlign.center), linesAfter: 1);
+    //   // }
+    //   // if (Delivery_Code.text == '') {
+    //   //   bytes += ticket.text(
+    //   //       'Customer Name: ' + Cus_Name + '\nCustomer Number: ' + Cus_Number,
+    //   //       styles: PosStyles(align: PosAlign.center),
+    //   //       linesAfter: 1);
+    //   // }
+    //   if (widget.Customer_Name != '000000') {
+    //     bytes += ticket.text(
+    //         'Customer Name: ' +
+    //             widget.Customer_Name +
+    //             '\nCustomer Number: ' +
+    //             widget.Customer_Number,
+    //         styles: PosStyles(align: PosAlign.center, bold: true),
+    //         linesAfter: 1);
+    //     // bytes += ticket.text(
+    //     //     'UNPAID DUES: ' +
+    //     //         addCommasToNumber(double.tryParse(Customer_Due)!) +
+    //     //         '\$',
+    //     //     styles: PosStyles(
+    //     //       align: PosAlign.center,
+    //     //       bold: true,
+    //     //     ),
+    //     //     linesAfter: 1);
+    //   }
+    //   // bytes += ticket.text(
+    //   //     'USD Rate: ' + (rateController.rateValue.value.toString()),
+    //   //     styles: PosStyles(align: PosAlign.center, bold: true),
+    //   //     linesAfter: 0);
+
+    //   // bytes += ticket.beep();
+    //   //   bytes += ticket.image();
+
+    //   bytes += ticket.hr();
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'Qty',
+    //         width: 1,
+    //         styles: PosStyles(align: PosAlign.left, bold: true)),
+    //     PosColumn(
+    //         text: 'Item',
+    //         width: 5,
+    //         styles: PosStyles(align: PosAlign.left, bold: true)),
+    //     PosColumn(
+    //         text: 'Color',
+    //         width: 2,
+    //         styles: PosStyles(align: PosAlign.left, bold: true)),
+    //     PosColumn(
+    //         text: 'UP',
+    //         width: 2,
+    //         styles: PosStyles(align: PosAlign.right, bold: true)),
+    //     PosColumn(
+    //         text: 'TP',
+    //         width: 2,
+    //         styles: PosStyles(align: PosAlign.right, bold: true)),
+    //   ]);
+    //   bytes += ticket.hr(ch: '=', linesAfter: 1);
+
+    //   for (int i = 0;
+    //       i <
+    //           invoiceDetailController.invoice_detail
+    //               .where((invoice_detail) =>
+    //                   invoice_detail.Invoice_id ==
+    //                       int.tryParse(widget.Invoice_id) &&
+    //                   (invoice_detail.Product_Name.toLowerCase()
+    //                           .contains(filter.value.toLowerCase()) ||
+    //                       invoice_detail.Product_Code.toLowerCase()
+    //                           .contains(filter.value.toLowerCase())))
+    //               .toList()
+    //               .length;
+    //       i++) {
+    //     print(filteredProductDetails);
+    //     bytes += ticket.row([
+    //       PosColumn(
+    //           text: invoiceDetailController.invoice_detail
+    //               .where((invoice_detail) =>
+    //                   invoice_detail.Invoice_id ==
+    //                       int.tryParse(widget.Invoice_id) &&
+    //                   (invoice_detail.Product_Name.toLowerCase()
+    //                           .contains(filter.value.toLowerCase()) ||
+    //                       invoice_detail.Product_Code.toLowerCase()
+    //                           .contains(filter.value.toLowerCase())))
+    //               .toList()[i]
+    //               .Product_Quantity
+    //               .toString(),
+    //           width: 1,
+    //           styles: PosStyles(bold: true)),
+    //       PosColumn(
+    //           text: invoiceDetailController.invoice_detail
+    //               .where((invoice_detail) =>
+    //                   invoice_detail.Invoice_id ==
+    //                       int.tryParse(widget.Invoice_id) &&
+    //                   (invoice_detail.Product_Name.toLowerCase()
+    //                           .contains(filter.value.toLowerCase()) ||
+    //                       invoice_detail.Product_Code.toLowerCase()
+    //                           .contains(filter.value.toLowerCase())))
+    //               .toList()[i]
+    //               .Product_Code,
+    //           width: 5,
+    //           styles: PosStyles(bold: true)),
+    //       PosColumn(
+    //           text: invoiceDetailController.invoice_detail
+    //               .where((invoice_detail) =>
+    //                   invoice_detail.Invoice_id ==
+    //                       int.tryParse(widget.Invoice_id) &&
+    //                   (invoice_detail.Product_Name.toLowerCase()
+    //                           .contains(filter.value.toLowerCase()) ||
+    //                       invoice_detail.Product_Code.toLowerCase()
+    //                           .contains(filter.value.toLowerCase())))
+    //               .toList()[i]
+    //               .Product_Color,
+    //           width: 2,
+    //           styles: PosStyles(bold: true)),
+    //       PosColumn(
+    //           text: invoiceDetailController.invoice_detail
+    //               .where((invoice_detail) =>
+    //                   invoice_detail.Invoice_id ==
+    //                       int.tryParse(widget.Invoice_id) &&
+    //                   (invoice_detail.Product_Name.toLowerCase()
+    //                           .contains(filter.value.toLowerCase()) ||
+    //                       invoice_detail.Product_Code.toLowerCase()
+    //                           .contains(filter.value.toLowerCase())))
+    //               .toList()[i]
+    //               .product_TP
+    //               .toString(),
+    //           width: 2,
+    //           styles: PosStyles(align: PosAlign.right, bold: true)),
+    //       PosColumn(
+    //           text: (invoiceDetailController.invoice_detail
+    //                   .where((invoice_detail) =>
+    //                       invoice_detail.Invoice_id ==
+    //                           int.tryParse(widget.Invoice_id) &&
+    //                       (invoice_detail.Product_Name.toLowerCase()
+    //                               .contains(filter.value.toLowerCase()) ||
+    //                           invoice_detail.Product_Code.toLowerCase()
+    //                               .contains(filter.value.toLowerCase())))
+    //                   .toList()[i]
+    //                   .product_TP)
+    //               .toString(),
+    //           width: 2,
+    //           styles: PosStyles(align: PosAlign.right, bold: true)),
+    //     ]);
+    //     bytes += ticket.row([
+    //       PosColumn(
+    //           text: '  ' +
+    //               invoiceDetailController.invoice_detail
+    //                   .where((invoice_detail) =>
+    //                       invoice_detail.Invoice_id ==
+    //                           int.tryParse(widget.Invoice_id) &&
+    //                       (invoice_detail.Product_Name.toLowerCase()
+    //                               .contains(filter.value.toLowerCase()) ||
+    //                           invoice_detail.Product_Code.toLowerCase()
+    //                               .contains(filter.value.toLowerCase())))
+    //                   .toList()[i]
+    //                   .Product_Name
+    //                   .toString(),
+    //           width: 12,
+    //           styles: PosStyles(align: PosAlign.left, bold: true)),
+    //     ]);
+    //     bytes += ticket.hr(ch: ' ', linesAfter: 0);
+    //   }
+
+    //   bytes += ticket.hr(ch: '=', linesAfter: 1);
+
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'TOTAL USD',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //     PosColumn(
+    //         text: addCommasToNumber(double.tryParse(widget.Invoice_Total_US)!) +
+    //             ' USD',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             align: PosAlign.right,
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //   ]);
+
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'TOTAL LL',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //     PosColumn(
+    //         text: addCommasToNumber(double.tryParse(widget.Invoice_Total_US)!) +
+    //             ' LL',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             align: PosAlign.right,
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //   ]);
+
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'Received Usd',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //     PosColumn(
+    //         text: addCommasToNumber(double.tryParse(widget.Invoice_Rec_US)!) +
+    //             ' USD',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             align: PosAlign.right,
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //   ]);
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'Received LL',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //     PosColumn(
+    //         text: addCommasToNumber(double.tryParse(widget.Invoice_Total_US)!) +
+    //             ' LL',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             align: PosAlign.right,
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //   ]);
+
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'Due Usd',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //     PosColumn(
+    //         text: addCommasToNumber(double.tryParse(widget.Invoice_Due_US)!) +
+    //             ' USD',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             align: PosAlign.right,
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //   ]);
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'Due LL',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //     PosColumn(
+    //         text: addCommasToNumber(double.tryParse(widget.Invoice_Due_US)!) +
+    //             ' LL',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             align: PosAlign.right,
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //   ]);
+    //   bytes += ticket.hr(ch: '=', linesAfter: 1);
+    //   bytes += ticket.row([
+    //     PosColumn(
+    //         text: 'New Due',
+    //         width: 6,
+    //         styles: PosStyles(
+    //             height: PosTextSize.size1,
+    //             width: PosTextSize.size1,
+    //             bold: true)),
+    //     // PosColumn(
+    //     //     text: addCommasToNumber(double.tryParse(Invoice_Due_US)! +
+    //     //             double.tryParse(Cus_Due)!) +
+    //     //         ' USD',
+    //     //     width: 6,
+    //     //     styles: PosStyles(
+    //     //         align: PosAlign.right,
+    //     //         height: PosTextSize.size1,
+    //     //         bold: true,
+    //     //         width: PosTextSize.size1)),
+    //   ]);
+    //   bytes += ticket.hr(ch: '=', linesAfter: 1);
+    //   bytes += ticket.feed(2);
+    //   bytes += ticket.text('Thank you!',
+    //       styles: PosStyles(align: PosAlign.center, bold: true));
+    //   final now = DateTime.now();
+    //   final formatter = DateFormat('MM/dd/yyyy H:m');
+    //   final String timestamp = formatter.format(now);
+    //   bytes += ticket.text(timestamp,
+    //       styles: PosStyles(align: PosAlign.center), linesAfter: 2);
+
+    //   // bytes += ticket.text('Invoice #' + last_id.toString(),
+    //   //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
+
+    //   // bytes += ticket.qrcode(last_id.toString());
+    //   bytes += ticket.feed(1);
+    //   bytes += ticket.cut();
+
+    //   ticket.feed(2);
+    //   ticket.cut();
+    //   return bytes;
+    // }
+
+    // Future<void> PrintReceipt() async {
+    //   final profile = await CapabilityProfile.load();
+    //   final PaperSize paper = PaperSize.mm80;
+
+    //   final List<int> bytes = await ReceiptDesign(paper, profile);
+    //   if (bluetoothController!.isConnected &&
+    //       bluetoothController!.connection != null) {
+    //     try {
+    //       bluetoothController!.connection!.output
+    //           .add(Uint8List.fromList(bytes));
+    //       await bluetoothController!.connection!.output.allSent;
+    //     } catch (e) {
+    //       print('Error printing: $e');
+    //     }
+    //   } else {
+    //     print('Error: Not connected to a Bluetooth device');
+    //   }
+    // }
 
     //  invoiceDetailController.product_detail.clear();
     // invoiceDetailController.isDataFetched = false;
@@ -626,7 +646,9 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
             color: Colors.deepPurple,
             iconSize: 24.0,
             onPressed: () {
-              if (Platform.isAndroid) {}
+              if (Platform.isAndroid) {
+                CheckPrinter();
+              }
               // categoryController.isDataFetched =false;
               // categoryController.fetchcategories();
             },
@@ -940,7 +962,15 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
                                         ),
                                       ],
                                     ),
+                                    checkPhone(invoice.isPhone)
+                                        ? Text('Phone id: ' +
+                                            invoice.Phone_id.toString())
+                                        : Text('Product id: ' +
+                                            invoice.Product_id.toString()),
 
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text('Product Code: ' +
                                         invoice.Product_Code),
                                     SizedBox(

@@ -4,8 +4,8 @@ class TransferDetailsModel {
   final int Transfer_detail_id;
 
   final int Transfer_id;
-  final int Product_id;
-  final int Product_Detail_id;
+  final int? Product_id;
+  final int? Product_Detail_id;
 
   final String Product_Name;
   final int Product_Qty;

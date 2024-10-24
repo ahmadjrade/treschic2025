@@ -10,28 +10,31 @@ import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
 import 'package:fixnshop_admin/controller/product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/rate_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/domain.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/model/product_detail_model.dart';
+import 'package:fixnshop_admin/model/repair_product_detail_model.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../model/product_model.dart';
 import 'package:http/http.dart' as http;
 
-class InvoiceController extends GetxController {
-  final ProductDetailController productDetailController =
-      Get.find<ProductDetailController>();
-  final PhoneController phoneController = Get.find<PhoneController>();
+class RepairController extends GetxController {
+  final RepairProductDetailController repairProductDetailController =
+      Get.find<RepairProductDetailController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   final RateController rateController = Get.find<RateController>();
   RxString Username = ''.obs;
-  RxList<ProductDetailModel> invoiceItems = <ProductDetailModel>[].obs;
+  RxList<RepairProductDetailModel> repairItems =
+      <RepairProductDetailModel>[].obs;
   RxDouble totalUsd = 0.0.obs;
   RxDouble totalLb = 0.0.obs;
-  RxDouble invoice_due = 0.0.obs;
+  RxDouble Repair_due = 0.0.obs;
   RxDouble totalQty = 0.0.obs;
   RxDouble ReceivedUSD = 0.0.obs;
   RxDouble ReceivedLb = 0.0.obs;
@@ -59,7 +62,7 @@ class InvoiceController extends GetxController {
 
     ReturnLB.value = 0;
     ReturnUSD.value = 0;
-    invoice_due.value = 0;
+    Repair_due.value = 0;
     totalLb.value = 0;
     totalUsd.value = 0;
     totalQty.value = 0;
@@ -68,10 +71,10 @@ class InvoiceController extends GetxController {
     calculateTotalLb();
     calculateTotalQty();
 
-    for (int i = 0; i < invoiceItems.length; i++) {
-      invoiceItems[i].quantity.value = 1;
+    for (int i = 0; i < repairItems.length; i++) {
+      repairItems[i].quantity.value = 1;
     }
-    invoiceItems.clear();
+    repairItems.clear();
   }
 
   void resetRecUsd() {
@@ -102,28 +105,28 @@ class InvoiceController extends GetxController {
 
   void calculateTotal() {
     totalUsd.value = 0.0;
-    for (var item in invoiceItems) {
-      totalUsd.value += item.product_MPrice * item.quantity.value;
+    for (var item in repairItems) {
+      totalUsd.value += item.R_product_price * item.quantity.value;
     }
   }
 
   void calculateTotalLb() {
     totalLb.value = 0.0;
-    for (var item in invoiceItems) {
-      totalLb.value += (item.product_MPrice * item.quantity.value) *
+    for (var item in repairItems) {
+      totalLb.value += (item.R_product_price * item.quantity.value) *
           rateController.rateValue.value;
     }
   }
 
   void calculateTotalQty() {
     totalQty.value = 0.0;
-    for (var item in invoiceItems) {
+    for (var item in repairItems) {
       totalQty.value += item.quantity.value;
     }
   }
 
-  void updateItemPrice(ProductDetailModel item, double newPrice) {
-    item.product_MPrice = newPrice;
+  void updateItemPrice(RepairProductDetailModel item, double newPrice) {
+    item.R_product_price = newPrice;
     calculateTotal();
     calculateTotalLb();
     calculateTotalQty();
@@ -131,8 +134,8 @@ class InvoiceController extends GetxController {
     calculateDueLB();
   }
 
-  void UpdateQty(ProductDetailModel product, qty) {
-    if (qty > product.Product_Quantity) {
+  void UpdateQty(RepairProductDetailModel product, qty) {
+    if (qty > product.R_product_quantity) {
       Get.snackbar('Error', 'This Quantity is not available');
     } else {
       product.quantity.value = qty;
@@ -144,7 +147,7 @@ class InvoiceController extends GetxController {
     }
   }
 
-  void IncreaseQty(ProductDetailModel product) {
+  void IncreaseQty(RepairProductDetailModel product) {
     product.quantity += 1;
     calculateTotalLb();
     calculateDueUSD();
@@ -153,7 +156,7 @@ class InvoiceController extends GetxController {
     calculateTotalQty();
   }
 
-  void DecreaseQty(ProductDetailModel product) {
+  void DecreaseQty(RepairProductDetailModel product) {
     if (product.quantity.value == 1) {
       Get.snackbar('Error', 'Product Quantity Can\'t Be Zero.');
     } else {
@@ -175,13 +178,11 @@ class InvoiceController extends GetxController {
   }
 
   void fetchProduct(String productCodeController) {
-    ProductDetailModel? product = _findProductDetail(productCodeController);
-    PhoneModel? phone = _findPhone(productCodeController);
+    RepairProductDetailModel? product =
+        _findProductDetail(productCodeController);
 
     if (product != null) {
-      _addProductToInvoice(product);
-    } else if (phone != null) {
-      _addPhoneToInvoice(phone);
+      _addProductToRepair(product);
     } else {
       Get.snackbar('Product Not Found',
           'The product with the provided code does not exist.',
@@ -190,32 +191,20 @@ class InvoiceController extends GetxController {
     }
   }
 
-  ProductDetailModel? _findProductDetail(String productCode) {
+  RepairProductDetailModel? _findProductDetail(String productCode) {
     Username.value = sharedPreferencesController.username.value;
-    for (var prod in productDetailController.product_detail) {
-      if (prod.Product_Code == productCode && prod.Username == Username.value) {
+    for (var prod in repairProductDetailController.repair_product_detail) {
+      if (prod.Repair_p_code == productCode &&
+          prod.Username == Username.value) {
         return prod;
       }
     }
     return null;
   }
 
-  PhoneModel? _findPhone(String productCode) {
-    Username.value = sharedPreferencesController.username.value;
-    for (var phone in phoneController.phones) {
-      if (phone.Phone_IMEI == productCode &&
-          phone.Username.toLowerCase() == Username.value.toLowerCase() &&
-          phone.isSold == 0) {
-        // Assuming productCode matches Phone_IMEI for PhoneModel
-        return phone;
-      }
-    }
-    return null;
-  }
-
-  void _addProductToInvoice(ProductDetailModel product) {
-    if (invoiceItems.contains(product)) {
-      if (product.quantity.value == product.Product_Quantity) {
+  void _addProductToRepair(RepairProductDetailModel product) {
+    if (repairItems.contains(product)) {
+      if (product.quantity.value == product.R_product_quantity) {
         Get.snackbar('Product Already Added', 'Max Quantity Reached.',
             snackPosition: SnackPosition.BOTTOM,
             duration: const Duration(seconds: 2));
@@ -223,52 +212,15 @@ class InvoiceController extends GetxController {
         product.quantity.value += 1;
         recalculateAll();
       }
-    } else if (product.Product_Quantity == 0) {
+    } else if (product.R_product_quantity == 0) {
       Get.snackbar('Product Addition Failed', 'No More Quantity.',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2));
     } else {
-      invoiceItems.add(product);
+      repairItems.add(product);
       recalculateAll();
       Get.snackbar(
-          'Product Added To Invoice', 'Product Code ${product.Product_Code}',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 2));
-    }
-  }
-
-  void _addPhoneToInvoice(PhoneModel phone) {
-    if (invoiceItems.any((item) => item.Product_Code == phone.Phone_IMEI)) {
-      var existingItem = invoiceItems
-          .firstWhere((item) => item.Product_Code == phone.Phone_IMEI);
-      if (existingItem.quantity.value == existingItem.Product_Quantity) {
-        Get.snackbar('Product Already Added', 'Max Quantity Reached.',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 2));
-      } else {
-        existingItem.quantity.value += 1;
-        recalculateAll();
-      }
-    } else {
-      invoiceItems.add(ProductDetailModel(
-          PD_id: 0,
-          Product_id: phone.Phone_id,
-          Product_Name: phone.Phone_Name,
-          Product_Code: phone.Phone_IMEI,
-          Product_Color: phone.Color,
-          Product_Quantity: 1,
-          Product_Max_Quantity: 1,
-          Product_Sold_Quantity: 1,
-          Product_Transfered_Qty: 1,
-          Product_LPrice: 0,
-          Product_MPrice: double.tryParse(phone.Sell_Price.toString())!,
-          Product_Cost: double.tryParse(phone.Phone_Price.toString())!,
-          Product_Store: phone.Username,
-          Username: phone.Username,
-          quantity: 1.obs,
-          isPhone: 1)); // Assuming quantity is represented by Sell_Price
-      recalculateAll();
-      Get.snackbar('Phone Added To Invoice', 'Product Code ${phone.Phone_IMEI}',
+          'Product Added To Repair', 'Product Code ${product.Repair_p_code}',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2));
     }
@@ -292,12 +244,14 @@ class InvoiceController extends GetxController {
   final BluetoothController bluetoothController =
       Get.find<BluetoothController>();
 
-  Future<void> PrintReceipt(Cus_Name, Cus_Number, Cus_Due) async {
+  Future<void> PrintReceipt() async {
     final profile = await CapabilityProfile.load();
     final PaperSize paper = PaperSize.mm80;
 
-    final List<int> bytes =
-        await ReceiptDesign(paper, profile, Cus_Name, Cus_Number, Cus_Due);
+    final List<int> bytes = await ReceiptDesign(
+      paper,
+      profile,
+    );
     if (bluetoothController!.isConnected &&
         bluetoothController!.connection != null) {
       try {
@@ -311,8 +265,10 @@ class InvoiceController extends GetxController {
     }
   }
 
-  Future<List<int>> ReceiptDesign(PaperSize paper, CapabilityProfile profile,
-      Cus_Name, Cus_Number, Cus_Due) async {
+  Future<List<int>> ReceiptDesign(
+    PaperSize paper,
+    CapabilityProfile profile,
+  ) async {
     final Generator ticket = Generator(paper, profile);
     List<int> bytes = [];
     //List Name = ['123', '1234', '12345'];
@@ -330,26 +286,23 @@ class InvoiceController extends GetxController {
         ),
         linesAfter: 1);
 
-    bytes += ticket.text(
-        sharedPreferencesController.storeName.toUpperCase() + ' Store',
+    bytes += ticket.text(Username.toUpperCase() + ' Store',
         styles: PosStyles(align: PosAlign.center, bold: true));
     //bytes += ticket.text(Store_Loc!, styles: PosStyles(align: PosAlign.center));
 
-    bytes += ticket.text('+961/${sharedPreferencesController.storeNumber}',
-        styles: PosStyles(align: PosAlign.center, bold: true));
-    bytes += ticket.text('${sharedPreferencesController.location}',
+    bytes += ticket.text('+961/81214404',
         styles: PosStyles(align: PosAlign.center, bold: true));
     // bytes += ticket.text('Web: www.treschiclb.com',
     //     styles: PosStyles(align: PosAlign.center), linesAfter: 0);
     bytes += ticket.feed(1);
     bytes += ticket.text(
-      'Invoice ID #$lastId',
+      'Repair ID #$lastId',
       styles: PosStyles(align: PosAlign.center, bold: true),
       linesAfter: 1,
     );
     //bytes += ticket.qrcode(lastId);
     bytes += ticket.hr(ch: '*', linesAfter: 1);
-    bytes += ticket.text('Invoice Type: ' + 'Store',
+    bytes += ticket.text('Repair Type: ' + 'Store',
         styles: PosStyles(align: PosAlign.center, bold: true), linesAfter: 0);
     // bytes += ticket.text('Paid In: ' + Currency,
     //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
@@ -383,19 +336,7 @@ class InvoiceController extends GetxController {
     //       styles: PosStyles(align: PosAlign.center),
     //       linesAfter: 1);
     // }
-    if (Cus_Number != '000000') {
-      bytes += ticket.text(
-          'Customer Name: ' + Cus_Name + '\nCustomer Number: ' + Cus_Number,
-          styles: PosStyles(align: PosAlign.center, bold: true),
-          linesAfter: 1);
-      bytes += ticket.text(
-          'UNPAID DUES: ' + addCommasToNumber(double.tryParse(Cus_Due)!) + '\$',
-          styles: PosStyles(
-            align: PosAlign.center,
-            bold: true,
-          ),
-          linesAfter: 1);
-    }
+
     bytes += ticket.text(
         'USD Rate: ' + (rateController.rateValue.value.toString()),
         styles: PosStyles(align: PosAlign.center, bold: true),
@@ -429,35 +370,35 @@ class InvoiceController extends GetxController {
     ]);
     bytes += ticket.hr(ch: '=', linesAfter: 1);
 
-    for (int i = 0; i < invoiceItems.length; i++) {
-      print(invoiceItems);
+    for (int i = 0; i < repairItems.length; i++) {
+      print(repairItems);
       bytes += ticket.row([
         PosColumn(
-            text: invoiceItems[i].quantity.toString(),
+            text: repairItems[i].quantity.toString(),
             width: 1,
             styles: PosStyles(bold: true)),
         PosColumn(
-            text: invoiceItems[i].Product_Code,
+            text: repairItems[i].Repair_p_code,
             width: 5,
             styles: PosStyles(bold: true)),
         PosColumn(
-            text: invoiceItems[i].Product_Color,
+            text: repairItems[i].Color,
             width: 2,
             styles: PosStyles(bold: true)),
         PosColumn(
-            text: invoiceItems[i].product_MPrice.toString(),
+            text: repairItems[i].R_product_price.toString(),
             width: 2,
             styles: PosStyles(align: PosAlign.right, bold: true)),
         PosColumn(
-            text: (invoiceItems[i].quantity.value *
-                    invoiceItems[i].product_MPrice)
-                .toString(),
+            text:
+                (repairItems[i].quantity.value * repairItems[i].R_product_price)
+                    .toString(),
             width: 2,
             styles: PosStyles(align: PosAlign.right, bold: true)),
       ]);
       bytes += ticket.row([
         PosColumn(
-            text: '  ' + invoiceItems[i].Product_Name.toString(),
+            text: '  ' + repairItems[i].Repair_p_name.toString(),
             width: 12,
             styles: PosStyles(align: PosAlign.left, bold: true)),
       ]);
@@ -560,22 +501,7 @@ class InvoiceController extends GetxController {
               bold: true)),
     ]);
     bytes += ticket.hr(ch: '=', linesAfter: 1);
-    bytes += ticket.row([
-      PosColumn(
-          text: 'New Due',
-          width: 6,
-          styles: PosStyles(
-              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-      PosColumn(
-          text: addCommasToNumber(DueUSD.value + double.tryParse(Cus_Due)!) +
-              ' USD',
-          width: 6,
-          styles: PosStyles(
-              align: PosAlign.right,
-              height: PosTextSize.size1,
-              bold: true,
-              width: PosTextSize.size1)),
-    ]);
+
     bytes += ticket.hr(ch: '=', linesAfter: 1);
     bytes += ticket.feed(2);
     bytes += ticket.text('Thank you!',
@@ -586,7 +512,7 @@ class InvoiceController extends GetxController {
     bytes += ticket.text(timestamp,
         styles: PosStyles(align: PosAlign.center), linesAfter: 2);
 
-    // bytes += ticket.text('Invoice #' + last_id.toString(),
+    // bytes += ticket.text('Repair #' + last_id.toString(),
     //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
 
     // bytes += ticket.qrcode(last_id.toString());
@@ -604,67 +530,37 @@ class InvoiceController extends GetxController {
   }
 
   String lastId = '';
-  Future<void> uploadInvoiceToDatabase(
-      String Cus_id,
-      String Cus_Name,
-      String Cus_Number,
-      String Driver_id,
-      String Driver_Name,
-      String Driver_Number,
-      String isDel,
-      String Delivery_Code) async {
+  Future<void> uploadRepairToDatabase(String Rep_id) async {
     try {
-      print(Driver_id + Driver_Name + Driver_Number + isDel);
       Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
       formattedTime = dateController.getFormattedTime();
 
-      // Prepare invoice data
-      List<Map<String, dynamic>> invoiceData = [];
+      // Prepare Repair data
+      List<Map<String, dynamic>> RepairData = [];
 
-      for (ProductDetailModel product in invoiceItems) {
-        invoiceData.add({
+      for (RepairProductDetailModel product in repairItems) {
+        RepairData.add({
+          'Repair_id': Rep_id,
           'Store_id': product.Product_Store,
-          'Product_id': product.Product_id,
-          'Product_Name': product.Product_Name,
+          'R_product_id': product.R_product_id,
+          'Repair_p_name': product.Repair_p_name,
           'Product_Qty': product.quantity.value,
-          'Product_UP': product.product_MPrice,
-          'Product_TP': (product.quantity.value * product.product_MPrice),
-          'Product_Code': product.Product_Code,
-          'Product_Color': product.Product_Color,
-          'Product_Cost': product.product_Cost,
-          'isPhone': product.isPhone
+          'Product_UP': product.R_product_price,
+          'Product_TP': (product.quantity.value * product.R_product_price),
+          'Repair_p_code': product.Repair_p_code,
+          'Color': product.Color,
+          'Product_Cost': product.R_product_cost,
         });
       }
 
-      // Send invoice data to PHP script
+      // Send Repair data to PHP script
       String domain = domainModel.domain;
-      String uri = '$domain/insert_invoice.php';
+      String uri = '$domain/insert_repair_details.php';
       final response = await http.post(
         Uri.parse(uri),
         body: jsonEncode({
-          'Invoice_Store': Username.value,
-          'item_count': totalQty.value,
-          'Invoice_Total_USD': totalUsd.value,
-          'Invoice_Total_Lb': totalLb.value,
-          'Invoice_Rec_Usd': ReceivedUSD.value,
-          'Invoice_Rec_Lb': ReceivedLb.value,
-          'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
-          'Invoice_Due_LB': DueLB.value,
-          'Cus_id': Cus_id,
-          'Cus_Name': Cus_Name,
-          'Cus_Number': Cus_Number,
-          'Invoice_Date': formattedDate,
-          'Invoice_Time': formattedTime,
-          'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
-          'Invoice_Type': Inv_type(isDel),
-          'Driver_id': Driver_id,
-          'Invoice_Rate': rateController.rateValue.value,
-          'Driver_Name': Driver_Name,
-          'Driver_Number': Driver_Number,
-          'isDelivery': isDel,
-          'Delivery_Code': Delivery_Code,
-          'invoiceItems': invoiceData,
+          'repairItems': RepairData,
         }),
         headers: {'Content-Type': 'application/json'},
       );
@@ -673,18 +569,17 @@ class InvoiceController extends GetxController {
         // Parse the JSON response on success
         Map<String, dynamic> responseData = jsonDecode(response.body);
         if (responseData['status'] == 'success') {
-          lastId = responseData['lastId'].toString();
           print('Data sent successfully. Last Inserted ID: $lastId');
-          result = 'Invoice Sent Successfully';
+          result = 'Repair Sent Successfully';
         } else {
           print('Error: ${responseData['message']}');
-          result = 'Invoice Sending Failed: ${responseData['message']}';
+          result = 'Repair Sending Failed: ${responseData['message']}';
         }
       } else {
         // Handle the error response from the server (e.g., 400 Bad Request)
         Map<String, dynamic> errorData = jsonDecode(response.body);
         print('Error: ${errorData['message']}');
-        result = 'Invoice Sending Failed: ${errorData['message']}';
+        result = 'Repair Sending Failed: ${errorData['message']}';
       }
     } catch (error) {
       // Handle any exceptions that occur during the request
@@ -693,64 +588,64 @@ class InvoiceController extends GetxController {
     }
   }
 
-  Future<void> uploadOldInvoiceToDatabase(String Inv_id) async {
-    try {
-      Username = sharedPreferencesController.username;
-      formattedDate = dateController.getFormattedDate();
-      formattedTime = dateController.getFormattedTime();
-      // Prepare invoice data
-      List<Map<String, dynamic>> invoiceData = [];
+  // Future<void> uploadOldRepairToDatabase(String Inv_id) async {
+  //   try {
+  //     Username = sharedPreferencesController.username;
+  //     formattedDate = dateController.getFormattedDate();
+  //     formattedTime = dateController.getFormattedTime();
+  //     // Prepare Repair data
+  //     List<Map<String, dynamic>> RepairData = [];
 
-      for (ProductDetailModel product in invoiceItems) {
-        invoiceData.add({
-          'Invoice_id': Inv_id,
-          'Store_id': product.Product_Store,
-          'Product_id': product.Product_id,
-          'Product_Name': product.Product_Name,
-          'Product_Qty': product.quantity.value,
-          'Product_UP': product.product_MPrice,
-          'Product_TP': (product.quantity.value * product.product_MPrice),
-          'Product_Code': product.Product_Code,
-          'Product_Color': product.Product_Color,
-        });
-      }
+  //     for (RepairProductDetailModel product in repairItems) {
+  //       RepairData.add({
+  //         'Repair_id': Inv_id,
+  //         'Store_id': product.Product_Store,
+  //         'R_product_id': product.R_product_id,
+  //         'Repair_p_name': product.Repair_p_name,
+  //         'Product_Qty': product.quantity.value,
+  //         'Product_UP': product.R_product_price,
+  //         'Product_TP': (product.quantity.value * product.R_product_price),
+  //         'Repair_p_code': product.Repair_p_code,
+  //         'Color': product.Color,
+  //       });
+  //     }
 
-      // Send invoice data to PHP script
-      String domain = domainModel.domain;
-      String uri = '$domain' 'insert_in_oldinvoice.php';
-      final response = await http.post(
-        Uri.parse(uri),
-        body: jsonEncode({
-          'Inv_id': Inv_id,
-          'item_count': totalQty.value,
-          'Invoice_Total_USD': totalUsd.value,
-          'Invoice_Total_Lb': totalLb.value,
-          'Invoice_Rec_Usd': ReceivedUSD.value,
-          'Invoice_Rec_Lb': ReceivedLb.value,
-          'Invoice_Due_USD': DueLB.value / rateController.rateValue.value,
-          'Invoice_Due_LB': DueLB.value,
-          'Invoice_Date': formattedDate,
-          'Invoice_Time': formattedTime,
-          'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
-          'invoiceItems': invoiceData,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
+  //     // Send Repair data to PHP script
+  //     String domain = domainModel.domain;
+  //     String uri = '$domain' 'insert_in_oldRepair.php';
+  //     final response = await http.post(
+  //       Uri.parse(uri),
+  //       body: jsonEncode({
+  //         'Inv_id': Inv_id,
+  //         'item_count': totalQty.value,
+  //         'Repair_Total_USD': totalUsd.value,
+  //         'Repair_Total_Lb': totalLb.value,
+  //         'Repair_Rec_Usd': ReceivedUSD.value,
+  //         'Repair_Rec_Lb': ReceivedLb.value,
+  //         'Repair_Due_USD': DueLB.value / rateController.rateValue.value,
+  //         'Repair_Due_LB': DueLB.value,
+  //         'Repair_Date': formattedDate,
+  //         'Repair_Time': formattedTime,
+  //         'isPaid': isPaid(DueLB.value / rateController.rateValue.value),
+  //         'repairItems': RepairData,
+  //       }),
+  //       headers: {'Content-Type': 'application/json'},
+  //     );
 
-      if (response.statusCode == 200) {
-        // Data successfully sent to the API
-        print('Data sent successfully');
-        result = 'Invoice Sent Successfully';
+  //     if (response.statusCode == 200) {
+  //       // Data successfully sent to the API
+  //       print('Data sent successfully');
+  //       result = 'Repair Sent Successfully';
 
-        // Continue with the rest of the logic if needed
-      } else {
-        // Error occurred while sending the data
-        print('Error sending data. StatusCode: ${response.statusCode}');
-        result = 'Invoice Sending Failed';
-      }
-    } catch (error) {
-      // Exception occurred while sending the data
-      print('Exception: $error');
-    }
-  }
+  //       // Continue with the rest of the logic if needed
+  //     } else {
+  //       // Error occurred while sending the data
+  //       print('Error sending data. StatusCode: ${response.statusCode}');
+  //       result = 'Repair Sending Failed';
+  //     }
+  //   } catch (error) {
+  //     // Exception occurred while sending the data
+  //     print('Exception: $error');
+  //   }
+  // }
 }

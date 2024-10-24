@@ -64,7 +64,6 @@ class InvoiceHistoryMonth extends StatelessWidget {
     }
 
     return Scaffold(
-   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -235,9 +234,9 @@ class InvoiceHistoryMonth extends StatelessWidget {
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12),
-                                        ), Text(
-                                          ' || ' +
-                                              invoice.Invoice_Type!
+                                        ),
+                                        Text(
+                                          ' || ' + invoice.Invoice_Type!
                                           // +
                                           // ' -- ' +
                                           // invoice.phone_Code,
@@ -263,7 +262,6 @@ class InvoiceHistoryMonth extends StatelessWidget {
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -342,11 +340,9 @@ class InvoiceHistoryMonth extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           OutlinedButton(
                                               style: ElevatedButton.styleFrom(
                                                 fixedSize:
@@ -397,6 +393,8 @@ class InvoiceHistoryMonth extends StatelessWidget {
                                                           Invoice_Due_US: invoice
                                                                   .Invoice_Due_USD
                                                               .toString(),
+                                                          rate: invoice.Inv_Rate
+                                                              .toString(),
                                                         ));
                                               },
                                               child: Row(
@@ -426,11 +424,9 @@ class InvoiceHistoryMonth extends StatelessWidget {
                                                   ),
                                                 ],
                                               )),
-
                                         ],
                                       ),
                                     ),
-                                    
                                   ],
                                 ),
                               ),
@@ -495,7 +491,8 @@ class InvoiceHistoryMonth extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ), Row(
+                              ),
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -514,7 +511,8 @@ class InvoiceHistoryMonth extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ), Row(
+                              ),
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [

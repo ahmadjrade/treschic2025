@@ -210,6 +210,7 @@ class OldInvoiceUpdate extends StatelessWidget {
                             },
                             onDoubleTap: () {
                               Get.to(() => PhonesList(
+                                isTransfer: false,
                                     ));
                                
                             },

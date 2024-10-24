@@ -393,7 +393,9 @@ class StocksScreen extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {
-                                Get.to(() => PhonesList());
+                                Get.to(() => PhonesList(
+                                  isTransfer: false,
+                                ));
                               },
                               icon: Icon(
                                 Icons.list,

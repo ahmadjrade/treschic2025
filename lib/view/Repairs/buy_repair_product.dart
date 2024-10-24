@@ -10,6 +10,7 @@ import 'package:fixnshop_admin/controller/image_controller.dart';
 import 'package:fixnshop_admin/controller/insert_product_controller.dart';
 import 'package:fixnshop_admin/controller/insert_repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/product_controller.dart';
+import 'package:fixnshop_admin/controller/repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/supplier_controller.dart';
 import 'package:fixnshop_admin/model/brand_model.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
@@ -38,7 +39,8 @@ final BarcodeController barcodeController = Get.find<BarcodeController>();
 
 final InsertRepairProductController insertRepairProductController =
     Get.find<InsertRepairProductController>();
-final ProductController productController = Get.find<ProductController>();
+final RepairProductController repairProductController =
+    Get.find<RepairProductController>();
 
 final CategoryController categoryController = Get.find<CategoryController>();
 final SupplierController supplierController = Get.find<SupplierController>();
@@ -86,6 +88,7 @@ class _BuyAccessoriesState extends State<BuyRepairProduct> {
     //   subcategoryController.fetchcategories();
     // }
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,7 +100,10 @@ class _BuyAccessoriesState extends State<BuyRepairProduct> {
               onPressed: () {
                 Get.toNamed('/NewProductDetail');
               },
-              icon: Icon(CupertinoIcons.add),
+              icon: Icon(
+                CupertinoIcons.add,
+                color: Colors.blue.shade900,
+              ),
             ),
             IconButton(
               color: Colors.white,
@@ -117,11 +123,14 @@ class _BuyAccessoriesState extends State<BuyRepairProduct> {
                 // categoryController.category.clear();
                 // subcategoryController.sub_category.clear();
               },
-              icon: Icon(CupertinoIcons.refresh),
+              icon: Icon(
+                CupertinoIcons.refresh,
+                color: Colors.blue.shade900,
+              ),
             ),
           ],
         ),
-        backgroundColor: Colors.deepPurple.shade300,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -735,8 +744,6 @@ class _BuyAccessoriesState extends State<BuyRepairProduct> {
                       showToast('Please Add Max Price');
                     } else if ((Product_Cost.text) == '') {
                       showToast('Please Add Product Cost');
-                    } else if (double.tryParse(Product_Cost.text)! == 0) {
-                      showToast('Please Increase Cost');
                     } else if (double.tryParse(Product_MPrice.text)! == 0) {
                       showToast('Please Increase Max Price');
                     } else if (double.tryParse(Product_MPrice.text) ==
@@ -781,8 +788,10 @@ class _BuyAccessoriesState extends State<BuyRepairProduct> {
                           .then((value) =>
                               showToast(insertRepairProductController.result))
                           .then((value) =>
-                              productController.isDataFetched = false)
-                          .then((value) => productController.fetchproducts())
+                              repairProductController.isDataFetched = false)
+                          .then((value) =>
+                              repairProductController.fetchproducts())
+                          .then((value) => Navigator.of(context).pop())
                           .then((value) => Navigator.of(context).pop());
                     }
                   },

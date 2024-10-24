@@ -63,7 +63,6 @@ class InvoiceHistory extends StatelessWidget {
     }
 
     return Scaffold(
-   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -516,7 +515,6 @@ class InvoiceHistory extends StatelessWidget {
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -595,11 +593,9 @@ class InvoiceHistory extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           OutlinedButton(
                                               style: ElevatedButton.styleFrom(
                                                 fixedSize:
@@ -650,6 +646,8 @@ class InvoiceHistory extends StatelessWidget {
                                                           Invoice_Due_US: invoice
                                                                   .Invoice_Due_USD
                                                               .toString(),
+                                                          rate: invoice.Inv_Rate
+                                                              .toString(),
                                                         ));
                                               },
                                               child: Row(
@@ -679,8 +677,6 @@ class InvoiceHistory extends StatelessWidget {
                                                   ),
                                                 ],
                                               )),
-
-                                          
                                         ],
                                       ),
                                     ),
@@ -748,7 +744,8 @@ class InvoiceHistory extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ),Row(
+                              ),
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [

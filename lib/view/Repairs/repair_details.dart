@@ -1,6 +1,8 @@
+import 'package:fixnshop_admin/view/Repairs/add_repair_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class RepairDetails extends StatelessWidget {
   String Repair_id, Cus_id, Cus_Name, Cus_Number, Rec_usd, Total_usd, Phone;
@@ -142,6 +144,87 @@ class RepairDetails extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
+              OutlinedButton(
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(double.maxFinite, 50),
+                    backgroundColor: Colors.blue.shade100,
+                    side: BorderSide(width: 2.0, color: Colors.blue.shade100),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Get.to(AddRepairItems(Rep_id: Repair_id));
+                    // if (Product_Name.text == '') {
+                    //   showToast('Please insert Product Name');
+                    // } else if (SelectCatId == '') {
+                    //   showToast('Select Category');
+                    // } else if (SelectSubCatId == '') {
+                    //   showToast('Select Sub-Category');
+                    // } else if (SelectBrandId == '') {
+                    //   showToast('Select Brand');
+                    // } else if (SelectedColorId == '') {
+                    //   showToast('Select Color');
+                    // } else if (barcodeController.barcode.value == '') {
+                    //   showToast('Please Add Product Code ');
+                    // } else if (Product_MPrice.text == '') {
+                    //   showToast('Please Add Max Price');
+                    // } else if ((Product_Cost.text) == '') {
+                    //   showToast('Please Add Product Cost');
+                    // } else if (double.tryParse(Product_MPrice.text)! == 0) {
+                    //   showToast('Please Increase Max Price');
+                    // } else if (double.tryParse(Product_MPrice.text) ==
+                    //     double.tryParse(Product_Cost.text)) {
+                    //   showToast('Cost Can\'t Be equal to Max Price');
+                    // } else {
+                    //   showDialog(
+                    //       // The user CANNOT close this dialog  by pressing outsite it
+                    //       barrierDismissible: false,
+                    //       context: context,
+                    //       builder: (_) {
+                    //         return Dialog(
+                    //           // The background color
+                    //           backgroundColor: Colors.white,
+                    //           child: Padding(
+                    //             padding:
+                    //                 const EdgeInsets.symmetric(vertical: 20),
+                    //             child: Column(
+                    //               mainAxisSize: MainAxisSize.min,
+                    //               children: [
+                    //                 // The loading indicator
+                    //                 CircularProgressIndicator(),
+                    //                 SizedBox(
+                    //                   height: 15,
+                    //                 ),
+                    //                 // Some text
+                    //                 Text('Loading')
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         );
+                    //       });
+                    //   insertRepairProductController.UploadAcc(
+                    //           Product_Name.text,
+                    //           SelectCatId,
+                    //           SelectSubCatId,
+                    //           SelectBrandId,
+                    //           Product_Code.text,
+                    //           SelectedColorId.toString(),
+                    //           Product_Cost.text,
+                    //           Product_MPrice.text)
+                    //       .then((value) =>
+                    //           showToast(insertRepairProductController.result))
+                    //       .then((value) =>
+                    //           repairProductController.isDataFetched = false)
+                    //       .then((value) =>
+                    //           repairProductController.fetchproducts())
+                    //       .then((value) => Navigator.of(context).pop())
+                    //       .then((value) => Navigator.of(context).pop());
+                  },
+                  child: Text(
+                    'Insert Items',
+                    style: TextStyle(color: Colors.blue.shade900),
+                  ))
             ],
           ),
         ),

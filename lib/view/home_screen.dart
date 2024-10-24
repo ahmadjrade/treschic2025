@@ -217,6 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (index == 9) {
       Get.to(() => RepairProductList(
             isPur: 1,
+            isCreated: 0,
           ));
       setState(() {
         _selectedDestination = index;

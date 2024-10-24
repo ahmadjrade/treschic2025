@@ -5,6 +5,7 @@ import 'package:fixnshop_admin/controller/invoice_controller.dart';
 import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/phone_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
+import 'package:fixnshop_admin/controller/transfer_controller.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/model/phone_model.dart';
 import 'package:fixnshop_admin/view/Phones/phone_edit.dart';
@@ -20,7 +21,8 @@ import 'package:http/retry.dart';
 import 'package:intl/intl.dart';
 
 class PhonesList extends StatefulWidget {
-  PhonesList({super.key});
+  bool isTransfer;
+  PhonesList({super.key, required this.isTransfer});
 
   @override
   State<PhonesList> createState() => _PhonesListState();
@@ -36,6 +38,8 @@ class _PhonesListState extends State<PhonesList> {
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   final InvoiceController invoiceController = Get.find<InvoiceController>();
+  final TransferController transferController = Get.find<TransferController>();
+
   RxString Username = ''.obs;
   bool isVisible = false;
 
@@ -443,8 +447,10 @@ class _PhonesListState extends State<PhonesList> {
                               Phone_Name.text, Username.value);
                       if (phoneController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (phoneController.phones.isEmpty) {
-                        return Center(child: Text('No phones Yet ! Add Some '));
+                      } else if (filteredCategories.isEmpty) {
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [Text('No phones Yet ! Add Some ')]);
                       } else {
                         return ListView.builder(
                           shrinkWrap: true,
@@ -500,6 +506,19 @@ class _PhonesListState extends State<PhonesList> {
                                             Text(
                                               'IMEI: ' + phone.Phone_IMEI,
                                               style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Sell Price: ' +
+                                                  phone.Sell_Price.toString() +
+                                                  '\$',
+                                              style: TextStyle(
+                                                  color: Colors.green.shade900,
                                                   fontWeight: FontWeight.normal,
                                                   fontSize: 15),
                                             ),
@@ -623,6 +642,124 @@ class _PhonesListState extends State<PhonesList> {
                                               )
                                             ],
                                           ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: OutlinedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.red.shade100,
+                                                    side: BorderSide(
+                                                        width: 2.0,
+                                                        color: Colors
+                                                            .red.shade100),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Get.to(() => PhoneEdit(
+                                                          Phone_id:
+                                                              phone.Phone_id,
+                                                          Phone_Name:
+                                                              phone.Phone_Name,
+                                                          IMEI:
+                                                              phone.Phone_IMEI,
+                                                          Cost_Price:
+                                                              phone.Phone_Price,
+                                                          Sell_Price:
+                                                              phone.Sell_Price!,
+                                                          Condition: phone
+                                                              .Phone_Condition,
+                                                          Capacity: phone
+                                                              .Phone_Capacity,
+                                                          Color: phone
+                                                              .Phone_Color_id,
+                                                        ));
+                                                  },
+                                                  child: Text(
+                                                    'Edit',
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .red.shade900),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            widget.isTransfer
+                                                ? Expanded(
+                                                    child: OutlinedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.green
+                                                                  .shade100,
+                                                          side: BorderSide(
+                                                              width: 2.0,
+                                                              color: Colors
+                                                                  .green
+                                                                  .shade100),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15.0),
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          transferController
+                                                              .fetchProduct(phone
+                                                                  .Phone_IMEI);
+                                                        },
+                                                        child: Text(
+                                                          'Add To Transfer',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .green
+                                                                  .shade900),
+                                                        )),
+                                                  )
+                                                : Expanded(
+                                                    child: OutlinedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Colors.green
+                                                                  .shade100,
+                                                          side: BorderSide(
+                                                              width: 2.0,
+                                                              color: Colors
+                                                                  .green
+                                                                  .shade100),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15.0),
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          invoiceController
+                                                              .fetchProduct(phone
+                                                                  .Phone_IMEI);
+                                                        },
+                                                        child: Text(
+                                                          'Add To Invoice',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .green
+                                                                  .shade900),
+                                                        )),
+                                                  ),
+                                          ],
                                         )
                                       ],
                                     ),

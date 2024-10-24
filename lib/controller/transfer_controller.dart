@@ -410,6 +410,7 @@ class TransferController extends GetxController {
           'to_store': Store_id,
           'isPhone': product.isPhone
         });
+        print(product.isPhone);
       }
 
       // Send Transfer data to PHP script

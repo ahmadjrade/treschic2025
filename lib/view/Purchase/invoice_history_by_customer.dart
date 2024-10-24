@@ -298,7 +298,8 @@ class InvoiceHistoryByCustomer extends StatelessWidget {
                                           Invoice_Rec_US: invoice.Invoice_Rec_Usd
                                               .toString(),
                                           Invoice_Due_US:
-                                              invoice.Invoice_Due_USD.toString(),
+                                              invoice.Invoice_Due_USD.toString(),                                                              rate: invoice.Inv_Rate.toString(),
+
                                         ));
                                   },
                                   child: Row(

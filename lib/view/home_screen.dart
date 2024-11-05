@@ -17,14 +17,18 @@ import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.da
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/recharge_balance_model.dart';
 import 'package:fixnshop_admin/view/Customers/customer_list.dart';
+import 'package:fixnshop_admin/view/Drivers/customer_list_delivery.dart';
 import 'package:fixnshop_admin/view/Drivers/drivers_list.dart';
 import 'package:fixnshop_admin/view/Expenses/expense_manage.dart';
 import 'package:fixnshop_admin/view/Invoices/customer_list_finvhistory.dart';
+import 'package:fixnshop_admin/view/Invoices/driver_list_finvhistory.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_by_customer.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_history_by_driver.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_payment_manage.dart';
+import 'package:fixnshop_admin/view/Invoices/invoice_sold_manage.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_today_items.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
 import 'package:fixnshop_admin/view/Purchase/purchase_history11.dart';
@@ -264,6 +268,11 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else if (index == 17) {
       Get.to(() => TransferHistoryManage());
+      setState(() {
+        _selectedDestination = index;
+      });
+    } else if (index == 18) {
+      Get.to(() => DriverListFInvHistory());
       setState(() {
         _selectedDestination = index;
       });
@@ -510,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         //  backgroundColor: Colors.deepPurple.shade300,
       ),
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       //drawer: Navigat,
       drawer: Drawer(
         child: ListView(
@@ -601,6 +610,14 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedColor: Colors.green.shade900,
               selected: _selectedDestination == 14,
               onTap: () => selectDestination(14),
+            ),
+            ListTile(
+              leading: Icon(Icons.history_outlined),
+              title: Text('Invoice History By Driver'),
+              selectedTileColor: Colors.green.shade100,
+              selectedColor: Colors.green.shade900,
+              selected: _selectedDestination == 18,
+              onTap: () => selectDestination(18),
             ),
             Divider(
               height: 1,
@@ -1213,7 +1230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         horizontal: 10.0),
                                     child: GestureDetector(
                                       onTap: () {
-                                        Get.to(() => InvoiceTodayItems());
+                                        Get.to(() => InvoiceSoldManage());
                                       },
                                       child: Card(
                                         child: Container(

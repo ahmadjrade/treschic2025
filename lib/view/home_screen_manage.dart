@@ -32,14 +32,19 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
 
   final List<Widget> _homeScreenPages = [
     HomeScreen(),
-    ProductList(isPur: 1,from_home: 1,),
-    CustomerList(from_home: 1,),
+    ProductList(
+      isPur: 1,
+      from_home: 1,
+    ),
+    CustomerList(
+      from_home: 1,
+    ),
     StocksScreen(),
     CustomerListFrepair(),
   ];
 
   double isIos() {
-    return Platform.isIOS ? 25 : 20;
+    return Platform.isIOS ? 30 : 20;
   }
 
   @override

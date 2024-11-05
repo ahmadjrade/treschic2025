@@ -5,13 +5,13 @@ import 'dart:typed_data';
 
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/category_model.dart';
 import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
 import 'package:fixnshop_admin/model/invoice_history_model.dart';
 import 'package:fixnshop_admin/model/product_model.dart';
+import 'package:fixnshop_admin/model/repair_details_model.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
@@ -20,27 +20,19 @@ import 'dart:convert';
 
 import 'package:intl/intl.dart';
 
-class InvoiceDetailController extends GetxController {
-  RxList<InvoiceHistoryModel> invoice_detail = <InvoiceHistoryModel>[].obs;
+class RepairDetailController extends GetxController {
+  RxList<RepairDetailModel> repair_details_model = <RepairDetailModel>[].obs;
   bool isDataFetched = false;
   String result = '';
   RxBool isLoading = false.obs;
-  Rx<InvoiceHistoryModel?> SelectedInvoiceDetail =
-      Rx<InvoiceHistoryModel?>(null);
+  Rx<RepairDetailModel?> SelectedRepairDetail = Rx<RepairDetailModel?>(null);
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   void clearSelectedCat() {
-    SelectedInvoiceDetail.value = null;
-    invoice_detail.clear();
+    SelectedRepairDetail.value = null;
+    repair_details_model.clear();
   }
 
-  RxBool iseditable = false.obs;
-
-  RxString Username = ''.obs;
-  RxInt itemsToShow = 20.obs;
-
-  final int itemsPerPage = 20; // Number of items to load per page
-  int currentPage = 1;
   bool isadmin(username) {
     if (username == 'admin') {
       return true;
@@ -54,11 +46,11 @@ class InvoiceDetailController extends GetxController {
   void onInit() {
     super.onInit();
     print(isDataFetched);
-    fetchinvoicesdetails();
+    FetchRepairDetails();
   }
 
-//  List<InvoiceHistoryModel> searchProducts(String query) {
-//     return invoice_detail.where((product) =>
+//  List<RepairDetailModel> searchProducts(String query) {
+//     return repair_details_model.where((product) =>
 //         product.P.toLowerCase().contains(query.toLowerCase())).toList();
 //   }
 
@@ -396,282 +388,26 @@ class InvoiceDetailController extends GetxController {
     return formatter.format(value);
   }
 
-  final DateTimeController dateController = DateTimeController();
-  String formattedDate = '';
-  String formattedTime = '';
-
-  List<InvoiceHistoryModel> SearchInvoices(String query) {
-    String dateString = dateController.getFormattedDate();
-    List<String> dateParts = dateString.split('-');
-    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
-    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
-    String formattedDate = '${dateParts[0]}-$month-$day';
-    formattedTime = dateController.getFormattedTime();
-    Username = sharedPreferencesController.username;
-
-    return invoice_detail
-        .where((invoice) =>
-            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate))
-        .toList();
-  }
-
-  List<InvoiceHistoryModel> SearchInvoicesYesterday(String query) {
-    // Get the date for yesterday
-    DateTime now = DateTime.now();
-    DateTime yesterday = now.subtract(Duration(days: 1));
-
-    // Format the date for yesterday
-    String day = yesterday.day.toString().padLeft(2, '0');
-    String month = yesterday.month.toString().padLeft(2, '0');
-    String year = yesterday.year.toString();
-
-    formattedDate = '$year-$month-$day';
-    formattedTime = dateController.getFormattedTime();
-    Username = sharedPreferencesController.username;
-
-    return invoice_detail
-        .where((invoice) =>
-            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate))
-        .toList();
-  }
-
-  List<InvoiceHistoryModel> SearchInvoicesAll(String query) {
-    String dateString = dateController.getFormattedDate();
-    List<String> dateParts = dateString.split('-');
-    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
-    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
-    String formattedDate = '${dateParts[0]}-$month-$day';
-    formattedTime = dateController.getFormattedTime();
-    Username = sharedPreferencesController.username;
-
-    return invoice_detail
-        .where((invoice) =>
-            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                invoice.Username == Username.value ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value)
-        .toList();
-  }
-
-  List<InvoiceHistoryModel> SearchInvoicesMonth(String query) {
-    DateTime now = DateTime.now(); // Get today's date
-    int getMonthNumber(DateTime date) {
-      return date.month;
-    }
-
-    int monthNumber = getMonthNumber(now);
-
-    Username = sharedPreferencesController.username;
-
-    return invoice_detail
-        .where((invoice) =>
-            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Month == (monthNumber) ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Month == (monthNumber) ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Invoice_Month == (monthNumber))
-        .toList();
-  }
-
-  // List<InvoiceHistoryModel> SearchDueInvoices(String query) {
-  //   String dateString = dateController.getFormattedDate();
-  //   List<String> dateParts = dateString.split('-');
-  //   String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
-  //   String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
-  //   String formattedDate = '${dateParts[0]}-$month-$day';
-  //   formattedTime = dateController.getFormattedTime();
-  //   Username = sharedPreferencesController.username;
-
-  //   return invoice_detail
-  //       .where((invoice) =>
-  //           (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
-  //               invoice.Username == Username.value &&
-  //               invoice.Invoice_Due_USD != 0 ||
-  //           invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-  //                invoice.Username == Username.value &&
-  //               invoice.Invoice_Due_USD != 0 ||
-  //           invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-  //                invoice.Username == Username.value &&
-  //               invoice.Invoice_Due_USD != 0)
-  //       .toList();
-  // }
-
-  RxDouble total = 0.0.obs;
-
-  RxDouble total_yday = 0.0.obs;
-
-  RxDouble total_all = 0.0.obs;
-
-  RxDouble total_month = 0.0.obs;
-
-  RxDouble total_fhome = 0.0.obs;
-
-  void CalTotal_fhome() {
-    Username = sharedPreferencesController.username;
-    String dateString = dateController.getFormattedDate();
-    List<String> dateParts = dateString.split('-');
-    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
-    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
-    String formattedDate = '${dateParts[0]}-$month-$day';
-    // print(formattedDate);
-    formattedTime = dateController.getFormattedTime();
-    Username = sharedPreferencesController.username;
-    total_fhome.value = 0;
-
-    List<InvoiceHistoryModel> totalofinvoices = invoice_detail
-        .where((invoice) =>
-            invoice.Username == Username.value &&
-            invoice.Invoice_Date.contains(formattedDate) &&
-            !invoice.Invoice_Date.contains(formattedDate))
-        .toList();
-    for (int i = 0; i < totalofinvoices.length; i++) {
-      total_fhome.value += totalofinvoices[i].product_TP;
-      // totalrecusd_fhome.value += totalofinvoices[i].Invoice_Rec_Usd;
-      // totaldue_fhome.value += totalofinvoices[i].Invoice_Due_USD;
-      // totalreclb_fhome.value += totalofinvoices[i].Invoice_Rec_Lb;
-      // totalrec_fhome.value += totalofinvoices[i].Invoice_Rec_Lb/totalofinvoices[i].Inv_Rate + totalofinvoices[i].Invoice_Rec_Usd;
-    }
-  }
-
-  void CalTotal() {
-    Username = sharedPreferencesController.username;
-    String dateString = dateController.getFormattedDate();
-    List<String> dateParts = dateString.split('-');
-    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
-    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
-    String formattedDate = '${dateParts[0]}-$month-$day';
-    // print(formattedDate);
-    formattedTime = dateController.getFormattedTime();
-    Username = sharedPreferencesController.username;
-    total.value = 0;
-
-    List<InvoiceHistoryModel> totalofinvoices = invoice_detail
-        .where((invoice) =>
-            invoice.Username == Username.value &&
-            invoice.Invoice_Date.contains(formattedDate))
-        .toList();
-    for (int i = 0; i < totalofinvoices.length; i++) {
-      total.value += totalofinvoices[i].product_TP;
-    }
-  }
-
-  void CalTotalMonth() {
-    total_month.value = 0;
-
-    Username = sharedPreferencesController.username;
-    String dateString = dateController.getFormattedDate();
-    List<String> dateParts = dateString.split('-');
-
-    // print(formattedDate);
-    DateTime now = DateTime.now();
-    DateTime yesterday = now.subtract(Duration(days: 1));
-    int getMonthNumber(DateTime date) {
-      return date.month;
-    }
-
-    int monthNumber = getMonthNumber(now);
-    // Format the date for yesterday
-    String day = yesterday.day.toString().padLeft(2, '0');
-    String month = yesterday.month.toString().padLeft(2, '0');
-    String year = yesterday.year.toString();
-
-    formattedDate = '$year-$month-$day';
-    formattedTime = dateController.getFormattedTime();
-
-    List<InvoiceHistoryModel> totalofinvoices = invoice_detail
-        .where((invoice) =>
-            invoice.Username == Username.value &&
-            invoice.Invoice_Month == (monthNumber))
-        .toList();
-    for (int i = 0; i < totalofinvoices.length; i++) {
-      total_month.value += totalofinvoices[i].product_TP;
-    }
-  }
-
-  void CalTotalYday() {
-    total_yday.value = 0;
-
-    Username = sharedPreferencesController.username;
-    String dateString = dateController.getFormattedDate();
-    List<String> dateParts = dateString.split('-');
-
-    // print(formattedDate);
-    DateTime now = DateTime.now();
-    DateTime yesterday = now.subtract(Duration(days: 1));
-
-    // Format the date for yesterday
-    String day = yesterday.day.toString().padLeft(2, '0');
-    String month = yesterday.month.toString().padLeft(2, '0');
-    String year = yesterday.year.toString();
-
-    formattedDate = '$year-$month-$day';
-    formattedTime = dateController.getFormattedTime();
-
-    List<InvoiceHistoryModel> totalofinvoices = invoice_detail
-        .where((invoice) =>
-            invoice.Username == Username.value &&
-            invoice.Invoice_Date.contains(formattedDate))
-        .toList();
-    for (int i = 0; i < totalofinvoices.length; i++) {
-      total_yday.value += totalofinvoices[i].product_TP;
-    }
-  }
-
-  void CalTotalall() {
-    total_all.value = 0;
-
-    Username = sharedPreferencesController.username;
-
-    List<InvoiceHistoryModel> totalofinvoices = invoice_detail
-        .where((invoice) => invoice.Username == Username.value)
-        .toList();
-    for (int i = 0; i < totalofinvoices.length; i++) {
-      total_all.value += totalofinvoices[i].product_TP;
-    }
-  }
-
-  void fetchinvoicesdetails() async {
+  void FetchRepairDetails() async {
     if (!isDataFetched) {
       try {
         isLoading.value = true;
 
         String domain = domainModel.domain;
         final response =
-            await http.get(Uri.parse('$domain' + 'fetch_inv_detail.php'));
+            await http.get(Uri.parse('$domain' + 'fetch_repair_details.php'));
 
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           final List<dynamic> data = jsonData;
           //  final List<dynamic> data = json.decode(response.body);
-          invoice_detail.assignAll(
-              data.map((item) => InvoiceHistoryModel.fromJson(item)).toList());
-          //category = data.map((item) => invoice_details.fromJson(item)).toList();
+          repair_details_model.assignAll(
+              data.map((item) => RepairDetailModel.fromJson(item)).toList());
+          //category = data.map((item) => repair_details_models.fromJson(item)).toList();
           isDataFetched = true;
           isLoading.value = false;
 
-          if (invoice_detail.isEmpty) {
+          if (repair_details_model.isEmpty) {
             print(0);
           } else {
             isDataFetched = true;

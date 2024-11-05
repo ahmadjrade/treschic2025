@@ -610,47 +610,47 @@ class _InvoiceHistoryItemsState extends State<InvoiceTodayItems> {
     //  invoiceDetailController.fetchproductdetails(Invoice_id);
     // productController.fetchproducts();
     return Scaffold(
-      appBar: AppBar(
-          title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Today Sold Items'),
-          // IconButton(
-          //   color: Color.fromRGBO(13, 134, 151, 1),
-          //   iconSize: 24.0,
-          //   onPressed: () {
-          //     // Get.to(() => OldInvoiceUpdate(
-          //     //       Invoice_id: widget.Invoice_id,
-          //     //       Cus_id: widget.Customer_id,
-          //     //       Cus_Name: widget.Customer_Name,
-          //     //       Cus_Number: widget.Customer_Number,
-          //     //     ));
-          //   },
-          //   icon: Icon(CupertinoIcons.add),
-          // ),
-          // IconButton(
-          //   color: Colors.deepPurple,
-          //   iconSize: 24.0,
-          //   onPressed: () {
-          //     if (Platform.isAndroid) {}
-          //     // categoryController.isDataFetched =false;
-          //     // categoryController.fetchcategories();
-          //   },
-          //   icon: Icon(CupertinoIcons.printer),
-          // ),
-          IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              invoiceDetailController.isDataFetched = false;
-              invoiceDetailController.fetchinvoicesdetails();
-              // categoryController.isDataFetched =false;
-              // categoryController.fetchcategories();
-            },
-            icon: Icon(CupertinoIcons.refresh),
-          ),
-        ],
-      )),
+      // appBar: AppBar(
+      //     title: Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text('Today Sold Items'),
+      //     // IconButton(
+      //     //   color: Color.fromRGBO(13, 134, 151, 1),
+      //     //   iconSize: 24.0,
+      //     //   onPressed: () {
+      //     //     // Get.to(() => OldInvoiceUpdate(
+      //     //     //       Invoice_id: widget.Invoice_id,
+      //     //     //       Cus_id: widget.Customer_id,
+      //     //     //       Cus_Name: widget.Customer_Name,
+      //     //     //       Cus_Number: widget.Customer_Number,
+      //     //     //     ));
+      //     //   },
+      //     //   icon: Icon(CupertinoIcons.add),
+      //     // ),
+      //     // IconButton(
+      //     //   color: Colors.deepPurple,
+      //     //   iconSize: 24.0,
+      //     //   onPressed: () {
+      //     //     if (Platform.isAndroid) {}
+      //     //     // categoryController.isDataFetched =false;
+      //     //     // categoryController.fetchcategories();
+      //     //   },
+      //     //   icon: Icon(CupertinoIcons.printer),
+      //     // ),
+      //     IconButton(
+      //       color: Colors.deepPurple,
+      //       iconSize: 24.0,
+      //       onPressed: () {
+      //         invoiceDetailController.isDataFetched = false;
+      //         invoiceDetailController.fetchinvoicesdetails();
+      //         // categoryController.isDataFetched =false;
+      //         // categoryController.fetchcategories();
+      //       },
+      //       icon: Icon(CupertinoIcons.refresh),
+      //     ),
+      //   ],
+      // )),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(

@@ -79,7 +79,7 @@ class RepairsController extends GetxController {
       return true;
     } else {
       return false;
-    } 
+    }
   }
 
   bool status2(String sts) {
@@ -99,31 +99,26 @@ class RepairsController extends GetxController {
   }
 
   Color getcolor(String Status) {
-    if(Status  == 'Finished') {
-        return Colors.green.shade100;
-    }else if(Status == 'Rejected') { 
-        return Colors.red.shade100;
-
-    } else if(Status == 'Delivered') { 
-        return Colors.blue.shade100;
-
+    if (Status == 'Finished') {
+      return Colors.green.shade100;
+    } else if (Status == 'Rejected') {
+      return Colors.red.shade100;
+    } else if (Status == 'Delivered') {
+      return Colors.blue.shade100;
     } else {
-        return Colors.orange.shade100;
-
+      return Colors.orange.shade100;
     }
   }
+
   Color getcolor2(String Status) {
-    if(Status  == 'Finished') {
-        return Colors.green.shade900;
-    }else if(Status == 'Rejected') { 
-        return Colors.red.shade900;
-
-    } else if(Status == 'Delivered') { 
-        return Colors.blue.shade900;
-
+    if (Status == 'Finished') {
+      return Colors.green.shade900;
+    } else if (Status == 'Rejected') {
+      return Colors.red.shade900;
+    } else if (Status == 'Delivered') {
+      return Colors.blue.shade900;
     } else {
-        return Colors.orange.shade900;
-
+      return Colors.orange.shade900;
     }
   }
 
@@ -158,11 +153,11 @@ class RepairsController extends GetxController {
                 repair.Repair_Status == 'Pending' ||
             repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 repair.Username == Username.value &&
-                repair.Repair_Status == 'Pending' )
+                repair.Repair_Status == 'Pending')
         .toList();
   }
 
-   List<RepairsModel> searchFinishedRepairs(String query) {
+  List<RepairsModel> searchFinishedRepairs(String query) {
     String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
     String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
@@ -181,7 +176,7 @@ class RepairsController extends GetxController {
                 repair.Repair_Status == 'Finished' ||
             repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 repair.Username == Username.value &&
-                repair.Repair_Status == 'Finished' )
+                repair.Repair_Status == 'Finished')
         .toList();
   }
 
@@ -194,19 +189,19 @@ class RepairsController extends GetxController {
     formattedTime = dateController.getFormattedTime();
     Username = sharedPreferencesController.username;
 
-        return repair
+    return repair
         .where((repair) =>
             (repair.Repair_id.toString()).contains(query.toLowerCase()) &&
                 repair.Username == Username.value ||
             repair.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                repair.Username == Username.value  ||
+                repair.Username == Username.value ||
             repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-                repair.Username == Username.value  )
+                repair.Username == Username.value)
         .toList();
   }
 
   List<RepairsModel> searchRejectedRepairs(String query) {
-   String dateString = dateController.getFormattedDate();
+    String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
     String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
     String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
@@ -224,10 +219,13 @@ class RepairsController extends GetxController {
                 repair.Repair_Status == 'Rejected' ||
             repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 repair.Username == Username.value &&
-                repair.Repair_Status == 'Rejected' )
+                repair.Repair_Status == 'Rejected')
         .toList();
-  }List<RepairsModel> searchDeliveredRepairs(String query) {
-   String dateString = dateController.getFormattedDate();
+  }
+
+  
+  List<RepairsModel> searchDeliveredRepairs(String query) {
+    String dateString = dateController.getFormattedDate();
     List<String> dateParts = dateString.split('-');
     String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
     String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
@@ -245,7 +243,7 @@ class RepairsController extends GetxController {
                 repair.Repair_Status == 'Delivered' ||
             repair.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 repair.Username == Username.value &&
-                repair.Repair_Status == 'Delivered' )
+                repair.Repair_Status == 'Delivered')
         .toList();
   }
 
@@ -528,7 +526,7 @@ class RepairsController extends GetxController {
     }
   }
 
-   String Update_result = '';
+  String Update_result = '';
   Future<void> UpdateRepair(String Repair_id, Status) async {
     try {
       String domain = domainModel.domain;
@@ -540,7 +538,6 @@ class RepairsController extends GetxController {
       });
 
       var response = json.decode(json.encode(res.body));
-      
 
       print(response);
       Update_result = response;

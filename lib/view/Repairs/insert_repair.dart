@@ -551,8 +551,10 @@ class InsertRepair extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10,),
-                        Expanded(
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
                         child: TextFormField(
                           keyboardType: TextInputType.number,
                           //  initialValue: '0',
@@ -597,8 +599,8 @@ class InsertRepair extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(double.maxFinite, 50),
                       backgroundColor: Colors.green.shade100,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.green.shade100),
+                      side:
+                          BorderSide(width: 2.0, color: Colors.green.shade100),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -612,7 +614,7 @@ class InsertRepair extends StatelessWidget {
                         showDialog(
                             // The user CANNOT close this dialog  by pressing outsite it
                             barrierDismissible: false,
-                          context: context,
+                            context: context,
                             builder: (_) {
                               return Dialog(
                                 // The background color
@@ -637,8 +639,8 @@ class InsertRepair extends StatelessWidget {
                             });
                         insertrepairController.UploadRepair(
                                 Cus_id,
-                                Cus_Name,
                                 Cus_Number,
+                                Cus_Name,
                                 SelectedPhoneName,
                                 phonePassowrd.text,
                                 phoneIMEI.text,
@@ -652,7 +654,8 @@ class InsertRepair extends StatelessWidget {
                             .then((Value) => repairsController.fetchrepairs())
                             .then((value) => clear())
                             .then((value) =>
-                                showToast(insertrepairController.result)).then((value) => Navigator.of(context).pop());
+                                showToast(insertrepairController.result))
+                            .then((value) => Navigator.of(context).pop());
                       }
                     },
                     child: Text(

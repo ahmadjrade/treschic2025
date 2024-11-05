@@ -252,6 +252,7 @@ class RepairController extends GetxController {
       paper,
       profile,
     );
+
     if (bluetoothController!.isConnected &&
         bluetoothController!.connection != null) {
       try {
@@ -271,12 +272,7 @@ class RepairController extends GetxController {
   ) async {
     final Generator ticket = Generator(paper, profile);
     List<int> bytes = [];
-    //List Name = ['123', '1234', '12345'];
-
-    ////final ByteData data = await rootBundle.load('images/test.png');
-    ///final Uint8List imageBytes = data.buffer.asUint8List();
-    //final im.Image? image = im.decodeImage(imageBytes);
-    // bytes += ticket.image(image!); // Add the image to the bytes list
+    
     bytes += ticket.text('AJTECH',
         styles: PosStyles(
           align: PosAlign.center,
@@ -292,15 +288,14 @@ class RepairController extends GetxController {
 
     bytes += ticket.text('+961/81214404',
         styles: PosStyles(align: PosAlign.center, bold: true));
-    // bytes += ticket.text('Web: www.treschiclb.com',
-    //     styles: PosStyles(align: PosAlign.center), linesAfter: 0);
     bytes += ticket.feed(1);
+
     bytes += ticket.text(
       'Repair ID #$lastId',
       styles: PosStyles(align: PosAlign.center, bold: true),
       linesAfter: 1,
     );
-    //bytes += ticket.qrcode(lastId);
+    //bytes += ticket.qrcode(lastd);
     bytes += ticket.hr(ch: '*', linesAfter: 1);
     bytes += ticket.text('Repair Type: ' + 'Store',
         styles: PosStyles(align: PosAlign.center, bold: true), linesAfter: 0);

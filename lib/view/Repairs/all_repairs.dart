@@ -8,6 +8,7 @@ import 'package:fixnshop_admin/controller/repairs_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/model/repairs_model.dart';
+import 'package:fixnshop_admin/view/Repairs/repair_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -26,6 +27,13 @@ class AllRepairs extends StatelessWidget {
   final BarcodeController barcodeController = Get.find<BarcodeController>();
   @override
   Widget build(BuildContext context) {
+    Future<void> showToast(result) async {
+      final snackBar2 = SnackBar(
+        content: Text(result),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+    }
+
     // repairsController.CalTotalall();
     // repairsController.reset();
 
@@ -64,174 +72,173 @@ class AllRepairs extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
+                  Obx(() {
+                    FilterQuery.text = barcodeController.barcode3.value;
+                    return Expanded(
+                      child: TextField(
+                        controller: FilterQuery,
+                        onChanged: (query) {
+                          //print(formattedDate);
+                          repairsController.repair.refresh();
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Search by ID,Customer Name or Number',
+                          prefixIcon: Icon(Icons.search),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Expanded(
+              child: Obx(
+                () {
+                  final List<RepairsModel> filteredrepairs =
+                      repairsController.searchallRepairs(FilterQuery.text);
+                  if (repairsController.isLoading.value) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (repairsController.repair.isEmpty) {
+                    return Center(
+                        child: Text('No Repairs Yet In This Store ! '));
+                  } else if (filteredrepairs.length == 0) {
+                    return Center(
+                        child: Text('No Repairs Yet In This Store ! '));
+                  } else {
+                    return Column(
                       children: [
-                        Obx(() {
-                          FilterQuery.text = barcodeController.barcode3.value;
-                          return Expanded(
-                            child: TextField(
-                              controller: FilterQuery,
-                              onChanged: (query) {
-                                //print(formattedDate);
-                                repairsController.repair.refresh();
-                              },
-                              decoration: InputDecoration(
-                                labelText:
-                                    'Search by ID,Customer Name or Number',
-                                prefixIcon: Icon(Icons.search),
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Obx(
-                    () {
-                      final List<RepairsModel> filteredrepairs =
-                          repairsController.searchallRepairs(FilterQuery.text);
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            // physics: NeverScrollableScrollPhysics(),
+                            itemCount: filteredrepairs.length <
+                                    repairsController.itemsToShow.value
+                                ? filteredrepairs.length
+                                : repairsController.itemsToShow.value,
+                            itemBuilder: (context, index) {
+                              final RepairsModel repair =
+                                  filteredrepairs[index];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Card(
+                                  //color: Colors.green.shade100,
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                  child: ExpansionTile(
+                                    collapsedTextColor: Colors.black,
+                                    textColor: Colors.black,
+                                    //backgroundColor: Colors.green.shade100,
+                                    title: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '#' +
+                                                    repair.Repair_id
+                                                        .toString() +
+                                                    ' ' +
+                                                    repair.Cus_Name +
+                                                    ' ' +
+                                                    repair.Cus_Number +
+                                                    '\n' +
+                                                    repair.Phone_Model,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14),
+                                              ),
+                                              Text(
+                                                repair.Repair_Rec_Date +
+                                                    ' ' +
+                                                    Format(
+                                                        repair.Repair_Rec_Time),
 
-                      if (repairsController.isLoading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (repairsController.repair.isEmpty) {
-                        return Center(
-                            child: Text('No Repairs Yet In This Store ! '));
-                      } else if (filteredrepairs.length == 0) {
-                        return Center(
-                            child: Text('No Repairs Yet In This Store ! '));
-                      } else {
-                        return Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: filteredrepairs.length,
-                              itemBuilder: (context, index) {
-                                final RepairsModel repair =
-                                    filteredrepairs[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  child: Card(
-                                   // color: repairsController.getcolor(repair.Repair_Status),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          //color: Colors.green.shade100,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
+                                                // +
+                                                // ' -- ' +
+                                                // repair.phone_Code,
+                                                //  overflow: TextOverflow.fade,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 11),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        OutlinedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              //  fixedSize: Size(double.maxFinite, 20),
+                                              backgroundColor:
+                                                  Colors.blue.shade100,
+                                              side: BorderSide(
+                                                  width: 2.0,
+                                                  color: Colors.blue.shade100),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(14.0),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Get.to(() => RepairDetails(
+                                                  Repair_id: repair.Repair_id
+                                                      .toString(),
+                                                  Cus_id:
+                                                      repair.Cus_id.toString(),
+                                                  Cus_Name: repair.Cus_Name,
+                                                  Cus_Number: repair.Cus_Number,
+                                                  Rec_usd: repair.Received_Money
+                                                      .toString(),
+                                                  Total_usd: repair.Repair_Price
+                                                      .toString(),
+                                                  Phone: repair.Phone_Model));
+                                            },
+                                            child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  repair.Cus_Name +
-                                                      ' ' +
-                                                      repair.Cus_Number
-                                                  // +
-                                                  // ' -- ' +
-                                                  // repair.phone_Code,
-                                                  ,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16),
-                                                ),
-                                                Text(
-                                                  '#' +
-                                                      repair.Repair_id
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 14),
+                                                Icon(
+                                                  Icons
+                                                      .arrow_circle_right_rounded,
+                                                  color: repairsController
+                                                          .status(repair
+                                                              .Repair_Status)
+                                                      ? Colors.blue.shade900
+                                                      : Colors.blue.shade900,
+                                                  //  'Details',
+                                                  //   style: TextStyle(
+                                                  //        color: Colors.red),
                                                 ),
                                               ],
-                                            ),
-                                            // SizedBox(height: 2,),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  repair.Repair_Rec_Date
-                                                  // +
-                                                  // ' -- ' +
-                                                  // repair.phone_Code,
-                                                  ,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 10),
-                                                ),
-                                                Text(
-                                                  ' ' +
-                                                      Format(repair
-                                                          .Repair_Rec_Time)
-                                                  // +
-                                                  // ' -- ' +
-                                                  // repair.phone_Code,
-                                                  ,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 10),
-                                                ),Text(
-                                                  ' || ' +
-                                                      repair.Username
-                                                          .toUpperCase() +
-                                                      ' Store'
-                                                  // +
-                                                  // ' -- ' +
-                                                  // repair.phone_Code,
-                                                  ,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 10),
-                                                ),
-                                                Text(
-                                                  ' || ' +
-                                                      repair.Repair_Status
-                                                          .toUpperCase()
-                                                  // +
-                                                  // ' -- ' +
-                                                  // repair.phone_Code,
-                                                  ,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 10),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
+                                            )),
+                                      ],
+                                    ),
+
+                                    // SizedBox(height: 2,),
+
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            50, 0, 20, 0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
                                             Padding(
                                               padding:
                                                   const EdgeInsets.all(0.0),
@@ -239,8 +246,8 @@ class AllRepairs extends StatelessWidget {
                                                 direction: Axis.horizontal,
                                                 alignment: WrapAlignment.center,
                                                 lineLength: double.infinity,
-                                                lineThickness: 2.0,
-                                                dashLength: 4.0,
+                                                lineThickness: 1.0,
+                                                dashLength: 2.0,
                                                 dashColor: Colors.black,
                                                 dashGradient: [
                                                   Colors.black,
@@ -257,7 +264,6 @@ class AllRepairs extends StatelessWidget {
                                                 dashGapRadius: 1.0,
                                               ),
                                             ),
-
                                             Row(
                                               children: [
                                                 Expanded(
@@ -279,54 +285,6 @@ class AllRepairs extends StatelessWidget {
                                                           Row(
                                                             children: [
                                                               Text(
-                                                                'Phone Model: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              Text(
-                                                                repair
-                                                                    .Phone_Model,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                'Phone Issue: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              Text(
-                                                                repair
-                                                                    .Phone_Issue,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
                                                                 'Phone IMEI: ',
                                                                 style: TextStyle(
                                                                     fontSize:
@@ -335,7 +293,7 @@ class AllRepairs extends StatelessWidget {
                                                                         .black,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold),
+                                                                            .normal),
                                                               ),
                                                               Text(
                                                                 repair
@@ -359,7 +317,7 @@ class AllRepairs extends StatelessWidget {
                                                                         .black,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold),
+                                                                            .normal),
                                                               ),
                                                               Text(
                                                                 repair
@@ -387,7 +345,7 @@ class AllRepairs extends StatelessWidget {
                                                                         .shade900,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold),
+                                                                            .normal),
                                                               ),
                                                               Text(
                                                                 addCommasToNumber(
@@ -415,7 +373,7 @@ class AllRepairs extends StatelessWidget {
                                                                         .shade900,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold),
+                                                                            .normal),
                                                               ),
                                                               Text(
                                                                 addCommasToNumber(
@@ -444,259 +402,175 @@ class AllRepairs extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
-
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                
-                                              
-                                                Expanded(
-                                                  child: OutlinedButton(
-
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        fixedSize: Size(
-                                                            double.maxFinite,
-                                                            20),
-                                                            side: BorderSide(
-                                                          width: 2.0,
-                                                          color: repairsController.getcolor(repair.Repair_Status)
-                                                        ),
-                                                        backgroundColor: repairsController.getcolor(repair.Repair_Status),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      14.0),
-                                                        ),
-                                                      ),
-                                                      onPressed: () {
-                                                        // Get.to(() => RepairDetails(
-                                                        //     Repair_id: repair.Repair_id
-                                                        //         .toString(),
-                                                        //     Cus_id:
-                                                        //         repair.Cus_id.toString(),
-                                                        //     Cus_Name: repair.Cus_Name,
-                                                        //     Cus_Number: repair.Cus_Number,
-                                                        //     Rec_usd: repair.Received_Money
-                                                        //         .toString(),
-                                                        //     Total_usd: repair.Repair_Price
-                                                        //         .toString(),
-                                                        //     Phone: repair.Phone_Model));
-                                                      },
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            'Select',
-                                                            style: TextStyle(
-                                                                color: repairsController.getcolor2(repair.Repair_Status)),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Icon(
-                                                            Icons
-                                                                .arrow_circle_right_rounded,
-                                                            color: repairsController.status(
-                                                                    repair
-                                                                        .Repair_Status)
-                                                                ? repairsController.getcolor2(repair.Repair_Status)
-                                                                : repairsController.getcolor2(repair.Repair_Status),
-                                                            //  'Details',
-                                                            //   style: TextStyle(
-                                                            //        color: Colors.red),
-                                                          ),
-                                                        ],
-                                                      )),
-                                                ),
-                                              ],
-                                            ),
                                           ],
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            if (repairsController.itemsToShow.value <
-                                filteredrepairs.length)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 120.0),
-                                child: OutlinedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    // fixedSize: Size(double.maxFinite,20),
-                                    backgroundColor: Colors.white,
-                                    side: BorderSide(
-                                      width: 2.0,
-                                      color: Colors.green.shade900,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    repairsController.itemsToShow.value +=
-                                        20; // Increase the observable value
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Show More',
-                                        style: TextStyle(
-                                            color: Colors.green.shade900),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Icon(
-                                        Icons.arrow_circle_right_rounded,
-                                        color: Colors.green.shade900,
-                                      ),
+                                      )
                                     ],
                                   ),
                                 ),
-                              ),
-                          ],
-                        );
-                      }
-                    },
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Visibility(
-                visible: true,
-                child: Obx(() {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Card(
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(14.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'repair Total US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(repairsController
-                                                .total_all.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'repair Recieved US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(repairsController
-                                                .totalrecusd_all.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'repair Recieved LB:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(repairsController
-                                                .totalreclb_all.value)
-                                            .toString() +
-                                        'LL',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'repair Recieved TOTAL:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(repairsController
-                                                .totalrec_all.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'repair Due US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(repairsController
-                                                .totaldue_all.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.red.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                            ],
+                              );
+                            },
                           ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        if (repairsController.itemsToShow.value <
+                            filteredrepairs.length)
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 0.0),
+                            child: OutlinedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green.shade100,
+                                side: BorderSide(
+                                  width: 2.0,
+                                  color: Colors.green.shade100,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                              ),
+                              onPressed: () {
+                                repairsController.itemsToShow.value +=
+                                    20; // Increase the observable value
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Show More',
+                                    style:
+                                        TextStyle(color: Colors.green.shade900),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.arrow_circle_right_rounded,
+                                    color: Colors.green.shade900,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  }
+                },
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Visibility(
+              visible: true,
+              child: Obx(() {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Card(
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'repair Total US:',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  addCommasToNumber(
+                                              repairsController.total_all.value)
+                                          .toString() +
+                                      '\$',
+                                  style: TextStyle(
+                                      color: Colors.blue.shade900,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'repair Recieved US:',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  addCommasToNumber(repairsController
+                                              .totalrecusd_all.value)
+                                          .toString() +
+                                      '\$',
+                                  style: TextStyle(
+                                      color: Colors.green.shade900,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'repair Recieved LB:',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  addCommasToNumber(repairsController
+                                              .totalreclb_all.value)
+                                          .toString() +
+                                      'LL',
+                                  style: TextStyle(
+                                      color: Colors.green.shade900,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'repair Recieved TOTAL:',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  addCommasToNumber(repairsController
+                                              .totalrec_all.value)
+                                          .toString() +
+                                      '\$',
+                                  style: TextStyle(
+                                      color: Colors.green.shade900,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'repair Due US:',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  addCommasToNumber(repairsController
+                                              .totaldue_all.value)
+                                          .toString() +
+                                      '\$',
+                                  style: TextStyle(
+                                      color: Colors.red.shade900,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  );
-                }),
-              ),
-              SizedBox(
-                height: 14,
-              )
-            ],
-          ),
+                  ),
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );

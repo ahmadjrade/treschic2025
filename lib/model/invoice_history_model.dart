@@ -18,6 +18,7 @@ class InvoiceHistoryModel {
   final int isPaid;
   final String Username;
   final int isPhone;
+  final int Invoice_Month;
 
   InvoiceHistoryModel({
     required this.Invoice_Detail_id,
@@ -35,6 +36,7 @@ class InvoiceHistoryModel {
     required this.isPaid,
     required this.Username,
     required this.isPhone,
+    required this.Invoice_Month,
   })  : _Product_TP = product_TP.obs,
         _Product_UP = product_UP.obs; // Initialize RxDouble
 
@@ -63,6 +65,7 @@ class InvoiceHistoryModel {
       isPaid: json['isPaid'],
       Username: json['Username'],
       isPhone: json['isPhone'],
+      Invoice_Month: json['Invoice_Month'],
     );
   }
 }

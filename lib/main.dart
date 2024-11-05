@@ -37,6 +37,7 @@ import 'package:fixnshop_admin/controller/recharge_cart_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_detail_controller.dart';
 import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/repair_controller.dart';
+import 'package:fixnshop_admin/controller/repair_detail_controller.dart';
 import 'package:fixnshop_admin/controller/repair_product_controller.dart';
 import 'package:fixnshop_admin/controller/repair_product_detail_controller.dart';
 import 'package:fixnshop_admin/controller/repairs_controller.dart';
@@ -266,10 +267,16 @@ Future<void> main() async {
     () => SharedPreferencesController(),
     fenix: true,
   );
-   Get.lazyPut<RepairController>(
+  Get.lazyPut<RepairController>(
     () => RepairController(),
     fenix: true,
   );
+  Get.lazyPut<RepairDetailController>(
+    () => RepairDetailController(),
+    fenix: true,
+  );
+  final RepairDetailController repairDetailController =
+      Get.find<RepairDetailController>();
   final TransferHistoryController transferHistoryController =
       Get.find<TransferHistoryController>();
   final TransferDetailController transferDetailController =

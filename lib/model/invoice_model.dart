@@ -21,8 +21,11 @@ class InvoiceModel {
   final int isPaid;
   final String? Invoice_Type;
   final String Username;
-    final double Inv_Rate;
-    final int Invoice_Month;
+  final double Inv_Rate;
+  final int Invoice_Month;
+  final int? Driver_id;
+  final String? Driver_Name;
+  final String? Driver_Number;
 
   // RxDouble _product_MPrice; // Use RxDouble for reactive price
   // final int Product_Cat_id;
@@ -33,7 +36,7 @@ class InvoiceModel {
 
   InvoiceModel({
     required this.Invoice_id,
-    required this.Invoice_Store, 
+    required this.Invoice_Store,
     required this.Invoice_Total_Usd,
     required this.Invoice_Total_Lb,
     required this.Invoice_Rec_Usd,
@@ -48,10 +51,11 @@ class InvoiceModel {
     required this.isPaid,
     required this.Invoice_Type,
     required this.Username,
-       required this.Inv_Rate,
-       required this.Invoice_Month,
-
-
+    required this.Inv_Rate,
+    required this.Invoice_Month,
+    required this.Driver_id,
+    required this.Driver_Name,
+    required this.Driver_Number,
   });
   // :
   //  _product_MPrice = Product_MPrice.obs; // Initialize RxDouble
@@ -64,26 +68,27 @@ class InvoiceModel {
 
   factory InvoiceModel.fromJson(Map<String, dynamic> json) {
     return InvoiceModel(
-        Invoice_id: json['Invoice_id'],
-        Invoice_Store: json['Invoice_Store'],
-        Invoice_Total_Usd: json['Invoice_Total_Usd'].toDouble(),
-        Invoice_Total_Lb: json['Invoice_Total_Lb'].toDouble(),
-        Invoice_Rec_Usd: json['Invoice_Rec_Usd'].toDouble(),
-        Invoice_Rec_Lb: json['Invoice_Rec_Lb'].toDouble(),
-        Invoice_Due_USD: json['Invoice_Due_USD'].toDouble(),
-         Invoice_Due_LB: json['Invoice_Due_LB'].toDouble(),
-        Invoice_Date: json['Invoice_Date'],
-        Cus_id: json['Cus_id'],
-        Cus_Name: json['Cus_Name'],
-        Cus_Number: json['Cus_Number'],
-         Invoice_Time: json['Invoice_Time'],
-        isPaid: json['isPaid'],
-        Invoice_Type: json['Invoice_Type'],
-        Username: json['Username'],
-        Inv_Rate: json['Inv_Rate'].toDouble(),
-        Invoice_Month: json['Invoice_Month'],
-
-);
-        
+      Invoice_id: json['Invoice_id'],
+      Invoice_Store: json['Invoice_Store'],
+      Invoice_Total_Usd: json['Invoice_Total_Usd'].toDouble(),
+      Invoice_Total_Lb: json['Invoice_Total_Lb'].toDouble(),
+      Invoice_Rec_Usd: json['Invoice_Rec_Usd'].toDouble(),
+      Invoice_Rec_Lb: json['Invoice_Rec_Lb'].toDouble(),
+      Invoice_Due_USD: json['Invoice_Due_USD'].toDouble(),
+      Invoice_Due_LB: json['Invoice_Due_LB'].toDouble(),
+      Invoice_Date: json['Invoice_Date'],
+      Cus_id: json['Cus_id'],
+      Cus_Name: json['Cus_Name'],
+      Cus_Number: json['Cus_Number'],
+      Invoice_Time: json['Invoice_Time'],
+      isPaid: json['isPaid'],
+      Invoice_Type: json['Invoice_Type'],
+      Username: json['Username'],
+      Inv_Rate: json['Inv_Rate'].toDouble(),
+      Invoice_Month: json['Invoice_Month'],
+      Driver_id: json['Driver_id'],
+      Driver_Name: json['Driver_Name'],
+      Driver_Number: json['Driver_Number'],
+    );
   }
 }

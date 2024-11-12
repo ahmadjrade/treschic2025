@@ -9,9 +9,10 @@ import 'package:fixnshop_admin/view/Repairs/customer_list_frepair.dart';
 import 'package:fixnshop_admin/view/home_screen.dart';
 import 'package:fixnshop_admin/view/Repairs/insert_repair.dart';
 import 'package:fixnshop_admin/view/Product/product_list.dart';
+import 'package:fixnshop_admin/view/management.dart';
 import 'package:fixnshop_admin/view/search_screen.dart';
 import 'package:fixnshop_admin/view/settings_screen.dart';
-import 'package:fixnshop_admin/view/stocks_screen.dart';
+import 'package:fixnshop_admin/view/extra_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -39,8 +40,8 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
     CustomerList(
       from_home: 1,
     ),
-    StocksScreen(),
-    CustomerListFrepair(),
+    ExtraSettings(),
+    Management(),
   ];
 
   double isIos() {
@@ -78,7 +79,7 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
             GButton(icon: Icons.search, text: 'Search'),
             GButton(icon: Icons.add, text: 'Invoice'),
             GButton(icon: Icons.repartition, text: 'Manage'),
-            GButton(icon: Icons.settings, text: 'Repair'),
+            GButton(icon: Icons.settings, text: 'Management'),
           ],
         ),
       );

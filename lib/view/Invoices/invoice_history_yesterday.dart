@@ -64,7 +64,6 @@ class InvoiceHistoryYesterday extends StatelessWidget {
     }
 
     return Scaffold(
-   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -93,14 +92,12 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                             ),
                           );
                         }),
-                        
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  
                   SizedBox(
                     height: 5,
                   ),
@@ -223,9 +220,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12),
-                                        ), Text(
-                                          ' || ' +
-                                              invoice.Invoice_Type!
+                                        ),
+                                        Text(
+                                          ' || ' + invoice.Invoice_Type!
                                           // +
                                           // ' -- ' +
                                           // invoice.phone_Code,
@@ -251,7 +248,6 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -330,11 +326,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           OutlinedButton(
                                               style: ElevatedButton.styleFrom(
                                                 fixedSize:
@@ -384,7 +378,11 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                               .toString(),
                                                           Invoice_Due_US: invoice
                                                                   .Invoice_Due_USD
-                                                              .toString(), rate: invoice.Inv_Rate.toString(),
+                                                              .toString(),
+                                                          rate: invoice.Inv_Rate
+                                                              .toString(),
+                                                          Inv_Type: invoice
+                                                              .Invoice_Type!,
                                                         ));
                                               },
                                               child: Row(
@@ -408,12 +406,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                                     .isPaid)
                                                             ? Colors.white
                                                             : Colors.white,
-                                                   
                                                   ),
                                                 ],
                                               )),
-
-                                         
                                         ],
                                       ),
                                     ),
@@ -481,7 +476,8 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ), Row(
+                              ),
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -500,7 +496,8 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              ), Row(
+                              ),
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [

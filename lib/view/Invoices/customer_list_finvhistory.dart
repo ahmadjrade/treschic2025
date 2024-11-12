@@ -43,7 +43,7 @@ class CustomerListFInvHistory extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Customers List | Phones',
+                'Customers List | Invoices',
                 style: TextStyle(fontSize: 17),
               ),
               // IconButton(
@@ -105,8 +105,6 @@ class CustomerListFInvHistory extends StatelessWidget {
                 ),
               ),
             ),
-            
-            
             SizedBox(
               height: 10,
             ),
@@ -130,7 +128,6 @@ class CustomerListFInvHistory extends StatelessWidget {
                           //     padding: EdgeInsets.all(35),
                           alignment: Alignment.center,
                           child: ListTile(
-                            
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -138,48 +135,46 @@ class CustomerListFInvHistory extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Row(
-
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
-                                            children: [ Icon(
-                                            Icons.perm_contact_cal,
-                                            color: Colors.blue.shade900,
-                                            size: 13,
+                                            children: [
+                                              Icon(
+                                                Icons.perm_contact_cal,
+                                                color: Colors.blue.shade900,
+                                                size: 13,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                customer.Cus_Name
+                                                        .toUpperCase() +
+                                                    ' || '
+                                                // +
+                                                // ' -- ' +
+                                                // customer.Product_Code,
+                                                ,
+                                                overflow: TextOverflow.clip,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                              ),
+                                              Text(
+                                                customer.Cus_Number
+                                                // +
+                                                // ' -- ' +
+                                                // customer.Product_Code,
+                                                ,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            customer.Cus_Name.toUpperCase() + ' || '
-                                            // +
-                                            // ' -- ' +
-                                            // customer.Product_Code,
-                                            ,
-                                            overflow: TextOverflow.clip,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                                
-                                          ),
-                                         
-                                          Text(
-                                            customer.Cus_Number
-                                            // +
-                                            // ' -- ' +
-                                            // customer.Product_Code,
-                                            ,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ),],
-                                          ),
-                                          
-                                        
                                         ],
                                       ),
-                                            
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -196,7 +191,8 @@ class CustomerListFInvHistory extends StatelessWidget {
                                             'Due US: ' +
                                                 addCommasToNumber(
                                                         customer.Cus_Due_USD)
-                                                    .toString() + '\$'
+                                                    .toString() +
+                                                '\$'
                                             // +
                                             // ' -- ' +
                                             // customer.Product_Code,
@@ -207,11 +203,10 @@ class CustomerListFInvHistory extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      
                                     ],
                                   ),
                                 ),
-                               
+
                                 //Text(customer.Cus_Due_USD.toString()),
                               ],
                             ),
@@ -292,7 +287,8 @@ class CustomerListFInvHistory extends StatelessWidget {
                                             ),
                                           ),
                                           onPressed: () {
-                                            Get.to(() => InvoiceHistoryByCustomer(
+                                            Get.to(() =>
+                                                InvoiceHistoryByCustomer(
                                                   Cus_id: customer.Cus_id
                                                       .toString(),
                                                   Cus_Name: customer.Cus_Name,

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, must_be_immutable
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
@@ -8,7 +8,6 @@ import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -76,7 +75,14 @@ class InvoiceHistoryByDriver extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Invoices of $Driver_Name'),
+        title: Row(
+          children: [
+            Text(
+              '$Driver_Name Statement',
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -96,7 +102,8 @@ class InvoiceHistoryByDriver extends StatelessWidget {
                           invoiceHistoryController.invoices.refresh();
                         },
                         decoration: InputDecoration(
-                          labelText: 'Search by ID,Customer Name or Number',
+                          labelStyle: TextStyle(fontSize: 15),
+                          labelText: 'Delivery Code,Name or Number',
                           prefixIcon: Icon(Icons.search),
                         ),
                       ),
@@ -152,7 +159,7 @@ class InvoiceHistoryByDriver extends StatelessWidget {
                                           ' || ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17),
+                                          fontSize: 15),
                                     ),
                                     Text(
                                       invoice.Cus_Name! +
@@ -160,7 +167,7 @@ class InvoiceHistoryByDriver extends StatelessWidget {
                                           invoice.Cus_Number!,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17),
+                                          fontSize: 15),
                                     ),
                                     Spacer(),
                                     Icon(
@@ -170,6 +177,22 @@ class InvoiceHistoryByDriver extends StatelessWidget {
                                           ? Colors.green.shade900
                                           : Colors.red.shade900,
                                     )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Delivery Code: ' +
+                                          (invoice.Delivery_Code ?? '')
+                                      // +
+                                      // ' -- ' +
+                                      // driver.Product_Code,
+                                      ,
+                                      overflow: TextOverflow.clip,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12),
+                                    ),
                                   ],
                                 ),
                                 Row(
@@ -208,317 +231,295 @@ class InvoiceHistoryByDriver extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            subtitle: Row(
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 10),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Invoice Total US:  ' +
-                                                    addCommasToNumber(invoice
-                                                            .Invoice_Total_Usd)
-                                                        .toString() +
-                                                    '\$',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color:
-                                                        Colors.blue.shade900),
-                                              ),
-                                              Text(
-                                                'Invoice Total LL:  ' +
-                                                    addCommasToNumber(invoice
-                                                            .Invoice_Total_Lb)
-                                                        .toString() +
-                                                    ' LB',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color:
-                                                        Colors.blue.shade900),
-                                              ),
-                                              Text(
-                                                'Invoice Rec US:  ' +
-                                                    addCommasToNumber(invoice
-                                                            .Invoice_Rec_Usd)
-                                                        .toString() +
-                                                    '\$',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color:
-                                                        Colors.green.shade900),
-                                              ),
-                                              Text(
-                                                'Invoice Rec LL:  ' +
-                                                    addCommasToNumber(invoice
-                                                            .Invoice_Rec_Lb)
-                                                        .toString() +
-                                                    ' LB',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color:
-                                                        Colors.green.shade900),
-                                              ),
-                                              Text(
-                                                'Invoice Due US:  ' +
-                                                    addCommasToNumber(invoice
-                                                            .Invoice_Due_USD)
-                                                        .toString() +
-                                                    '\$',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.red.shade900),
-                                              ),
-                                              Text(
-                                                'Invoice Due LL:  ' +
-                                                    addCommasToNumber(invoice
-                                                            .Invoice_Due_LB)
-                                                        .toString() +
-                                                    ' LB',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.red.shade900),
-                                              ),
-                                            ],
+                                SizedBox(height: 5),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Total US:  ' +
+                                          addCommasToNumber(
+                                                  invoice.Invoice_Total_Usd)
+                                              .toString() +
+                                          '\$',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blue.shade900),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      'OR ' +
+                                          addCommasToNumber(
+                                                  invoice.Invoice_Total_Lb)
+                                              .toString() +
+                                          ' LB',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blue.shade900),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Recieved US:  ' +
+                                          addCommasToNumber(
+                                                  invoice.Invoice_Rec_Usd)
+                                              .toString() +
+                                          '\$',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.green.shade900),
+                                    ),
+                                    Text(
+                                      ' And ' +
+                                          addCommasToNumber(
+                                                  invoice.Invoice_Rec_Lb)
+                                              .toString() +
+                                          ' LB',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.green.shade900),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Due:  ' +
+                                          addCommasToNumber(
+                                                  invoice.Invoice_Due_USD)
+                                              .toString() +
+                                          '\$',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.red.shade900),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      'OR ' +
+                                          addCommasToNumber(
+                                                  invoice.Invoice_Due_LB)
+                                              .toString() +
+                                          ' LB',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.red.shade900),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          fixedSize: Size(double.maxFinite, 20),
+                                          backgroundColor: Colors.blue.shade100,
+                                          side: BorderSide(
+                                            width: 2.0,
+                                            color: Colors.blue.shade900,
                                           ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: OutlinedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                fixedSize:
-                                                    Size(double.maxFinite, 20),
-                                                backgroundColor:
-                                                    Colors.blue.shade100,
-                                                side: BorderSide(
-                                                  width: 2.0,
-                                                  color: Colors.blue.shade900,
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Get.to(
-                                                    () => InvoiceHistoryItems(
-                                                          Invoice_id:
-                                                              invoice.Invoice_id
-                                                                  .toString(),
-                                                          Customer_id:
-                                                              invoice.Cus_id
-                                                                  .toString(),
-                                                          Customer_Name:
-                                                              invoice.Cus_Name
-                                                                  .toString(),
-                                                          Customer_Number:
-                                                              invoice.Cus_Number
-                                                                  .toString(),
-                                                          Invoice_Total_US:
-                                                              invoice.Invoice_Total_Usd
-                                                                  .toString(),
-                                                          Invoice_Rec_US: invoice
-                                                                  .Invoice_Rec_Usd
-                                                              .toString(),
-                                                          Invoice_Due_US: invoice
-                                                                  .Invoice_Due_USD
-                                                              .toString(),
-                                                          rate: invoice.Inv_Rate
-                                                              .toString(),
-                                                        ));
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Select',
-                                                    style: TextStyle(
-                                                        color: Colors
-                                                            .blue.shade900),
-                                                  ),
-                                                  SizedBox(width: 10),
-                                                  Icon(
-                                                    Icons
-                                                        .arrow_circle_right_rounded,
-                                                    color: Colors.blue.shade900,
-                                                  ),
-                                                ],
-                                              ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Get.to(() => InvoiceHistoryItems(
+                                                Invoice_id: invoice.Invoice_id
+                                                    .toString(),
+                                                Customer_id:
+                                                    invoice.Cus_id.toString(),
+                                                Customer_Name:
+                                                    invoice.Cus_Name.toString(),
+                                                Customer_Number: invoice
+                                                    .Cus_Number.toString(),
+                                                Invoice_Total_US:
+                                                    invoice.Invoice_Total_Usd
+                                                        .toString(),
+                                                Invoice_Rec_US: invoice
+                                                    .Invoice_Rec_Usd.toString(),
+                                                Invoice_Due_US: invoice
+                                                    .Invoice_Due_USD.toString(),
+                                                rate:
+                                                    invoice.Inv_Rate.toString(),
+                                                Inv_Type: invoice.Invoice_Type!,
+                                              ));
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Select',
+                                              style: TextStyle(
+                                                  color: Colors.blue.shade900),
                                             ),
+                                            SizedBox(width: 10),
+                                            Icon(
+                                              Icons.arrow_circle_right_rounded,
+                                              color: Colors.blue.shade900,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          fixedSize: Size(double.maxFinite, 20),
+                                          backgroundColor:
+                                              Colors.green.shade100,
+                                          side: BorderSide(
+                                            width: 2.0,
+                                            color: Colors.green.shade900,
                                           ),
-                                          SizedBox(
-                                            width: 10,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
                                           ),
-                                          Expanded(
-                                            child: OutlinedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                fixedSize:
-                                                    Size(double.maxFinite, 20),
-                                                backgroundColor:
-                                                    Colors.green.shade100,
-                                                side: BorderSide(
-                                                  width: 2.0,
-                                                  color: Colors.green.shade900,
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        title: Text('Pay Due'),
-                                                        content: Text(
-                                                            'Are you Sure?'),
-                                                        actions: <Widget>[
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child:
-                                                                Text('Cancel'),
-                                                          ),
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              showDialog(
-                                                                  // The user CANNOT close this dialog  by pressing outsite it
-                                                                  barrierDismissible:
-                                                                      false,
-                                                                  context:
-                                                                      context,
-                                                                  builder: (_) {
-                                                                    return Dialog(
-                                                                      // The background color
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .symmetric(
-                                                                            vertical:
-                                                                                20),
-                                                                        child:
-                                                                            Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.min,
-                                                                          children: [
-                                                                            // The loading indicator
-                                                                            CircularProgressIndicator(),
-                                                                            SizedBox(
-                                                                              height: 15,
-                                                                            ),
-                                                                            // Some text
-                                                                            Text('Loading')
-                                                                          ],
-                                                                        ),
+                                        ),
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Pay Due'),
+                                                  content:
+                                                      Text('Are you Sure?'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                            // The user CANNOT close this dialog  by pressing outsite it
+                                                            barrierDismissible:
+                                                                false,
+                                                            context: context,
+                                                            builder: (_) {
+                                                              return Dialog(
+                                                                // The background color
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          20),
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      // The loading indicator
+                                                                      CircularProgressIndicator(),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
                                                                       ),
-                                                                    );
-                                                                  });
-                                                              invoiceHistoryController.PayInvDue(
-                                                                      invoice.Invoice_id
-                                                                          .toString(),
-                                                                      invoice.Invoice_Total_Usd
-                                                                          .toString(),
-                                                                      invoice.Invoice_Due_USD
-                                                                          .toString(),
-                                                                      (invoice.Invoice_Due_USD - (invoice.Invoice_Total_Usd))
-                                                                          .toString(),
-                                                                      invoice.Cus_id
-                                                                          .toString(),
-                                                                      invoice
-                                                                          .Invoice_Date)
-                                                                  .then((value) =>
-                                                                      showToast(
-                                                                          invoiceHistoryController
-                                                                              .result2))
-                                                                  .then((value) =>
-                                                                      invoiceHistoryController.isDataFetched =
-                                                                          false)
-                                                                  .then((value) =>
-                                                                      invoiceHistoryController
-                                                                          .fetchinvoices())
-                                                                  .then((value) => Navigator.of(context).pop())
-                                                                  .then((value) => Navigator.of(context).pop());
+                                                                      // Some text
+                                                                      Text(
+                                                                          'Loading')
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            });
+                                                        invoiceHistoryController.PayInvDue(
+                                                                invoice.Invoice_id
+                                                                    .toString(),
+                                                                invoice.Invoice_Total_Usd
+                                                                    .toString(),
+                                                                invoice.Invoice_Due_USD
+                                                                    .toString(),
+                                                                (invoice.Invoice_Due_USD - (invoice.Invoice_Total_Usd))
+                                                                    .toString(),
+                                                                invoice.Cus_id
+                                                                    .toString(),
+                                                                invoice
+                                                                    .Invoice_Date)
+                                                            .then((value) =>
+                                                                showToast(
+                                                                    invoiceHistoryController
+                                                                        .result2))
+                                                            .then((value) =>
+                                                                invoiceHistoryController
+                                                                        .isDataFetched =
+                                                                    false)
+                                                            .then((value) => invoiceHistoryController.fetchinvoices())
+                                                            .then((value) => Navigator.of(context).pop())
+                                                            .then((value) => Navigator.of(context).pop());
 
-                                                              // productDetailController.UpdateProductQty(
-                                                              //         product.PD_id
-                                                              //             .toString(),
-                                                              //         New_Qty.text)
-                                                              //     .then((value) => showToast(
-                                                              //         productDetailController
-                                                              //             .result2))
-                                                              //     .then((value) =>
-                                                              //         productDetailController
-                                                              //                 .isDataFetched =
-                                                              //             false)
-                                                              //     .then((value) =>
-                                                              //         productDetailController
-                                                              //             .fetchproductdetails())
-                                                              //     .then((value) =>
-                                                              //         Navigator.of(context)
-                                                              //             .pop())
-                                                              //     .then((value) =>
-                                                              //         Navigator.of(context).pop());
+                                                        // productDetailController.UpdateProductQty(
+                                                        //         product.PD_id
+                                                        //             .toString(),
+                                                        //         New_Qty.text)
+                                                        //     .then((value) => showToast(
+                                                        //         productDetailController
+                                                        //             .result2))
+                                                        //     .then((value) =>
+                                                        //         productDetailController
+                                                        //                 .isDataFetched =
+                                                        //             false)
+                                                        //     .then((value) =>
+                                                        //         productDetailController
+                                                        //             .fetchproductdetails())
+                                                        //     .then((value) =>
+                                                        //         Navigator.of(context)
+                                                        //             .pop())
+                                                        //     .then((value) =>
+                                                        //         Navigator.of(context).pop());
 
-                                                              // Do something with the text, e.g., save it
-                                                              //  String enteredText = _textEditingController.text;
-                                                              //  print('Entered text: $enteredText');
-                                                              // Close the dialog
-                                                            },
-                                                            child: Text('OK'),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    });
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Pay',
-                                                    style: TextStyle(
-                                                        color: Colors
-                                                            .green.shade900),
-                                                  ),
-                                                  SizedBox(width: 10),
-                                                  Icon(
-                                                    Icons
-                                                        .arrow_circle_right_rounded,
-                                                    color:
-                                                        Colors.green.shade900,
-                                                  ),
-                                                ],
-                                              ),
+                                                        // Do something with the text, e.g., save it
+                                                        //  String enteredText = _textEditingController.text;
+                                                        //  print('Entered text: $enteredText');
+                                                        // Close the dialog
+                                                      },
+                                                      child: Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Pay',
+                                              style: TextStyle(
+                                                  color: Colors.green.shade900),
                                             ),
-                                          ),
-                                        ],
+                                            SizedBox(width: 10),
+                                            Icon(
+                                              Icons.arrow_circle_right_rounded,
+                                              color: Colors.green.shade900,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

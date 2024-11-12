@@ -365,7 +365,7 @@ class InvoiceHistoryAll extends StatelessWidget {
                                                                     .toString(),
                                                             rate:
                                                                 invoice.Inv_Rate
-                                                                    .toString(),
+                                                                    .toString(),       Inv_Type: invoice.Invoice_Type!,
                                                           ));
                                                 },
                                                 child: Row(

@@ -266,12 +266,14 @@ class _ProductListState extends State<ProductList> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('Category: ' +
-                                                product.Product_Cat +
-                                                ' || ' +
-                                                product.PRoduct_Sub_Cat +
-                                                ' || ' +
-                                                product.Product_Brand),
+                                            Expanded(
+                                              child: Text('Category: ' +
+                                                  product.Product_Cat +
+                                                  ' || ' +
+                                                  product.PRoduct_Sub_Cat +
+                                                  ' || ' +
+                                                  product.Product_Brand),
+                                            ),
                                           ],
                                         ),
 

@@ -677,7 +677,7 @@ class InvoiceDue extends StatelessWidget {
                                                                     .toString(),
                                                             Invoice_Due_US:
                                                                 invoice.Invoice_Due_USD
-                                                                    .toString(), rate: invoice.Inv_Rate.toString(),
+                                                                    .toString(), rate: invoice.Inv_Rate.toString(),       Inv_Type: invoice.Invoice_Type!,
                                                           ));
                                                     },
                                                     child: Row(

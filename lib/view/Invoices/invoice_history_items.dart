@@ -33,7 +33,8 @@ class InvoiceHistoryItems extends StatefulWidget {
       Invoice_Total_US,
       Invoice_Rec_US,
       Invoice_Due_US,
-      rate;
+      rate,
+      Inv_Type;
   InvoiceHistoryItems(
       {super.key,
       required this.Invoice_id,
@@ -43,7 +44,8 @@ class InvoiceHistoryItems extends StatefulWidget {
       required this.Invoice_Total_US,
       required this.Invoice_Rec_US,
       required this.Invoice_Due_US,
-      required this.rate});
+      required this.rate,
+      required this.Inv_Type});
 
   @override
   State<InvoiceHistoryItems> createState() => _InvoiceHistoryItemsState();
@@ -67,6 +69,14 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
   String addCommasToNumber(double value) {
     final formatter = NumberFormat('#,##0.00');
     return formatter.format(value);
+  }
+
+  bool isDel(type) {
+    if (type == 'Delivery') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
@@ -848,161 +858,357 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
                       itemBuilder: (context, index) {
                         final InvoiceHistoryModel invoice =
                             filtereditems[index];
-                        return Container(
+                        return Card(
                           color: Colors.grey.shade200,
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          //     padding: EdgeInsets.all(35),
-                          alignment: Alignment.center,
-                          child: ExpansionTile(
-                            collapsedTextColor: Colors.black,
+                          child: ListTile(
                             textColor: Colors.black,
-                            backgroundColor: Colors.deepPurple.shade100,
-                            //   collapsedBackgroundColor: Colors.white,
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            title: Column(
                               children: [
-                                Text(
-                                  invoice.Product_Quantity.toString() + ' PCS',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
-                                ),
-                                Text(
-                                  'UP: ' + invoice.product_UP.toString() + '\$',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                      color: Colors.green.shade900),
-                                ),
-                              ],
-                            ),
-                            title: Text(
-                              '#' +
-                                  invoice.Invoice_Detail_id.toString() +
-                                  ' || ' +
-                                  invoice.Product_Name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 0.0),
-                                child: Column(
-                                  //  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
+                                    Expanded(
+                                      child: Text(
+                                        '#' +
+                                            invoice.Invoice_Detail_id
+                                                .toString() +
+                                            ' || ' +
+                                            invoice.Product_Name,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                    Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Visibility(
-                                          visible: true,
-                                          child: IconButton(
-                                              color: Colors.red,
-                                              onPressed: () {
-                                                if (double.tryParse(widget
-                                                        .Invoice_Due_US) ==
-                                                    0) {
-                                                  showDialog(
-                                                      // The user CANNOT close this dialog  by pressing outsite it
-                                                      barrierDismissible: false,
-                                                      context: context,
-                                                      builder: (_) {
-                                                        return Dialog(
-                                                          // The background color
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        20),
-                                                            child: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                // The loading indicator
-                                                                CircularProgressIndicator(),
-                                                                SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                // Some text
-                                                                Text('Loading')
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      });
-                                                  invoiceDetailController.DeleteInvItem(
-                                                          invoice.Invoice_Detail_id
-                                                              .toString())
-                                                      .then((value) => showToast(
-                                                          invoiceDetailController
-                                                              .result2))
-                                                      .then((value) =>
-                                                          invoiceDetailController
-                                                                  .isDataFetched =
-                                                              false)
-                                                      .then((value) =>
-                                                          invoiceDetailController
-                                                              .fetchinvoicesdetails)
-                                                      .then((value) =>
-                                                          Navigator.of(context)
-                                                              .pop());
-                                                } else {
-                                                  showToast(
-                                                      'Invoice Due Must Be 0');
-                                                }
-                                              },
-                                              icon: Icon(Icons.delete)),
+                                        Text(
+                                          invoice.Product_Quantity.toString() +
+                                              ' PCS',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          'UP: ' +
+                                              invoice.product_UP.toString() +
+                                              '\$',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: Colors.green.shade900),
+                                        ),
+                                        Text(
+                                          'TP: ' +
+                                              invoice.product_TP.toString() +
+                                              '\$',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: Colors.green.shade900),
                                         ),
                                       ],
                                     ),
-                                    checkPhone(invoice.isPhone)
-                                        ? Text('Phone id: ' +
-                                            invoice.Phone_id.toString())
-                                        : Text('Product id: ' +
-                                            invoice.Product_id.toString()),
-
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text('Product Code: ' +
-                                        invoice.Product_Code),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text('Product Color: ' +
-                                        invoice.Product_Color),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text('Unit Price: ' +
-                                        invoice.product_UP.toString() +
-                                        '\$'),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text('Total Price: ' +
-                                        invoice.product_TP.toString() +
-                                        '\$'),
-                                    SizedBox(
-                                      height: 25,
-                                    ),
-                                    // Text('id' + invoice.PD_id.toString()),
-                                    // SizedBox(
-                                    //   height: 20,
-                                    // ),
-
-                                    // Text('Total Price of Treatment:  ${treatments.!}\$ '),
                                   ],
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
+                            subtitle: Column(
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    checkPhone(invoice.isPhone)
+                                        ? Text(
+                                            'Phone id: ' +
+                                                invoice.Phone_id.toString(),
+                                            style: TextStyle(fontSize: 12),
+                                          )
+                                        : Text(
+                                            'Product id: ' +
+                                                invoice.Product_id.toString(),
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '| Code: ' + invoice.Product_Code,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      '| Color: ' + invoice.Product_Color,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          fixedSize: Size(double.maxFinite, 20),
+                                          backgroundColor: Colors.red.shade100,
+                                          side: BorderSide(
+                                            width: 2.0,
+                                            color: Colors.red.shade900,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          if (double.tryParse(
+                                                  widget.Invoice_Due_US) ==
+                                              0) {
+                                            showDialog(
+                                                // The user CANNOT close this dialog  by pressing outsite it
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (_) {
+                                                  return Dialog(
+                                                    // The background color
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 20),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          // The loading indicator
+                                                          CircularProgressIndicator(),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          // Some text
+                                                          Text('Loading')
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                            invoiceDetailController
+                                                    .DeleteInvItem(invoice
+                                                            .Invoice_Detail_id
+                                                        .toString())
+                                                .then((value) =>
+                                                    showToast(
+                                                        invoiceDetailController
+                                                            .result2))
+                                                .then((value) =>
+                                                    invoiceDetailController
+                                                        .isDataFetched = false)
+                                                .then((value) =>
+                                                    invoiceDetailController
+                                                        .fetchinvoicesdetails)
+                                                .then((value) =>
+                                                    Navigator.of(context)
+                                                        .pop());
+                                          } else {
+                                            showToast('Invoice Due Must Be 0');
+                                          }
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Delete',
+                                              style: TextStyle(
+                                                  color: Colors.red.shade900),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Icon(
+                                              Icons.delete,
+                                              color: Colors.red.shade900,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: isDel(widget.Inv_Type),
+                                      child: SizedBox(
+                                        width: 10,
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: isDel(widget.Inv_Type),
+                                      child: Expanded(
+                                        child: OutlinedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize:
+                                                Size(double.maxFinite, 20),
+                                            backgroundColor:
+                                                Colors.blue.shade100,
+                                            side: BorderSide(
+                                              width: 2.0,
+                                              color: Colors.blue.shade900,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text('Pay Due'),
+                                                    content:
+                                                        Text('Are you Sure?'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text('Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          // showDialog(
+                                                          //     // The user CANNOT close this dialog  by pressing outsite it
+                                                          //     barrierDismissible:
+                                                          //         false,
+                                                          //     context:
+                                                          //         context,
+                                                          //     builder: (_) {
+                                                          //       return Dialog(
+                                                          //         // The background color
+                                                          //         backgroundColor:
+                                                          //             Colors
+                                                          //                 .white,
+                                                          //         child:
+                                                          //             Padding(
+                                                          //           padding: const EdgeInsets
+                                                          //               .symmetric(
+                                                          //               vertical:
+                                                          //                   20),
+                                                          //           child:
+                                                          //               Column(
+                                                          //             mainAxisSize:
+                                                          //                 MainAxisSize.min,
+                                                          //             children: [
+                                                          //               // The loading indicator
+                                                          //               CircularProgressIndicator(),
+                                                          //               SizedBox(
+                                                          //                 height: 15,
+                                                          //               ),
+                                                          //               // Some text
+                                                          //               Text('Loading')
+                                                          //             ],
+                                                          //           ),
+                                                          //         ),
+                                                          //       );
+                                                          //     });
+                                                          // invoiceHistoryController.PayInvDue(
+                                                          //         invoice.Invoice_id
+                                                          //             .toString(),
+                                                          //         invoice.Invoice_Total_Usd
+                                                          //             .toString(),
+                                                          //         invoice.Invoice_Due_USD
+                                                          //             .toString(),
+                                                          //         (invoice.Invoice_Due_USD - (invoice.Invoice_Total_Usd))
+                                                          //             .toString(),
+                                                          //         invoice.Cus_id
+                                                          //             .toString(),
+                                                          //         invoice
+                                                          //             .Invoice_Date)
+                                                          //     .then((value) =>
+                                                          //         showToast(
+                                                          //             invoiceHistoryController
+                                                          //                 .result2))
+                                                          //     .then((value) =>
+                                                          //         invoiceHistoryController.isDataFetched =
+                                                          //             false)
+                                                          //     .then((value) =>
+                                                          //         invoiceHistoryController
+                                                          //             .fetchinvoices())
+                                                          //     .then((value) => Navigator.of(context).pop())
+                                                          //     .then((value) => Navigator.of(context).pop());
+
+                                                          // productDetailController.UpdateProductQty(
+                                                          //         product.PD_id
+                                                          //             .toString(),
+                                                          //         New_Qty.text)
+                                                          //     .then((value) => showToast(
+                                                          //         productDetailController
+                                                          //             .result2))
+                                                          //     .then((value) =>
+                                                          //         productDetailController
+                                                          //                 .isDataFetched =
+                                                          //             false)
+                                                          //     .then((value) =>
+                                                          //         productDetailController
+                                                          //             .fetchproductdetails())
+                                                          //     .then((value) =>
+                                                          //         Navigator.of(context)
+                                                          //             .pop())
+                                                          //     .then((value) =>
+                                                          //         Navigator.of(context).pop());
+
+                                                          // Do something with the text, e.g., save it
+                                                          //  String enteredText = _textEditingController.text;
+                                                          //  print('Entered text: $enteredText');
+                                                          // Close the dialog
+                                                        },
+                                                        child: Text('OK'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Set Pending',
+                                                style: TextStyle(
+                                                    color:
+                                                        Colors.blue.shade900),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Icon(
+                                                Icons.pending,
+                                                color: Colors.blue.shade900,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                // Text('id' + invoice.PD_id.toString()),
+                                // SizedBox(
+                                //   height: 20,
+                                // ),
+
+                                // Text('Total Price of Treatment:  ${treatments.!}\$ '),
+                              ],
+                            ),
+                            // controlAffinity: ListTileControlAffinity.leading,
+
                             //  subtitle: Text(invoice.Product_Brand),
                             // trailing: OutlinedButton(
                             //   onPressed: () {

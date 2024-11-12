@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 
 class ProductDetailModel {
   final int PD_id;
-
   final int Product_id;
   final String Product_Name;
   final String Product_Code;

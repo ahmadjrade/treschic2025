@@ -26,6 +26,7 @@ class InvoiceModel {
   final int? Driver_id;
   final String? Driver_Name;
   final String? Driver_Number;
+  final String? Delivery_Code;
 
   // RxDouble _product_MPrice; // Use RxDouble for reactive price
   // final int Product_Cat_id;
@@ -34,29 +35,29 @@ class InvoiceModel {
 
   // RxInt quantity;
 
-  InvoiceModel({
-    required this.Invoice_id,
-    required this.Invoice_Store,
-    required this.Invoice_Total_Usd,
-    required this.Invoice_Total_Lb,
-    required this.Invoice_Rec_Usd,
-    required this.Invoice_Rec_Lb,
-    required this.Invoice_Due_USD,
-    required this.Invoice_Due_LB,
-    required this.Invoice_Date,
-    required this.Cus_id,
-    required this.Cus_Name,
-    required this.Cus_Number,
-    required this.Invoice_Time,
-    required this.isPaid,
-    required this.Invoice_Type,
-    required this.Username,
-    required this.Inv_Rate,
-    required this.Invoice_Month,
-    required this.Driver_id,
-    required this.Driver_Name,
-    required this.Driver_Number,
-  });
+  InvoiceModel(
+      {required this.Invoice_id,
+      required this.Invoice_Store,
+      required this.Invoice_Total_Usd,
+      required this.Invoice_Total_Lb,
+      required this.Invoice_Rec_Usd,
+      required this.Invoice_Rec_Lb,
+      required this.Invoice_Due_USD,
+      required this.Invoice_Due_LB,
+      required this.Invoice_Date,
+      required this.Cus_id,
+      required this.Cus_Name,
+      required this.Cus_Number,
+      required this.Invoice_Time,
+      required this.isPaid,
+      required this.Invoice_Type,
+      required this.Username,
+      required this.Inv_Rate,
+      required this.Invoice_Month,
+      required this.Driver_id,
+      required this.Driver_Name,
+      required this.Driver_Number,
+      required this.Delivery_Code});
   // :
   //  _product_MPrice = Product_MPrice.obs; // Initialize RxDouble
 
@@ -89,6 +90,7 @@ class InvoiceModel {
       Driver_id: json['Driver_id'],
       Driver_Name: json['Driver_Name'],
       Driver_Number: json['Driver_Number'],
+      Delivery_Code: json['Delivery_Code'],
     );
   }
 }

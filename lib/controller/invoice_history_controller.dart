@@ -204,19 +204,19 @@ class InvoiceHistoryController extends GetxController {
     Username = sharedPreferencesController.username;
 
     return invoices
-        .where((invoice) =>
-            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Driver_id == int.tryParse(driver_id) &&
-                invoice.isPaid == 0 ||
-            invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Driver_id == int.tryParse(driver_id) &&
-                invoice.isPaid == 0 ||
-            invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value &&
-                invoice.Driver_id == int.tryParse(driver_id) &&
-                invoice.isPaid == 0)
+        .where((invoice) => ((invoice.Invoice_id.toString()
+                    .contains(query.toLowerCase()) ||
+                invoice.Cus_Name?.toLowerCase().contains(query.toLowerCase()) ==
+                    true ||
+                invoice.Delivery_Code?.toLowerCase()
+                        .contains(query.toLowerCase()) ==
+                    true ||
+                invoice.Cus_Number?.toLowerCase()
+                        .contains(query.toLowerCase()) ==
+                    true) &&
+            invoice.Username == Username.value &&
+            invoice.Driver_id == int.tryParse(driver_id) &&
+            invoice.isPaid == 0))
         .toList();
   }
 
@@ -302,6 +302,12 @@ class InvoiceHistoryController extends GetxController {
   RxDouble totaldue_fhome = 0.0.obs;
   RxDouble totalreclb_fhome = 0.0.obs;
   RxDouble totalrec_fhome = 0.0.obs;
+
+  RxDouble total_cus = 0.0.obs;
+  RxDouble totalrecusd_cus = 0.0.obs;
+  RxDouble totaldue_cus = 0.0.obs;
+  RxDouble totalreclb_cus = 0.0.obs;
+  RxDouble totalrec_cus = 0.0.obs;
   void CalTotal_fhome() {
     Username = sharedPreferencesController.username;
     String dateString = dateController.getFormattedDate();
@@ -466,6 +472,32 @@ class InvoiceHistoryController extends GetxController {
       totalreclb_all.value += totalofinvoices[i].Invoice_Rec_Lb;
 
       totalrec_all.value +=
+          totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+              totalofinvoices[i].Invoice_Rec_Usd;
+    }
+  }
+
+  void CalTotalForCus(cus_number) {
+    total_cus.value = 0;
+    totaldue_cus.value = 0;
+    totalrecusd_cus.value = 0;
+    totalreclb_cus.value = 0;
+    totalrec_cus.value = 0;
+
+    Username = sharedPreferencesController.username;
+
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Cus_Number == cus_number)
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_cus.value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_cus.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_cus.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_cus.value += totalofinvoices[i].Invoice_Rec_Lb;
+
+      totalrec_cus.value +=
           totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
               totalofinvoices[i].Invoice_Rec_Usd;
     }

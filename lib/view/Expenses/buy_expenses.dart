@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../controller/datetime_controller.dart';
-import '../controller/insert_expense_controller.dart';
+import '../../controller/datetime_controller.dart';
+import '../../controller/insert_expense_controller.dart';
 
 class BuyExpenses extends StatelessWidget {
   BuyExpenses({super.key});
@@ -207,10 +207,9 @@ class BuyExpenses extends StatelessWidget {
                                           Navigator.of(context).pop())
                                       .then((value) =>
                                           Navigator.of(context).pop())
-                                          .then((value) => Exp_Cat_Name.clear())
+                                      .then((value) => Exp_Cat_Name.clear())
                                       .then((value) => showToast(
                                           expenseCategoryController.result2));
-                                          
                                 } else {
                                   showToast('Write Category Name');
                                 }
@@ -324,7 +323,6 @@ class BuyExpenses extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                       
                 Expanded(
                   child: RadioListTile(
                     activeColor: Colors.blue.shade900,
@@ -388,7 +386,7 @@ class BuyExpenses extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(double.maxFinite, 50),
                   backgroundColor: Colors.blue.shade100,
-                  side: BorderSide(width: 2.0, color: Colors.blue.shade100),
+                  side: BorderSide(width: 2.0, color: Colors.blue.shade900),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),

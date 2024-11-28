@@ -45,7 +45,7 @@ import 'package:fixnshop_admin/view/Repairs/repair_manage.dart';
 import 'package:fixnshop_admin/view/Repairs/repair_product_list.dart';
 import 'package:fixnshop_admin/view/Transfer/stores_list_ftransfer.dart';
 import 'package:fixnshop_admin/view/Transfer/transfer_history_manage.dart';
-import 'package:fixnshop_admin/view/buy_expenses.dart';
+import 'package:fixnshop_admin/view/Expenses/buy_expenses.dart';
 import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
 import 'package:fixnshop_admin/view/Repairs/pending_repair.dart';
 import 'package:fixnshop_admin/view/stores_list.dart';
@@ -282,173 +282,195 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Home Screen '),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    rechargeBalanceController.isDataFetched = false;
-                    rechargeBalanceController.fetch_cart_types();
-                    refresh_recharge();
-                    refresh_invoice();
-                    refresh_expense();
-                    refresh_imoney();
-                    // invoiceHistoryController.reset();
-                    // invoiceHistoryController.isDataFetched = false;
-                    // invoiceHistoryController.fetchinvoices();
-                    // rechargeInvoiceHistoryController.reset();
-                    // rechargeInvoiceHistoryController.isDataFetched = false;
-                    // rechargeInvoiceHistoryController.fetchrechargeInvoice();
-                  },
-                  icon: Icon(Icons.refresh),
-                  color: Colors.deepPurple,
-                ),
-                IconButton(
-                  onPressed: () {
-                    showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Confirm Logout?'),
-                            // content: setupAlertDialoadContainer(),
+            Container(
+              // height: 40,
+              // width: 150,
+              decoration: BoxDecoration(
+                // color: Colors.grey.shade500,
+                border: Border.all(color: Colors.grey.shade500),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      rechargeBalanceController.isDataFetched = false;
+                      rechargeBalanceController.fetch_cart_types();
+                      refresh_recharge();
+                      refresh_invoice();
+                      refresh_expense();
+                      refresh_imoney();
+                      // invoiceHistoryController.reset();
+                      // invoiceHistoryController.isDataFetched = false;
+                      // invoiceHistoryController.fetchinvoices();
+                      // rechargeInvoiceHistoryController.reset();
+                      // rechargeInvoiceHistoryController.isDataFetched = false;
+                      // rechargeInvoiceHistoryController.fetchrechargeInvoice();
+                    },
+                    icon: Icon(Icons.refresh),
+                    color: Colors.blue.shade900,
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Confirm Logout?'),
+                                  // content: setupAlertDialoadContainer(),
 
-                            actions: [
-                              Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: OutlinedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            fixedSize:
-                                                Size(double.infinity, 20),
-                                            backgroundColor: Colors.red,
-                                            side: BorderSide(
-                                                width: 2.0, color: Colors.red),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(32.0),
-                                            ),
+                                  actions: [
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  fixedSize:
+                                                      Size(double.infinity, 20),
+                                                  backgroundColor: Colors.red,
+                                                  side: BorderSide(
+                                                      width: 2.0,
+                                                      color: Colors.red),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            32.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  'No',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )),
                                           ),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text(
-                                            'No',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Expanded(
-                                      child: OutlinedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            fixedSize:
-                                                Size(double.infinity, 20),
-                                            backgroundColor: Colors.green,
-                                            side: BorderSide(
-                                                width: 2.0,
-                                                color: Colors.green),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(32.0),
-                                            ),
+                                          SizedBox(
+                                            width: 20,
                                           ),
-                                          onPressed: () {
-                                            showDialog(
-                                                // The user CANNOT close this dialog  by pressing outsite it
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (_) {
-                                                  return Dialog(
-                                                    // The background color
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 20),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          // The loading indicator
-                                                          CircularProgressIndicator(),
-                                                          SizedBox(
-                                                            height: 15,
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  fixedSize:
+                                                      Size(double.infinity, 20),
+                                                  backgroundColor: Colors.green,
+                                                  side: BorderSide(
+                                                      width: 2.0,
+                                                      color: Colors.green),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            32.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                                      // The user CANNOT close this dialog  by pressing outsite it
+                                                      barrierDismissible: false,
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return Dialog(
+                                                          // The background color
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical:
+                                                                        20),
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                // The loading indicator
+                                                                CircularProgressIndicator(),
+                                                                SizedBox(
+                                                                  height: 15,
+                                                                ),
+                                                                // Some text
+                                                                Text('Loading')
+                                                              ],
+                                                            ),
                                                           ),
-                                                          // Some text
-                                                          Text('Loading')
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                });
-                                            loginController.logoutUser().then(
-                                                (value) => checkResponse(
-                                                        loginController.result2)
-                                                    ? Navigate()
-                                                    : Close());
+                                                        );
+                                                      });
+                                                  loginController
+                                                      .logoutUser()
+                                                      .then((value) =>
+                                                          checkResponse(
+                                                                  loginController
+                                                                      .result2)
+                                                              ? Navigate()
+                                                              : Close());
 
-                                            // _showeditAlertDialog(
-                                            //     context,
-                                            //     product_info[index]
-                                            //         .Product_info_id);
-                                            // Navigator.of(context).pop();
-                                          },
-                                          child: Text(
-                                            'Yes',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
-                                    ),
+                                                  // _showeditAlertDialog(
+                                                  //     context,
+                                                  //     product_info[index]
+                                                  //         .Product_info_id);
+                                                  // Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  'Yes',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
-                                ),
-                              )
-                            ],
-                          );
-                        });
-                  },
-                  icon: Icon(Icons.exit_to_app),
-                  color: Colors.deepPurple,
-                ),
-                IconButton(
-                    color: bluetoothController!.connection == null ||
-                            !bluetoothController!.connection!.isConnected
-                        ? Colors.red
-                        : Colors.green,
-                    iconSize: 24.0,
-                    icon: Icon(Icons.print),
-                    onPressed: () async {
-                      if (bluetoothController!.connection == null ||
-                          !bluetoothController!.connection!.isConnected) {
-                        List<BluetoothDevice> devices = [];
-                        try {
-                          devices = await FlutterBluetoothSerial.instance
-                              .getBondedDevices();
-                        } catch (e) {
-                          print('Error getting devices: $e');
-                        }
+                                );
+                              });
+                        },
+                        icon: Icon(Icons.exit_to_app),
+                        color: Colors.blue.shade900,
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                      color: bluetoothController!.connection == null ||
+                              !bluetoothController!.connection!.isConnected
+                          ? Colors.red
+                          : Colors.green,
+                      iconSize: 24.0,
+                      icon: Icon(Icons.print),
+                      onPressed: () async {
+                        if (bluetoothController!.connection == null ||
+                            !bluetoothController!.connection!.isConnected) {
+                          List<BluetoothDevice> devices = [];
+                          try {
+                            devices = await FlutterBluetoothSerial.instance
+                                .getBondedDevices();
+                          } catch (e) {
+                            print('Error getting devices: $e');
+                          }
 
-                        if (devices.isNotEmpty) {
-                          await showAvailableDevices();
+                          if (devices.isNotEmpty) {
+                            await showAvailableDevices();
+                          } else {
+                            print('No bonded devices available');
+                          }
                         } else {
-                          print('No bonded devices available');
+                          print('Already connected');
+                          //   for (int i = 0; i < 3; i++) {
+                          _PrintReceipt();
                         }
-                      } else {
-                        print('Already connected');
-                        //   for (int i = 0; i < 3; i++) {
-                        _PrintReceipt();
-                      }
-                    }),
-              ],
+                      }),
+                ],
+              ),
             )
           ],
         ),
-        //  backgroundColor: Colors.deepPurple.shade300,
+        //  backgroundColor: Colors.blue.shade900.shade300,
       ),
       // backgroundColor: Colors.white,
       //drawer: Navigat,
@@ -713,9 +735,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Card(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.blue.shade100,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                      color: Colors.blue.shade100,
+                                      border: Border.all(
+                                          color: Colors.blue.shade900),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(15.0),
                                       child: Row(
@@ -925,7 +949,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               );
                                             },
                                             icon: Icon(Icons.add_outlined,
-                                                color: Colors.green.shade900),
+                                                color: Colors.black),
                                           ),
                                           SizedBox(
                                             width: 10,
@@ -1074,9 +1098,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Card(
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          color: Colors.green.shade100,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                        color: Colors.green.shade100,
+                                        border: Border.all(
+                                            color: Colors.green.shade900),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(15.0),
                                         child: Column(
@@ -1191,9 +1217,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Card(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.green.shade100,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                      color: Colors.green.shade100,
+                                      border: Border.all(
+                                          color: Colors.green.shade900),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(15.0),
                                       child: Column(
@@ -1312,9 +1340,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Card(
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          color: Colors.red.shade100,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                        color: Colors.red.shade100,
+                                        border: Border.all(
+                                            color: Colors.red.shade900),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(15.0),
                                         child: Column(
@@ -1388,9 +1418,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Center(child: CircularProgressIndicator());
                     } else {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Card(
                           child: Container(
+                            decoration: BoxDecoration(
+                              //color: Colors.blue.shade100,
+                              border: Border.all(color: Colors.grey.shade900),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Column(
@@ -1425,7 +1460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .toString() +
                                             '\$',
                                         style: TextStyle(
-                                            color: Colors.green.shade900,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       )
                                     ],

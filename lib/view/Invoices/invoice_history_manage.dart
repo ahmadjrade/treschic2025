@@ -28,22 +28,22 @@ class InvoiceHistoryManage extends StatelessWidget {
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
-            String Today = '';
-                        String Yesterday = '';
-
+  String Today = '';
+  String Yesterday = '';
 
   @override
   Widget build(BuildContext context) {
-     DateTime now = DateTime.now();
-             Today = DateFormat('EEEE').format(now) ;
-     DateTime yday = now.subtract(Duration(days: 1));
-     String getMonthName(DateTime date) {
-  return DateFormat('MMMM').format(date);
-}
-      String monthName = getMonthName(now);
+    DateTime now = DateTime.now();
+    Today = DateFormat('EEEE').format(now);
+    DateTime yday = now.subtract(Duration(days: 1));
+    String getMonthName(DateTime date) {
+      return DateFormat('MMMM').format(date);
+    }
+
+    String monthName = getMonthName(now);
 
     // Getting the name of the day for yesterday
-     Yesterday = DateFormat('EEEE').format(yday);
+    Yesterday = DateFormat('EEEE').format(yday);
 
     // invoiceHistoryController.reset();
 
@@ -76,31 +76,39 @@ class InvoiceHistoryManage extends StatelessWidget {
       return time8Hour;
     }
 
-          
     String addCommasToNumber(double value) {
       final formatter = NumberFormat('#,##0.00');
       return formatter.format(value);
     }
-    
 
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Invoice History',
-                style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
-               IconButton(
-              onPressed: () {
-                invoiceHistoryController.reset();
-                invoiceHistoryController.isDataFetched = false;
-                invoiceHistoryController.fetchinvoices();
-              },
-              icon: Icon(Icons.refresh))
+              Container(
+                decoration: BoxDecoration(
+                  //   color: Colors.grey.shade500,
+                  border: Border.all(color: Colors.grey.shade500),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                    onPressed: () {
+                      invoiceHistoryController.reset();
+                      invoiceHistoryController.isDataFetched = false;
+                      invoiceHistoryController.fetchinvoices();
+                    },
+                    icon: Icon(
+                      Icons.refresh,
+                      color: Colors.blue.shade900,
+                    )),
+              )
             ],
           ),
           centerTitle: true,
@@ -110,7 +118,7 @@ class InvoiceHistoryManage extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: Container(
                 height: 40,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   color: Colors.green.shade100,
@@ -126,8 +134,7 @@ class InvoiceHistoryManage extends StatelessWidget {
                   tabs: [
                     TabItem(title: Today, count: 0),
                     TabItem(title: Yesterday, count: 0),
-                                        TabItem(title:  monthName, count: 0),
-
+                    TabItem(title: monthName, count: 0),
                     TabItem(title: 'All', count: 0),
                   ],
                 ),
@@ -135,20 +142,19 @@ class InvoiceHistoryManage extends StatelessWidget {
             ),
           ),
         ),
-      body: 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TabBarView(
-                          children: [
-                            InvoiceHistory(), // Page for "Today" tab
-                            InvoiceHistoryYesterday(),
-                            InvoiceHistoryMonth(), // Page for "Yesterday" tab
- // Page for "Yesterday" tab
-                            InvoiceHistoryAll(), // Page for "All" tab
-                          ],
-                        ),
-              ),
-              
-    ),);
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TabBarView(
+            children: [
+              InvoiceHistory(), // Page for "Today" tab
+              InvoiceHistoryYesterday(),
+              InvoiceHistoryMonth(), // Page for "Yesterday" tab
+              // Page for "Yesterday" tab
+              InvoiceHistoryAll(), // Page for "All" tab
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

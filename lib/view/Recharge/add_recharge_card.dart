@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:fixnshop_admin/controller/color_controller.dart';
 import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
 import 'package:fixnshop_admin/controller/insert_recharge_card.dart';
@@ -260,10 +258,8 @@ class _AddRechargeCardState extends State<AddRechargeCard> {
                                         ),
                                       ),
                                     ),
-                                    iconDisabledColor:
-                                        Colors.deepPurple.shade300,
-                                    iconEnabledColor:
-                                        Colors.deepPurple.shade300,
+                                    iconDisabledColor: Colors.blue.shade900,
+                                    iconEnabledColor: Colors.blue.shade900,
                                     //  value: categoryController.category.first,
                                     onChanged: (RechargeBalanceModel? value) {
                                       SelectedBalance = value;
@@ -286,7 +282,7 @@ class _AddRechargeCardState extends State<AddRechargeCard> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: IconButton(
-                          color: Colors.blueAccent,
+                          color: Colors.blue.shade900,
                           iconSize: 24.0,
                           onPressed: () {
                             Get.to(RechargeBalance());
@@ -306,6 +302,8 @@ class _AddRechargeCardState extends State<AddRechargeCard> {
                   height: 20,
                 ),
                 CheckboxListTile(
+                  activeColor: Colors.blue.shade100,
+                  checkColor: Colors.blue.shade900,
                   title: Text("No Balance ? "),
                   value: isRequired,
                   onChanged: (newValue) {
@@ -337,10 +335,9 @@ class _AddRechargeCardState extends State<AddRechargeCard> {
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
               child: OutlinedButton(
                   style: ElevatedButton.styleFrom(
-                    //   fixedSize: Sized(double.maxFinite, 50),
-                    backgroundColor: Colors.deepPurple.shade300,
-                    side: BorderSide(
-                        width: 2.0, color: Colors.deepPurple.shade300),
+                    fixedSize: Size(double.maxFinite, 50),
+                    backgroundColor: Colors.blue.shade100,
+                    side: BorderSide(width: 2.0, color: Colors.blue.shade900),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -389,7 +386,7 @@ class _AddRechargeCardState extends State<AddRechargeCard> {
                   },
                   child: Text(
                     'Insert Card',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.blue.shade900),
                   )),
             ),
           ],

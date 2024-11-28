@@ -7,12 +7,8 @@ import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
 import 'package:fixnshop_admin/model/domain.dart';
 import 'package:fixnshop_admin/model/invoice_history_model.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -56,11 +52,6 @@ class InvoiceDetailController extends GetxController {
     print(isDataFetched);
     fetchinvoicesdetails();
   }
-
-//  List<InvoiceHistoryModel> searchProducts(String query) {
-//     return invoice_detail.where((product) =>
-//         product.P.toLowerCase().contains(query.toLowerCase())).toList();
-//   }
 
   FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
 
@@ -153,38 +144,7 @@ class InvoiceDetailController extends GetxController {
     bytes += ticket.hr(ch: '*', linesAfter: 1);
     bytes += ticket.text('Invoice Type: ' + 'Store',
         styles: PosStyles(align: PosAlign.center, bold: true), linesAfter: 0);
-    // bytes += ticket.text('Paid In: ' + Currency,
-    //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-    // if (Delivery_Code.text != '') {
-    //   bytes += ticket.text('Delivery Code: ' + Delivery_Code.text,
-    //       styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-    // }
-    // if (Delivery_Code.text != '') {
-    //   bytes += ticket.text(
-    //       'Delivery Company Name: ' +
-    //           Cus_Name +
-    //           '\nDelivery Company Number: ' +
-    //           Cus_Number,
-    //       styles: PosStyles(align: PosAlign.center),
-    //       linesAfter: 1);
 
-    //   bytes += ticket.text(
-    //       'Reciever Name: ' +
-    //           C_Customer_Name.text +
-    //           '\nReciever Company Number: ' +
-    //           C_Customer_Number.text,
-    //       styles: PosStyles(align: PosAlign.center),
-    //       linesAfter: 1);
-
-    //   bytes += ticket.text('Reciever Address: ' + Cus_address.text,
-    //       styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-    // }
-    // if (Delivery_Code.text == '') {
-    //   bytes += ticket.text(
-    //       'Customer Name: ' + Cus_Name + '\nCustomer Number: ' + Cus_Number,
-    //       styles: PosStyles(align: PosAlign.center),
-    //       linesAfter: 1);
-    // }
     if (Cus_Number != '000000') {
       bytes += ticket.text(
           'Customer Name: ' + Cus_Name + '\nCustomer Number: ' + Cus_Number,
@@ -353,22 +313,7 @@ class InvoiceDetailController extends GetxController {
               bold: true)),
     ]);
     bytes += ticket.hr(ch: '=', linesAfter: 1);
-    // bytes += ticket.row([
-    //   PosColumn(
-    //       text: 'New Due',
-    //       width: 6,
-    //       styles: PosStyles(
-    //           height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
-    //   PosColumn(
-    //       text: addCommasToNumber(DueUSD.value + double.tryParse(Cus_Due)!) +
-    //           ' USD',
-    //       width: 6,
-    //       styles: PosStyles(
-    //           align: PosAlign.right,
-    //           height: PosTextSize.size1,
-    //           bold: true,
-    //           width: PosTextSize.size1)),
-    // ]);
+
     bytes += ticket.hr(ch: '=', linesAfter: 1);
     bytes += ticket.feed(2);
     bytes += ticket.text('Thank you!',
@@ -379,10 +324,6 @@ class InvoiceDetailController extends GetxController {
     bytes += ticket.text(timestamp,
         styles: PosStyles(align: PosAlign.center), linesAfter: 2);
 
-    // bytes += ticket.text('Invoice #' + last_id.toString(),
-    //     styles: PosStyles(align: PosAlign.center), linesAfter: 1);
-
-    // bytes += ticket.qrcode(last_id.toString());
     bytes += ticket.feed(1);
     bytes += ticket.cut();
 
@@ -414,10 +355,14 @@ class InvoiceDetailController extends GetxController {
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Name.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Code.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) ||
+            invoice.Invoice_Detail_id.toString()
+                    .contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Date.contains(formattedDate))
         .toList();
@@ -442,10 +387,14 @@ class InvoiceDetailController extends GetxController {
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Name.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Date.contains(formattedDate) ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Code.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) ||
+            invoice.Invoice_Detail_id.toString()
+                    .contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Date.contains(formattedDate))
         .toList();
@@ -464,9 +413,12 @@ class InvoiceDetailController extends GetxController {
         .where((invoice) =>
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Name.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Code.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value ||
+            invoice.Invoice_Detail_id.toString()
+                    .contains(query.toLowerCase()) &&
                 invoice.Username == Username.value)
         .toList();
   }
@@ -486,10 +438,14 @@ class InvoiceDetailController extends GetxController {
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Month == (monthNumber) ||
-            invoice.Product_Name!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Name.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Month == (monthNumber) ||
-            invoice.Product_Code!.toLowerCase().contains(query.toLowerCase()) &&
+            invoice.Product_Code.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Month == (monthNumber) ||
+            invoice.Invoice_Detail_id.toString()
+                    .contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
                 invoice.Invoice_Month == (monthNumber))
         .toList();

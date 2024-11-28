@@ -104,236 +104,210 @@ class CustomerListFPhones extends StatelessWidget {
                 ),
               ),
             ),
-            
-            
             SizedBox(
               height: 10,
             ),
             Expanded(
-              child: Obx(
-                () {
-                  final List<CustomerModel> filteredCustomers =
-                      customerController.searchProducts(Customer_Number.text);
-                  if (customerController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator());
-                  } else {
-                    return ListView.builder(
-                      itemCount: filteredCustomers.length,
-                      itemBuilder: (context, index) {
-                        final CustomerModel customer = filteredCustomers[index];
-                        return Container(
-                          //  width: double.infinity,
-                          //   height: 150.0,
-                          color: Colors.grey.shade200,
-                          margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                          //     padding: EdgeInsets.all(35),
-                          alignment: Alignment.center,
-                          child: ListTile(
-                            
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Column(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Obx(
+                  () {
+                    final List<CustomerModel> filteredCustomers =
+                        customerController.searchProducts(Customer_Number.text);
+                    if (customerController.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return ListView.builder(
+                        itemCount: filteredCustomers.length,
+                        itemBuilder: (context, index) {
+                          final CustomerModel customer =
+                              filteredCustomers[index];
+                          return Card(
+                            margin: EdgeInsets.all(5),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [ Icon(
-                                            Icons.perm_contact_cal,
-                                            color: Colors.blue.shade900,
-                                            size: 13,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            customer.Cus_Name.toUpperCase() + ' || '
-                                            // +
-                                            // ' -- ' +
-                                            // customer.Product_Code,
-                                            ,
-                                            overflow: TextOverflow.clip,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                                
-                                          ),
-                                         
-                                          Text(
-                                            customer.Cus_Number
-                                            // +
-                                            // ' -- ' +
-                                            // customer.Product_Code,
-                                            ,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ),],
-                                          ),
-                                          
-                                        
-                                        ],
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                customer.Cus_Name
+                                                        .toUpperCase() +
+                                                    ' | ' +
+                                                    customer.Cus_Number
+                                                // +
+                                                // ' -- ' +
+                                                // customer.Product_Code,
+                                                ,
+                                                overflow: TextOverflow.clip,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                            
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Icon(
-                                            Icons.attach_money,
-                                            color: Colors.red.shade900,
-                                            size: 12,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
                                           Text(
-                                            'Due US: ' +
+                                            'Due: ' +
                                                 addCommasToNumber(
                                                         customer.Cus_Due_USD)
-                                                    .toString() + '\$'
+                                                    .toString() +
+                                                '\$'
                                             // +
                                             // ' -- ' +
                                             // customer.Product_Code,
                                             ,
                                             style: TextStyle(
-                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red.shade900,
+                                                fontWeight: FontWeight.w500,
                                                 fontSize: 12),
                                           ),
                                         ],
                                       ),
-                                      
                                     ],
                                   ),
-                                ),
-                               
-                                //Text(customer.Cus_Due_USD.toString()),
-                              ],
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: OutlinedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            //fixedSize: Size(200, 20),
-                                            backgroundColor:
-                                                Colors.blue.shade100,
-                                            side: BorderSide(
-                                              width: 2.0,
-                                              color: Colors.blue.shade100,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  //fixedSize: Size(200, 20),
+                                                  backgroundColor:
+                                                      Colors.blue.shade100,
+                                                  side: BorderSide(
+                                                    width: 2.0,
+                                                    color: Colors.blue.shade900,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Get.to(() => CustomerEdit(
+                                                        Cus_id: customer.Cus_id
+                                                            .toString(),
+                                                        Cus_Name:
+                                                            customer.Cus_Name,
+                                                        Cus_Number:
+                                                            customer.Cus_Number,
+                                                      ));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Edit',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .blue.shade900),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Icon(
+                                                      Icons.edit,
+                                                      color:
+                                                          Colors.blue.shade900,
+                                                      size: 15,
+                                                      //  'Details',
+                                                      //   style: TextStyle(
+                                                      //        color: Colors.red),
+                                                    ),
+                                                  ],
+                                                )),
                                           ),
-                                          onPressed: () {
-                                            Get.to(() => CustomerEdit(
-                                                  Cus_id: customer.Cus_id
-                                                      .toString(),
-                                                  Cus_Name: customer.Cus_Name,
-                                                  Cus_Number:
-                                                      customer.Cus_Number,
-                                                ));
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Edit',
-                                                style: TextStyle(
-                                                    color:
-                                                        Colors.blue.shade900),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                Icons.edit,
-                                                color: Colors.blue.shade900,
-                                                size: 15,
-                                                //  'Details',
-                                                //   style: TextStyle(
-                                                //        color: Colors.red),
-                                              ),
-                                            ],
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: OutlinedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            //fixedSize: Size(200, 20),
-                                            backgroundColor:
-                                                Colors.green.shade100,
-                                            side: BorderSide(
-                                              width: 2.0,
-                                              color: Colors.green.shade100,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
+                                          SizedBox(
+                                            width: 10,
                                           ),
-                                          onPressed: () {
-                                            Get.to(() => BuyPhone(
-                                                  Cus_id: customer.Cus_id
-                                                      .toString(),
-                                                  Cus_Name: customer.Cus_Name,
-                                                  Cus_Number:
-                                                      customer.Cus_Number,
-                                                ));
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Select',
-                                                style: TextStyle(
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  //fixedSize: Size(200, 20),
+                                                  backgroundColor:
+                                                      Colors.green.shade100,
+                                                  side: BorderSide(
+                                                    width: 2.0,
                                                     color:
-                                                        Colors.green.shade900),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                Icons
-                                                    .arrow_circle_right_rounded,
-                                                color: Colors.green.shade900,
-                                                size: 15,
-                                                //  'Details',
-                                                //   style: TextStyle(
-                                                //        color: Colors.red),
-                                              ),
-                                            ],
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                                        Colors.green.shade900,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Get.to(() => BuyPhone(
+                                                        Cus_id: customer.Cus_id
+                                                            .toString(),
+                                                        Cus_Name:
+                                                            customer.Cus_Name,
+                                                        Cus_Number:
+                                                            customer.Cus_Number,
+                                                      ));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Select',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .green.shade900),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Icon(
+                                                      Icons
+                                                          .arrow_circle_right_rounded,
+                                                      color:
+                                                          Colors.green.shade900,
+                                                      size: 15,
+                                                      //  'Details',
+                                                      //   style: TextStyle(
+                                                      //        color: Colors.red),
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
             ),
             SizedBox(

@@ -29,7 +29,14 @@ class AddRechargeType extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Recharge Card'),
+        title: Row(
+          children: [
+            Text(
+              'New Recharge Type',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
           child: Padding(
@@ -76,9 +83,8 @@ class AddRechargeType extends StatelessWidget {
               child: OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(double.maxFinite, 50),
-                    backgroundColor: Colors.deepPurple.shade300,
-                    side: BorderSide(
-                        width: 2.0, color: Colors.deepPurple.shade300),
+                    backgroundColor: Colors.blue.shade100,
+                    side: BorderSide(width: 2.0, color: Colors.blue.shade900),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -119,7 +125,7 @@ class AddRechargeType extends StatelessWidget {
                   },
                   child: Text(
                     'Insert Card',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.blue.shade900),
                   )),
             )
           ],

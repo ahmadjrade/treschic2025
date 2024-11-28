@@ -57,10 +57,22 @@ class _HomeScreenManageState extends State<HomeScreenManage> {
             onPopInvoked: (didPop) {
               //  homeController.selectedPageIndex.value = 0;
             },
-            child: _homeScreenPages[homeController.selectedPageIndex.value]),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: _homeScreenPages[
+                        homeController.selectedPageIndex.value]),
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Colors.grey.shade300,
+                )
+              ],
+            )),
         bottomNavigationBar: GNav(
           duration: Duration(milliseconds: 200),
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           rippleColor: Colors.grey[300]!,
           hoverColor: Colors.grey[100]!,
           haptic: true,

@@ -346,240 +346,259 @@ class CustomerEdit extends StatelessWidget {
                         final CustomerAddressModel address =
                             filteredAddress[index];
                         return Container(
-                          color: Colors.grey.shade200,
+                          //color: Colors.grey.shade200,
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           //     padding: EdgeInsets.all(35),
                           alignment: Alignment.center,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              // collapsedTextColor: Colors.black,
-                              // textColor: Colors.black,
-                              // backgroundColor: Colors.deepPurple.shade100,
-                              //   collapsedBackgroundColor: Colors.white,
-
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // address.Cart_Image != null
-                                  //     ? SizedBox(
-                                  //         child: Image.network(
-                                  //         address.Cart_Image!,
-                                  //         scale: 3,
-                                  //       ))
-                                  //     : Placeholder(),
-
-                                  Text(
-                                    'Address: ' + address.Address,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17),
-                                  ),
-                                ],
+                            padding: const EdgeInsets.all(0.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                //   color: Colors.grey.shade500,
+                                border: Border.all(color: Colors.grey.shade500),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              subtitle: Text(
-                                'Date Addedd: ' + address.Date_added,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                    color: Colors.red.shade900),
-                              ),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                      // The user CANNOT close this dialog  by pressing outsite it
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (_) {
-                                        return Dialog(
-                                          // The background color
-                                          backgroundColor: Colors.white,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 20),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                // The loading indicator
-                                                CircularProgressIndicator(),
-                                                SizedBox(
-                                                  height: 15,
-                                                ),
-                                                // Some text
-                                                Text('Loading')
-                                              ],
-                                            ),
+                              child: ListTile(
+                                // collapsedTextColor: Colors.black,
+                                // textColor: Colors.black,
+                                // backgroundColor: Colors.deepPurple.shade100,
+                                //   collapsedBackgroundColor: Colors.white,
+
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Address: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            address.Address,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 15),
                                           ),
-                                        );
-                                      });
-                                  customerAddressController.DeleteAddress(
-                                          address.Address_id.toString())
-                                      .then((value) => showToast(
-                                          customerAddressController.result2))
-                                      .then((value) =>
-                                          Navigator.of(context).pop())
-                                      .then((value) => customerAddressController
-                                          .isDataFetched = false)
-                                      .then((value) => customerAddressController
-                                          .fetch_addresses());
-                                },
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Colors.red.shade900,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    )
+                                  ],
                                 ),
+                                subtitle: Text(
+                                  'Date Addedd: ' + address.Date_added,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        // The user CANNOT close this dialog  by pressing outsite it
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (_) {
+                                          return Dialog(
+                                            // The background color
+                                            backgroundColor: Colors.white,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 20),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  // The loading indicator
+                                                  CircularProgressIndicator(),
+                                                  SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  // Some text
+                                                  Text('Loading')
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                    customerAddressController.DeleteAddress(
+                                            address.Address_id.toString())
+                                        .then((value) => showToast(
+                                            customerAddressController.result2))
+                                        .then((value) =>
+                                            Navigator.of(context).pop())
+                                        .then((value) =>
+                                            customerAddressController
+                                                .isDataFetched = false)
+                                        .then((value) =>
+                                            customerAddressController
+                                                .fetch_addresses());
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red.shade900,
+                                  ),
+                                ),
+                                // controlAffinity: ListTileControlAffinity.leading,
+                                // children: <Widget>[
+                                //   Padding(
+                                //     padding:
+                                //         const EdgeInsets.symmetric(horizontal: 0.0),
+                                //     child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceAround,
+                                //       children: [
+                                //         Visibility(
+                                //           visible: customerAddressController
+                                //               .isadmin(Username.value),
+                                //           child: IconButton(
+                                //               color: Colors.red,
+                                //               onPressed: () {
+                                //                 showDialog(
+                                //                   context: context,
+                                //                   builder: (BuildContext context) {
+                                //                     return AlertDialog(
+                                //                       title: Text(
+                                //                           'Update Item Quantity'),
+                                //                       content: TextField(
+                                //                         keyboardType:
+                                //                             TextInputType.number,
+                                //                         controller: New_Qty,
+                                //                         decoration: InputDecoration(
+                                //                             hintText:
+                                //                                 'Enter New Quantity'),
+                                //                       ),
+                                //                       actions: <Widget>[
+                                //                         TextButton(
+                                //                           onPressed: () {
+                                //                             Navigator.of(context)
+                                //                                 .pop();
+                                //                           },
+                                //                           child: Text('Cancel'),
+                                //                         ),
+                                //                         TextButton(
+                                //                           onPressed: () {
+                                //                             if (New_Qty.text !=
+                                //                                 '') {
+                                //                               showDialog(
+                                //                                   // The user CANNOT close this dialog  by pressing outsite it
+                                //                                   barrierDismissible:
+                                //                                       false,
+                                //                                   context: context,
+                                //                                   builder: (_) {
+                                //                                     return Dialog(
+                                //                                       // The background color
+                                //                                       backgroundColor:
+                                //                                           Colors
+                                //                                               .white,
+                                //                                       child:
+                                //                                           Padding(
+                                //                                         padding: const EdgeInsets
+                                //                                             .symmetric(
+                                //                                             vertical:
+                                //                                                 20),
+                                //                                         child:
+                                //                                             Column(
+                                //                                           mainAxisSize:
+                                //                                               MainAxisSize
+                                //                                                   .min,
+                                //                                           children: [
+                                //                                             // The loading indicator
+                                //                                             CircularProgressIndicator(),
+                                //                                             SizedBox(
+                                //                                               height:
+                                //                                                   15,
+                                //                                             ),
+                                //                                             // Some text
+                                //                                             Text(
+                                //                                                 'Loading')
+                                //                                           ],
+                                //                                         ),
+                                //                                       ),
+                                //                                     );
+                                //                                   });
+                                //                               customerAddressController.UpdateProductQty(
+                                //                                       address.PD_id
+                                //                                           .toString(),
+                                //                                       New_Qty.text)
+                                //                                   .then((value) => showToast(
+                                //                                       customerAddressController
+                                //                                           .result2))
+                                //                                   .then((value) =>
+                                //                                       customerAddressController
+                                //                                               .isDataFetched =
+                                //                                           false)
+                                //                                   .then((value) =>
+                                //                                       customerAddressController
+                                //                                           .fetchproductdetails())
+                                //                                   .then((value) =>
+                                //                                       Navigator.of(context)
+                                //                                           .pop())
+                                //                                   .then((value) =>
+                                //                                       Navigator.of(context).pop());
+
+                                //                               New_Qty.clear();
+                                //                             } else {
+                                //                               Get.snackbar('Error',
+                                //                                   'Add New Quantity');
+                                //                             }
+
+                                //                             // Do something with the text, e.g., save it
+                                //                             //  String enteredText = _textEditingController.text;
+                                //                             //  print('Entered text: $enteredText');
+                                //                             // Close the dialog
+                                //                           },
+                                //                           child: Text('OK'),
+                                //                         ),
+                                //                       ],
+                                //                     );
+                                //                   },
+                                //                 );
+                                //               },
+                                //               icon: Icon(Icons.edit)),
+                                //         ),
+                                //         Text('Total Quantity Bought: ' +
+                                //             address.Product_Max_Quantity
+                                //                 .toString()),
+                                //         SizedBox(
+                                //           height: 5,
+                                //         ),
+                                //         Text('Total Quantity Sold: ' +
+                                //             address.Product_Sold_Quantity
+                                //                 .toString()),
+                                //         SizedBox(
+                                //           height: 20,
+                                //         ),
+                                //         // Text('id' + address.PD_id.toString()),
+                                //         // SizedBox(
+                                //         //   height: 20,
+                                //         // ),
+
+                                //         // Text('Total Price of Treatment:  ${treatments.!}\$ '),
+                                //       ],
+                                //     ),
+                                //   )
+                                // ],
+                                //  subtitle: Text(address.Product_Brand),
+                                // trailing: OutlinedButton(
+                                //   onPressed: () {
+
+                                //     // productController.SelectedPhone.value = address;
+                                //     //       // product_detailsController.selectedproduct_details.value =
+                                //     //       //     null;
+
+                                //               Get.to(() => address_History(Balance_id: address.Balance_id.toString(), Product_Name: address.Product_Name,Product_Color: address.Product_Color,));
+                                //   },
+                                //   child: Text('Select')),
+                                // // Add more properties as needed
                               ),
-                              // controlAffinity: ListTileControlAffinity.leading,
-                              // children: <Widget>[
-                              //   Padding(
-                              //     padding:
-                              //         const EdgeInsets.symmetric(horizontal: 0.0),
-                              //     child: Column(
-                              //       mainAxisAlignment:
-                              //           MainAxisAlignment.spaceAround,
-                              //       children: [
-                              //         Visibility(
-                              //           visible: customerAddressController
-                              //               .isadmin(Username.value),
-                              //           child: IconButton(
-                              //               color: Colors.red,
-                              //               onPressed: () {
-                              //                 showDialog(
-                              //                   context: context,
-                              //                   builder: (BuildContext context) {
-                              //                     return AlertDialog(
-                              //                       title: Text(
-                              //                           'Update Item Quantity'),
-                              //                       content: TextField(
-                              //                         keyboardType:
-                              //                             TextInputType.number,
-                              //                         controller: New_Qty,
-                              //                         decoration: InputDecoration(
-                              //                             hintText:
-                              //                                 'Enter New Quantity'),
-                              //                       ),
-                              //                       actions: <Widget>[
-                              //                         TextButton(
-                              //                           onPressed: () {
-                              //                             Navigator.of(context)
-                              //                                 .pop();
-                              //                           },
-                              //                           child: Text('Cancel'),
-                              //                         ),
-                              //                         TextButton(
-                              //                           onPressed: () {
-                              //                             if (New_Qty.text !=
-                              //                                 '') {
-                              //                               showDialog(
-                              //                                   // The user CANNOT close this dialog  by pressing outsite it
-                              //                                   barrierDismissible:
-                              //                                       false,
-                              //                                   context: context,
-                              //                                   builder: (_) {
-                              //                                     return Dialog(
-                              //                                       // The background color
-                              //                                       backgroundColor:
-                              //                                           Colors
-                              //                                               .white,
-                              //                                       child:
-                              //                                           Padding(
-                              //                                         padding: const EdgeInsets
-                              //                                             .symmetric(
-                              //                                             vertical:
-                              //                                                 20),
-                              //                                         child:
-                              //                                             Column(
-                              //                                           mainAxisSize:
-                              //                                               MainAxisSize
-                              //                                                   .min,
-                              //                                           children: [
-                              //                                             // The loading indicator
-                              //                                             CircularProgressIndicator(),
-                              //                                             SizedBox(
-                              //                                               height:
-                              //                                                   15,
-                              //                                             ),
-                              //                                             // Some text
-                              //                                             Text(
-                              //                                                 'Loading')
-                              //                                           ],
-                              //                                         ),
-                              //                                       ),
-                              //                                     );
-                              //                                   });
-                              //                               customerAddressController.UpdateProductQty(
-                              //                                       address.PD_id
-                              //                                           .toString(),
-                              //                                       New_Qty.text)
-                              //                                   .then((value) => showToast(
-                              //                                       customerAddressController
-                              //                                           .result2))
-                              //                                   .then((value) =>
-                              //                                       customerAddressController
-                              //                                               .isDataFetched =
-                              //                                           false)
-                              //                                   .then((value) =>
-                              //                                       customerAddressController
-                              //                                           .fetchproductdetails())
-                              //                                   .then((value) =>
-                              //                                       Navigator.of(context)
-                              //                                           .pop())
-                              //                                   .then((value) =>
-                              //                                       Navigator.of(context).pop());
-
-                              //                               New_Qty.clear();
-                              //                             } else {
-                              //                               Get.snackbar('Error',
-                              //                                   'Add New Quantity');
-                              //                             }
-
-                              //                             // Do something with the text, e.g., save it
-                              //                             //  String enteredText = _textEditingController.text;
-                              //                             //  print('Entered text: $enteredText');
-                              //                             // Close the dialog
-                              //                           },
-                              //                           child: Text('OK'),
-                              //                         ),
-                              //                       ],
-                              //                     );
-                              //                   },
-                              //                 );
-                              //               },
-                              //               icon: Icon(Icons.edit)),
-                              //         ),
-                              //         Text('Total Quantity Bought: ' +
-                              //             address.Product_Max_Quantity
-                              //                 .toString()),
-                              //         SizedBox(
-                              //           height: 5,
-                              //         ),
-                              //         Text('Total Quantity Sold: ' +
-                              //             address.Product_Sold_Quantity
-                              //                 .toString()),
-                              //         SizedBox(
-                              //           height: 20,
-                              //         ),
-                              //         // Text('id' + address.PD_id.toString()),
-                              //         // SizedBox(
-                              //         //   height: 20,
-                              //         // ),
-
-                              //         // Text('Total Price of Treatment:  ${treatments.!}\$ '),
-                              //       ],
-                              //     ),
-                              //   )
-                              // ],
-                              //  subtitle: Text(address.Product_Brand),
-                              // trailing: OutlinedButton(
-                              //   onPressed: () {
-
-                              //     // productController.SelectedPhone.value = address;
-                              //     //       // product_detailsController.selectedproduct_details.value =
-                              //     //       //     null;
-
-                              //               Get.to(() => address_History(Balance_id: address.Balance_id.toString(), Product_Name: address.Product_Name,Product_Color: address.Product_Color,));
-                              //   },
-                              //   child: Text('Select')),
-                              // // Add more properties as needed
                             ),
                           ),
                         );

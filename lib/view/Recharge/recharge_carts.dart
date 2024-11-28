@@ -70,33 +70,42 @@ class RechargeCarts extends StatelessWidget {
           Expanded(
               child: Text(
             '$Type_Name Recharge Cards',
-            overflow: TextOverflow.ellipsis,
+            //overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 17),
           )),
-          IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              Get.to(() => AddRechargeCard(
-                    Type_id: Type_id,
-                  ));
-            },
-            icon: Icon(CupertinoIcons.add),
-          ),
-          IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              rechargeCartController.isDataFetched = false;
-              rechargeCartController.fetch_recharge_carts();
-              // categoryController.isDataFetched =false;
-              // categoryController.fetchcategories();
-            },
-            icon: Icon(CupertinoIcons.refresh),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(), borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                IconButton(
+                  color: Colors.blue.shade900,
+                  iconSize: 24.0,
+                  onPressed: () {
+                    Get.to(() => AddRechargeCard(
+                          Type_id: Type_id,
+                        ));
+                  },
+                  icon: Icon(CupertinoIcons.add),
+                ),
+                IconButton(
+                  color: Colors.blue.shade900,
+                  iconSize: 24.0,
+                  onPressed: () {
+                    rechargeCartController.isDataFetched = false;
+                    rechargeCartController.fetch_recharge_carts();
+                    // categoryController.isDataFetched =false;
+                    // categoryController.fetchcategories();
+                  },
+                  icon: Icon(CupertinoIcons.refresh),
+                ),
+              ],
+            ),
           ),
         ],
       )),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -118,12 +127,15 @@ class RechargeCarts extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final RechargeCartModel carts = filteredcarts[index];
                         return Container(
-                          color: Colors.blue.shade100,
+                          decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(12)),
+                          //color: Colors.blue.shade100,
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           //     padding: EdgeInsets.all(35),
                           alignment: Alignment.center,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(0.0),
                             child: ListTile(
                                 onTap: () {
                                   rechargeCartController
@@ -131,12 +143,12 @@ class RechargeCarts extends StatelessWidget {
                                 },
                                 // collapsedTextColor: Colors.black,
                                 // textColor: Colors.black,
-                                // backgroundColor: Colors.deepPurple.shade100,
+                                // backgroundColor: Colors.blue.shade900.shade100,
                                 //   collapsedBackgroundColor: Colors.white,
                                 leading: carts.Card_Image == null ||
                                         carts.Card_Image == ''
                                     ? SizedBox(
-                                        width: 100,
+                                        width: 75,
                                         child: Column(
                                           children: [
                                             Text('No Image'),
@@ -146,7 +158,7 @@ class RechargeCarts extends StatelessWidget {
                                           ],
                                         ))
                                     : CachedNetworkImage(
-                                        width: 100,
+                                        width: 75,
                                         imageUrl: carts.Card_Image!,
                                         placeholder: (context, url) => Center(
                                             child: CircularProgressIndicator()),
@@ -177,7 +189,7 @@ class RechargeCarts extends StatelessWidget {
                                           .toString() +
                                       ' LL',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.normal,
                                       fontSize: 15,
                                       color: Colors.blue.shade900),
                                 )
@@ -343,43 +355,64 @@ class RechargeCarts extends StatelessWidget {
                 },
               ),
             ),
-           
-            Card(
-              color: Colors.blue.shade100,
-              child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Obx(() {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Carts:',style: TextStyle(),),
-                        Text(rechargeCartController.totalQty.toString()),
-                        Text('Total:'),
-                        Text(addCommasToNumber(
-                                    rechargeCartController.totalLb.value)
-                                .toString() +
-                            ' LL'),
-                      ],
-                    );
-                  })),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
+                //  color: Colors.grey.shade100,
+                title: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Obx(() {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Carts:',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          Text(
+                            rechargeCartController.totalQty.toString(),
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          Text(
+                            'Total:',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          Text(
+                            addCommasToNumber(
+                                        rechargeCartController.totalLb.value)
+                                    .toString() +
+                                ' LL',
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      );
+                    })),
+              ),
             ),
-                        SizedBox(height: 10,),
-
-             OutlinedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.blue.shade100,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.blue.shade100),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                    ),
-              onPressed: ()  {
-                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-
-            }, child: Text('Done',style: TextStyle(color: Colors.blue.shade900),)),
+            SizedBox(
+              height: 10,
+            ),
+            OutlinedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(double.maxFinite, 50),
+                  backgroundColor: Colors.blue.shade100,
+                  side: BorderSide(width: 2.0, color: Colors.blue.shade900),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Done',
+                  style: TextStyle(color: Colors.blue.shade900),
+                )),
             SizedBox(
               height: 30,
             ),

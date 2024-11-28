@@ -63,470 +63,182 @@ class InvoiceHistory extends StatelessWidget {
     }
 
     return Scaffold(
-   
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Obx(() {
-                          FilterQuery.text = barcodeController.barcode3.value;
-                          return Expanded(
-                            child: TextField(
-                              controller: FilterQuery,
-                              onChanged: (query) {
-                                //print(formattedDate);
-                                invoiceHistoryController.invoices.refresh();
-                              },
-                              decoration: InputDecoration(
-                                labelText:
-                                    'Search by ID,Customer Name or Number',
-                                prefixIcon: Icon(Icons.search),
-                              ),
-                            ),
-                          );
-                        }),
-                        // SizedBox(
-                        //   width: 14,
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        //   child: IconButton(
-                        //     icon: Icon(Icons.qr_code_scanner_rounded),
-                        //     color: Colors.black,
-                        //     onPressed: () {
-                        //       barcodeController.scanBarcodeSearch();
-                        //       //.then((value) => set());
-                        //     },
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Val == 0;
-                  //     // categoryController.f =false;
-                  //     // categoryController.fetchcategories();
-                  //   },
-                  //   child: Icon(CupertinoIcons.list_bullet),
-                  // ),
-
-                  // Obx(
-                  //   () {
-                  //     return Visibility(
-                  //       visible: true,
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 14,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Column(
-                  //                     children: [
-                  //                       Text(
-                  //                         Username.value.toUpperCase() +
-                  //                             ' Store',
-                  //                         style: TextStyle(fontSize: 8),
-                  //                       ),
-                  //                     ],
-                  //                   ),
-                  //                   value: 'this',
-                  //                   groupValue: invoiceHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Store.value = 'this';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'OTHER STORE',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'other',
-                  //                   groupValue: invoiceHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Store.value = 'other';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: invoiceHistoryController.Store.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Store.value = 'all';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 14,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'Listed',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'No',
-                  //                   groupValue: invoiceHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Sold.value = 'No';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'SOLD',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'Yes',
-                  //                   groupValue: invoiceHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Sold.value = 'Yes';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: invoiceHistoryController.Sold.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Sold.value = 'all';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.center,
-                  //             children: [
-                  //               SizedBox(
-                  //                 width: 10,
-                  //               ),
-                  //               // Text(
-                  //               //   'Condition ? ',
-                  //               //   style: TextStyle(
-                  //               //     fontSize: 14,
-                  //               //     fontWeight: FontWeight.w600,
-                  //               //   ),
-                  //               // ),
-
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'New',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'New',
-                  //                   groupValue: invoiceHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Condition.value = 'New';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   //selected: true,
-                  //                   title: Text(
-                  //                     'Used',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'Used',
-                  //                   groupValue: invoiceHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Condition.value = 'Used';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   //havePassword = true;
-                  //                     //   // Password.clear();
-                  //                     //   Condition = value.toString();
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               Expanded(
-                  //                 child: RadioListTile(
-                  //                   title: Text(
-                  //                     'all',
-                  //                     style: TextStyle(fontSize: 8),
-                  //                   ),
-                  //                   value: 'all',
-                  //                   groupValue: invoiceHistoryController.Condition.value,
-                  //                   onChanged: (value) {
-                  //                     invoiceHistoryController.Condition.value = 'all';
-                  //                     invoiceHistoryController.searchPhones(
-                  //                         FilterQuery.text, Username.value);
-
-                  //                     // setState(() {
-                  //                     //   // havePassword = false;
-                  //                     //   Condition = value.toString();
-                  //                     //   // Password.text = 'No Password';
-                  //                     // });
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Obx(
-                    () {
-                      final List<InvoiceModel> filteredinvoices =
-                          invoiceHistoryController.SearchInvoices(
-                        FilterQuery.text,
-                      );
-                      if (invoiceHistoryController.isLoading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (invoiceHistoryController.invoices.isEmpty) {
-                        return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
-                      } else if (filteredinvoices.length == 0) {
-                        return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
-                      } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: filteredinvoices.length,
-                          itemBuilder: (context, index) {
-                            final InvoiceModel invoice =
-                                filteredinvoices[index];
-                            return Container(
-                              //  width: double.infinity,
-                              //   height: 140.0,
-                              color: invoiceHistoryController
-                                      .ispaid(invoice.isPaid)
-                                  ? Colors.grey.shade300
-                                  : Colors.red.shade100,
-                              margin: EdgeInsets.fromLTRB(14, 0, 14, 10),
-                              //     padding: EdgeInsets.all(35),
-                              alignment: Alignment.center,
-                              child: ListTile(
-                                // leading: Column(
-                                //   children: [
-                                //     Expanded(
-                                //       child: invoice.imageUrl != null
-                                //           ? Image.network(invoice.imageUrl!)
-                                //           : Placeholder(),
-                                //     ),
-                                //   ],
-                                // ),
-                                onLongPress: () {
-                                  //copyToClipboard(invoice.id);
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+              child: Obx(() {
+                FilterQuery.text = barcodeController.barcode3.value;
+                return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                          //   color: Colors.grey.shade500,
+                          border: Border.all(color: Colors.grey.shade500),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            //   obscureText: true,
+                            //  readOnly: isLoading,
+                            onChanged: (value) {
+                              invoiceHistoryController.invoices.refresh();
+                            },
+                            controller: FilterQuery,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  FilterQuery.clear();
+                                  invoiceHistoryController.invoices.refresh();
                                 },
-                                title: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '#' +
-                                              invoice.Invoice_id.toString() +
-                                              ' || ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17),
-                                        ),
-                                        Text(
-                                          invoice.Cus_Name! +
-                                              ' ' +
-                                              invoice.Cus_Number!
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.paid,
-                                          color: invoiceHistoryController
-                                                  .ispaid(invoice.isPaid)
-                                              ? Colors.green.shade900
-                                              : Colors.red.shade900,
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          invoice.Invoice_Date
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          ' ' + Format(invoice.Invoice_Time)
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          ' || ' +
-                                              invoice.Username.toUpperCase() +
-                                              ' Store'
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ), Text(
-                                          ' || ' +
-                                              invoice.Invoice_Type!
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                subtitle: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
+                              ),
+                              prefixIcon: Icon(Icons.search),
+                              border: InputBorder.none,
+                              hintText: 'Search By Name or Number',
+                            ),
+                          ),
+                        )));
+              }),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Obx(
+                  () {
+                    final List<InvoiceModel> filteredinvoices =
+                        invoiceHistoryController.SearchInvoices(
+                      FilterQuery.text,
+                    );
+                    if (invoiceHistoryController.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (invoiceHistoryController.invoices.isEmpty) {
+                      return Center(
+                          child: Text('No Invoices Yet In This Store ! '));
+                    } else if (filteredinvoices.length == 0) {
+                      return Center(
+                          child: Text('No Invoices Yet In This Store ! '));
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        // physics: NeverScrollableScrollPhysics(),
+                        itemCount: filteredinvoices.length,
+                        itemBuilder: (context, index) {
+                          final InvoiceModel invoice = filteredinvoices[index];
+                          return Container(
+                              decoration: BoxDecoration(
+                                //   color: Colors.grey.shade500,
+                                border: Border.all(color: Colors.grey.shade500),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              child: ListTile(
+                                title: Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '#' +
+                                                invoice.Invoice_id.toString() +
+                                                ' || ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15),
+                                          ),
+                                          Text(
+                                            invoice.Cus_Name! +
+                                                ' ' +
+                                                invoice.Cus_Number!
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.paid,
+                                            color: invoiceHistoryController
+                                                    .ispaid(invoice.isPaid)
+                                                ? Colors.green.shade900
+                                                : Colors.red.shade900,
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            invoice.Invoice_Date
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                          Text(
+                                            ' ' + Format(invoice.Invoice_Time)
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                          Text(
+                                            ' || ' +
+                                                invoice.Username.toUpperCase() +
+                                                ' Store'
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                          Text(
+                                            ' || ' + invoice.Invoice_Type!
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            height: 10,
+                                            height: 5,
                                           ),
-
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -540,14 +252,8 @@ class InvoiceHistory extends StatelessWidget {
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Total_Usd)
                                                             .toString() +
-                                                        '\$',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .blue.shade900),
-                                                  ),
-                                                  Text(
-                                                    'Invoice Total LL:  ' +
+                                                        '\$' +
+                                                        ' || ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Total_Lb)
                                                             .toString() +
@@ -562,14 +268,8 @@ class InvoiceHistory extends StatelessWidget {
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Rec_Usd)
                                                             .toString() +
-                                                        '\$',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .green.shade900),
-                                                  ),
-                                                  Text(
-                                                    'Invoice Rec LL:  ' +
+                                                        '\$' +
+                                                        ' + ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Rec_Lb)
                                                             .toString() +
@@ -584,14 +284,8 @@ class InvoiceHistory extends StatelessWidget {
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Due_USD)
                                                             .toString() +
-                                                        '\$',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .red.shade900),
-                                                  ),
-                                                  Text(
-                                                    'Invoice Due LL:  ' +
+                                                        '\$' +
+                                                        ' || ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Due_LB)
                                                             .toString() +
@@ -605,11 +299,9 @@ class InvoiceHistory extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-
                                           SizedBox(
                                             height: 10,
                                           ),
-
                                           OutlinedButton(
                                               style: ElevatedButton.styleFrom(
                                                 fixedSize:
@@ -618,8 +310,8 @@ class InvoiceHistory extends StatelessWidget {
                                                     invoiceHistoryController
                                                             .ispaid(
                                                                 invoice.isPaid)
-                                                        ? Colors.green.shade900
-                                                        : Colors.red.shade900,
+                                                        ? Colors.green.shade100
+                                                        : Colors.red.shade100,
                                                 side: BorderSide(
                                                   width: 2.0,
                                                   color:
@@ -660,8 +352,10 @@ class InvoiceHistory extends StatelessWidget {
                                                           Invoice_Due_US: invoice
                                                                   .Invoice_Due_USD
                                                               .toString(),
-                                                              rate: invoice.Inv_Rate.toString(),
-                                                              Inv_Type: invoice.Invoice_Type!,
+                                                          rate: invoice.Inv_Rate
+                                                              .toString(),
+                                                          Inv_Type: invoice
+                                                              .Invoice_Type!,
                                                         ));
                                               },
                                               child: Row(
@@ -671,7 +365,15 @@ class InvoiceHistory extends StatelessWidget {
                                                   Text(
                                                     'Select',
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                      color:
+                                                          invoiceHistoryController
+                                                                  .ispaid(invoice
+                                                                      .isPaid)
+                                                              ? Colors.green
+                                                                  .shade900
+                                                              : Colors
+                                                                  .red.shade900,
+                                                    ),
                                                   ),
                                                   SizedBox(
                                                     width: 10,
@@ -683,156 +385,124 @@ class InvoiceHistory extends StatelessWidget {
                                                         invoiceHistoryController
                                                                 .ispaid(invoice
                                                                     .isPaid)
-                                                            ? Colors.white
-                                                            : Colors.white,
+                                                            ? Colors
+                                                                .green.shade900
+                                                            : Colors
+                                                                .red.shade900,
                                                     //  'Details',
                                                     //   style: TextStyle(
                                                     //        color: Colors.red),
                                                   ),
                                                 ],
                                               )),
-
-                                          
                                         ],
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ));
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Visibility(
+              visible: true,
+              child: Obx(() {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Card(
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Total: ',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      addCommasToNumber(invoiceHistoryController
+                                                  .total.value)
+                                              .toString() +
+                                          '\$',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.blue.shade900,
+                                          fontWeight: FontWeight.normal),
                                     ),
                                   ],
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Visibility(
-                visible: true,
-                child: Obx(() {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Card(
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(14.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Total US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .total.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Recieved US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalrecusd.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Recieved LB:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalreclb.value)
-                                            .toString() +
-                                        ' LL',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Recieved TOTAL:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalrec.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Due Us:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totaldue.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.red.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Recieved: ',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      addCommasToNumber(invoiceHistoryController
+                                                  .totalrec.value)
+                                              .toString() +
+                                          '\$',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.green.shade900,
+                                          fontWeight: FontWeight.normal),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Due: ',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      addCommasToNumber(invoiceHistoryController
+                                                  .totaldue.value)
+                                              .toString() +
+                                          '\$',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.red.shade900,
+                                          fontWeight: FontWeight.normal),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  );
-                }),
-              ),
-              SizedBox(
-                height: 14,
-              )
-            ],
-          ),
+                  ),
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );

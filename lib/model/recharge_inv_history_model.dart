@@ -24,7 +24,7 @@ class RechargeHistoryModel {
     required double Card_UP, // Change type to double
     required double Card_TP, // Change type to double
   })  : _Card_TP = Card_TP.obs,
-        _Card_UP = Card_TP.obs; // Initialize RxDouble
+        _Card_UP = Card_UP.obs; // Initialize RxDouble
 
   double get Card_TP => _Card_TP.value; // Getter for product_MPrice
 

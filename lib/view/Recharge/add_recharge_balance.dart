@@ -34,7 +34,14 @@ class AddRechargeBalance extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Recharge Balance'),
+        title: Row(
+          children: [
+            Text(
+              'New Recharge Balance',
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
           child: Padding(
@@ -144,9 +151,8 @@ class AddRechargeBalance extends StatelessWidget {
               child: OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(double.maxFinite, 50),
-                    backgroundColor: Colors.deepPurple.shade300,
-                    side: BorderSide(
-                        width: 2.0, color: Colors.deepPurple.shade300),
+                    backgroundColor: Colors.blue.shade100,
+                    side: BorderSide(width: 2.0, color: Colors.blue.shade900),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -190,7 +196,7 @@ class AddRechargeBalance extends StatelessWidget {
                   },
                   child: Text(
                     'Insert Balance',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.blue.shade900),
                   )),
             ),
           ],

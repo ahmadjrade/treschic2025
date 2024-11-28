@@ -58,7 +58,7 @@ import 'package:fixnshop_admin/view/Category/category_list.dart';
 import 'package:fixnshop_admin/view/Repairs/buy_repair_product.dart';
 import 'package:fixnshop_admin/view/Suppliers/add_supplier.dart';
 import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:fixnshop_admin/view/buy_expenses.dart';
+import 'package:fixnshop_admin/view/Expenses/buy_expenses.dart';
 import 'package:fixnshop_admin/view/Phones/buy_phone.dart';
 import 'package:fixnshop_admin/view/buy_tools.dart';
 import 'package:fixnshop_admin/view/home_screen_manage.dart';

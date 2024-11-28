@@ -39,7 +39,7 @@ import 'package:fixnshop_admin/view/Suppliers/supplier_list.dart';
 import 'package:fixnshop_admin/view/Transfer/stores_list_ftransfer.dart';
 import 'package:fixnshop_admin/view/Transfer/transfer_history.dart';
 import 'package:fixnshop_admin/view/Transfer/transfer_history_manage.dart';
-import 'package:fixnshop_admin/view/buy_expenses.dart';
+import 'package:fixnshop_admin/view/Expenses/buy_expenses.dart';
 import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -49,58 +49,6 @@ class ExtraSettings extends StatelessWidget {
   ExtraSettings({super.key});
   final HomeController homeController = Get.find<HomeController>();
 
-  static const List Variables = [
-    'Customers',
-    'Brands',
-    'New/Used Phone',
-    'Accessories',
-    'Tools',
-    'Expenses',
-    'Suppliers',
-    'Categories',
-    'Phone Model',
-    'New Color',
-    'Product Details',
-    'Products',
-    'Phones',
-    'Suppliers',
-    'Repair Product',
-  ];
-
-  static const List Pathes = [
-    '/NewCustomer',
-    '/NewBrand',
-    '/BuyPhone',
-    '/BuyAccessories',
-    '/BuyTools',
-    '/BuyExpenses',
-    '/NewSupplier',
-    '/NewCat',
-    '/NewPhoneModel',
-    '/NewColor',
-    '/NewProductDetail',
-    '/Products',
-    '/Phones',
-    '/Suppliers',
-    '/BuyRepairProducts'
-  ];
-  static const List btnName = [
-    'Add',
-    'Add',
-    'Buy',
-    'Buy',
-    'Buy',
-    'Buy',
-    'Add',
-    'Add',
-    'Add',
-    'Add',
-    'Add',
-    'See',
-    'See',
-    'See',
-    'Buy'
-  ];
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -122,7 +70,7 @@ class ExtraSettings extends StatelessWidget {
           ),
         ],
       )),
-      backgroundColor: Colors.white,
+      // /  backgroundColor: Colors.white,
       body: PopScope(
         canPop: false,
         onPopInvoked: (didPop) {

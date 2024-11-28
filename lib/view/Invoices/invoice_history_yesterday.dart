@@ -65,188 +65,177 @@ class InvoiceHistoryYesterday extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Obx(() {
-                          FilterQuery.text = barcodeController.barcode3.value;
-                          return Expanded(
-                            child: TextField(
-                              controller: FilterQuery,
-                              onChanged: (query) {
-                                //print(formattedDate);
-                                invoiceHistoryController.invoices.refresh();
-                              },
-                              decoration: InputDecoration(
-                                labelText:
-                                    'Search by ID,Customer Name or Number',
-                                prefixIcon: Icon(Icons.search),
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Obx(
-                    () {
-                      final List<InvoiceModel> filteredinvoices =
-                          invoiceHistoryController.SearchInvoicesYesterday(
-                        FilterQuery.text,
-                      );
-                      if (invoiceHistoryController.isLoading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (invoiceHistoryController.invoices.isEmpty) {
-                        return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
-                      } else if (filteredinvoices.length == 0) {
-                        return Center(
-                            child: Text('No Invoices Yet In This Store ! '));
-                      } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: filteredinvoices.length,
-                          itemBuilder: (context, index) {
-                            final InvoiceModel invoice =
-                                filteredinvoices[index];
-                            return Container(
-                              //  width: double.infinity,
-                              //   height: 140.0,
-                              color: invoiceHistoryController
-                                      .ispaid(invoice.isPaid)
-                                  ? Colors.grey.shade300
-                                  : Colors.red.shade100,
-                              margin: EdgeInsets.fromLTRB(14, 0, 14, 10),
-                              //     padding: EdgeInsets.all(35),
-                              alignment: Alignment.center,
-                              child: ListTile(
-                                // leading: Column(
-                                //   children: [
-                                //     Expanded(
-                                //       child: invoice.imageUrl != null
-                                //           ? Image.network(invoice.imageUrl!)
-                                //           : Placeholder(),
-                                //     ),
-                                //   ],
-                                // ),
-                                onLongPress: () {
-                                  //copyToClipboard(invoice.id);
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+              child: Obx(() {
+                FilterQuery.text = barcodeController.barcode3.value;
+                return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                          //   color: Colors.grey.shade500,
+                          border: Border.all(color: Colors.grey.shade500),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            //   obscureText: true,
+                            //  readOnly: isLoading,
+                            onChanged: (value) {
+                              invoiceHistoryController.invoices.refresh();
+                            },
+                            controller: FilterQuery,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  FilterQuery.clear();
+                                  invoiceHistoryController.invoices.refresh();
                                 },
-                                title: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '#' +
-                                              invoice.Invoice_id.toString() +
-                                              ' || ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17),
-                                        ),
-                                        Text(
-                                          invoice.Cus_Name! +
-                                              ' ' +
-                                              invoice.Cus_Number!
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.paid,
-                                          color: invoiceHistoryController
-                                                  .ispaid(invoice.isPaid)
-                                              ? Colors.green.shade900
-                                              : Colors.red.shade900,
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          invoice.Invoice_Date
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          ' ' + Format(invoice.Invoice_Time)
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          ' || ' +
-                                              invoice.Username.toUpperCase() +
-                                              ' Store'
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ),
-                                        Text(
-                                          ' || ' + invoice.Invoice_Type!
-                                          // +
-                                          // ' -- ' +
-                                          // invoice.phone_Code,
-                                          ,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                subtitle: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
+                              ),
+                              prefixIcon: Icon(Icons.search),
+                              border: InputBorder.none,
+                              hintText: 'Search By Name or Number',
+                            ),
+                          ),
+                        )));
+              }),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Obx(
+                  () {
+                    final List<InvoiceModel> filteredinvoices =
+                        invoiceHistoryController.SearchInvoicesYesterday(
+                      FilterQuery.text,
+                    );
+                    if (invoiceHistoryController.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (invoiceHistoryController.invoices.isEmpty) {
+                      return Center(
+                          child: Text('No Invoices Yet In This Store ! '));
+                    } else if (filteredinvoices.length == 0) {
+                      return Center(
+                          child: Text('No Invoices Yet In This Store ! '));
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        // physics: NeverScrollableScrollPhysics(),
+                        itemCount: filteredinvoices.length,
+                        itemBuilder: (context, index) {
+                          final InvoiceModel invoice = filteredinvoices[index];
+                          return Container(
+                              decoration: BoxDecoration(
+                                //   color: Colors.grey.shade500,
+                                border: Border.all(color: Colors.grey.shade500),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              child: ListTile(
+                                title: Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '#' +
+                                                invoice.Invoice_id.toString() +
+                                                ' || ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15),
+                                          ),
+                                          Text(
+                                            invoice.Cus_Name! +
+                                                ' ' +
+                                                invoice.Cus_Number!
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.paid,
+                                            color: invoiceHistoryController
+                                                    .ispaid(invoice.isPaid)
+                                                ? Colors.green.shade900
+                                                : Colors.red.shade900,
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            invoice.Invoice_Date
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                          Text(
+                                            ' ' + Format(invoice.Invoice_Time)
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                          Text(
+                                            ' || ' +
+                                                invoice.Username.toUpperCase() +
+                                                ' Store'
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                          Text(
+                                            ' || ' + invoice.Invoice_Type!
+                                            // +
+                                            // ' -- ' +
+                                            // invoice.phone_Code,
+                                            ,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            height: 10,
+                                            height: 5,
                                           ),
                                           Row(
                                             mainAxisAlignment:
@@ -261,14 +250,8 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Total_Usd)
                                                             .toString() +
-                                                        '\$',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .blue.shade900),
-                                                  ),
-                                                  Text(
-                                                    'Invoice Total LL:  ' +
+                                                        '\$' +
+                                                        ' || ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Total_Lb)
                                                             .toString() +
@@ -283,14 +266,8 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Rec_Usd)
                                                             .toString() +
-                                                        '\$',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .green.shade900),
-                                                  ),
-                                                  Text(
-                                                    'Invoice Rec LL:  ' +
+                                                        '\$' +
+                                                        ' + ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Rec_Lb)
                                                             .toString() +
@@ -305,14 +282,8 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Due_USD)
                                                             .toString() +
-                                                        '\$',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors
-                                                            .red.shade900),
-                                                  ),
-                                                  Text(
-                                                    'Invoice Due LL:  ' +
+                                                        '\$' +
+                                                        ' || ' +
                                                         addCommasToNumber(invoice
                                                                 .Invoice_Due_LB)
                                                             .toString() +
@@ -337,8 +308,8 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                     invoiceHistoryController
                                                             .ispaid(
                                                                 invoice.isPaid)
-                                                        ? Colors.green.shade900
-                                                        : Colors.red.shade900,
+                                                        ? Colors.green.shade100
+                                                        : Colors.red.shade100,
                                                 side: BorderSide(
                                                   width: 2.0,
                                                   color:
@@ -392,7 +363,15 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                   Text(
                                                     'Select',
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                      color:
+                                                          invoiceHistoryController
+                                                                  .ispaid(invoice
+                                                                      .isPaid)
+                                                              ? Colors.green
+                                                                  .shade900
+                                                              : Colors
+                                                                  .red.shade900,
+                                                    ),
                                                   ),
                                                   SizedBox(
                                                     width: 10,
@@ -404,47 +383,53 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                                         invoiceHistoryController
                                                                 .ispaid(invoice
                                                                     .isPaid)
-                                                            ? Colors.white
-                                                            : Colors.white,
+                                                            ? Colors
+                                                                .green.shade900
+                                                            : Colors
+                                                                .red.shade900,
+                                                    //  'Details',
+                                                    //   style: TextStyle(
+                                                    //        color: Colors.red),
                                                   ),
                                                 ],
                                               )),
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    },
-                  ),
-                ],
+                              ));
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Visibility(
-                visible: true,
-                child: Obx(() {
-                  return Padding(
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Visibility(
+              visible: true,
+              child: Obx(() {
+                return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Card(
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(14.0),
-                          child: Column(
+                        child: Container(
+                            child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Total US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    'Total: ',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
@@ -452,59 +437,23 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
+                                        fontSize: 12,
                                         color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Recieved US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.normal),
                                   ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalrecusd_yday.value)
-                                            .toString() +
-                                        '\$',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Invoices Recieved LB:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    addCommasToNumber(invoiceHistoryController
-                                                .totalreclb_yday.value)
-                                            .toString() +
-                                        'LL',
-                                    style: TextStyle(
-                                        color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
+                              SizedBox(
+                                width: 5,
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Invoices Recieved TOTAL:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    'Recieved: ',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
@@ -512,19 +461,22 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
+                                        fontSize: 12,
                                         color: Colors.green.shade900,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.normal),
                                   )
                                 ],
                               ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Invoices Due US:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    'Due: ',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                   Text(
                                     addCommasToNumber(invoiceHistoryController
@@ -532,24 +484,20 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                                             .toString() +
                                         '\$',
                                     style: TextStyle(
+                                        fontSize: 12,
                                         color: Colors.red.shade900,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.normal),
                                   )
                                 ],
                               ),
                             ],
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  );
-                }),
-              ),
-              SizedBox(
-                height: 14,
-              )
-            ],
-          ),
+                    ))));
+              }),
+            ),
+          ],
         ),
       ),
     );

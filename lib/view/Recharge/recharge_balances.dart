@@ -70,23 +70,19 @@ class RechargeBalance extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                color: Colors.deepPurple,
+                color: Colors.blue.shade900,
                 iconSize: 24.0,
                 onPressed: () {
                   Get.to(AddRechargeBalance());
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
                 },
                 icon: Icon(CupertinoIcons.add),
               ),
               IconButton(
-                color: Colors.deepPurple,
+                color: Colors.blue.shade900,
                 iconSize: 24.0,
                 onPressed: () {
                   rechargeBalanceController.isDataFetched = false;
                   rechargeBalanceController.fetch_cart_types();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
                 },
                 icon: Icon(CupertinoIcons.refresh),
               ),
@@ -96,43 +92,6 @@ class RechargeBalance extends StatelessWidget {
       )),
       body: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         child: Obx(() {
-          //           Type_Name.text = barcodeController.barcode3.value;
-          //           return TextField(
-          //             controller: Type_Name,
-          //             onChanged: (query) {
-          //               rechargeBalanceController.carts.refresh();
-          //             },
-          //             decoration: InputDecoration(
-          //               labelText: 'Search by Name or Code',
-          //               prefixIcon: Icon(Icons.search),
-          //             ),
-          //           );
-          //         }),
-          //       ),
-          //       SizedBox(
-          //         width: 15,
-          //       ),
-          //       Padding(
-          //         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-          //         child: IconButton(
-          //           icon: Icon(Icons.qr_code_scanner_rounded),
-          //           color: Colors.black,
-          //           onPressed: () {
-          //             barcodeController
-          //                 .scanBarcodeSearch()
-          //                 .then((value) => set());
-          //           },
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           SizedBox(
             height: 10,
           ),
@@ -152,364 +111,380 @@ class RechargeBalance extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final RechargeBalanceModel balance = filteredcarts[index];
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Card(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                //color: Colors.blue.shade100,
-                                borderRadius: BorderRadius.circular(10)),
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Card(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
                                     children: [
-                                      
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                           IconButton(
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text('Edit ' +
-                                                      balance.Credit_Type +
-                                                      ' Balance'),
-                                                  content: TextField(
-                                                    keyboardType:
-                                                        platformController
-                                                                .CheckPlatform()
-                                                            ? TextInputType
-                                                                .number
-                                                            : TextInputType
-                                                                .text,
-                                                    controller: Edit_Balance,
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            'Edit Ammount'),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        Edit_Balance.clear();
-                                                      },
-                                                      child: Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        if (Edit_Balance.text !=
-                                                            '') {
-                                                          showDialog(
-                                                              // The user CANNOT close this dialog  by pressing outsite it
-                                                              barrierDismissible:
-                                                                  false,
-                                                              context: context,
-                                                              builder: (_) {
-                                                                return Dialog(
-                                                                  // The background color
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical:
-                                                                            20),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children: [
-                                                                        // The loading indicator
-                                                                        CircularProgressIndicator(),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
-                                                                        // Some text
-                                                                        Text(
-                                                                            'Loading')
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              });
-                                                          rechargeBalanceController.EditRechargeBalance(
-                                                                  balance.Credit_id
-                                                                      .toString(),
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text('Edit ' +
+                                                              balance
+                                                                  .Credit_Type +
+                                                              ' Balance'),
+                                                          content: TextField(
+                                                            keyboardType: platformController
+                                                                    .CheckPlatform()
+                                                                ? TextInputType
+                                                                    .number
+                                                                : TextInputType
+                                                                    .text,
+                                                            controller:
+                                                                Edit_Balance,
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        'Edit Ammount'),
+                                                          ),
+                                                          actions: <Widget>[
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                                Edit_Balance
+                                                                    .clear();
+                                                              },
+                                                              child: Text(
+                                                                  'Cancel'),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                if (Edit_Balance
+                                                                        .text !=
+                                                                    '') {
+                                                                  showDialog(
+                                                                      // The user CANNOT close this dialog  by pressing outsite it
+                                                                      barrierDismissible:
+                                                                          false,
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (_) {
+                                                                        return Dialog(
+                                                                          // The background color
+                                                                          backgroundColor:
+                                                                              Colors.white,
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.symmetric(vertical: 20),
+                                                                            child:
+                                                                                Column(
+                                                                              mainAxisSize: MainAxisSize.min,
+                                                                              children: [
+                                                                                // The loading indicator
+                                                                                CircularProgressIndicator(),
+                                                                                SizedBox(
+                                                                                  height: 15,
+                                                                                ),
+                                                                                // Some text
+                                                                                Text('Loading')
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      });
+                                                                  rechargeBalanceController.EditRechargeBalance(
+                                                                          balance.Credit_id
+                                                                              .toString(),
+                                                                          Edit_Balance
+                                                                              .text)
+                                                                      .then((value) =>
+                                                                          showToast(rechargeBalanceController
+                                                                              .result2))
+                                                                      .then((value) =>
+                                                                          rechargeBalanceController.isDataFetched =
+                                                                              false)
+                                                                      .then((value) =>
+                                                                          rechargeBalanceController
+                                                                              .fetch_cart_types())
+                                                                      .then((value) =>
+                                                                          Navigator.of(context)
+                                                                              .pop())
+                                                                      .then((value) =>
+                                                                          Navigator.of(context)
+                                                                              .pop());
+
                                                                   Edit_Balance
-                                                                      .text)
-                                                              .then((value) => showToast(
-                                                                  rechargeBalanceController
-                                                                      .result2))
-                                                              .then((value) =>
-                                                                  rechargeBalanceController.isDataFetched =
-                                                                      false)
-                                                              .then((value) =>
-                                                                  rechargeBalanceController
-                                                                      .fetch_cart_types())
-                                                              .then((value) =>
-                                                                  Navigator.of(context)
-                                                                      .pop())
-                                                              .then((value) =>
-                                                                  Navigator.of(context).pop());
+                                                                      .clear();
+                                                                } else {
+                                                                  Get.snackbar(
+                                                                      'Error',
+                                                                      'Add Ammount');
+                                                                }
 
-                                                          Edit_Balance.clear();
-                                                        } else {
-                                                          Get.snackbar('Error',
-                                                              'Add Ammount');
-                                                        }
-
-                                                        // Do something with the text, e.g., save it
-                                                        //  String enteredText = _textEditingController.text;
-                                                        //  print('Entered text: $enteredText');
-                                                        // Close the dialog
+                                                                // Do something with the text, e.g., save it
+                                                                //  String enteredText = _textEditingController.text;
+                                                                //  print('Entered text: $enteredText');
+                                                                // Close the dialog
+                                                              },
+                                                              child: Text('OK'),
+                                                            ),
+                                                          ],
+                                                        );
                                                       },
-                                                      child: Text('OK'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: Colors.red,
-                                          )),
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.edit,
+                                                    color: Colors.red,
+                                                  )),
+                                              Text(
+                                                balance.Credit_Type,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                           Text(
-                                            balance.Credit_Type,
+                                            addCommasToNumber(
+                                                    balance.Credit_Balance)
+                                                .toString()
+                                            // +
+                                            // ' -- ' +
+                                            // balance.cart_Code,
+                                            ,
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                                color: Colors.blue.shade900,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        addCommasToNumber(
-                                                balance.Credit_Balance)
-                                            .toString()
-                                        // +
-                                        // ' -- ' +
-                                        // balance.cart_Code,
-                                        ,
-                                        style: TextStyle(
-                                            color: Colors.blue.shade900,
-                                            fontWeight: FontWeight.bold),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  //fixedSize: Size(200, 20),
+                                                  backgroundColor:
+                                                      Colors.blue.shade100,
+                                                  side: BorderSide(
+                                                    width: 2.0,
+                                                    color: Colors.blue.shade900,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Get.to(() => Topup_History(
+                                                        B_id: balance.Credit_id,
+                                                        B_Name:
+                                                            balance.Credit_Type,
+                                                      ));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'History',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .blue.shade900),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Icon(Icons.history,
+                                                        color:
+                                                            Colors.blue.shade900
+                                                        //  'Details',
+                                                        //   style: TextStyle(
+                                                        //        color: Colors.red),
+                                                        ),
+                                                  ],
+                                                )),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: OutlinedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  //fixedSize: Size(200, 20),
+                                                  backgroundColor:
+                                                      Colors.green.shade100,
+                                                  side: BorderSide(
+                                                    width: 2.0,
+                                                    color:
+                                                        Colors.green.shade900,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text('Update ' +
+                                                            balance
+                                                                .Credit_Type +
+                                                            ' Balance'),
+                                                        content: TextField(
+                                                          cursorColor: Colors
+                                                              .blue.shade900,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          controller:
+                                                              New_Balance,
+                                                          decoration: InputDecoration(
+                                                              hoverColor: Colors
+                                                                  .blue
+                                                                  .shade900,
+                                                              hintText:
+                                                                  'Enter added ammount'),
+                                                        ),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              New_Balance
+                                                                  .clear();
+                                                            },
+                                                            child:
+                                                                Text('Cancel'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              if (New_Balance
+                                                                      .text !=
+                                                                  '') {
+                                                                showDialog(
+                                                                    // The user CANNOT close this dialog  by pressing outsite it
+                                                                    barrierDismissible:
+                                                                        false,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (_) {
+                                                                      return Dialog(
+                                                                        // The background color
+                                                                        backgroundColor:
+                                                                            Colors.white,
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                              vertical: 20),
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.min,
+                                                                            children: [
+                                                                              // The loading indicator
+                                                                              CircularProgressIndicator(),
+                                                                              SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              // Some text
+                                                                              Text('Loading')
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    });
+                                                                rechargeBalanceController.UpdateRechargeBalance(
+                                                                        balance.Credit_id
+                                                                            .toString(),
+                                                                        New_Balance
+                                                                            .text)
+                                                                    .then((value) =>
+                                                                        showToast(rechargeBalanceController
+                                                                            .result2))
+                                                                    .then((value) =>
+                                                                        rechargeBalanceController.isDataFetched =
+                                                                            false)
+                                                                    .then((value) =>
+                                                                        rechargeBalanceController
+                                                                            .fetch_cart_types())
+                                                                    .then((value) =>
+                                                                        Navigator.of(context)
+                                                                            .pop())
+                                                                    .then((value) =>
+                                                                        Navigator.of(context)
+                                                                            .pop());
+
+                                                                New_Balance
+                                                                    .clear();
+                                                              } else {
+                                                                Get.snackbar(
+                                                                    'Error',
+                                                                    'Add Ammount');
+                                                              }
+
+                                                              // Do something with the text, e.g., save it
+                                                              //  String enteredText = _textEditingController.text;
+                                                              //  print('Entered text: $enteredText');
+                                                              // Close the dialog
+                                                            },
+                                                            child: Text('OK'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                  // Get.to(() => RechargeCarts(
+                                                  //       Type_id: balance.Type_id,
+                                                  //       Type_Name: balance.Type_Name,
+                                                  //     ));
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Top Up',
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .green.shade900),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Icon(
+                                                        Icons
+                                                            .arrow_circle_right_rounded,
+                                                        color: Colors
+                                                            .green.shade900
+                                                        //  'Details',
+                                                        //   style: TextStyle(
+                                                        //        color: Colors.red),
+                                                        ),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
                                       ),
                                     ],
-                                  ),
-                                  Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: OutlinedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            //fixedSize: Size(200, 20),
-                                            backgroundColor:
-                                                Colors.blue.shade100,
-                                            side: BorderSide(
-                                              width: 2.0,
-                                              color: Colors.blue.shade900,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            Get.to(() => Topup_History(
-                                                  B_id: balance.Credit_id,
-                                                  B_Name: balance.Credit_Type,
-                                                ));
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'History',
-                                                style: TextStyle(
-                                                    color: Colors.blue.shade900),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(Icons.history,
-                                                  color: Colors.blue.shade900
-                                                  //  'Details',
-                                                  //   style: TextStyle(
-                                                  //        color: Colors.red),
-                                                  ),
-                                            ],
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: OutlinedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            //fixedSize: Size(200, 20),
-                                            backgroundColor:
-                                                Colors.green.shade100,
-                                            side: BorderSide(
-                                              width: 2.0,
-                                              color: Colors.green.shade900,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text('Update ' +
-                                                      balance.Credit_Type +
-                                                      ' Balance'),
-                                                  content: TextField(
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    controller: New_Balance,
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            'Enter added ammount'),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        New_Balance.clear();
-                                                      },
-                                                      child: Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        if (New_Balance.text !=
-                                                            '') {
-                                                          showDialog(
-                                                              // The user CANNOT close this dialog  by pressing outsite it
-                                                              barrierDismissible:
-                                                                  false,
-                                                              context: context,
-                                                              builder: (_) {
-                                                                return Dialog(
-                                                                  // The background color
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical:
-                                                                            20),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children: [
-                                                                        // The loading indicator
-                                                                        CircularProgressIndicator(),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
-                                                                        // Some text
-                                                                        Text(
-                                                                            'Loading')
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              });
-                                                          rechargeBalanceController.UpdateRechargeBalance(
-                                                                  balance.Credit_id
-                                                                      .toString(),
-                                                                  New_Balance
-                                                                      .text)
-                                                              .then((value) =>
-                                                                  showToast(
-                                                                      rechargeBalanceController
-                                                                          .result2))
-                                                              .then((value) =>
-                                                                  rechargeBalanceController.isDataFetched =
-                                                                      false)
-                                                              .then((value) =>
-                                                                  rechargeBalanceController
-                                                                      .fetch_cart_types())
-                                                              .then((value) =>
-                                                                  Navigator.of(context)
-                                                                      .pop())
-                                                              .then((value) =>
-                                                                  Navigator.of(context).pop());
+                                  ))));
 
-                                                          New_Balance.clear();
-                                                        } else {
-                                                          Get.snackbar('Error',
-                                                              'Add Ammount');
-                                                        }
-
-                                                        // Do something with the text, e.g., save it
-                                                        //  String enteredText = _textEditingController.text;
-                                                        //  print('Entered text: $enteredText');
-                                                        // Close the dialog
-                                                      },
-                                                      child: Text('OK'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                            // Get.to(() => RechargeCarts(
-                                            //       Type_id: balance.Type_id,
-                                            //       Type_Name: balance.Type_Name,
-                                            //     ));
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Top Up',
-                                                style: TextStyle(
-                                                    color: Colors.green.shade900),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                  Icons
-                                                      .arrow_circle_right_rounded,
-                                                  color: Colors.green.shade900
-                                                  //  'Details',
-                                                  //   style: TextStyle(
-                                                  //        color: Colors.red),
-                                                  ),
-                                            ],
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )))));
-                                
-                          
-                            
-                          
                       // Container(
                       //   //  width: double.infinity,
                       //   //   height: 150.0,

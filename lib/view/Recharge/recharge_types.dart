@@ -37,36 +37,35 @@ class RechargeTypes extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Card Types'),
-        
-          Row(
-            children: [
-              IconButton(
-                color: Colors.deepPurple,
-                iconSize: 24.0,
-                onPressed: () {
-                  Get.to(AddRechargeType());
-                 
-                },
-                icon: Icon(CupertinoIcons.add),
-              ),
-              IconButton(
-                color: Colors.deepPurple,
-                iconSize: 24.0,
-                onPressed: () {
-                  cartTypesController.isDataFetched = false;
-                  cartTypesController.fetch_cart_types();
-                  
-                },
-                icon: Icon(CupertinoIcons.refresh),
-              ),
-            ],
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(), borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                IconButton(
+                  color: Colors.blue.shade900,
+                  //iconSize: 24.0,
+                  onPressed: () {
+                    Get.to(AddRechargeType());
+                  },
+                  icon: Icon(CupertinoIcons.add),
+                ),
+                IconButton(
+                  color: Colors.blue.shade900,
+                  // iconSize: 24.0,
+                  onPressed: () {
+                    cartTypesController.isDataFetched = false;
+                    cartTypesController.fetch_cart_types();
+                  },
+                  icon: Icon(CupertinoIcons.refresh),
+                ),
+              ],
+            ),
           ),
         ],
       )),
       body: Column(
         children: [
-         
-        
           SizedBox(
             height: 10,
           ),
@@ -85,23 +84,24 @@ class RechargeTypes extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final CartTypeModel cart = filteredcarts[index];
                       return Container(
-                       
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(12)),
+
                         //  width: double.infinity,
                         //   height: 150.0,
-                        color: Colors.blue.shade100,
-                        margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                        //color: Colors.blue.shade100,
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
                         //     padding: EdgeInsets.all(35),
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: const EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.all(0.0),
                           child: ListTile(
-
-                            
                             onTap: () {
                               Get.to(() => RechargeCarts(
-                                            Type_id: cart.Type_id,
-                                            Type_Name: cart.Type_Name,
-                                          ));
+                                    Type_id: cart.Type_id,
+                                    Type_Name: cart.Type_Name,
+                                  ));
                             },
                             leading:
                                 cart.Type_Image == null || cart.Type_Image == ''
@@ -123,7 +123,6 @@ class RechargeTypes extends StatelessWidget {
                                         errorWidget: (context, url, error) =>
                                             Icon(Icons.error),
                                       ),
-                           
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -140,11 +139,10 @@ class RechargeTypes extends StatelessWidget {
                                 OutlinedButton(
                                     style: ElevatedButton.styleFrom(
                                       //fixedSize: Size(200, 20),
-                                      backgroundColor:
-                                          Colors.blue.shade100,
+                                      backgroundColor: Colors.blue.shade100,
                                       side: BorderSide(
                                         width: 2.0,
-                                        color: Colors.blue.shade100,
+                                        color: Colors.blue.shade900,
                                       ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -161,16 +159,12 @@ class RechargeTypes extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                       
                                         Icon(Icons.arrow_circle_right_rounded,
-                                            color: Colors.blue.shade900
-                                        
-                                            ),
+                                            color: Colors.blue.shade900),
                                       ],
                                     )),
                               ],
                             ),
-                            
                           ),
                         ),
                       );
@@ -186,21 +180,25 @@ class RechargeTypes extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: OutlinedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(double.maxFinite, 50),
-                        backgroundColor: Colors.blue.shade100,
-                        side: BorderSide(
-                            width: 2.0, color: Colors.blue.shade100),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                      ),
-                onPressed: ()  {
-                                  Navigator.of(context).pop();
-            
-              }, child: Text('Done',style: TextStyle(color: Colors.blue.shade900),)),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(double.maxFinite, 50),
+                  backgroundColor: Colors.blue.shade100,
+                  side: BorderSide(width: 2.0, color: Colors.blue.shade900),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Done',
+                  style: TextStyle(color: Colors.blue.shade900),
+                )),
           ),
-            SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
         ],
       ),
     );

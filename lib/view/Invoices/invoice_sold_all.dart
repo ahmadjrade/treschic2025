@@ -278,7 +278,6 @@ class InvoiceSoldAll extends StatelessWidget {
             ),
 
             // Bottom Spacing
-            SizedBox(height: 14),
           ],
         ),
       ),

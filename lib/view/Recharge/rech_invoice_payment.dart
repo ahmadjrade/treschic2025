@@ -67,7 +67,6 @@ class RechInvoicePayment extends StatelessWidget {
     }
 
     return Scaffold(
-   
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -394,7 +393,8 @@ class RechInvoicePayment extends StatelessWidget {
                       );
                       if (rechInvoicePaymentController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
-                      } else if (rechInvoicePaymentController.payments.isEmpty) {
+                      } else if (rechInvoicePaymentController
+                          .payments.isEmpty) {
                         return Center(
                             child: Text('No Payment Yet In This Store ! '));
                       } else if (filteredinvoices.length == 0) {
@@ -438,7 +438,8 @@ class RechInvoicePayment extends StatelessWidget {
                                       children: [
                                         Text(
                                           '#' +
-                                              invoice.Recharge_Invoice_id.toString() +
+                                              invoice.Recharge_Invoice_id
+                                                  .toString() +
                                               ' || ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -457,15 +458,12 @@ class RechInvoicePayment extends StatelessWidget {
                                               fontSize: 15),
                                         ),
                                         Spacer(),
-                                        
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         Text(
-                                          invoice.Payment_Date
-                                         
-                                          ,
+                                          invoice.Payment_Date,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12),
@@ -520,8 +518,8 @@ class RechInvoicePayment extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     'Payment Ammount:  ' +
-                                                        addCommasToNumber(invoice
-                                                                .Ammount)
+                                                        addCommasToNumber(
+                                                                invoice.Ammount)
                                                             .toString() +
                                                         ' LL',
                                                     style: TextStyle(
@@ -531,17 +529,14 @@ class RechInvoicePayment extends StatelessWidget {
                                                   ),
                                                   Text(
                                                     'Invoice Date:  ' +
-                                                        (invoice
-                                                                .Invoice_Date)
+                                                        (invoice.Invoice_Date)
                                                             .toString(),
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors
                                                             .blue.shade900),
                                                   ),
-                                                 
-                                                
-                                                  
+
                                                   // Text(
                                                   //   'Invoice Due US:  ' +
                                                   //       addCommasToNumber(invoice
@@ -652,11 +647,9 @@ class RechInvoicePayment extends StatelessWidget {
                                           //         ),
                                           //       ],
                                           //     )),
-
                                         ],
                                       ),
                                     ),
-                                    
                                   ],
                                 ),
                               ),
@@ -692,8 +685,9 @@ class RechInvoicePayment extends StatelessWidget {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    addCommasToNumber(rechInvoicePaymentController
-                                                .total.value)
+                                    addCommasToNumber(
+                                                rechInvoicePaymentController
+                                                    .total.value)
                                             .toString() +
                                         ' LL',
                                     style: TextStyle(
@@ -702,7 +696,6 @@ class RechInvoicePayment extends StatelessWidget {
                                   )
                                 ],
                               ),
-                               
                             ],
                           ),
                         ),

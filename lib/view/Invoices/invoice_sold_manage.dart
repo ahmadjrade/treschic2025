@@ -2,6 +2,7 @@
 
 import 'package:fixnshop_admin/controller/barcode_controller.dart';
 import 'package:fixnshop_admin/controller/datetime_controller.dart';
+import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
 import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
@@ -29,8 +30,6 @@ import 'package:intl/intl.dart';
 class InvoiceSoldManage extends StatelessWidget {
   InvoiceSoldManage({super.key});
 
-  // final InvoiceHistoryController invoiceHistoryController =
-  //     Get.find<InvoiceHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
 
@@ -39,7 +38,8 @@ class InvoiceSoldManage extends StatelessWidget {
   final BarcodeController barcodeController = Get.find<BarcodeController>();
   String Today = '';
   String Yesterday = '';
-
+  final InvoiceDetailController invoiceDetailController =
+      Get.find<InvoiceDetailController>();
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
@@ -103,11 +103,13 @@ class InvoiceSoldManage extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () {
-                    // invoiceHistoryController.reset();
-                    // invoiceHistoryController.isDataFetched = false;
-                    // invoiceHistoryController.fetchinvoices();
+                    invoiceDetailController.isDataFetched = false;
+                    invoiceDetailController.fetchinvoicesdetails();
                   },
-                  icon: Icon(Icons.refresh))
+                  icon: Icon(
+                    Icons.refresh,
+                    color: Colors.blue.shade900,
+                  ))
             ],
           ),
           centerTitle: true,

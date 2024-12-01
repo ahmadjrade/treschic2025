@@ -108,6 +108,9 @@ class InvoiceHistoryYesterday extends StatelessWidget {
                         )));
               }),
             ),
+            SizedBox(
+              height: 20,
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),

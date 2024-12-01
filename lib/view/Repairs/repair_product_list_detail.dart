@@ -68,36 +68,43 @@ class RepairProductListDetail extends StatelessWidget {
         children: [
           Text(
             'Repair Product List Detail',
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 17),
           ),
-          Row(
-            children: [
-              IconButton(
-                color: Colors.deepPurple,
-                iconSize: 24.0,
-                onPressed: () {
-                  // Get.to(() => AddProductDetail(
-                  //       Repair_Product_id: Repair_Product_id,
-                  //       Repair_Product_Name: Repair_Product_Name,
-                  //       Repair_Product_Code: Repair_Product_Code,
-                  //       Product_LPrice: Product_LPrice,
-                  //       Repair_Product_Price: Repair_Product_Price,
-                  //     ));
-                },
-                icon: Icon(CupertinoIcons.add),
-              ),
-              IconButton(
-                color: Colors.deepPurple,
-                iconSize: 24.0,
-                onPressed: () {
-                  repairProductDetailController.isDataFetched = false;
-                  repairProductDetailController.fetchproductdetails();
-                  // categoryController.isDataFetched =false;
-                  // categoryController.fetchcategories();
-                },
-                icon: Icon(CupertinoIcons.refresh),
-              ),
-            ],
+          Container(
+            decoration: BoxDecoration(
+              // color: Colors.grey.shade500,
+              border: Border.all(color: Colors.grey.shade500),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                // IconButton(
+                //   color: Colors.blue.shade900,
+                //   iconSize: 24.0,
+                //   onPressed: () {
+                //     // Get.to(() => AddProductDetail(
+                //     //       Repair_Product_id: Repair_Product_id,
+                //     //       Repair_Product_Name: Repair_Product_Name,
+                //     //       Repair_Product_Code: Repair_Product_Code,
+                //     //       Product_LPrice: Product_LPrice,
+                //     //       Repair_Product_Price: Repair_Product_Price,
+                //     //     ));
+                //   },
+                //   icon: Icon(CupertinoIcons.add),
+                // ),
+                IconButton(
+                  color: Colors.blue.shade900,
+                  iconSize: 24.0,
+                  onPressed: () {
+                    repairProductDetailController.isDataFetched = false;
+                    repairProductDetailController.fetchproductdetails();
+                    // categoryController.isDataFetched =false;
+                    // categoryController.fetchcategories();
+                  },
+                  icon: Icon(CupertinoIcons.refresh),
+                ),
+              ],
+            ),
           ),
         ],
       )),
@@ -256,165 +263,156 @@ class RepairProductListDetail extends StatelessWidget {
                         final RepairProductDetailModel product =
                             filteredproducts[index];
                         return Container(
-                          color: Colors.grey.shade200,
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          //     padding: EdgeInsets.all(35),
-                          alignment: Alignment.center,
-                          child: ExpansionTile(
-                            collapsedTextColor: Colors.black,
+                          decoration: BoxDecoration(
+                            // color: Colors.grey.shade500,
+                            border: Border.all(color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
                             textColor: Colors.black,
-                            backgroundColor: Colors.deepPurple.shade100,
                             //   collapsedBackgroundColor: Colors.white,
-                            trailing: Text(
-                              product.R_product_quantity.toString() + ' PCS',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            title: Text(
-                              product.Product_Store,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 17),
-                            ),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 0.0),
-                                child: Column(
+
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Visibility(
-                                      visible: repairProductDetailController
-                                          .isadmin(Username.value),
-                                      child: IconButton(
-                                          color: Colors.red,
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Update Item Quantity'),
-                                                  content: TextField(
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    controller: New_Qty,
-                                                    decoration: InputDecoration(
-                                                        hintText:
-                                                            'Enter New Quantity'),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        if (New_Qty.text !=
-                                                            '') {
-                                                          showDialog(
-                                                              // The user CANNOT close this dialog  by pressing outsite it
-                                                              barrierDismissible:
-                                                                  false,
-                                                              context: context,
-                                                              builder: (_) {
-                                                                return Dialog(
-                                                                  // The background color
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
+                                    Text(
+                                      product.Product_Store,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
+                                    Text(
+                                      product.R_product_quantity.toString() +
+                                          ' PCS',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  'Bought: ' +
+                                      product.R_product_max_quantity.toString(),
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Text(
+                                  'Sold: ' +
+                                      product.R_product_sold_quantity
+                                          .toString(),
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Visibility(
+                                  visible: repairProductDetailController
+                                      .isadmin(Username.value),
+                                  child: IconButton(
+                                      color: Colors.red,
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title:
+                                                  Text('Update Item Quantity'),
+                                              content: TextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                controller: New_Qty,
+                                                decoration: InputDecoration(
+                                                    hintText:
+                                                        'Enter New Quantity'),
+                                              ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    if (New_Qty.text != '') {
+                                                      showDialog(
+                                                          // The user CANNOT close this dialog  by pressing outsite it
+                                                          barrierDismissible:
+                                                              false,
+                                                          context: context,
+                                                          builder: (_) {
+                                                            return Dialog(
+                                                              // The background color
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
                                                                         .symmetric(
                                                                         vertical:
                                                                             20),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children: [
-                                                                        // The loading indicator
-                                                                        CircularProgressIndicator(),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
-                                                                        // Some text
-                                                                        Text(
-                                                                            'Loading')
-                                                                      ],
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    // The loading indicator
+                                                                    CircularProgressIndicator(),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          15,
                                                                     ),
-                                                                  ),
-                                                                );
-                                                              });
-                                                          // productDetailController.UpdateProductQty(
-                                                          //         product.PD_id
-                                                          //             .toString(),
-                                                          //         New_Qty.text)
-                                                          //     .then((value) => showToast(
-                                                          //         productDetailController
-                                                          //             .result2))
-                                                          //     .then((value) =>
-                                                          //         productDetailController
-                                                          //                 .isDataFetched =
-                                                          //             false)
-                                                          //     .then((value) =>
-                                                          //         productDetailController
-                                                          //             .fetchproductdetails())
-                                                          //     .then((value) =>
-                                                          //         Navigator.of(context)
-                                                          //             .pop())
-                                                          //     .then((value) =>
-                                                          //         Navigator.of(context).pop());
+                                                                    // Some text
+                                                                    Text(
+                                                                        'Loading')
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                      // productDetailController.UpdateProductQty(
+                                                      //         product.PD_id
+                                                      //             .toString(),
+                                                      //         New_Qty.text)
+                                                      //     .then((value) => showToast(
+                                                      //         productDetailController
+                                                      //             .result2))
+                                                      //     .then((value) =>
+                                                      //         productDetailController
+                                                      //                 .isDataFetched =
+                                                      //             false)
+                                                      //     .then((value) =>
+                                                      //         productDetailController
+                                                      //             .fetchproductdetails())
+                                                      //     .then((value) =>
+                                                      //         Navigator.of(context)
+                                                      //             .pop())
+                                                      //     .then((value) =>
+                                                      //         Navigator.of(context).pop());
 
-                                                          // New_Qty.clear();
-                                                        } else {
-                                                          Get.snackbar('Error',
-                                                              'Add New Quantity');
-                                                        }
+                                                      // New_Qty.clear();
+                                                    } else {
+                                                      Get.snackbar('Error',
+                                                          'Add New Quantity');
+                                                    }
 
-                                                        // Do something with the text, e.g., save it
-                                                        //  String enteredText = _textEditingController.text;
-                                                        //  print('Entered text: $enteredText');
-                                                        // Close the dialog
-                                                      },
-                                                      child: Text('OK'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
+                                                    // Do something with the text, e.g., save it
+                                                    //  String enteredText = _textEditingController.text;
+                                                    //  print('Entered text: $enteredText');
+                                                    // Close the dialog
+                                                  },
+                                                  child: Text('OK'),
+                                                ),
+                                              ],
                                             );
                                           },
-                                          icon: Icon(Icons.edit)),
-                                    ),
-                                    Text('Total Quantity Bought: ' +
-                                        product.R_product_max_quantity
-                                            .toString()),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text('Total Quantity Sold: ' +
-                                        product.R_product_sold_quantity
-                                            .toString()),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    // Text('id' + product.PD_id.toString()),
-                                    // SizedBox(
-                                    //   height: 20,
-                                    // ),
-
-                                    // Text('Total Price of Treatment:  ${treatments.!}\$ '),
-                                  ],
+                                        );
+                                      },
+                                      icon: Icon(Icons.edit)),
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
+
                             //  subtitle: Text(product.Product_Brand),
                             // trailing: OutlinedButton(
                             //   onPressed: () {

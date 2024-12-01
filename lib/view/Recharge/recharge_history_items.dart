@@ -301,154 +301,167 @@ class RechargeHistoryItems extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final RechargeHistoryModel invoice =
                             filtereditems[index];
-                        return Card(
-                          margin: EdgeInsets.all(5),
-                          //   collapsedBackgroundColor: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '#' +
-                                              invoice.Rinvoice_detail_id
-                                                  .toString() +
-                                              ' || ' +
-                                              invoice.Card_Name,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 15),
-                                        ),
-                                        Text(
-                                          'Card Ammount: ' +
-                                              addCommasToNumber(
-                                                      invoice.Card_Amount)
-                                                  .toString(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          invoice.Card_Qty.toString() + ' PCS',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 10),
-                                        ),
-                                        Text(
-                                          'UP: ' +
-                                              addCommasToNumber(invoice.Card_UP)
-                                                  .toString() +
-                                              'LL',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 10,
-                                              color: Colors.green.shade900),
-                                        ),
-                                        Text(
-                                          'TP: ' +
-                                              addCommasToNumber(invoice.Card_TP)
-                                                  .toString() +
-                                              'LL',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 10,
-                                              color: Colors.green.shade900),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Visibility(
-                                  visible: rechargeDetailController
-                                      .isadmin(Username.value),
-                                  child: IconButton(
-                                      color: Colors.red,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title:
-                                                  Text('Update Item Quantity'),
-                                              content: TextField(
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                controller: New_Qty,
-                                                decoration: InputDecoration(
-                                                    hintText:
-                                                        'Enter New Quantity'),
-                                              ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text('Cancel'),
+                        return Container(
+                          decoration: BoxDecoration(
+                            //   color: Colors.grey.shade500,
+                            border: Border.all(color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: ListTile(
+                            // margin: EdgeInsets.all(5),
+                            //   collapsedBackgroundColor: Colors.white,
+                            title: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '#' +
+                                                invoice.Rinvoice_detail_id
+                                                    .toString() +
+                                                ' || ' +
+                                                invoice.Card_Name,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15),
+                                          ),
+                                          Text(
+                                            'Card Ammount: ' +
+                                                addCommasToNumber(
+                                                        invoice.Card_Amount)
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            invoice.Card_Qty.toString() +
+                                                ' PCS',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10),
+                                          ),
+                                          Text(
+                                            'UP: ' +
+                                                addCommasToNumber(
+                                                        invoice.Card_UP)
+                                                    .toString() +
+                                                'LL',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10,
+                                                color: Colors.green.shade900),
+                                          ),
+                                          Text(
+                                            'TP: ' +
+                                                addCommasToNumber(
+                                                        invoice.Card_TP)
+                                                    .toString() +
+                                                'LL',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10,
+                                                color: Colors.green.shade900),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Visibility(
+                                    visible: rechargeDetailController
+                                        .isadmin(Username.value),
+                                    child: IconButton(
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Update Item Quantity'),
+                                                content: TextField(
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  controller: New_Qty,
+                                                  decoration: InputDecoration(
+                                                      hintText:
+                                                          'Enter New Quantity'),
                                                 ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    if (New_Qty.text != '') {
-                                                      showDialog(
-                                                          // The user CANNOT close this dialog  by pressing outsite it
-                                                          barrierDismissible:
-                                                              false,
-                                                          context: context,
-                                                          builder: (_) {
-                                                            return Dialog(
-                                                              // The background color
-                                                              backgroundColor:
-                                                                  Colors.white,
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical:
-                                                                            20),
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    // The loading indicator
-                                                                    CircularProgressIndicator(),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          15,
-                                                                    ),
-                                                                    // Some text
-                                                                    Text(
-                                                                        'Loading')
-                                                                  ],
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      if (New_Qty.text != '') {
+                                                        showDialog(
+                                                            // The user CANNOT close this dialog  by pressing outsite it
+                                                            barrierDismissible:
+                                                                false,
+                                                            context: context,
+                                                            builder: (_) {
+                                                              return Dialog(
+                                                                // The background color
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          20),
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      // The loading indicator
+                                                                      CircularProgressIndicator(),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      // Some text
+                                                                      Text(
+                                                                          'Loading')
+                                                                    ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            );
-                                                          });
-                                                    }
-                                                  },
-                                                  child: Text('OK'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: Icon(Icons.edit)),
-                                ),
-                              ],
+                                                              );
+                                                            });
+                                                      }
+                                                    },
+                                                    child: Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(Icons.edit)),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );

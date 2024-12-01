@@ -6,6 +6,7 @@ import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
 import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
 import 'package:fixnshop_admin/model/invoice_model.dart';
 import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -72,8 +73,32 @@ class InvoiceHistoryByCustomer extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('$Cus_Name\'s Invoices '),
+            Text(
+              '$Cus_Name\'s Invoices ',
+              style: TextStyle(fontSize: 17),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                //   color: Colors.grey.shade500,
+                border: Border.all(color: Colors.grey.shade500),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    color: Colors.blue.shade900,
+                    // iconSize: 20.0,
+                    onPressed: () {
+                      invoiceHistoryController.isDataFetched = false;
+                      invoiceHistoryController.fetchinvoices();
+                    },
+                    icon: Icon(CupertinoIcons.refresh),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

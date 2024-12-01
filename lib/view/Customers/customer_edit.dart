@@ -137,7 +137,7 @@ class CustomerEdit extends StatelessWidget {
               OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     //fixedSize: Size(200, 20),
-                    backgroundColor: Colors.green.shade900,
+                    backgroundColor: Colors.green.shade100,
                     side: BorderSide(
                       width: 2.0,
                       color: Colors.green.shade900,
@@ -209,21 +209,28 @@ class CustomerEdit extends StatelessWidget {
                     children: [
                       Text(
                         'Update Customer',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.green.shade900),
                       ),
                       SizedBox(
                         width: 5,
                       ),
-                      Icon(Icons.edit_attributes, color: Colors.white
+                      Icon(Icons.edit_attributes, color: Colors.green.shade900
                           //   style: TextStyle(
                           //        color: Colors.red),
                           ),
                     ],
                   )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Divider(
+                  height: 10,
+                  color: Colors.black,
+                ),
+              ),
               OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     //fixedSize: Size(200, 20),
-                    backgroundColor: Colors.green.shade900,
+                    backgroundColor: Colors.green.shade100,
                     side: BorderSide(
                       width: 2.0,
                       color: Colors.green.shade900,
@@ -239,6 +246,7 @@ class CustomerEdit extends StatelessWidget {
                         return AlertDialog(
                           title: Text('Write The Address'),
                           content: TextField(
+                            maxLines: 10,
                             keyboardType: TextInputType.text,
                             controller: Cus_Address,
                             decoration: InputDecoration(hintText: 'Address'),
@@ -315,12 +323,12 @@ class CustomerEdit extends StatelessWidget {
                     children: [
                       Text(
                         'New Address',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.green.shade900),
                       ),
                       SizedBox(
                         width: 5,
                       ),
-                      Icon(Icons.location_on, color: Colors.white
+                      Icon(Icons.location_on, color: Colors.green.shade900
                           //  'Details',
                           //   style: TextStyle(
                           //        color: Colors.red),

@@ -134,9 +134,8 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
                 OutlinedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.deepPurple.shade300,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.deepPurple.shade300),
+                      backgroundColor: Colors.blue.shade300,
+                      side: BorderSide(width: 2.0, color: Colors.blue.shade300),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -638,42 +637,56 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
           title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Invoice #${widget.Invoice_id} Items'),
-          IconButton(
-            color: Color.fromRGBO(13, 134, 151, 1),
-            iconSize: 24.0,
-            onPressed: () {
-              Get.to(() => OldInvoiceUpdate(
-                    Invoice_id: widget.Invoice_id,
-                    Cus_id: widget.Customer_id,
-                    Cus_Name: widget.Customer_Name,
-                    Cus_Number: widget.Customer_Number,
-                  ));
-            },
-            icon: Icon(CupertinoIcons.add),
+          Text(
+            'Invoice #${widget.Invoice_id} Items',
+            style: TextStyle(fontSize: 17),
           ),
-          IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              if (Platform.isAndroid) {
-                CheckPrinter();
-              }
-              // categoryController.isDataFetched =false;
-              // categoryController.fetchcategories();
-            },
-            icon: Icon(CupertinoIcons.printer),
-          ),
-          IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              invoiceDetailController.isDataFetched = false;
-              invoiceDetailController.fetchinvoicesdetails();
-              // categoryController.isDataFetched =false;
-              // categoryController.fetchcategories();
-            },
-            icon: Icon(CupertinoIcons.refresh),
+          Container(
+            decoration: BoxDecoration(
+              //   color: Colors.grey.shade500,
+              border: Border.all(color: Colors.grey.shade500),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  color: Colors.blue.shade900,
+                  iconSize: 24.0,
+                  onPressed: () {
+                    Get.to(() => OldInvoiceUpdate(
+                          Invoice_id: widget.Invoice_id,
+                          Cus_id: widget.Customer_id,
+                          Cus_Name: widget.Customer_Name,
+                          Cus_Number: widget.Customer_Number,
+                        ));
+                  },
+                  icon: Icon(CupertinoIcons.add),
+                ),
+                IconButton(
+                  color: Colors.blue.shade900,
+                  iconSize: 24.0,
+                  onPressed: () {
+                    if (Platform.isAndroid) {
+                      CheckPrinter();
+                    }
+                    // categoryController.isDataFetched =false;
+                    // categoryController.fetchcategories();
+                  },
+                  icon: Icon(CupertinoIcons.printer),
+                ),
+                IconButton(
+                  color: Colors.blue.shade900,
+                  iconSize: 24.0,
+                  onPressed: () {
+                    invoiceDetailController.isDataFetched = false;
+                    invoiceDetailController.fetchinvoicesdetails();
+                    // categoryController.isDataFetched =false;
+                    // categoryController.fetchcategories();
+                  },
+                  icon: Icon(CupertinoIcons.refresh),
+                ),
+              ],
+            ),
           ),
         ],
       )),
@@ -858,27 +871,62 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
                       itemBuilder: (context, index) {
                         final InvoiceHistoryModel invoice =
                             filtereditems[index];
-                        return Card(
-                          color: Colors.grey.shade200,
+                        return Container(
+                          decoration: BoxDecoration(
+                            //   color: Colors.grey.shade500,
+                            border: Border.all(color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: ListTile(
                             textColor: Colors.black,
                             title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: Text(
-                                        '#' +
-                                            invoice.Invoice_Detail_id
-                                                .toString() +
-                                            ' || ' +
-                                            invoice.Product_Name,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '#' +
+                                                invoice.Invoice_Detail_id
+                                                    .toString() +
+                                                ' || ' +
+                                                invoice.Product_Name,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                          checkPhone(invoice.isPhone)
+                                              ? Text(
+                                                  'Phone id: ' +
+                                                      invoice.Phone_id
+                                                          .toString(),
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                )
+                                              : Text(
+                                                  'Product id: ' +
+                                                      invoice.Product_id
+                                                          .toString(),
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                          Text(
+                                            'Code: ' + invoice.Product_Code,
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                          Text(
+                                            'Color: ' + invoice.Product_Color,
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     Column(
@@ -921,38 +969,7 @@ class _InvoiceHistoryItemsState extends State<InvoiceHistoryItems> {
                                 SizedBox(
                                   height: 5,
                                 ),
-                                Row(
-                                  children: [
-                                    checkPhone(invoice.isPhone)
-                                        ? Text(
-                                            'Phone id: ' +
-                                                invoice.Phone_id.toString(),
-                                            style: TextStyle(fontSize: 12),
-                                          )
-                                        : Text(
-                                            'Product id: ' +
-                                                invoice.Product_id.toString(),
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      '| Code: ' + invoice.Product_Code,
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      '| Color: ' + invoice.Product_Color,
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
+
                                 Row(
                                   children: [
                                     Expanded(

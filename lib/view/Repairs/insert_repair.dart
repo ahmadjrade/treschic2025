@@ -600,7 +600,7 @@ class InsertRepair extends StatelessWidget {
                       fixedSize: Size(double.maxFinite, 50),
                       backgroundColor: Colors.green.shade100,
                       side:
-                          BorderSide(width: 2.0, color: Colors.green.shade100),
+                          BorderSide(width: 2.0, color: Colors.green.shade900),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),

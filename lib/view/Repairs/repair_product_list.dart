@@ -74,40 +74,50 @@ class RepairProductList extends StatelessWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Repair Product List'),
+              Text(
+                'Repair Products List',
+                style: TextStyle(fontSize: 17),
+              ),
               // IconButton(
-              //   color: Colors.deepPurple,
+              //   color: Colors.blue.shade900,
               //   iconSize: 24.0,
               //   onPressed: () {
               //     Get.toNamed('/NewCat');
               //   },
               //   icon: Icon(CupertinoIcons.add),
               // ),
-              Row(
-                children: [
-                  IconButton(
-                    color: Colors.deepPurple,
-                    iconSize: 24.0,
-                    onPressed: () {
-                      Get.to(() => BuyRepairProduct());
+              Container(
+                decoration: BoxDecoration(
+                  // color: Colors.grey.shade500,
+                  border: Border.all(color: Colors.grey.shade500),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      color: Colors.blue.shade900,
+                      iconSize: 24.0,
+                      onPressed: () {
+                        Get.to(() => BuyRepairProduct());
 
-                      // categoryController.isDataFetched =false;
-                      // categoryController.fetchcategories();
-                    },
-                    icon: Icon(CupertinoIcons.add),
-                  ),
-                  IconButton(
-                    color: Colors.deepPurple,
-                    iconSize: 24.0,
-                    onPressed: () {
-                      repairProductController.isDataFetched = false;
-                      repairProductController.fetchproducts();
-                      // categoryController.isDataFetched =false;
-                      // categoryController.fetchcategories();
-                    },
-                    icon: Icon(CupertinoIcons.refresh),
-                  ),
-                ],
+                        // categoryController.isDataFetched =false;
+                        // categoryController.fetchcategories();
+                      },
+                      icon: Icon(CupertinoIcons.add),
+                    ),
+                    IconButton(
+                      color: Colors.blue.shade900,
+                      iconSize: 24.0,
+                      onPressed: () {
+                        repairProductController.isDataFetched = false;
+                        repairProductController.fetchproducts();
+                        // categoryController.isDataFetched =false;
+                        // categoryController.fetchcategories();
+                      },
+                      icon: Icon(CupertinoIcons.refresh),
+                    ),
+                  ],
+                ),
               ),
             ],
           )),
@@ -118,33 +128,61 @@ class RepairProductList extends StatelessWidget {
         },
         child: Column(
           children: [
+            SizedBox(
+              height: 10,
+            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
                 children: [
                   Expanded(
                     child: Obx(() {
                       Product_Name.text = barcodeController.barcode3.value;
-                      return TextField(
-                        controller: Product_Name,
-                        onChanged: (query) {
-                          repairProductController.repair_products.refresh();
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Search by Name or Code',
-                          prefixIcon: Icon(Icons.search),
-                        ),
-                      );
+
+                      return Container(
+                          decoration: BoxDecoration(
+                            //   color: Colors.grey.shade500,
+                            border: Border.all(color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: TextField(
+                              //   obscureText: true,
+                              //  readOnly: isLoading,
+                              onChanged: (value) {
+                                repairProductController.repair_products
+                                    .refresh();
+                              },
+                              controller: Product_Name,
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () {
+                                    Product_Name.clear();
+                                    repairProductController.repair_products
+                                        .refresh();
+                                  },
+                                ),
+                                prefixIcon: Icon(Icons.search),
+                                border: InputBorder.none,
+                                hintText: 'Search By Name or Code',
+                              ),
+                            ),
+                          ));
                     }),
                   ),
                   SizedBox(
-                    width: 15,
+                    width: 5,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  Container(
+                    decoration: BoxDecoration(
+                      // color: Colors.grey.shade500,
+                      border: Border.all(color: Colors.grey.shade500),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: IconButton(
-                      icon: Icon(Icons.qr_code_scanner_rounded),
-                      color: Colors.black,
+                      icon: Icon(Icons.qr_code),
                       onPressed: () {
                         barcodeController
                             .scanBarcodeSearch()
@@ -176,11 +214,10 @@ class RepairProductList extends StatelessWidget {
                             filteredCategories[index];
                         return Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.grey.shade300),
-                          //  width: double.infinity,
-                          //   height: 150.0,
-                          //color: Colors.grey.shade200,
+                            // color: Colors.grey.shade500,
+                            border: Border.all(color: Colors.grey.shade500),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
                           //     padding: EdgeInsets.all(35),
                           alignment: Alignment.center,
@@ -241,7 +278,7 @@ class RepairProductList extends StatelessWidget {
                                       Row(
                                         children: [
                                           Text(
-                                            ' Price: ' +
+                                            'Price: ' +
                                                 product.Repair_p_price
                                                     .toString() +
                                                 '\$',
@@ -273,7 +310,7 @@ class RepairProductList extends StatelessWidget {
                                                   // fixedSize:
                                                   //     Size(double.maxFinite, 20),
                                                   backgroundColor:
-                                                      Colors.red.shade900,
+                                                      Colors.red.shade100,
                                                   side: BorderSide(
                                                     width: 2.0,
                                                     color: Colors.red.shade900,
@@ -350,7 +387,8 @@ class RepairProductList extends StatelessWidget {
                                                   children: [
                                                     Icon(
                                                       Icons.qr_code,
-                                                      color: Colors.white,
+                                                      color:
+                                                          Colors.red.shade900,
                                                       //  'Details',
                                                       //   style: TextStyle(
                                                       //        color: Colors.red),
@@ -370,11 +408,11 @@ class RepairProductList extends StatelessWidget {
                                                     // fixedSize:
                                                     //     Size(double.maxFinite, 20),
                                                     backgroundColor:
-                                                        Colors.red.shade900,
+                                                        Colors.green.shade100,
                                                     side: BorderSide(
                                                       width: 2.0,
                                                       color:
-                                                          Colors.red.shade900,
+                                                          Colors.green.shade900,
                                                     ),
                                                     shape:
                                                         RoundedRectangleBorder(
@@ -401,7 +439,8 @@ class RepairProductList extends StatelessWidget {
                                                     children: [
                                                       Icon(
                                                         Icons.add,
-                                                        color: Colors.white,
+                                                        color: Colors
+                                                            .green.shade900,
                                                         //  'Details',
                                                         //   style: TextStyle(
                                                         //        color: Colors.red),
@@ -419,10 +458,10 @@ class RepairProductList extends StatelessWidget {
                                                   // fixedSize:
                                                   //     Size(double.maxFinite, 20),
                                                   backgroundColor:
-                                                      Colors.red.shade900,
+                                                      Colors.blue.shade100,
                                                   side: BorderSide(
                                                     width: 2.0,
-                                                    color: Colors.red.shade900,
+                                                    color: Colors.blue.shade900,
                                                   ),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
@@ -456,7 +495,8 @@ class RepairProductList extends StatelessWidget {
                                                     Icon(
                                                       Icons
                                                           .arrow_circle_right_rounded,
-                                                      color: Colors.white,
+                                                      color:
+                                                          Colors.blue.shade900,
                                                       //  'Details',
                                                       //   style: TextStyle(
                                                       //        color: Colors.red),

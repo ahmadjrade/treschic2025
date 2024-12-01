@@ -826,7 +826,7 @@ class _NewRechargeInvoiceState extends State<NewRechargeInvoice> {
                           fixedSize: Size(double.maxFinite, 50),
                           backgroundColor: Colors.blue.shade100,
                           side: BorderSide(
-                              width: 2.0, color: Colors.blue.shade100),
+                              width: 2.0, color: Colors.blue.shade900),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),

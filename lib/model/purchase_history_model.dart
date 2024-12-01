@@ -10,11 +10,9 @@ class PurchaseHistoryModel {
   final String Product_Code;
   final String Product_Color;
   final int Product_Quantity;
- 
 
   RxDouble _Product_UC;
   RxDouble _Product_TC;
-
 
   PurchaseHistoryModel({
     required this.Purchase_Detail_id,
@@ -27,21 +25,14 @@ class PurchaseHistoryModel {
     required this.Product_Quantity,
     required double product_UC, // Change type to double
     required double product_TC, // Change type to double
-
-    
-    
-  })  : 
-        _Product_TC = product_TC.obs,
-        _Product_UC = product_TC.obs; // Initialize RxDouble
-
-
+  })  : _Product_TC = product_TC.obs,
+        _Product_UC = product_UC.obs; // Initialize RxDouble
 
   double get product_TC => _Product_TC.value; // Getter for product_MPrice
 
   set product_TC(double value) => _Product_TC.value = value;
 
-  double get product_UC =>
-      _Product_UC.value; // Getter for product_MPrice
+  double get product_UC => _Product_UC.value; // Getter for product_MPrice
 
   set product_UC(double value) => _Product_UC.value = value;
 
@@ -56,10 +47,7 @@ class PurchaseHistoryModel {
       Product_Color: json['Product_Color'],
       Product_Quantity: json['Product_Qty'],
       product_UC: json['Product_UC'].toDouble(),
-
       product_TC: json['Product_TC'].toDouble(),
-
-      
     );
   }
 }

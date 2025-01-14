@@ -4,21 +4,18 @@
 import 'dart:typed_data';
 
 import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/rate_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
-import 'package:fixnshop_admin/model/customer_address_model.dart';
-import 'package:fixnshop_admin/model/customer_model.dart';
-import 'package:fixnshop_admin/model/domain.dart';
+import 'package:treschic/controller/bluetooth_manager_controller.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/rate_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/category_model.dart';
+import 'package:treschic/model/color_model.dart';
+import 'package:treschic/model/customer_address_model.dart';
+import 'package:treschic/model/customer_model.dart';
+import 'package:treschic/model/domain.dart';
 
-import 'package:fixnshop_admin/model/recharge_cart_model.dart';
-import 'package:fixnshop_admin/model/topup_history_model.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';

@@ -1,24 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_all.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_month.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_yesterday.dart';
-import 'package:fixnshop_admin/view/Invoices/tab_item.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history11.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/purchase_history_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/view/Invoices/tab_item.dart';
+import 'package:treschic/view/Purchase/purchase_history.dart';
+import 'package:treschic/view/Purchase/purchase_history_all.dart';
+import 'package:treschic/view/Purchase/purchase_history_month.dart';
+import 'package:treschic/view/Purchase/purchase_history_yday.dart';
 
 class PurchaseHistoryManage extends StatelessWidget {
   PurchaseHistoryManage({super.key});
@@ -31,22 +25,22 @@ class PurchaseHistoryManage extends StatelessWidget {
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
-            String Today = '';
-                        String Yesterday = '';
-
+  String Today = '';
+  String Yesterday = '';
 
   @override
   Widget build(BuildContext context) {
-     DateTime now = DateTime.now();
-             Today = DateFormat('EEEE').format(now) ;
-     DateTime yday = now.subtract(Duration(days: 1));
-     String getMonthName(DateTime date) {
-  return DateFormat('MMMM').format(date);
-}
-      String monthName = getMonthName(now);
+    DateTime now = DateTime.now();
+    Today = DateFormat('EEEE').format(now);
+    DateTime yday = now.subtract(Duration(days: 1));
+    String getMonthName(DateTime date) {
+      return DateFormat('MMMM').format(date);
+    }
+
+    String monthName = getMonthName(now);
 
     // Getting the name of the day for yesterday
-     Yesterday = DateFormat('EEEE').format(yday);
+    Yesterday = DateFormat('EEEE').format(yday);
 
     // purchaseHistoryController.reset();
 
@@ -79,31 +73,29 @@ class PurchaseHistoryManage extends StatelessWidget {
       return time8Hour;
     }
 
-          
     String addCommasToNumber(double value) {
       final formatter = NumberFormat('#,##0.00');
       return formatter.format(value);
     }
-    
 
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Purchase History',
-                style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
-               IconButton(
-              onPressed: () {
-                purchaseHistoryController.reset();
-                purchaseHistoryController.isDataFetched = false;
-                purchaseHistoryController.fetchpurchases();
-              },
-              icon: Icon(Icons.refresh))
+              IconButton(
+                  onPressed: () {
+                    purchaseHistoryController.reset();
+                    purchaseHistoryController.isDataFetched = false;
+                    purchaseHistoryController.fetchpurchases();
+                  },
+                  icon: Icon(Icons.refresh))
             ],
           ),
           centerTitle: true,
@@ -129,8 +121,7 @@ class PurchaseHistoryManage extends StatelessWidget {
                   tabs: [
                     TabItem(title: Today, count: 0),
                     TabItem(title: Yesterday, count: 0),
-                                        TabItem(title:  monthName, count: 0),
-
+                    TabItem(title: monthName, count: 0),
                     TabItem(title: 'All', count: 0),
                   ],
                 ),
@@ -138,20 +129,19 @@ class PurchaseHistoryManage extends StatelessWidget {
             ),
           ),
         ),
-      body: 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TabBarView(
-                          children: [
-                            PurchaseHistory(), // Page for "Today" tab
-                            PurchaseHistory(),
-                            PurchaseHistory(), // Page for "Yesterday" tab
- // Page for "Yesterday" tab
-                            PurchaseHistory(), // Page for "All" tab
-                          ],
-                        ),
-              ),
-              
-    ),);
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TabBarView(
+            children: [
+              PurchaseHistory(), // Page for "Today" tab
+              PurchaseHistoryYesterday(),
+              PurchaseHistoryMonth(), // Page for "Yesterday" tab
+              // Page for "Yesterday" tab
+              PurchaseHistoryAll(), // Page for "All" tab
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

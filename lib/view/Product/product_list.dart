@@ -2,16 +2,16 @@
 
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/controller/transfer_controller.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/Product/product_edit.dart';
-import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/homescreen_manage_controller.dart';
+import 'package:treschic/controller/invoice_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/purchase_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/controller/transfer_controller.dart';
+import 'package:treschic/model/product_model.dart';
+import 'package:treschic/view/Product/product_edit.dart';
+import 'package:treschic/view/Product/product_list_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,6 +76,14 @@ class _ProductListState extends State<ProductList> {
           content: Text('Product Code copied to clipboard'),
         ),
       );
+    }
+
+    bool checkpurchase() {
+      if (widget.isPur == 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     // productController.fetchproducts();
@@ -270,9 +278,7 @@ class _ProductListState extends State<ProductList> {
                                     product.Product_id.toString() +
                                     ' ' +
                                     product.Product_Name +
-                                    ' ' +
-                                    product.Product_Color
-                                // +
+                                    ' ' // +
                                 // ' -- ' +
                                 // product.Product_Code,
                                 ,
@@ -445,57 +451,49 @@ class _ProductListState extends State<ProductList> {
                                             SizedBox(
                                               width: 5,
                                             ),
-                                            Expanded(
-                                              child: OutlinedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    // fixedSize:
-                                                    //     Size(double.maxFinite, 20),
-                                                    backgroundColor:
-                                                        Colors.green.shade100,
-                                                    side: BorderSide(
-                                                      width: 2.0,
-                                                      color:
-                                                          Colors.green.shade900,
+                                            Visibility(
+                                              visible: checkpurchase(),
+                                              child: Expanded(
+                                                child: OutlinedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      // fixedSize:
+                                                      //     Size(double.maxFinite, 20),
+                                                      backgroundColor:
+                                                          Colors.green.shade100,
+                                                      side: BorderSide(
+                                                        width: 2.0,
+                                                        color: Colors
+                                                            .green.shade900,
+                                                      ),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15.0),
+                                                      ),
                                                     ),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    if (widget.isPur == 1) {
-                                                      invoiceController
-                                                          .fetchProduct(product
-                                                              .Product_Code);
-                                                    } else if (widget.isPur ==
-                                                        3) {
-                                                      transferController
-                                                          .fetchProduct(product
-                                                              .Product_Code);
-                                                    } else {
+                                                    onPressed: () {
                                                       purchaseController
                                                           .fetchProduct(product
                                                               .Product_Code);
-                                                    }
-                                                  },
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.add,
-                                                        color: Colors
-                                                            .green.shade900,
-                                                        //  'Details',
-                                                        //   style: TextStyle(
-                                                        //        color: Colors.red),
-                                                      ),
-                                                    ],
-                                                  )),
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.add,
+                                                          color: Colors
+                                                              .green.shade900,
+                                                          //  'Details',
+                                                          //   style: TextStyle(
+                                                          //        color: Colors.red),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              ),
                                             ),
                                             SizedBox(
                                               width: 5,
@@ -528,8 +526,6 @@ class _ProductListState extends State<ProductList> {
                                                                   .toString(),
                                                               Product_Name: product
                                                                   .Product_Name,
-                                                              Product_Color: product
-                                                                  .Product_Color,
                                                               Product_LPrice:
                                                                   product.Product_LPrice
                                                                       .toString(),
@@ -538,6 +534,9 @@ class _ProductListState extends State<ProductList> {
                                                                   .toString(),
                                                               Product_Code: product
                                                                   .Product_Code,
+                                                              isPur: widget
+                                                                  .isPur
+                                                                  .toString(),
                                                             ));
                                                   },
                                                   child: Row(

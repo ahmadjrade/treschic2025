@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:fixnshop_admin/model/domain.dart';
+import 'package:treschic/model/domain.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 

@@ -1,9 +1,9 @@
 // controllers/item_controller.dart
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
-import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/model/sub_category_model.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
+import 'package:treschic/model/category_model.dart';
+import 'package:treschic/model/color_model.dart';
+import 'package:treschic/model/domain.dart';
+import 'package:treschic/model/sub_category_model.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

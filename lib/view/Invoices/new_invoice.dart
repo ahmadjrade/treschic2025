@@ -3,17 +3,17 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/platform_controller.dart';
-import 'package:fixnshop_admin/controller/product_detail_controller.dart';
-import 'package:fixnshop_admin/controller/rate_controller.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:fixnshop_admin/view/Phones/phones_list.dart';
-import 'package:fixnshop_admin/view/Product/product_list.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/bluetooth_manager_controller.dart';
+import 'package:treschic/controller/invoice_controller.dart';
+import 'package:treschic/controller/invoice_detail_controller.dart';
+import 'package:treschic/controller/invoice_history_controller.dart';
+import 'package:treschic/controller/platform_controller.dart';
+import 'package:treschic/controller/product_detail_controller.dart';
+import 'package:treschic/controller/rate_controller.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
+import 'package:treschic/view/Product/product_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -102,6 +102,13 @@ class _NewInvoiceState extends State<NewInvoice> {
     return CalculatedDueUsd;
   }
 
+  Future<void> showToast(result) async {
+    final snackBar2 = SnackBar(
+      content: Text(result),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+  }
+
   FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
 
   final BluetoothController bluetoothController =
@@ -114,6 +121,153 @@ class _NewInvoiceState extends State<NewInvoice> {
     productDetailController.product_detail.clear();
     productDetailController.isDataFetched = false;
     productDetailController.fetchproductdetails();
+  }
+
+  Future<bool> checkInternetConnection() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
+  }
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 15),
+                Text('Loading'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void dismissDialog(BuildContext context) {
+    if (Navigator.canPop(context)) Navigator.pop(context);
+  }
+
+  void showNoInternetDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text('No Internet'),
+          content: Text('Internet connection lost. Please try again.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> processInvoice(BuildContext context) async {
+    // Validate guest dues
+    if (widget.Cus_Number == '00000000' &&
+        invoiceController.DueUSD.value != 0) {
+      Get.snackbar('Error', 'Guest can\'t have dues!');
+      return;
+    }
+
+    // Validate invoice items
+    if (invoiceController.invoiceItems.isEmpty) {
+      Get.snackbar('No Products Added!', 'Add Products');
+      return;
+    }
+
+    // Validate received amount
+    final totalReceived = invoiceController.ReceivedUSD.value +
+        (invoiceController.ReceivedLb.value / rateController.rateValue.value);
+
+    if (totalReceived > invoiceController.totalUsd.value) {
+      Get.snackbar('Error', 'Received is bigger than Total');
+      return;
+    }
+
+    // Validate delivery code if applicable
+    if (widget.isDel == '1' && Delivery_Code.text.isEmpty) {
+      showToast('Please add Delivery Code');
+      return;
+    }
+
+    // Show loading dialog
+    showLoadingDialog(context);
+
+    bool hasCompleted = false;
+
+    // Periodic internet check every second for up to 5 seconds
+    Timer.periodic(Duration(seconds: 1), (timer) async {
+      if (hasCompleted) {
+        timer.cancel();
+        return;
+      }
+
+      final isConnected = await checkInternetConnection();
+      if (!isConnected) {
+        timer.cancel();
+        dismissDialog(context);
+        showNoInternetDialog(context);
+      }
+    });
+
+    try {
+      // Upload invoice to database
+      await invoiceController.uploadInvoiceToDatabase(
+        widget.Cus_id.toString(),
+        widget.Cus_Name,
+        widget.Cus_Number,
+        widget.Driver_id,
+        widget.Driver_Name,
+        widget.Driver_Number,
+        widget.isDel,
+        Delivery_Code.text,
+      );
+
+      hasCompleted = true;
+
+      // Show result sssstoast
+      showToast(invoiceController.result);
+
+      // Additional actions
+      if (Platform.isAndroid) {
+        await CheckPrinter(
+          widget.Cus_Name,
+          widget.Cus_Number,
+          widget.Cus_Due,
+        );
+      } else {
+        await refreshProducts();
+        invoiceHistoryController.isDataFetched = false;
+        invoiceHistoryController.fetchinvoices();
+        invoiceDetailController.isDataFetched = false;
+        invoiceDetailController.fetchinvoicesdetails();
+        invoiceController.reset();
+      }
+
+      // Update totals
+      invoiceHistoryController.CalTotal_fhome();
+    } catch (e) {
+      // Handle errors gracefully
+      Get.snackbar('Error', 'Something went wrong: $e');
+    } finally {
+      // Always dismiss the loading dialog
+      if (!hasCompleted) {
+        dismissDialog(context);
+        dismissDialog(context);
+      }
+    }
   }
 
   Future<void> showAvailableDevices() async {
@@ -419,29 +573,6 @@ class _NewInvoiceState extends State<NewInvoice> {
                           ),
                           child: IconButton(
                             icon: Icon(
-                              Icons.mobile_friendly_sharp,
-                              size: 17,
-                            ),
-                            onPressed: () {
-                              Get.to(() => PhonesList(
-                                    isTransfer: false,
-                                  ));
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Container(
-                          width: 40,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            // color: Colors.grey.shade500,
-                            border: Border.all(color: Colors.grey.shade500),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: IconButton(
-                            icon: Icon(
                               Icons.done,
                               size: 17,
                             ),
@@ -549,7 +680,7 @@ class _NewInvoiceState extends State<NewInvoice> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('${product.Product_Code}'),
+                                    Text('${product.pdetail_code}'),
                                     Obx(() {
                                       return Row(
                                         children: [
@@ -1301,217 +1432,343 @@ class _NewInvoiceState extends State<NewInvoice> {
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                       ),
-                      onPressed: () {
-                        if (invoiceController.invoiceItems.isNotEmpty) {
-                          if (widget.isDel == '1') {
-                            if (Delivery_Code.text != '') {
-                              if (Platform.isAndroid) {
-                                showDialog(
-                                    // The user CANNOT close this dialog  by pressing outsite it
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (_) {
-                                      return Dialog(
-                                        // The background color
-                                        backgroundColor: Colors.white,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 20),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              // The loading indicator
-                                              CircularProgressIndicator(),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              // Some text
-                                              Text('Loading')
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                invoiceController
-                                    .uploadInvoiceToDatabase(
-                                        widget.Cus_id.toString(),
-                                        widget.Cus_Name,
-                                        widget.Cus_Number,
-                                        widget.Driver_id,
-                                        widget.Driver_Name,
-                                        widget.Driver_Number,
-                                        widget.isDel,
-                                        Delivery_Code.text)
-                                    .then((value) =>
-                                        showToast(invoiceController.result))
-                                    .then((value) => CheckPrinter(
-                                        widget.Cus_Name,
-                                        widget.Cus_Number,
-                                        widget.Cus_Due))
-                                    .then((value) => invoiceHistoryController
-                                        .CalTotal_fhome());
-                              } else {
-                                showDialog(
-                                    // The user CANNOT close this dialog  by pressing outsite it
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (_) {
-                                      return Dialog(
-                                        // The background color
-                                        backgroundColor: Colors.white,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 20),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              // The loading indicator
-                                              CircularProgressIndicator(),
-                                              SizedBox(
-                                                height: 15,
-                                              ),
-                                              // Some text
-                                              Text('Loading')
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                invoiceController
-                                    .uploadInvoiceToDatabase(
-                                        widget.Cus_id.toString(),
-                                        widget.Cus_Name,
-                                        widget.Cus_Number,
-                                        widget.Driver_id,
-                                        widget.Driver_Name,
-                                        widget.Driver_Number,
-                                        widget.isDel,
-                                        Delivery_Code.text)
-                                    .then((value) =>
-                                        showToast(invoiceController.result))
-                                    .then((value) => refreshProducts()
-                                        .then((value) => invoiceHistoryController
-                                            .isDataFetched = false)
-                                        .then((value) => invoiceHistoryController
-                                            .fetchinvoices())
-                                        .then((value) => invoiceDetailController
-                                            .isDataFetched = false)
-                                        .then((value) => invoiceDetailController
-                                            .fetchinvoicesdetails())
-                                        .then((value) => invoiceController.reset())
-                                        .then((value) => invoiceController.reset())
-                                        .then((value) => invoiceController.reset())
-                                        .then((value) => Navigator.pop(context))
-                                        .then((value) => Navigator.pop(context))
-                                        .then((value) => invoiceHistoryController.CalTotal_fhome()));
-                              }
-                            } else {
-                              showToast('Please add Delivery Code');
-                            }
-                          } else {
-                            if (Platform.isAndroid) {
-                              showDialog(
-                                  // The user CANNOT close this dialog  by pressing outsite it
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) {
-                                    return Dialog(
-                                      // The background color
-                                      backgroundColor: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // The loading indicator
-                                            CircularProgressIndicator(),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            // Some text
-                                            Text('Loading')
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                              invoiceController
-                                  .uploadInvoiceToDatabase(
-                                      widget.Cus_id.toString(),
-                                      widget.Cus_Name,
-                                      widget.Cus_Number,
-                                      widget.Driver_id,
-                                      widget.Driver_Name,
-                                      widget.Driver_Number,
-                                      widget.isDel,
-                                      Delivery_Code.text)
-                                  .then((value) =>
-                                      showToast(invoiceController.result))
-                                  .then((value) => CheckPrinter(widget.Cus_Name,
-                                      widget.Cus_Number, widget.Cus_Due))
-                                  .then((value) => invoiceHistoryController
-                                      .CalTotal_fhome());
-                            } else {
-                              showDialog(
-                                  // The user CANNOT close this dialog  by pressing outsite it
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) {
-                                    return Dialog(
-                                      // The background color
-                                      backgroundColor: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // The loading indicator
-                                            CircularProgressIndicator(),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            // Some text
-                                            Text('Loading')
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                              invoiceController
-                                  .uploadInvoiceToDatabase(
-                                      widget.Cus_id.toString(),
-                                      widget.Cus_Name,
-                                      widget.Cus_Number,
-                                      widget.Driver_id,
-                                      widget.Driver_Name,
-                                      widget.Driver_Number,
-                                      widget.isDel,
-                                      Delivery_Code.text)
-                                  .then((value) =>
-                                      showToast(invoiceController.result))
-                                  .then((value) => refreshProducts()
-                                      .then((value) => invoiceHistoryController
-                                          .isDataFetched = false)
-                                      .then((value) => invoiceHistoryController
-                                          .fetchinvoices())
-                                      .then((value) => invoiceDetailController
-                                          .isDataFetched = false)
-                                      .then((value) => invoiceDetailController
-                                          .fetchinvoicesdetails())
-                                      .then((value) => invoiceController.reset())
-                                      .then((value) => invoiceController.reset())
-                                      .then((value) => invoiceController.reset())
-                                      .then((value) => Navigator.pop(context))
-                                      .then((value) => Navigator.pop(context))
-                                      .then((value) => invoiceHistoryController.CalTotal_fhome()));
-                            }
-                          }
-                        } else {
-                          //    showToast('Add Products');
-                          Get.snackbar('No Products Added!', 'Add Products ');
-                        }
+                      onPressed: () async {
+                        processInvoice(context);
+
+                        // void showLoadingDialog(BuildContext context) {
+                        //   showDialog(
+                        //     barrierDismissible: false,
+                        //     context: context,
+                        //     builder: (_) {
+                        //       return Dialog(
+                        //         backgroundColor: Colors.white,
+                        //         child: Padding(
+                        //           padding:
+                        //               const EdgeInsets.symmetric(vertical: 20),
+                        //           child: Column(
+                        //             mainAxisSize: MainAxisSize.min,
+                        //             children: [
+                        //               CircularProgressIndicator(),
+                        //               SizedBox(height: 15),
+                        //               Text('Loading'),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   );
+                        // }
+
+                        // // Helper to dismiss dialog
+                        // void dismissDialog(BuildContext context) {
+                        //   if (Navigator.canPop(context)) Navigator.pop(context);
+                        // }
+
+                        // // Validate guest dues
+                        // if (widget.Cus_Number == '00000000' &&
+                        //     invoiceController.DueUSD.value != 0) {
+                        //   Get.snackbar('Error', 'Guest can\'t have dues!');
+                        //   return;
+                        // }
+
+                        // // Validate invoice items
+                        // if (invoiceController.invoiceItems.isEmpty) {
+                        //   Get.snackbar('No Products Added!', 'Add Products');
+                        //   return;
+                        // }
+
+                        // // Validate received amount
+                        // final totalReceived =
+                        //     invoiceController.ReceivedUSD.value +
+                        //         (invoiceController.ReceivedLb.value /
+                        //             rateController.rateValue.value);
+
+                        // if (totalReceived > invoiceController.totalUsd.value) {
+                        //   Get.snackbar(
+                        //       'Error', 'Received is bigger than Total');
+                        //   return;
+                        // }
+
+                        // // Validate delivery code if applicable
+                        // if (widget.isDel == '1' && Delivery_Code.text.isEmpty) {
+                        //   showToast('Please add Delivery Code');
+                        //   return;
+                        // }
+
+                        // try {
+                        //   // Show loading dialog
+                        //   showLoadingDialog(context);
+
+                        //   // Upload invoice to database
+                        //   await invoiceController.uploadInvoiceToDatabase(
+                        //     widget.Cus_id.toString(),
+                        //     widget.Cus_Name,
+                        //     widget.Cus_Number,
+                        //     widget.Driver_id,
+                        //     widget.Driver_Name,
+                        //     widget.Driver_Number,
+                        //     widget.isDel,
+                        //     Delivery_Code.text,
+                        //   );
+
+                        //   // Show result toast
+                        //   showToast(invoiceController.result);
+
+                        //   // Additional actions
+                        //   if (Platform.isAndroid) {
+                        //     await CheckPrinter(
+                        //       widget.Cus_Name,
+                        //       widget.Cus_Number,
+                        //       widget.Cus_Due,
+                        //     );
+                        //   } else {
+                        //     await refreshProducts();
+                        //     invoiceHistoryController.isDataFetched = false;
+                        //     invoiceHistoryController.fetchinvoices();
+                        //     invoiceDetailController.isDataFetched = false;
+                        //     invoiceDetailController.fetchinvoicesdetails();
+                        //     invoiceController.reset();
+                        //   }
+
+                        //   // Update totals
+                        //   invoiceHistoryController.CalTotal_fhome();
+                        // } catch (e) {
+                        //   // Handle errors gracefully
+                        //   Get.snackbar('Error', 'Something went wrong: $e');
+                        // } finally {
+                        //   // Always dismiss the loading dialog
+                        //   dismissDialog(context);
+                        // }
+                        // if (widget.Cus_Number == '00000000' &&
+                        //     invoiceController.DueUSD.value != 0) {
+                        //   Get.snackbar('Error', 'Guest can\'t have dues!');
+                        // } else {
+                        //   if (invoiceController.invoiceItems.isNotEmpty) {
+                        //     if ((invoiceController.ReceivedUSD.value +
+                        //             invoiceController.ReceivedLb.value /
+                        //                 rateController.rateValue.value) >
+                        //         (invoiceController.totalUsd.value)) {
+                        //       Get.snackbar(
+                        //           'Error', 'Recieved is bigger than Total');
+                        //     } else {
+                        //       if (widget.isDel == '1') {
+                        //         if (Delivery_Code.text != '') {
+                        //           if (Platform.isAndroid) {
+                        //             showDialog(
+                        //                 // The user CANNOT close this dialog  by pressing outsite it
+                        //                 barrierDismissible: false,
+                        //                 context: context,
+                        //                 builder: (_) {
+                        //                   return Dialog(
+                        //                     // The background color
+                        //                     backgroundColor: Colors.white,
+                        //                     child: Padding(
+                        //                       padding:
+                        //                           const EdgeInsets.symmetric(
+                        //                               vertical: 20),
+                        //                       child: Column(
+                        //                         mainAxisSize: MainAxisSize.min,
+                        //                         children: [
+                        //                           // The loading indicator
+                        //                           CircularProgressIndicator(),
+                        //                           SizedBox(
+                        //                             height: 15,
+                        //                           ),
+                        //                           // Some text
+                        //                           Text('Loading')
+                        //                         ],
+                        //                       ),
+                        //                     ),
+                        //                   );
+                        //                 });
+                        //             invoiceController
+                        //                 .uploadInvoiceToDatabase(
+                        //                     widget.Cus_id.toString(),
+                        //                     widget.Cus_Name,
+                        //                     widget.Cus_Number,
+                        //                     widget.Driver_id,
+                        //                     widget.Driver_Name,
+                        //                     widget.Driver_Number,
+                        //                     widget.isDel,
+                        //                     Delivery_Code.text)
+                        //                 .then((value) =>
+                        //                     showToast(invoiceController.result))
+                        //                 .then((value) => CheckPrinter(
+                        //                     widget.Cus_Name,
+                        //                     widget.Cus_Number,
+                        //                     widget.Cus_Due))
+                        //                 .then((value) =>
+                        //                     invoiceHistoryController
+                        //                         .CalTotal_fhome());
+                        //           } else {
+                        //             showDialog(
+                        //                 // The user CANNOT close this dialog  by pressing outsite it
+                        //                 barrierDismissible: false,
+                        //                 context: context,
+                        //                 builder: (_) {
+                        //                   return Dialog(
+                        //                     // The background color
+                        //                     backgroundColor: Colors.white,
+                        //                     child: Padding(
+                        //                       padding:
+                        //                           const EdgeInsets.symmetric(
+                        //                               vertical: 20),
+                        //                       child: Column(
+                        //                         mainAxisSize: MainAxisSize.min,
+                        //                         children: [
+                        //                           // The loading indicator
+                        //                           CircularProgressIndicator(),
+                        //                           SizedBox(
+                        //                             height: 15,
+                        //                           ),
+                        //                           // Some text
+                        //                           Text('Loading')
+                        //                         ],
+                        //                       ),
+                        //                     ),
+                        //                   );
+                        //                 });
+                        //             invoiceController
+                        //                 .uploadInvoiceToDatabase(
+                        //                     widget.Cus_id.toString(),
+                        //                     widget.Cus_Name,
+                        //                     widget.Cus_Number,
+                        //                     widget.Driver_id,
+                        //                     widget.Driver_Name,
+                        //                     widget.Driver_Number,
+                        //                     widget.isDel,
+                        //                     Delivery_Code.text)
+                        //                 .then((value) =>
+                        //                     showToast(invoiceController.result))
+                        //                 .then((value) => refreshProducts()
+                        //                     .then((value) => invoiceHistoryController
+                        //                         .isDataFetched = false)
+                        //                     .then((value) =>
+                        //                         invoiceHistoryController
+                        //                             .fetchinvoices())
+                        //                     .then((value) => invoiceDetailController
+                        //                         .isDataFetched = false)
+                        //                     .then((value) =>
+                        //                         invoiceDetailController.fetchinvoicesdetails())
+                        //                     .then((value) => invoiceController.reset())
+                        //                     .then((value) => invoiceController.reset())
+                        //                     .then((value) => invoiceController.reset())
+                        //                     .then((value) => Navigator.pop(context))
+                        //                     .then((value) => Navigator.pop(context))
+                        //                     .then((value) => invoiceHistoryController.CalTotal_fhome()));
+                        //           }
+                        //         } else {
+                        //           showToast('Please add Delivery Code');
+                        //         }
+                        //       } else {
+                        //         if (Platform.isAndroid) {
+                        //           showDialog(
+                        //               // The user CANNOT close this dialog  by pressing outsite it
+                        //               barrierDismissible: false,
+                        //               context: context,
+                        //               builder: (_) {
+                        //                 return Dialog(
+                        //                   // The background color
+                        //                   backgroundColor: Colors.white,
+                        //                   child: Padding(
+                        //                     padding: const EdgeInsets.symmetric(
+                        //                         vertical: 20),
+                        //                     child: Column(
+                        //                       mainAxisSize: MainAxisSize.min,
+                        //                       children: [
+                        //                         // The loading indicator
+                        //                         CircularProgressIndicator(),
+                        //                         SizedBox(
+                        //                           height: 15,
+                        //                         ),
+                        //                         // Some text
+                        //                         Text('Loading')
+                        //                       ],
+                        //                     ),
+                        //                   ),
+                        //                 );
+                        //               });
+                        //           invoiceController
+                        //               .uploadInvoiceToDatabase(
+                        //                   widget.Cus_id.toString(),
+                        //                   widget.Cus_Name,
+                        //                   widget.Cus_Number,
+                        //                   widget.Driver_id,
+                        //                   widget.Driver_Name,
+                        //                   widget.Driver_Number,
+                        //                   widget.isDel,
+                        //                   Delivery_Code.text)
+                        //               .then((value) =>
+                        //                   showToast(invoiceController.result))
+                        //               .then((value) => CheckPrinter(
+                        //                   widget.Cus_Name,
+                        //                   widget.Cus_Number,
+                        //                   widget.Cus_Due))
+                        //               .then((value) => invoiceHistoryController
+                        //                   .CalTotal_fhome());
+                        //         } else {
+                        //           showDialog(
+                        //               // The user CANNOT close this dialog  by pressing outsite it
+                        //               barrierDismissible: false,
+                        //               context: context,
+                        //               builder: (_) {
+                        //                 return Dialog(
+                        //                   // The background color
+                        //                   backgroundColor: Colors.white,
+                        //                   child: Padding(
+                        //                     padding: const EdgeInsets.symmetric(
+                        //                         vertical: 20),
+                        //                     child: Column(
+                        //                       mainAxisSize: MainAxisSize.min,
+                        //                       children: [
+                        //                         // The loading indicator
+                        //                         CircularProgressIndicator(),
+                        //                         SizedBox(
+                        //                           height: 15,
+                        //                         ),
+                        //                         // Some text
+                        //                         Text('Loading')
+                        //                       ],
+                        //                     ),
+                        //                   ),
+                        //                 );
+                        //               });
+                        //           invoiceController
+                        //               .uploadInvoiceToDatabase(
+                        //                   widget.Cus_id.toString(),
+                        //                   widget.Cus_Name,
+                        //                   widget.Cus_Number,
+                        //                   widget.Driver_id,
+                        //                   widget.Driver_Name,
+                        //                   widget.Driver_Number,
+                        //                   widget.isDel,
+                        //                   Delivery_Code.text)
+                        //               .then((value) =>
+                        //                   showToast(invoiceController.result))
+                        //               .then((value) => refreshProducts()
+                        //                   .then((value) => invoiceHistoryController
+                        //                       .isDataFetched = false)
+                        //                   .then((value) =>
+                        //                       invoiceHistoryController
+                        //                           .fetchinvoices())
+                        //                   .then((value) => invoiceDetailController
+                        //                       .isDataFetched = false)
+                        //                   .then((value) =>
+                        //                       invoiceDetailController.fetchinvoicesdetails())
+                        //                   .then((value) => invoiceController.reset())
+                        //                   .then((value) => invoiceController.reset())
+                        //                   .then((value) => invoiceController.reset())
+                        //                   .then((value) => Navigator.pop(context))
+                        //                   .then((value) => Navigator.pop(context))
+                        //                   .then((value) => invoiceHistoryController.CalTotal_fhome()));
+                        //         }
+                        //       }
+                        //     }
+                        //   } else {
+                        //     //    showToast('Add Products');
+                        //     Get.snackbar('No Products Added!', 'Add Products ');
+                        // }
+                        // }
                       },
                       child: Text(
                         'Insert Invoice',

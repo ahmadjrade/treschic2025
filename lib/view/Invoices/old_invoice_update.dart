@@ -2,15 +2,14 @@
 
 import 'dart:async';
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_detail_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/product_detail_controller.dart';
-import 'package:fixnshop_admin/controller/rate_controller.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:fixnshop_admin/view/Phones/phones_list.dart';
-import 'package:fixnshop_admin/view/Product/product_list.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/invoice_controller.dart';
+import 'package:treschic/controller/invoice_detail_controller.dart';
+import 'package:treschic/controller/invoice_history_controller.dart';
+import 'package:treschic/controller/product_detail_controller.dart';
+import 'package:treschic/controller/rate_controller.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
+import 'package:treschic/view/Product/product_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -209,9 +208,9 @@ class OldInvoiceUpdate extends StatelessWidget {
                                     ));
                             },
                             onDoubleTap: () {
-                              Get.to(() => PhonesList(
-                                isTransfer: false,
-                                    ));
+                              // Get.to(() => PhonesList(
+                              //   isTransfer: false,
+                              //       ));
                                
                             },
                             child: Icon(

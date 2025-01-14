@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fixnshop_admin/controller/insert_supplier_controller.dart';
-import 'package:fixnshop_admin/controller/supplier_controller.dart';
-import 'package:fixnshop_admin/model/supplier_model.dart';
+import 'package:treschic/controller/insert_supplier_controller.dart';
+import 'package:treschic/controller/supplier_controller.dart';
+import 'package:treschic/model/supplier_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

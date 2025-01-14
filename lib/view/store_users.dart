@@ -1,15 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, must_be_immutable, unused_import
 
-import 'package:fixnshop_admin/controller/category_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/sub_category_controller.dart';
-import 'package:fixnshop_admin/controller/users_controller.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/model/sub_category_model.dart';
-import 'package:fixnshop_admin/model/user_model.dart';
-import 'package:fixnshop_admin/view/Product/add_product_detail.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:fixnshop_admin/view/add_user.dart';
+import 'package:treschic/controller/category_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/sub_category_controller.dart';
+import 'package:treschic/controller/users_controller.dart';
+import 'package:treschic/model/product_model.dart';
+import 'package:treschic/model/sub_category_model.dart';
+import 'package:treschic/model/user_model.dart';
+import 'package:treschic/view/Product/add_product_detail.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
+import 'package:treschic/view/add_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

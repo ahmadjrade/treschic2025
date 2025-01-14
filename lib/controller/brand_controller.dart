@@ -1,6 +1,6 @@
 // controllers/item_controller.dart
-import 'package:fixnshop_admin/model/brand_model.dart';
-import 'package:fixnshop_admin/model/domain.dart';
+import 'package:treschic/model/brand_model.dart';
+import 'package:treschic/model/domain.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/invoice_history_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/invoice_model.dart';
+import 'package:treschic/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -158,7 +158,7 @@ class InvoiceDue extends StatelessWidget {
                     } else {
                       return ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        // physics: NeverScrollableScrollPhysics(),
                         itemCount: filteredinvoices.length,
                         itemBuilder: (context, index) {
                           final InvoiceModel invoice = filteredinvoices[index];

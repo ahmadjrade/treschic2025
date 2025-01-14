@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fixnshop_admin/controller/brand_controller.dart';
-import 'package:fixnshop_admin/controller/color_controller.dart';
-import 'package:fixnshop_admin/controller/insert_color_controller.dart';
-import 'package:fixnshop_admin/model/brand_model.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
+import 'package:treschic/controller/brand_controller.dart';
+import 'package:treschic/controller/color_controller.dart';
+import 'package:treschic/controller/insert_color_controller.dart';
+import 'package:treschic/model/brand_model.dart';
+import 'package:treschic/model/color_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +19,8 @@ class AddColor extends StatelessWidget {
       Get.put(InsertColorController());
   final ColorController colorController = Get.find<ColorController>();
 
-  TextEditingController Brand_Name = TextEditingController();
+  TextEditingController Color = TextEditingController();
+  TextEditingController Color_name = TextEditingController();
 
   String loadingtext = 'Loading';
   @override
@@ -39,7 +40,7 @@ class AddColor extends StatelessWidget {
           children: [
             Text('Colors'),
             IconButton(
-              color: Colors.white,
+              color: Colors.blue,
               iconSize: 24.0,
               onPressed: () {
                 colorController.isDataFetched = false;
@@ -63,9 +64,40 @@ class AddColor extends StatelessWidget {
             child: TextFormField(
               maxLength: 50,
               keyboardType: TextInputType.name,
-              controller: Brand_Name,
+              controller: Color,
               decoration: InputDecoration(
                 labelText: "Color Name ",
+                labelStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                fillColor: Colors.black,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                    width: 2.0,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            child: TextFormField(
+              maxLength: 50,
+              keyboardType: TextInputType.name,
+              controller: Color_name,
+              decoration: InputDecoration(
+                labelText: "Color Shortcut ",
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -97,48 +129,52 @@ class AddColor extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(double.maxFinite, 50),
                     backgroundColor: Colors.blue.shade900,
-                    side: BorderSide(
-                        width: 2.0, color: Colors.blue.shade900),
+                    side: BorderSide(width: 2.0, color: Colors.blue.shade900),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                   ),
                   onPressed: () {
-                    if (Brand_Name.text != '') {
-                      showDialog(
-                          // The user CANNOT close this dialog  by pressing outsite it
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (_) {
-                            return Dialog(
-                              // The background color
-                              backgroundColor: Colors.white,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // The loading indicator
-                                    CircularProgressIndicator(),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    // Some text
-                                    Text('Loading')
-                                  ],
+                    if (Color.text != '') {
+                      if (Color_name.text != '') {
+                        showDialog(
+                            // The user CANNOT close this dialog  by pressing outsite it
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                // The background color
+                                backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // The loading indicator
+                                      CircularProgressIndicator(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      // Some text
+                                      Text('Loading')
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          });
-                      insertColorController.UploadColor(Brand_Name.text)
-                          .then((value) => Brand_Name.clear())
-                          .then(
-                              (value) => colorController.isDataFetched = false)
-                          .then((value) => colorController.fetchcolors())
-                          .then((value) =>
-                              showToast(insertColorController.result))
-                          .then((value) => Navigator.of(context).pop());
+                              );
+                            });
+                        insertColorController.UploadColor(
+                                Color.text, Color_name.text)
+                            .then((value) => Color.clear())
+                            .then((value) =>
+                                colorController.isDataFetched = false)
+                            .then((value) => colorController.fetchcolors())
+                            .then((value) =>
+                                showToast(insertColorController.result))
+                            .then((value) => Navigator.of(context).pop());
+                      } else {
+                        showToast('Please add Color Shortcut');
+                      }
                     } else {
                       showToast('Please add Color Name');
                     }
@@ -190,7 +226,6 @@ class AddColor extends StatelessWidget {
                   : DropdownButtonFormField<ColorModel>(
                       dropdownColor: Colors.white,
                       decoration: InputDecoration(
-                        
                         labelText: "Colors",
                         labelStyle: TextStyle(
                           color: Colors.black,
@@ -221,7 +256,8 @@ class AddColor extends StatelessWidget {
                       items: colorController.colors
                           .map((color) => DropdownMenuItem<ColorModel>(
                                 value: color,
-                                child: Text(color.Color),
+                                child: Text(
+                                    color.Color + ' - ' + color.Color_name),
                               ))
                           .toList(),
                     ),

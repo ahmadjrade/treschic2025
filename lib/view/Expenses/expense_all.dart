@@ -1,18 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/expenses_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/expenses_model.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/model/invoice_payment_model.dart';
-import 'package:fixnshop_admin/model/purchase_payment_model.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_payment_month.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/expenses_controller.dart';
+import 'package:treschic/controller/invoice_history_controller.dart';
+import 'package:treschic/controller/invoice_payment_controller.dart';
+import 'package:treschic/controller/purchase_payment_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/expenses_model.dart';
+import 'package:treschic/model/invoice_model.dart';
+import 'package:treschic/model/invoice_payment_model.dart';
+import 'package:treschic/model/purchase_payment_model.dart';
+import 'package:treschic/view/Invoices/invoice_history_items.dart';
+import 'package:treschic/view/Invoices/invoice_payment_month.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -73,133 +73,155 @@ class ExpenseAll extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            SizedBox(
+              height: 10,
+            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Row(
-                children: [
-                  Obx(() {
-                    FilterQuery.text = barcodeController.barcode3.value;
-                    return Expanded(
-                      child: TextField(
-                        controller: FilterQuery,
-                        onChanged: (query) {
-                          //print(formattedDate);
-                          expensesController.expenses.refresh();
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Search by ID,Customer Name or Number',
-                          prefixIcon: Icon(Icons.search),
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+              child: Obx(() {
+                FilterQuery.text = barcodeController.barcode3.value;
+                return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                          //   color: Colors.grey.shade500,
+                          border: Border.all(color: Colors.grey.shade500),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ),
-                    );
-                  }),
-                ],
-              ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            //   obscureText: true,
+                            //  readOnly: isLoading,
+                            onChanged: (value) {
+                              expensesController.expenses.refresh();
+                            },
+                            controller: FilterQuery,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  FilterQuery.clear();
+                                  expensesController.expenses.refresh();
+                                },
+                              ),
+                              prefixIcon: Icon(Icons.search),
+                              border: InputBorder.none,
+                              hintText: 'Search By Name or Number',
+                            ),
+                          ),
+                        )));
+              }),
             ),
             SizedBox(
               height: 20,
             ),
             Expanded(
-              child: Obx(
-                () {
-                  final List<ExpensesModel> filteredinvoices =
-                      expensesController.searchExpensesAll(FilterQuery.text);
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Obx(
+                  () {
+                    final List<ExpensesModel> filteredinvoices =
+                        expensesController.searchExpensesAll(FilterQuery.text);
 
-                  if (expensesController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (expensesController.expenses.isEmpty) {
-                    return Center(
-                        child: Text('No Expenses Yet In This Store ! '));
-                  } else if (filteredinvoices.length == 0) {
-                    return Center(
-                        child: Text('No Expenses Yet In This Store ! '));
-                  } else {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      // physics: NeverScrollableScrollPhysics(),
-                      itemCount: filteredinvoices.length,
-                      itemBuilder: (context, index) {
-                        final ExpensesModel expense = filteredinvoices[index];
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '#' +
-                                              expense.Expense_id.toString() +
-                                              ' || ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                        Text(
-                                          expense.Exp_Cat_Name,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      addCommasToNumber(expense.Expense_Value)
-                                              .toString() +
-                                          '\$',
-                                      style: TextStyle(
-                                          color: Colors.red.shade900,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      expense.Expense_Date,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12),
-                                    ),
-                                    Text(
-                                      ' ' + Format(expense.Expense_Time)
-                                      // +
-                                      // ' -- ' +
-                                      // expense.phone_Code,
-                                      ,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12),
-                                    ),
-                                    Text(
-                                      ' || ' +
-                                          expense.Username.toUpperCase() +
-                                          ' Store'
-                                      // +
-                                      // ' -- ' +
-                                      // expense.phone_Code,
-                                      ,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                    if (expensesController.isLoading.value) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (expensesController.expenses.isEmpty) {
+                      return Center(
+                          child: Text('No Expenses Yet In This Store ! '));
+                    } else if (filteredinvoices.length == 0) {
+                      return Center(
+                          child: Text('No Expenses Yet In This Store ! '));
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        // physics: NeverScrollableScrollPhysics(),
+                        itemCount: filteredinvoices.length,
+                        itemBuilder: (context, index) {
+                          final ExpensesModel expense = filteredinvoices[index];
+                          return Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '#' +
+                                                expense.Expense_id.toString() +
+                                                ' || ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                          Text(
+                                            expense.Exp_Cat_Name +
+                                                ' -- ' +
+                                                expense.Expense_Desc,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        addCommasToNumber(expense.Expense_Value)
+                                                .toString() +
+                                            '\$',
+                                        style: TextStyle(
+                                            color: Colors.red.shade900,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        expense.Expense_Date,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ),
+                                      Text(
+                                        ' ' + Format(expense.Expense_Time)
+                                        // +
+                                        // ' -- ' +
+                                        // expense.phone_Code,
+                                        ,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ),
+                                      Text(
+                                        ' || ' +
+                                            expense.Username.toUpperCase() +
+                                            ' Store'
+                                        // +
+                                        // ' -- ' +
+                                        // expense.phone_Code,
+                                        ,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
             ),
             SizedBox(

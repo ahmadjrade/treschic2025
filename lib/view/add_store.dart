@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/insert_customer_controller.dart';
-import 'package:fixnshop_admin/controller/stores_controller.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/controller/insert_customer_controller.dart';
+import 'package:treschic/controller/stores_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

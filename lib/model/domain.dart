@@ -1,3 +1,3 @@
 class DomainModel {
-  String domain = 'https://ahmadjrade.com/fixnshop/';
+  String domain = 'https://ahmadjrade.com/treschic/';
 }

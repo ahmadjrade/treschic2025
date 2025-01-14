@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/insert_customer_controller.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/controller/insert_customer_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,8 +39,6 @@ class AddCustomer extends StatelessWidget {
               onPressed: () {
                 customerController.isDataFetched = false;
                 customerController.fetchcustomers();
-
-                
               },
               icon: Icon(CupertinoIcons.refresh),
             ),
@@ -122,19 +120,18 @@ class AddCustomer extends StatelessWidget {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal :25),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: GetBuilder<InsertCustomerController>(
                 builder: (insertcustomerController) {
-              return  OutlinedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.white,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.blue.shade900),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
+              return OutlinedButton(
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(double.maxFinite, 50),
+                    backgroundColor: Colors.blue.shade100,
+                    side: BorderSide(width: 2.0, color: Colors.blue.shade900),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
+                  ),
                   onPressed: () {
                     if (Cus_Number != '') {
                       if (Cus_Name != '') {
@@ -151,8 +148,8 @@ class AddCustomer extends StatelessWidget {
                                   // The background color
                                   backgroundColor: Colors.white,
                                   child: Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 20),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -168,13 +165,17 @@ class AddCustomer extends StatelessWidget {
                                   ),
                                 );
                               });
-                          insertcustomerController.UploadCus(Cus_Name, Cus_Number)
+                          insertcustomerController.UploadCus(
+                                  Cus_Name, Cus_Number)
                               .then((value) => Navigator.of(context).pop())
-                              .then((value) => customerController.isDataFetched = false)
-                              .then((value) => customerController.fetchcustomers())
-
                               .then((value) =>
-                                  showToast(insertcustomerController.result));
+                                  customerController.isDataFetched = false)
+                              .then((value) =>
+                                  customerController.fetchcustomers())
+                              .then((value) =>
+                                  showToast(insertcustomerController.result)
+                                      .then((value) =>
+                                          Navigator.of(context).pop()));
                         }
                       } else {
                         showToast('Please add Customer Name');
@@ -183,7 +184,10 @@ class AddCustomer extends StatelessWidget {
                   },
                   child: Text(
                     'Insert Customer',
-                    style: TextStyle(color: Colors.blue.shade900,fontSize: 15 ,fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.blue.shade900,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
                   ));
             }),
           ),

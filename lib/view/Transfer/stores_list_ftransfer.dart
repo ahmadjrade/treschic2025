@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:fixnshop_admin/controller/category_controller.dart';
-import 'package:fixnshop_admin/controller/stores_controller.dart';
-import 'package:fixnshop_admin/controller/sub_category_controller.dart';
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/stores_model.dart';
-import 'package:fixnshop_admin/view/Transfer/new_transfer.dart';
-import 'package:fixnshop_admin/view/add_store.dart';
-import 'package:fixnshop_admin/view/store_users.dart';
-import 'package:fixnshop_admin/view/sub_category_list.dart';
+import 'package:treschic/controller/category_controller.dart';
+import 'package:treschic/controller/stores_controller.dart';
+import 'package:treschic/controller/sub_category_controller.dart';
+import 'package:treschic/model/category_model.dart';
+import 'package:treschic/model/stores_model.dart';
+import 'package:treschic/view/Transfer/new_transfer.dart';
+import 'package:treschic/view/add_store.dart';
+import 'package:treschic/view/store_users.dart';
+import 'package:treschic/view/sub_category_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

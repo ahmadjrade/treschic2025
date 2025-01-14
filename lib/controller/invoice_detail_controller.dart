@@ -4,11 +4,11 @@
 import 'dart:typed_data';
 
 import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/model/invoice_history_model.dart';
+import 'package:treschic/controller/bluetooth_manager_controller.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/domain.dart';
+import 'package:treschic/model/invoice_history_model.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -114,7 +114,7 @@ class InvoiceDetailController extends GetxController {
     ///final Uint8List imageBytes = data.buffer.asUint8List();
     //final im.Image? image = im.decodeImage(imageBytes);
     // bytes += ticket.image(image!); // Add the image to the bytes list
-    bytes += ticket.text('AJTECH',
+    bytes += ticket.text('Treschic Boutique',
         styles: PosStyles(
           align: PosAlign.center,
           bold: true,

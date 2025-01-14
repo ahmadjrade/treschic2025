@@ -1,9 +1,9 @@
-import 'package:fixnshop_admin/controller/category_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/product_detail_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_detail_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/purchase_history_model.dart';
+import 'package:treschic/controller/category_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/product_detail_controller.dart';
+import 'package:treschic/controller/purchase_detail_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/purchase_history_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

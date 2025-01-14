@@ -1,16 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, must_be_immutable
 
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/model/customer_model.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
-import 'package:fixnshop_admin/view/Customers/customer_edit.dart';
-import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
-import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
-import 'package:fixnshop_admin/view/home_screen.dart';
-import 'package:fixnshop_admin/view/home_screen_manage.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/controller/homescreen_manage_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/model/customer_model.dart';
+import 'package:treschic/model/product_model.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
+import 'package:treschic/view/Customers/customer_edit.dart';
+import 'package:treschic/view/Invoices/new_invoice.dart';
+import 'package:treschic/view/Product/product_list_detail.dart';
+import 'package:treschic/view/home_screen.dart';
+import 'package:treschic/view/home_screen_manage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -144,6 +144,8 @@ class CustomerList extends StatelessWidget {
                         customerController.searchProducts(Customer_Number.text);
                     if (customerController.isLoading.value) {
                       return Center(child: CircularProgressIndicator());
+                    } else if (customerController.customers.isEmpty) {
+                      return Center(child: Text('No Customers yet! Add Some'));
                     } else {
                       return ListView.builder(
                         itemCount: filteredCustomers.length,

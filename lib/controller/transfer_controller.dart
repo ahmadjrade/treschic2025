@@ -4,16 +4,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/phone_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/product_detail_controller.dart';
-import 'package:fixnshop_admin/controller/rate_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/model/phone_model.dart';
-import 'package:fixnshop_admin/model/product_detail_model.dart';
+import 'package:treschic/controller/bluetooth_manager_controller.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/product_detail_controller.dart';
+import 'package:treschic/controller/rate_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/domain.dart';
+import 'package:treschic/model/product_detail_model.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +21,6 @@ import 'package:http/http.dart' as http;
 class TransferController extends GetxController {
   final ProductDetailController productDetailController =
       Get.find<ProductDetailController>();
-  final PhoneController phoneController = Get.find<PhoneController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
   final RateController rateController = Get.find<RateController>();
@@ -78,12 +75,9 @@ class TransferController extends GetxController {
 
   void fetchProduct(String productCodeController) {
     ProductDetailModel? product = _findProductDetail(productCodeController);
-    PhoneModel? phone = _findPhone(productCodeController);
 
     if (product != null) {
       _addProductToTransfer(product);
-    } else if (phone != null) {
-      _addPhoneToTransfer(phone);
     } else {
       Get.snackbar('Product Not Found',
           'The product with the provided code does not exist.',
@@ -95,21 +89,8 @@ class TransferController extends GetxController {
   ProductDetailModel? _findProductDetail(String productCode) {
     Username.value = sharedPreferencesController.username.value;
     for (var prod in productDetailController.product_detail) {
-      if (prod.Product_Code == productCode && prod.Username == Username.value) {
+      if (prod.pdetail_code == productCode && prod.Username == Username.value) {
         return prod;
-      }
-    }
-    return null;
-  }
-
-  PhoneModel? _findPhone(String productCode) {
-    Username.value = sharedPreferencesController.username.value;
-    for (var phone in phoneController.phones) {
-      if (phone.Phone_IMEI == productCode &&
-          phone.Username.toLowerCase() == Username.value.toLowerCase() &&
-          phone.isSold == 0) {
-        // Assuming productCode matches Phone_IMEI for PhoneModel
-        return phone;
       }
     }
     return null;
@@ -133,45 +114,7 @@ class TransferController extends GetxController {
       TransferItems.add(product);
       recalculateAll();
       Get.snackbar(
-          'Product Added To Transfer', 'Product Code ${product.Product_Code}',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 2));
-    }
-  }
-
-  void _addPhoneToTransfer(PhoneModel phone) {
-    if (TransferItems.any((item) => item.Product_Code == phone.Phone_IMEI)) {
-      var existingItem = TransferItems.firstWhere(
-          (item) => item.Product_Code == phone.Phone_IMEI);
-      if (existingItem.quantity.value == existingItem.Product_Quantity) {
-        Get.snackbar('Product Already Added', 'Max Quantity Reached.',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 2));
-      } else {
-        existingItem.quantity.value += 1;
-        recalculateAll();
-      }
-    } else {
-      TransferItems.add(ProductDetailModel(
-          PD_id: 0,
-          Product_id: phone.Phone_id,
-          Product_Name: phone.Phone_Name,
-          Product_Code: phone.Phone_IMEI,
-          Product_Color: phone.Color,
-          Product_Quantity: 1,
-          Product_Max_Quantity: 1,
-          Product_Sold_Quantity: 1,
-          Product_Transfered_Qty: 1,
-          Product_LPrice: 0,
-          Product_MPrice: double.tryParse(phone.Sell_Price.toString())!,
-          Product_Cost: double.tryParse(phone.Phone_Price.toString())!,
-          Product_Store: phone.Username,
-          Username: phone.Username,
-          quantity: 1.obs,
-          isPhone: 1)); // Assuming quantity is represented by Sell_Price
-      recalculateAll();
-      Get.snackbar(
-          'Phone Added To Transfer', 'Product Code ${phone.Phone_IMEI}',
+          'Product Added To Transfer', 'Product Code ${product.pdetail_code}',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2));
     }
@@ -329,7 +272,7 @@ class TransferController extends GetxController {
             width: 1,
             styles: PosStyles(bold: true)),
         PosColumn(
-            text: TransferItems[i].Product_Code,
+            text: TransferItems[i].pdetail_code,
             width: 5,
             styles: PosStyles(bold: true)),
         PosColumn(
@@ -404,7 +347,7 @@ class TransferController extends GetxController {
           'Product_Detail_id': product.PD_id,
           'Product_Name': product.Product_Name,
           'Product_Qty': product.quantity.value,
-          'Product_Code': product.Product_Code,
+          'pdetail_code': product.pdetail_code,
           'Product_Color': product.Product_Color,
           'from_store': Username.value,
           'to_store': Store_id,
@@ -470,7 +413,7 @@ class TransferController extends GetxController {
   //         'Product_Qty': product.quantity.value,
   //         'Product_UP': product.product_MPrice,
   //         'Product_TP': (product.quantity.value * product.product_MPrice),
-  //         'Product_Code': product.Product_Code,
+  //         'pdetail_code': product.pdetail_code,
   //         'Product_Color': product.Product_Color,
   //       });
   //     }

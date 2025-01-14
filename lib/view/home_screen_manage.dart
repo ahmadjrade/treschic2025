@@ -2,17 +2,15 @@
 import 'dart:io';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/homescreen_manage_controller.dart';
-import 'package:fixnshop_admin/view/Customers/customer_list.dart';
-import 'package:fixnshop_admin/view/Repairs/customer_list_frepair.dart';
-import 'package:fixnshop_admin/view/home_screen.dart';
-import 'package:fixnshop_admin/view/Repairs/insert_repair.dart';
-import 'package:fixnshop_admin/view/Product/product_list.dart';
-import 'package:fixnshop_admin/view/management.dart';
-import 'package:fixnshop_admin/view/search_screen.dart';
-import 'package:fixnshop_admin/view/settings_screen.dart';
-import 'package:fixnshop_admin/view/extra_settings.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/controller/homescreen_manage_controller.dart';
+import 'package:treschic/view/Customers/customer_list.dart';
+import 'package:treschic/view/home_screen.dart';
+import 'package:treschic/view/Product/product_list.dart';
+import 'package:treschic/view/management.dart';
+import 'package:treschic/view/search_screen.dart';
+import 'package:treschic/view/settings_screen.dart';
+import 'package:treschic/view/extra_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

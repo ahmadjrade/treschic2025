@@ -2,21 +2,19 @@
 
 import 'dart:math';
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/brand_controller.dart';
-import 'package:fixnshop_admin/controller/category_controller.dart';
-import 'package:fixnshop_admin/controller/color_controller.dart';
-import 'package:fixnshop_admin/controller/phone_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/sub_category_controller.dart';
-import 'package:fixnshop_admin/controller/supplier_controller.dart';
-import 'package:fixnshop_admin/controller/update_phone_attributes.dart';
-import 'package:fixnshop_admin/controller/update_product_attributes.dart';
-import 'package:fixnshop_admin/model/brand_model.dart';
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
-import 'package:fixnshop_admin/model/sub_category_model.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/brand_controller.dart';
+import 'package:treschic/controller/category_controller.dart';
+import 'package:treschic/controller/color_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/sub_category_controller.dart';
+import 'package:treschic/controller/supplier_controller.dart';
+import 'package:treschic/controller/update_product_attributes.dart';
+import 'package:treschic/model/brand_model.dart';
+import 'package:treschic/model/category_model.dart';
+import 'package:treschic/model/color_model.dart';
+import 'package:treschic/model/sub_category_model.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

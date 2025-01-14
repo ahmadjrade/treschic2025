@@ -1,4 +1,4 @@
-name: fixnshop_admin
+name: treschic
 description: A new Flutter project.
 publish_to: 'none'
 version: 0.1.0
@@ -12,6 +12,7 @@ dependencies:
   cached_network_image: ^3.3.1
   camera: ^0.10.5+9
   clipboard: ^0.1.3
+  connectivity_plus: ^6.0.3
   cupertino_icons: ^1.0.6
   curved_navigation_bar: ^1.0.3
   dotted_line: ^3.2.2
@@ -32,6 +33,7 @@ dependencies:
   path_provider: ^2.1.4
   pdf: ^3.8.4
   permission_handler: ^11.3.1
+  rename_app: ^1.6.1
   shared_preferences: ^2.2.2
  
 

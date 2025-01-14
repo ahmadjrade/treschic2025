@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_history_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/purchase_model.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history_items.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/purchase_history_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/purchase_model.dart';
+import 'package:treschic/view/Purchase/purchase_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -115,7 +115,7 @@ class PurchaseDue extends StatelessWidget {
                         //  readOnly: isLoading,
                         onChanged: (value) {
                           //print(formattedDate);
-                          purchaseHistoryController.pruchases.refresh();
+                          purchaseHistoryController.purchases.refresh();
                         },
                         controller: FilterQuery,
                         decoration: InputDecoration(
@@ -124,7 +124,7 @@ class PurchaseDue extends StatelessWidget {
                             onPressed: () {
                               FilterQuery.clear();
                               //print(formattedDate);
-                              purchaseHistoryController.pruchases.refresh();
+                              purchaseHistoryController.purchases.refresh();
                             },
                           ),
                           prefixIcon: Icon(Icons.search),
@@ -147,7 +147,7 @@ class PurchaseDue extends StatelessWidget {
                     );
                     if (purchaseHistoryController.isLoading.value) {
                       return Center(child: CircularProgressIndicator());
-                    } else if (purchaseHistoryController.pruchases.isEmpty) {
+                    } else if (purchaseHistoryController.purchases.isEmpty) {
                       return Center(
                           child: Text('No Due Purchases Yet In This Store ! '));
                     } else if (filteredPurchases.length == 0) {
@@ -156,7 +156,7 @@ class PurchaseDue extends StatelessWidget {
                     } else {
                       return ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        // physics: NeverScrollableScrollPhysics(),
                         itemCount: filteredPurchases.length,
                         itemBuilder: (context, index) {
                           final PurchaseModel Purchase =

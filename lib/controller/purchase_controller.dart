@@ -2,12 +2,13 @@
 
 import 'dart:convert';
 
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/rate_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/model/product_detail_model.dart';
+import 'package:flutter/material.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/rate_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/domain.dart';
+import 'package:treschic/model/product_detail_model.dart';
 import 'package:get/get.dart';
 import '../model/product_model.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +20,7 @@ class PurchaseController extends GetxController {
       Get.find<SharedPreferencesController>();
 
   final RateController rateController = Get.find<RateController>();
-
+  RxBool isShown = false.obs;
   RxString Username = ''.obs;
   RxList<ProductModel> purchaseItems = <ProductModel>[].obs;
   RxDouble totalUsd = 0.0.obs;
@@ -107,6 +108,84 @@ class PurchaseController extends GetxController {
   }
 
   double savedcost = 0;
+
+  void UpdateProductColor(int ind, int color, String color_name) {
+    print('$color' + ' ${color_name}');
+
+    // Copy the phone model at the specified index with the updated capacity
+    var updatedProduct =
+        purchaseItems[ind].copyWith(Color_id: color, ColorName: color_name);
+    print(purchaseItems[ind].ColorName_shrt);
+    // Replace the original phone model at the index with the updated phone
+    purchaseItems[ind] = updatedProduct;
+
+    purchaseItems.refresh();
+
+    calculateTotal();
+    calculateTotalLb();
+    calculateTotalQty();
+    calculateDueUSD();
+    calculateDueLB();
+  }
+
+  void UpdateProductVis(int ind, int vis) {
+    // Copy the phone model at the specified index with the updated capacity
+    var updatedProduct = purchaseItems[ind].copyWith(
+      isVis: vis,
+    );
+
+    // Replace the original phone model at the index with the updated phone
+    purchaseItems[ind] = updatedProduct;
+
+    purchaseItems.refresh();
+
+    calculateTotal();
+    calculateTotalLb();
+    calculateTotalQty();
+    calculateDueUSD();
+    calculateDueLB();
+  }
+
+  void UpdateProductSize(int ind, int size_id, String size) {
+    print('$size_id' + '$size');
+    // Copy the phone model at the specified index with the updated capacity
+    var updatedProduct =
+        purchaseItems[ind].copyWith(Size_id: size_id, Size: size);
+
+    // Replace the original phone model at the index with the updated phone
+    purchaseItems[ind] = updatedProduct;
+
+    purchaseItems.refresh();
+
+    calculateTotal();
+    calculateTotalLb();
+    calculateTotalQty();
+    calculateDueUSD();
+    calculateDueLB();
+  }
+
+  void UpdateProductCode(
+    int ind,
+  ) {
+    // print(colorshortcut);
+    // Copy the phone model at the specified index with the updated capacity
+    var updatedProduct = purchaseItems[ind].copyWith(
+      Product_Code:
+          '${purchaseItems[ind].Product_Code}-${purchaseItems[ind].Size_shrt}-${purchaseItems[ind].ColorName_shrt}',
+    );
+
+    // Replace the original phone model at the index with the updated phone
+    purchaseItems[ind] = updatedProduct;
+
+    purchaseItems.refresh();
+
+    calculateTotal();
+    calculateTotalLb();
+    calculateTotalQty();
+    calculateDueUSD();
+    calculateDueLB();
+  }
+
   void updateItemPrice(ProductModel item, double newPrice) {
     item.product_Cost = newPrice;
     // if(savedcost != 0) {
@@ -143,8 +222,14 @@ class PurchaseController extends GetxController {
     calculateTotalQty();
   }
 
-  void IncreaseQty(ProductModel product) {
-    product.quantity += 1;
+  void IncreaseQty(int index) {
+    if (index >= 0 && index < purchaseItems.length) {
+      // Update the quantity of the specific item
+      purchaseItems[index].quantity.value += 1;
+      // Trigger the update in the list
+      purchaseItems[index] = purchaseItems[index];
+    }
+
     calculateTotalLb();
     calculateDueUSD();
     calculateDueLB();
@@ -152,23 +237,62 @@ class PurchaseController extends GetxController {
     calculateTotalQty();
   }
 
-  void DecreaseQty(ProductModel product) {
-    if (product.quantity.value == 1) {
-      Get.snackbar('Error', 'Product Quantity Can\'t Be Zero.');
-    } else {
-      product.quantity -= 1;
-      calculateTotalLb();
-      calculateDueUSD();
-      calculateDueLB();
-      calculateTotal();
-      calculateTotalQty();
+  void increaseQuantityByIndex(int index) {
+    if (index >= 0 && index < purchaseItems.length) {
+      purchaseItems[index].quantity.value += 1;
     }
   }
 
-  void fetchProduct(String productCodeController) {
+  void decreaseQuantityByIndex(int index) {
+    if (index >= 0 &&
+        index < purchaseItems.length &&
+        purchaseItems[index].quantity.value > 1) {
+      purchaseItems[index].quantity.value -= 1;
+    } else if (purchaseItems[index].quantity.value == 1) {
+      // Optional: Confirm before removing
+      purchaseItems.removeAt(index);
+    }
+  }
+
+  void DecreaseQty(int index) {
+    if (index >= 0 && index < purchaseItems.length) {
+      if (purchaseItems[index].quantity.value > 1) {
+        purchaseItems[index].quantity.value -= 1;
+        purchaseItems[index] = purchaseItems[index];
+        calculateTotalLb();
+        calculateDueUSD();
+        calculateDueLB();
+        calculateTotal();
+        calculateTotalQty();
+      }
+    }
+  }
+
+  ScrollController scrollController = ScrollController();
+
+  int? validatePurchaseItems() {
+    for (int i = 0; i < purchaseItems.length; i++) {
+      var item = purchaseItems[i];
+      if (item.ColorName.isEmpty || item.Size.isEmpty) {
+        return i; // Return the index of the first invalid item
+      }
+    }
+    return null; // Return null if all items are valid
+  }
+
+  void scrollToInvalidItem(int index) {
+    double position =
+        index * 100.0; // Adjust based on item height in your ListView
+    scrollController.animateTo(
+      position,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void fetchProduct(String productCodeController,
+      {String? color, String? size}) {
     ProductModel? product;
-    Username = sharedPreferencesController.username;
-    // Iterate through the products list to find the matching product
     for (var prod in productController.products) {
       if (prod.Product_Code == productCodeController) {
         product = prod;
@@ -177,39 +301,34 @@ class PurchaseController extends GetxController {
     }
 
     if (product != null) {
-      // Check if the product already exists in the invoice
-      if (purchaseItems.contains(product)) {
-        product.quantity.value += 1;
-        calculateTotalLb();
-        calculateDueUSD();
-        calculateDueLB();
-        calculateTotal();
-        calculateTotalQty();
+      // Create a new instance with updated attributes
+      var newProduct = product.copyWith(
+        quantity: 1.obs,
+        ColorName: color ?? product.ColorName,
+        Size: size ?? product.Size,
+      );
 
-        // Display message when the product is already in the invoice
-        // Get.snackbar(
-        //     'Product Already Added', 'The product is already in the invoice.',
-        //     snackPosition: SnackPosition.BOTTOM,
-        //     duration: const Duration(seconds: 2));
-      } else {
-        // Add the product to the invoice
-        purchaseItems.add(product);
-        calculateTotal();
-        calculateTotalLb();
-        calculateDueUSD();
-        calculateDueLB();
-        calculateTotalQty();
-        Get.snackbar(
-            'Product Added To Purchase', 'Product Code $productCodeController',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: const Duration(seconds: 2));
-      }
+      // Add the new instance to the list
+      purchaseItems.add(newProduct);
+      calculateTotal();
+      calculateTotalQty();
+      calculateTotalLb();
+      calculateDueUSD();
+      calculateDueLB();
+
+      Get.snackbar(
+        'Product Added',
+        'Product ${productCodeController} added successfully.',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
+      );
     } else {
-      // Display error message when product is not found
-      Get.snackbar('Product Not Found',
-          'The product with the provided code does not exist.',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 2));
+      Get.snackbar(
+        'Error',
+        'Product not found.',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
+      );
     }
   }
 
@@ -229,7 +348,7 @@ class PurchaseController extends GetxController {
   Future<void> uploadPurchaseToDatabase(
       String Supplier_id, String Supplier_Name, String Supplier_Number) async {
     try {
-       Username = sharedPreferencesController.username;
+      Username = sharedPreferencesController.username;
       formattedDate = dateController.getFormattedDate();
       formattedTime = dateController.getFormattedTime();
       // Prepare invoice data
@@ -241,10 +360,13 @@ class PurchaseController extends GetxController {
           'Product_id': product.Product_id,
           'Product_Name': product.Product_Name,
           'Product_Code': product.Product_Code,
-          'Product_Color': product.Product_Color,
+          'Product_Color': product.ColorName,
+          'Product_Size': product.Size,
           'Product_Qty': product.quantity.value,
           'Product_UC': product.product_Cost,
           'Product_TC': (product.quantity.value * product.product_Cost),
+          'Size_id': product.Size_id,
+          'Color_id': product.Color_id,
         });
       }
 
@@ -288,5 +410,4 @@ class PurchaseController extends GetxController {
       print('Exception: $error');
     }
   }
-  
 }

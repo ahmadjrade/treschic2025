@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:fixnshop_admin/model/domain.dart';
+import 'package:treschic/model/domain.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,12 +12,13 @@ class InsertColorController extends GetxController {
   DomainModel domainModel = DomainModel();
   String result = '';
 
-  Future<void> UploadColor(String Color) async {
+  Future<void> UploadColor(String Color, Color_name) async {
     try {
       String domain = domainModel.domain;
       String uri = '$domain' + 'insert_color.php';
       var res = await http.post(Uri.parse(uri), body: {
         "Color": Color,
+        "Color_name": Color_name,
       });
 
       var response = json.decode(json.encode(res.body));

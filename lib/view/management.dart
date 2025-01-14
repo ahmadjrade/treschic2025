@@ -1,19 +1,17 @@
 import 'dart:ffi';
 
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fixnshop_admin/view/Expenses/expense_manage.dart';
-import 'package:fixnshop_admin/view/Invoices/customer_list_finvhistory.dart';
-import 'package:fixnshop_admin/view/Invoices/driver_list_finvhistory.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_payment_manage.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_payment_manage.dart';
-import 'package:fixnshop_admin/view/Recharge/rech_invoice_payment_manage.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_history_manage.dart';
+import 'package:treschic/view/Expenses/expense_manage.dart';
+import 'package:treschic/view/Invoices/customer_list_finvhistory.dart';
+import 'package:treschic/view/Invoices/dinvoice_history_manage.dart';
+import 'package:treschic/view/Invoices/driver_list_finvhistory.dart';
+import 'package:treschic/view/Invoices/invoice_due.dart';
+import 'package:treschic/view/Invoices/invoice_history_manage.dart';
+import 'package:treschic/view/Invoices/invoice_payment_manage.dart';
+import 'package:treschic/view/Purchase/purchase_due.dart';
+import 'package:treschic/view/Purchase/purchase_history_manage.dart';
+import 'package:treschic/view/Purchase/purchase_payment_manage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -85,12 +83,13 @@ class Management extends StatelessWidget {
                   ),
                 ),
               ),
+
               SizedBox(
-                height: 5,
+                height: 2,
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(() => RechargeHistoryManage());
+                  Get.to(() => DInvoiceHistoryManage());
                 },
                 child: Card(
                   // margin: ,
@@ -104,7 +103,7 @@ class Management extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          'Recharges History',
+                          'Delivery Invoices History',
                           style: TextStyle(fontSize: 15),
                         ),
                         // OutlinedButton(onPressed: () {}, child: Text('Select'))
@@ -116,6 +115,7 @@ class Management extends StatelessWidget {
               SizedBox(
                 height: 5,
               ),
+
               GestureDetector(
                 onTap: () {
                   Get.to(() => PurchaseHistoryManage());
@@ -233,34 +233,7 @@ class Management extends StatelessWidget {
               SizedBox(
                 height: 5,
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => RechInvoicePaymentManage());
-                },
-                child: Card(
-                  // margin: ,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.history),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Recharge Payments',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        // OutlinedButton(onPressed: () {}, child: Text('Select'))
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
+
               GestureDetector(
                 onTap: () {
                   Get.to(() => PurchasePaymentManage());
@@ -347,34 +320,7 @@ class Management extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 5,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => RechargeDue());
-                },
-                child: Card(
-                  // margin: ,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.history),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Recharges Due',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        // OutlinedButton(onPressed: () {}, child: Text('Select'))
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+
               SizedBox(
                 height: 5,
               ),

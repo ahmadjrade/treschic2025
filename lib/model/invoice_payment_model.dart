@@ -10,13 +10,12 @@ class InvoicePaymentModel {
   final double Old_Due;
   final double New_Due;
   final int Cus_id;
-    final String Invoice_Date;
+  final String Invoice_Date;
   final String Cus_Name;
   final String Cus_Number;
-    final String Username;
-    final int Payment_Month;
-
-
+  final String Username;
+  final int Payment_Month;
+  final String Invoice_Type;
 
   InvoicePaymentModel({
     required this.Invoice_Payment_id,
@@ -26,16 +25,15 @@ class InvoicePaymentModel {
     required this.Payment_Date,
     required this.Payment_Time,
     required this.Old_Due,
-        required this.New_Due,
-        required this.Cus_id,
-
-    required this.Invoice_Date,  
-      required this.Cus_Name,
+    required this.New_Due,
+    required this.Cus_id,
+    required this.Invoice_Date,
+    required this.Cus_Name,
     required this.Cus_Number,
     required this.Username,
     required this.Payment_Month,
-
-  }) ;
+    required this.Invoice_Type,
+  });
   factory InvoicePaymentModel.fromJson(Map<String, dynamic> json) {
     return InvoicePaymentModel(
       Invoice_Payment_id: json['Invoice_Payment_id'],
@@ -48,11 +46,11 @@ class InvoicePaymentModel {
       New_Due: json['New_Due'].toDouble(),
       Cus_id: json['Cus_id'],
       Invoice_Date: json['Invoice_Date'],
-       Cus_Name: json['Cus_Name'],
+      Cus_Name: json['Cus_Name'],
       Cus_Number: json['Cus_Number'],
-            Username: json['Username'],
-            Payment_Month: json['Payment_Month'],
-
+      Username: json['Username'],
+      Payment_Month: json['Payment_Month'],
+      Invoice_Type: json['Invoice_Type'],
     );
   }
 }

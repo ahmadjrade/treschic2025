@@ -1,8 +1,8 @@
 // controllers/item_controller.dart
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/domain.dart';
+import 'package:treschic/model/category_model.dart';
+import 'package:treschic/model/domain.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

@@ -1,15 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, must_be_immutable
 
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/supplier_controller.dart';
-import 'package:fixnshop_admin/model/customer_model.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/model/supplier_model.dart';
-import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
-import 'package:fixnshop_admin/view/Phones/bulk_phone_purchase.dart';
-import 'package:fixnshop_admin/view/Purchase/new_purchase.dart';
-import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/supplier_controller.dart';
+import 'package:treschic/model/customer_model.dart';
+import 'package:treschic/model/product_model.dart';
+import 'package:treschic/model/supplier_model.dart';
+import 'package:treschic/view/Invoices/new_invoice.dart';
+import 'package:treschic/view/Purchase/new_purchase.dart';
+import 'package:treschic/view/Product/product_list_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -37,9 +36,9 @@ class supplierListFPurchases extends StatelessWidget {
           //   },
           //   icon: Icon(CupertinoIcons.add),
           // ),
-           Row(
-             children: [
-               IconButton(
+          Row(
+            children: [
+              IconButton(
                 color: Colors.deepPurple,
                 iconSize: 24.0,
                 onPressed: () {
@@ -48,20 +47,20 @@ class supplierListFPurchases extends StatelessWidget {
                   // categoryController.fetchcategories();
                 },
                 icon: Icon(CupertinoIcons.add),
-                         ),IconButton(
-            color: Colors.deepPurple,
-            iconSize: 24.0,
-            onPressed: () {
-              supplierController.isDataFetched = false;
-              supplierController.fetchsuppliers();
-              // categoryController.isDataFetched =false;
-              // categoryController.fetchcategories();
-            },
-            icon: Icon(CupertinoIcons.refresh),
+              ),
+              IconButton(
+                color: Colors.deepPurple,
+                iconSize: 24.0,
+                onPressed: () {
+                  supplierController.isDataFetched = false;
+                  supplierController.fetchsuppliers();
+                  // categoryController.isDataFetched =false;
+                  // categoryController.fetchcategories();
+                },
+                icon: Icon(CupertinoIcons.refresh),
+              ),
+            ],
           ),
-             ],
-           ),
-          
         ],
       )),
       body: Column(
@@ -96,11 +95,12 @@ class supplierListFPurchases extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final SupplierModel supplier = filteredsuppliers[index];
                       return Container(
-                        //  width: double.infinity,
-                        //   height: 150.0,
-                        color: Colors.grey.shade200,
-                        margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                        //     padding: EdgeInsets.all(35),
+                        decoration: BoxDecoration(
+                          // color: Colors.grey.shade500,
+                          border: Border.all(color: Colors.grey.shade500),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                         alignment: Alignment.center,
                         child: ListTile(
                           title: Row(
@@ -158,11 +158,11 @@ class supplierListFPurchases extends StatelessWidget {
                                 //       // subcategoryController.selectedSubCategory.value =
                                 // //       //     null;
 
-                                Get.to(() => BulkPhonePurchase(
-                                      Supp_id: supplier.Supplier_id.toString(),
-                                      Supp_Name: supplier.Supplier_Name,
-                                      Supp_Number: supplier.Supplier_Number,
-                                    ));
+                                // Get.to(() => BulkPhonePurchase(
+                                //       Supp_id: supplier.Supplier_id.toString(),
+                                //       Supp_Name: supplier.Supplier_Name,
+                                //       Supp_Number: supplier.Supplier_Number,
+                                //     ));
                               },
                               child: Icon(
                                 Icons.arrow_right,

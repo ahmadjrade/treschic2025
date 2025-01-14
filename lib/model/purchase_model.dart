@@ -22,6 +22,7 @@ class PurchaseModel {
 
   final String Username;
   final int Month;
+  final double Pur_Rate;
 
   // RxDouble _product_MPrice; // Use RxDouble for reactive price
   // final int Product_Cat_id;
@@ -30,24 +31,24 @@ class PurchaseModel {
 
   // RxInt quantity;
 
-  PurchaseModel({
-    required this.Purchase_id,
-    required this.Purchase_Store,
-    required this.Purchase_Total_USD,
-    required this.Purchase_Total_LB,
-    required this.Purchase_Rec_USD,
-    required this.Purchase_Rec_LB,
-    required this.Purchase_Due_USD,
-    required this.Purchase_Due_LB,
-    required this.Purchase_Date,
-    required this.Supplier_id,
-    required this.Supplier_Name,
-    required this.Supplier_Number,
-    required this.Purchase_Time,
-    required this.isPaid,
-    required this.Username,
-    required this.Month
-  });
+  PurchaseModel(
+      {required this.Purchase_id,
+      required this.Purchase_Store,
+      required this.Purchase_Total_USD,
+      required this.Purchase_Total_LB,
+      required this.Purchase_Rec_USD,
+      required this.Purchase_Rec_LB,
+      required this.Purchase_Due_USD,
+      required this.Purchase_Due_LB,
+      required this.Purchase_Date,
+      required this.Supplier_id,
+      required this.Supplier_Name,
+      required this.Supplier_Number,
+      required this.Purchase_Time,
+      required this.isPaid,
+      required this.Username,
+      required this.Month,
+      required this.Pur_Rate});
   // :
   //  _product_MPrice = Product_MPrice.obs; // Initialize RxDouble
 
@@ -73,9 +74,9 @@ class PurchaseModel {
       Supplier_Number: json['Supplier_Number'],
       Purchase_Time: json['Purchase_Time'],
       isPaid: json['isPaid'],
-      Username: json['Username'],  
-          Month: json['Month'],
-
+      Username: json['Username'],
+      Month: json['Month'],
+      Pur_Rate: json['Purchase_Rate'].toDouble(),
     );
   }
 }

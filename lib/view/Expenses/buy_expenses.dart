@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable, non_constant_identifier_names
 
-import 'package:fixnshop_admin/controller/expense_category_controller.dart';
-import 'package:fixnshop_admin/controller/expenses_controller.dart';
-import 'package:fixnshop_admin/model/expense_category_model.dart';
+import 'package:treschic/controller/expense_category_controller.dart';
+import 'package:treschic/controller/expenses_controller.dart';
+import 'package:treschic/model/expense_category_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/model/domain.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/model/domain.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 

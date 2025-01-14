@@ -1,16 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, must_be_immutable
 
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/controller/driver_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/model/customer_model.dart';
-import 'package:fixnshop_admin/model/driver_model.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/Drivers/add_driver.dart';
-import 'package:fixnshop_admin/view/Drivers/customer_list_delivery.dart';
-import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
-import 'package:fixnshop_admin/view/Purchase/new_purchase.dart';
-import 'package:fixnshop_admin/view/Product/product_list_detail.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/controller/driver_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/model/customer_model.dart';
+import 'package:treschic/model/driver_model.dart';
+import 'package:treschic/model/product_model.dart';
+import 'package:treschic/view/Drivers/add_driver.dart';
+import 'package:treschic/view/Drivers/customer_list_delivery.dart';
+import 'package:treschic/view/Invoices/new_invoice.dart';
+import 'package:treschic/view/Purchase/new_purchase.dart';
+import 'package:treschic/view/Product/product_list_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -135,6 +135,7 @@ class DriversList extends StatelessWidget {
                             border: Border.all(color: Colors.grey.shade500),
                             borderRadius: BorderRadius.circular(12),
                           ),
+                          margin: EdgeInsets.all(5),
                           child: ListTile(
                             title: Padding(
                               padding: const EdgeInsets.all(0.0),

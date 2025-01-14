@@ -1,11 +1,15 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:fixnshop_admin/controller/color_controller.dart';
-import 'package:fixnshop_admin/controller/insert_product_detail_controller.dart';
-import 'package:fixnshop_admin/controller/product_detail_controller.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
+import 'package:treschic/controller/color_controller.dart';
+import 'package:treschic/controller/insert_product_detail_controller.dart';
+import 'package:treschic/controller/product_detail_controller.dart';
+import 'package:treschic/controller/size_controller.dart';
+import 'package:treschic/model/color_model.dart';
+import 'package:treschic/model/size_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treschic/view/Sizes/add_size.dart';
 
 class AddProductDetail extends StatelessWidget {
   String Product_id, Product_Name, Product_Code, Product_LPrice, Product_MPrice;
@@ -33,6 +37,17 @@ class AddProductDetail extends StatelessWidget {
     productDetailController.fetchproductdetails();
   }
 
+  final ColorController colorController = Get.find<ColorController>();
+  final SizeController sizeController = Get.find<SizeController>();
+
+  ColorModel? SelectedColor;
+  int SelectedColorId = 0;
+  String SelectedColorShortcut = '';
+
+  SizeModel? SelectedSize;
+  int SelectedSizeId = 0;
+  String SelectedSizeShortcut = '';
+
   @override
   Widget build(BuildContext context) {
     Future<void> showToast(result) async {
@@ -49,8 +64,8 @@ class AddProductDetail extends StatelessWidget {
         children: [
           Expanded(
               child: Text(
-            'Add Purchase of $Product_Name',
-            style: TextStyle(fontSize: 17),
+            'Purchase of $Product_Name',
+            style: TextStyle(fontSize: 15),
           ))
         ],
       )),
@@ -286,6 +301,174 @@ class AddProductDetail extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: Obx(
+                          () => sizeController.sizes.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    children: [
+                                      // Text('Fetching Rate! Please Wait'),
+                                      CircularProgressIndicator(),
+                                    ],
+                                  ),
+                                )
+                              : DropdownButtonFormField<SizeModel>(
+                                  decoration: InputDecoration(
+                                    labelText: "Sizes",
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    fillColor: Colors.black,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                  ),
+                                  iconDisabledColor: Colors.deepPurple.shade300,
+                                  iconEnabledColor: Colors.deepPurple.shade300,
+                                  //  value: categoryController.category.first,
+                                  onChanged: (SizeModel? value) {
+                                    SelectedSize = value;
+                                    SelectedSizeId = (SelectedSize?.Size_id)!;
+                                    SelectedSizeId = (SelectedSize?.Size_id)!;
+                                    SelectedSizeShortcut =
+                                        (SelectedSize?.Shortcut)!;
+                                    print(SelectedSizeShortcut);
+                                  },
+                                  items: sizeController.sizes
+                                      .map(
+                                          (size) => DropdownMenuItem<SizeModel>(
+                                                value: size,
+                                                child: Text(size.Size +
+                                                    ' - ${size.Shortcut}'),
+                                              ))
+                                      .toList(),
+                                ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 25, 0),
+                      child: IconButton(
+                        color: Colors.blueAccent,
+                        iconSize: 24.0,
+                        onPressed: () {
+                          Get.to(AddSize());
+                          // colorController.isDataFetched = false;
+                          // colorController.fetchcolors();
+                          // //Quantities.clear();
+                          //Quantities.add(Product_Quantity.text);
+                          //  print(Quantities);
+                        },
+                        icon: Icon(CupertinoIcons.add),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: Obx(
+                          () => colorController.colors.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    children: [
+                                      // Text('Fetching Rate! Please Wait'),
+                                      CircularProgressIndicator(),
+                                    ],
+                                  ),
+                                )
+                              : DropdownButtonFormField<ColorModel>(
+                                  decoration: InputDecoration(
+                                    labelText: "Colors",
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    fillColor: Colors.black,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                  ),
+                                  iconDisabledColor: Colors.deepPurple.shade300,
+                                  iconEnabledColor: Colors.deepPurple.shade300,
+                                  //  value: categoryController.category.first,
+                                  onChanged: (ColorModel? value) {
+                                    SelectedColor = value;
+                                    SelectedColorId =
+                                        (SelectedColor?.Color_id)!;
+                                    SelectedColorShortcut =
+                                        (SelectedColor?.Color_name)!;
+                                    print(SelectedColorShortcut);
+                                  },
+                                  items: colorController.colors
+                                      .map((color) =>
+                                          DropdownMenuItem<ColorModel>(
+                                            value: color,
+                                            child: Text(color.Color +
+                                                ' - ${color.Color_name}'),
+                                          ))
+                                      .toList(),
+                                ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 25, 0),
+                      child: IconButton(
+                        color: Colors.blueAccent,
+                        iconSize: 24.0,
+                        onPressed: () {
+                          Get.toNamed('/NewColor');
+                          // colorController.isDataFetched = false;
+                          // colorController.fetchcolors();
+                          // //Quantities.clear();
+                          //Quantities.add(Product_Quantity.text);
+                          //  print(Quantities);
+                        },
+                        icon: Icon(CupertinoIcons.add),
+                      ),
+                    )
+                  ],
+                ),
+
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
             Column(
@@ -293,9 +476,9 @@ class AddProductDetail extends StatelessWidget {
                 OutlinedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(double.maxFinite, 50),
-                      backgroundColor: Colors.deepPurple.shade300,
-                      side: BorderSide(
-                          width: 2.0, color: Colors.deepPurple.shade300),
+                      backgroundColor: Colors.green.shade100,
+                      side:
+                          BorderSide(width: 2.0, color: Colors.green.shade900),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -305,7 +488,13 @@ class AddProductDetail extends StatelessWidget {
                         showToast('Please Add Quantity');
                       } else if (double.tryParse(Product_Quantity.text)! == 0) {
                         showToast('Please Increase Quantity');
+                      } else if (SelectedSizeShortcut == '') {
+                        showToast('Please Select Size');
+                      } else if (SelectedColorShortcut == '') {
+                        showToast('Please Select Color');
                       } else {
+                        print(
+                            '${Product_Code}-${SelectedSizeShortcut}-${SelectedColorShortcut}');
                         showDialog(
                             // The user CANNOT close this dialog  by pressing outsite it
                             barrierDismissible: false,
@@ -332,11 +521,15 @@ class AddProductDetail extends StatelessWidget {
                                 ),
                               );
                             });
+                        // print(Product_Code);
                         insertProductDetailController.UploadProductDetails(
                                 Product_id,
                                 Product_Quantity.text,
                                 Product_LPrice,
-                                Product_MPrice)
+                                Product_MPrice,
+                                SelectedColorId.toString(),
+                                SelectedSizeId.toString(),
+                                '$Product_Code-${SelectedSizeShortcut}-${SelectedColorShortcut}')
                             .then((value) => Navigator.of(context).pop())
                             .then((value) => refresh())
                             .then((value) =>
@@ -396,7 +589,7 @@ class AddProductDetail extends StatelessWidget {
                     child: Text(
                       'Submit Purchase',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.green.shade900,
                           fontWeight: FontWeight.bold,
                           fontSize: 15),
                     )),

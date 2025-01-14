@@ -1,10 +1,10 @@
 import 'dart:ffi';
 
-import 'package:fixnshop_admin/controller/customer_address_controller.dart';
-import 'package:fixnshop_admin/controller/customer_controller.dart';
-import 'package:fixnshop_admin/model/customer_address_model.dart';
-import 'package:fixnshop_admin/view/Customers/customer_edit.dart';
-import 'package:fixnshop_admin/view/Invoices/new_invoice.dart';
+import 'package:treschic/controller/customer_address_controller.dart';
+import 'package:treschic/controller/customer_controller.dart';
+import 'package:treschic/model/customer_address_model.dart';
+import 'package:treschic/view/Customers/customer_edit.dart';
+import 'package:treschic/view/Invoices/new_invoice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

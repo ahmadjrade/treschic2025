@@ -4,56 +4,26 @@ import 'dart:typed_data';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:fixnshop_admin/controller/bluetooth_manager_controller.dart';
-import 'package:fixnshop_admin/controller/credit_balance_controller.dart';
-import 'package:fixnshop_admin/controller/expenses_controller.dart';
-import 'package:fixnshop_admin/controller/imoney_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
-import 'package:fixnshop_admin/controller/login_controller.dart';
-import 'package:fixnshop_admin/controller/rate_controller.dart';
-import 'package:fixnshop_admin/controller/rech_invoice_payment_controller.dart';
-import 'package:fixnshop_admin/controller/recharge_invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/recharge_balance_model.dart';
-import 'package:fixnshop_admin/view/Customers/customer_list.dart';
-import 'package:fixnshop_admin/view/Drivers/customer_list_delivery.dart';
-import 'package:fixnshop_admin/view/Drivers/drivers_list.dart';
-import 'package:fixnshop_admin/view/Expenses/expense_manage.dart';
-import 'package:fixnshop_admin/view/Invoices/customer_list_finvhistory.dart';
-import 'package:fixnshop_admin/view/Invoices/driver_list_finvhistory.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_due.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_by_customer.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_by_driver.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_manage.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_payment_manage.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_sold_manage.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_today_items.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_due.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history11.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_history_manage.dart';
-import 'package:fixnshop_admin/view/Purchase/purchase_payment_manage.dart';
-import 'package:fixnshop_admin/view/Recharge/customer_list_frecharge.dart';
-import 'package:fixnshop_admin/view/Recharge/rech_invoice_payment_manage.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_balances.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_due.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_history_manage.dart';
-import 'package:fixnshop_admin/view/Recharge/recharge_invoice_history.dart';
-import 'package:fixnshop_admin/view/Repairs/customer_list_frepair.dart';
-import 'package:fixnshop_admin/view/Repairs/repair_manage.dart';
-import 'package:fixnshop_admin/view/Repairs/repair_product_list.dart';
-import 'package:fixnshop_admin/view/Transfer/stores_list_ftransfer.dart';
-import 'package:fixnshop_admin/view/Transfer/transfer_history_manage.dart';
-import 'package:fixnshop_admin/view/Expenses/buy_expenses.dart';
-import 'package:fixnshop_admin/view/Recharge/new_recharge_invoice.dart';
-import 'package:fixnshop_admin/view/Repairs/pending_repair.dart';
-import 'package:fixnshop_admin/view/stores_list.dart';
+import 'package:treschic/controller/bluetooth_manager_controller.dart';
+import 'package:treschic/controller/expenses_controller.dart';
+import 'package:treschic/controller/imoney_controller.dart';
+import 'package:treschic/controller/invoice_history_controller.dart';
+import 'package:treschic/controller/invoice_payment_controller.dart';
+import 'package:treschic/controller/login_controller.dart';
+import 'package:treschic/controller/rate_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/view/Customers/customer_list.dart';
+import 'package:treschic/view/Drivers/drivers_list.dart';
+import 'package:treschic/view/Expenses/expense_manage.dart';
+import 'package:treschic/view/Invoices/invoice_payment_manage.dart';
+
+import 'package:treschic/view/Invoices/invoice_sold_manage.dart';
+
+import 'package:treschic/view/Expenses/buy_expenses.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 // ignore_for_file: prefer_const_constructors
 
@@ -68,14 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final LoginController loginController = Get.find<LoginController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
-  final RechargeInvoiceHistoryController rechargeInvoiceHistoryController =
-      Get.find<RechargeInvoiceHistoryController>();
+
   final InvoiceHistoryController invoiceHistoryController =
       Get.find<InvoiceHistoryController>();
-  final RechargeBalanceController rechargeBalanceController =
-      Get.find<RechargeBalanceController>();
-  final RechInvoicePaymentController rechInvoicePaymentController =
-      Get.find<RechInvoicePaymentController>();
+
   final RateController rateController = Get.find<RateController>();
   final ExpensesController expensesController = Get.find<ExpensesController>();
   final ImoneyController imoneyController = Get.find<ImoneyController>();
@@ -155,14 +121,117 @@ class _HomeScreenState extends State<HomeScreen> {
     ///final Uint8List imageBytes = data.buffer.asUint8List();
     //final im.Image? image = im.decodeImage(imageBytes);
     // bytes += ticket.image(image!); // Add the image to the bytes list
-    bytes += ticket.text('Mile To Smile',
+
+    bytes += ticket.text('Treschic Boutique',
         styles: PosStyles(
           align: PosAlign.center,
+          bold: true,
           height: PosTextSize.size2,
           width: PosTextSize.size2,
         ),
         linesAfter: 1);
 
+    bytes += ticket.text(
+        sharedPreferencesController.storeName.toUpperCase() + ' Store',
+        styles: PosStyles(align: PosAlign.center, bold: true));
+    //bytes += ticket.text(Store_Loc!, styles: PosStyles(align: PosAlign.center));
+
+    bytes += ticket.text('+961/${sharedPreferencesController.storeNumber}',
+        styles: PosStyles(align: PosAlign.center, bold: true));
+    bytes += ticket.text('${sharedPreferencesController.location}',
+        styles: PosStyles(align: PosAlign.center, bold: true));
+    // bytes += ticket.text('Web: www.treschiclb.com',
+    //     styles: PosStyles(align: PosAlign.center), linesAfter: 0);
+    bytes += ticket.feed(1);
+    bytes += ticket.row([
+      PosColumn(
+          text: 'Initial Money usd:',
+          width: 6,
+          styles: PosStyles(
+              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+      PosColumn(
+          text: addCommasToNumber(imoneyController.dollar_money.value) + ' USD',
+          width: 6,
+          styles: PosStyles(
+              align: PosAlign.right,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              bold: true)),
+    ]);
+    bytes += ticket.row([
+      PosColumn(
+          text: 'Initial Money lb:',
+          width: 6,
+          styles: PosStyles(
+              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+      PosColumn(
+          text:
+              addCommasToNumber(imoneyController.lebanese_money.value) + ' LL',
+          width: 6,
+          styles: PosStyles(
+              align: PosAlign.right,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              bold: true)),
+    ]);
+    bytes += ticket.row([
+      PosColumn(
+          text: 'Invoice Sales:',
+          width: 6,
+          styles: PosStyles(
+              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+      PosColumn(
+          text: addCommasToNumber(invoiceHistoryController.total_fhome.value) +
+              ' USD ',
+          width: 6,
+          styles: PosStyles(
+              align: PosAlign.right,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              bold: true)),
+    ]);
+    bytes += ticket.row([
+      PosColumn(
+          text: 'Old Payments:',
+          width: 6,
+          styles: PosStyles(
+              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+      PosColumn(
+          text: addCommasToNumber(invoicePaymentController.total_fhome.value) +
+              ' USD ',
+          width: 6,
+          styles: PosStyles(
+              align: PosAlign.right,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              bold: true)),
+    ]);
+    bytes += ticket.row([
+      PosColumn(
+          text: 'Expenses:',
+          width: 6,
+          styles: PosStyles(
+              height: PosTextSize.size1, width: PosTextSize.size1, bold: true)),
+      PosColumn(
+          text:
+              addCommasToNumber(expensesController.total_fhome.value) + ' USD ',
+          width: 6,
+          styles: PosStyles(
+              align: PosAlign.right,
+              height: PosTextSize.size1,
+              width: PosTextSize.size1,
+              bold: true)),
+    ]);
+
+    bytes += ticket.text(
+        'Total: ${addCommasToNumber(imoneyController.dollar_money.value + (imoneyController.lebanese_money.value / rateController.rateValue.value) + invoiceHistoryController.totalrec_fhome.value + invoicePaymentController.total_fhome.value + -expensesController.total_fhome.value)}',
+        styles: PosStyles(
+          align: PosAlign.center,
+          bold: true,
+          height: PosTextSize.size2,
+          width: PosTextSize.size2,
+        ),
+        linesAfter: 1);
     bytes += ticket.feed(3);
 
     return bytes;
@@ -187,32 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _selectedDestination = index;
       });
-    } else if (index == 3) {
-      Get.to(() => CustomerListFrecharge());
-      setState(() {
-        _selectedDestination = index;
-      });
-    } else if (index == 4) {
-      Get.to(() => CustomerListFrepair());
-      setState(() {
-        _selectedDestination = index;
-      });
-    } else if (index == 5) {
-      Get.to(() => RepairManage());
-      setState(() {
-        _selectedDestination = index;
-      });
-    } else if (index == 6) {
-      Get.to(() => RechargeBalance());
-      setState(() {
-        _selectedDestination = index;
-      });
     } else {}
-  }
-
-  Future<void> refresh_recharge() async {
-    rechargeInvoiceHistoryController.isDataFetched = false;
-    rechargeInvoiceHistoryController.fetchrechargeInvoice();
   }
 
   Future<void> refresh_invoice() async {
@@ -228,6 +272,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> refresh_imoney() async {
     imoneyController.isDataFetched = false;
     imoneyController.fetch_imoney();
+  }
+
+  Future<void> refresh_payments() async {
+    invoicePaymentController.isDataFetched = false;
+    invoicePaymentController.fetch_payments();
   }
 
   @override
@@ -265,7 +314,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Username = sharedPreferencesController.username;
     invoicePaymentController.CalTotal_fhome();
-    rechInvoicePaymentController.CalTotal_fhome();
+    invoiceHistoryController.CalTotal_fhome();
+    invoiceHistoryController.CalTotal_fhome_del();
+    invoicePaymentController.CalTotal_fhome();
+    invoicePaymentController.CalTotal_fhome_del();
+
     expensesController.CalTotal_fhome();
     // rechInvoicePaymentController.ca
     // invoiceHistoryController.reset();
@@ -281,7 +334,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Home Screen '),
+            Text(
+              'Treschic | Homescreen ',
+              style: TextStyle(fontSize: 17),
+            ),
             Container(
               // height: 40,
               // width: 150,
@@ -294,9 +350,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      rechargeBalanceController.isDataFetched = false;
-                      rechargeBalanceController.fetch_cart_types();
-                      refresh_recharge();
                       refresh_invoice();
                       refresh_expense();
                       refresh_imoney();
@@ -488,7 +541,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'AJTECH -- ${sharedPreferencesController.userRole.value}',
+                    'Treschic Boutique -- ${sharedPreferencesController.userRole.value}',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Text(
@@ -528,49 +581,7 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedColor: Colors.green.shade900,
               onTap: () => selectDestination(2),
             ),
-            ListTile(
-              leading: Icon(Icons.credit_card),
-              title: Text('Create Recharge Invoice'),
-              selected: _selectedDestination == 3,
-              selectedTileColor: Colors.green.shade100,
-              selectedColor: Colors.green.shade900,
-              onTap: () => selectDestination(3),
-            ),
-            ListTile(
-              leading: Icon(Icons.mobile_off),
-              title: Text('Create Repair Invoice'),
-              selected: _selectedDestination == 4,
-              selectedTileColor: Colors.green.shade100,
-              selectedColor: Colors.green.shade900,
-              onTap: () => selectDestination(4),
-            ),
-            Divider(
-              height: 1,
-              thickness: 1,
-            ),
 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Manage',
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.mobile_friendly_sharp),
-              title: Text('Repairs'),
-              selected: _selectedDestination == 5,
-              selectedTileColor: Colors.green.shade100,
-              selectedColor: Colors.green.shade900,
-              onTap: () => selectDestination(5),
-            ),
-            ListTile(
-              leading: Icon(Icons.account_balance_wallet),
-              title: Text('Recharge Balance'),
-              selected: _selectedDestination == 6,
-              selectedTileColor: Colors.green.shade100,
-              selectedColor: Colors.green.shade900,
-              onTap: () => selectDestination(6),
-            ),
             Divider(
               height: 1,
               thickness: 1,
@@ -732,315 +743,316 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0),
-                                child: Card(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade100,
-                                      border: Border.all(
-                                          color: Colors.blue.shade900),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        'Initial Money Statement '),
-                                                    content: Column(
-                                                      children: [
-                                                        TextFormField(
-                                                          onChanged: (value) {
-                                                            DollarAmmount.text =
-                                                                value;
-                                                          },
-                                                          //maxLength: 15,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                          //controller: Product_Name,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                "Dollar Ammount ",
-                                                            labelStyle:
-                                                                TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            fillColor:
-                                                                Colors.black,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: Colors
-                                                                    .black,
-                                                                width: 2.0,
-                                                              ),
-                                                            ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.shade100,
+                                        border: Border.all(
+                                            color: Colors.blue.shade900),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Initial Money Statement '),
+                                                content: Column(
+                                                  children: [
+                                                    TextFormField(
+                                                      onChanged: (value) {
+                                                        DollarAmmount.text =
+                                                            value;
+                                                      },
+                                                      //maxLength: 15,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      //controller: Product_Name,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        labelText:
+                                                            "Dollar Ammount ",
+                                                        labelStyle: TextStyle(
+                                                          color: Colors.black,
+                                                        ),
+                                                        fillColor: Colors.black,
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          height: 20,
-                                                        ),
-                                                        TextFormField(
-                                                          onChanged: (value) {
-                                                            LebaneseAmmount
-                                                                .text = value;
-                                                          },
-                                                          //maxLength: 15,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                          //controller: Product_Name,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                "Lebanese Ammount ",
-                                                            labelStyle:
-                                                                TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            fillColor:
-                                                                Colors.black,
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: Colors
-                                                                    .black,
-                                                                width: 2.0,
-                                                              ),
-                                                            ),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                            width: 2.0,
                                                           ),
                                                         ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          DollarAmmount.clear();
-                                                        },
-                                                        child: Text('Cancel'),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    TextFormField(
+                                                      onChanged: (value) {
+                                                        LebaneseAmmount.text =
+                                                            value;
+                                                      },
+                                                      //maxLength: 15,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      //controller: Product_Name,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        labelText:
+                                                            "Lebanese Ammount ",
+                                                        labelStyle: TextStyle(
+                                                          color: Colors.black,
+                                                        ),
+                                                        fillColor: Colors.black,
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                            width: 2.0,
+                                                          ),
+                                                        ),
                                                       ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          if (DollarAmmount
-                                                                  .text !=
-                                                              '') {
-                                                            showDialog(
-                                                                // The user CANNOT close this dialog  by pressing outsite it
-                                                                barrierDismissible:
-                                                                    false,
-                                                                context:
-                                                                    context,
-                                                                builder: (_) {
-                                                                  return Dialog(
-                                                                    // The background color
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              20),
-                                                                      child:
-                                                                          Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          // The loading indicator
-                                                                          CircularProgressIndicator(),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                15,
-                                                                          ),
-                                                                          // Some text
-                                                                          Text(
-                                                                              'Loading')
-                                                                        ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      DollarAmmount.clear();
+                                                    },
+                                                    child: Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      if (DollarAmmount.text !=
+                                                          '') {
+                                                        showDialog(
+                                                            // The user CANNOT close this dialog  by pressing outsite it
+                                                            barrierDismissible:
+                                                                false,
+                                                            context: context,
+                                                            builder: (_) {
+                                                              return Dialog(
+                                                                // The background color
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          20),
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    children: [
+                                                                      // The loading indicator
+                                                                      CircularProgressIndicator(),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
                                                                       ),
-                                                                    ),
-                                                                  );
-                                                                });
-                                                            imoneyController.InsertInitialMoney(
-                                                                    DollarAmmount
-                                                                        .text,
-                                                                    LebaneseAmmount
-                                                                        .text)
-                                                                .then((value) =>
-                                                                    showToast(imoneyController
-                                                                        .result2))
-                                                                .then((value) =>
-                                                                    imoneyController
-                                                                            .isDataFetched =
-                                                                        false)
-                                                                .then((value) =>
-                                                                    imoneyController
-                                                                        .fetch_imoney())
-                                                                .then((value) =>
-                                                                    Navigator.of(context)
-                                                                        .pop())
-                                                                .then((value) =>
-                                                                    Navigator.of(context).pop());
+                                                                      // Some text
+                                                                      Text(
+                                                                          'Loading')
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            });
+                                                        imoneyController.InsertInitialMoney(
+                                                                DollarAmmount
+                                                                    .text,
+                                                                LebaneseAmmount
+                                                                    .text)
+                                                            .then((value) => showToast(
+                                                                imoneyController
+                                                                    .result2))
+                                                            .then((value) =>
+                                                                imoneyController
+                                                                        .isDataFetched =
+                                                                    false)
+                                                            .then((value) =>
+                                                                imoneyController
+                                                                    .fetch_imoney())
+                                                            .then((value) =>
+                                                                Navigator.of(context)
+                                                                    .pop())
+                                                            .then((value) =>
+                                                                Navigator.of(context).pop());
 
-                                                            DollarAmmount
-                                                                .clear();
-                                                          } else {
-                                                            Get.snackbar(
-                                                                'Error',
-                                                                'Add Ammount');
-                                                          }
+                                                        DollarAmmount.clear();
+                                                      } else {
+                                                        Get.snackbar('Error',
+                                                            'Add Ammount');
+                                                      }
 
-                                                          // Do something with the text, e.g., save it
-                                                          //  String enteredText = _textEditingController.text;
-                                                          //  print('Entered text: $enteredText');
-                                                          // Close the dialog
-                                                        },
-                                                        child: Text('OK'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
+                                                      // Do something with the text, e.g., save it
+                                                      //  String enteredText = _textEditingController.text;
+                                                      //  print('Entered text: $enteredText');
+                                                      // Close the dialog
+                                                    },
+                                                    child: Text('OK'),
+                                                  ),
+                                                ],
                                               );
                                             },
-                                            icon: Icon(Icons.add_outlined,
-                                                color: Colors.black),
+                                          );
+                                        },
+                                        icon: Icon(Icons.add_outlined,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Card(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue.shade100,
+                                            border: Border.all(
+                                                color: Colors.blue.shade900),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(15.0),
+                                            child: Row(
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      'Dollar Total:',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black),
-                                                    ),
-                                                    Text(
-                                                      addCommasToNumber(
-                                                                  imoneyController
-                                                                      .dollar_money
-                                                                      .value)
-                                                              .toString() +
-                                                          '\$',
-                                                      style: TextStyle(
-                                                          color: Colors
-                                                              .blue.shade900,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            'Dollar Total:',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                          Text(
+                                                            addCommasToNumber(imoneyController
+                                                                        .dollar_money
+                                                                        .value)
+                                                                    .toString() +
+                                                                '\$',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blue
+                                                                    .shade900,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            'Lebanese Total:',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                          Text(
+                                                            addCommasToNumber(imoneyController
+                                                                        .lebanese_money
+                                                                        .value)
+                                                                    .toString() +
+                                                                ' LL',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blue
+                                                                    .shade900,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      // Row(
+                                                      //   mainAxisAlignment:
+                                                      //       MainAxisAlignment.spaceBetween,
+                                                      //   children: [
+                                                      //     Text(
+                                                      //       'Recharge Payments Total:',
+                                                      //       style:
+                                                      //           TextStyle(fontWeight: FontWeight.bold),
+                                                      //     ),
+                                                      //     Text(
+                                                      //       addCommasToNumber(
+                                                      //                   rechInvoicePaymentController
+                                                      //                       .total_fhome.value / rateController.rateValue.value)
+                                                      //               .toString() +
+                                                      //           '\$',
+                                                      //       style: TextStyle(
+                                                      //           color: Colors.green.shade900,
+                                                      //           fontWeight: FontWeight.bold),
+                                                      //     )
+                                                      //   ],
+                                                      // ),
+                                                    ],
+                                                  ),
                                                 ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      'Lebanese Total:',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black),
-                                                    ),
-                                                    Text(
-                                                      addCommasToNumber(
-                                                                  imoneyController
-                                                                      .lebanese_money
-                                                                      .value)
-                                                              .toString() +
-                                                          ' LL',
-                                                      style: TextStyle(
-                                                          color: Colors
-                                                              .blue.shade900,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
-                                                ),
-                                                // Row(
-                                                //   mainAxisAlignment:
-                                                //       MainAxisAlignment.spaceBetween,
-                                                //   children: [
-                                                //     Text(
-                                                //       'Recharge Payments Total:',
-                                                //       style:
-                                                //           TextStyle(fontWeight: FontWeight.bold),
-                                                //     ),
-                                                //     Text(
-                                                //       addCommasToNumber(
-                                                //                   rechInvoicePaymentController
-                                                //                       .total_fhome.value / rateController.rateValue.value)
-                                                //               .toString() +
-                                                //           '\$',
-                                                //       style: TextStyle(
-                                                //           color: Colors.green.shade900,
-                                                //           fontWeight: FontWeight.bold),
-                                                //     )
-                                                //   ],
-                                                // ),
                                               ],
                                             ),
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               );
                             }
@@ -1084,8 +1096,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Obx(() {
-                            if (rechargeBalanceController.isLoading.value ||
-                                invoiceHistoryController.isLoading.value) {
+                            if (invoiceHistoryController.isLoading.value) {
                               return Center(child: CircularProgressIndicator());
                             } else {
                               return Padding(
@@ -1113,7 +1124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  'Invoice Total:',
+                                                  'Store Invoice Total:',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -1139,15 +1150,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  'Recharge Total:',
+                                                  'Delivery Invoice Total:',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
                                                 Text(
                                                   addCommasToNumber(
-                                                              rechargeInvoiceHistoryController
-                                                                  .totalrec_fhome
+                                                              invoiceHistoryController
+                                                                  .total_fhome_del
                                                                   .value)
                                                           .toString() +
                                                       '\$',
@@ -1207,79 +1218,82 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Obx(() {
-                            if (rechargeBalanceController.isLoading.value ||
-                                invoiceHistoryController.isLoading.value) {
+                            if (invoiceHistoryController.isLoading.value) {
                               return Center(child: CircularProgressIndicator());
                             } else {
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0),
-                                child: Card(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.shade100,
-                                      border: Border.all(
-                                          color: Colors.green.shade900),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Invoice Payment Total:',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                addCommasToNumber(
-                                                            invoicePaymentController
-                                                                .total_fhome
-                                                                .value)
-                                                        .toString() +
-                                                    '\$',
-                                                style: TextStyle(
-                                                    color:
-                                                        Colors.green.shade900,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                'Recharge Payments Total:',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                addCommasToNumber(
-                                                            rechInvoicePaymentController
-                                                                    .total_fhome
-                                                                    .value /
-                                                                rateController
-                                                                    .rateValue
-                                                                    .value)
-                                                        .toString() +
-                                                    '\$',
-                                                style: TextStyle(
-                                                    color:
-                                                        Colors.green.shade900,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                        ],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => InvoicePaymentManage());
+                                  },
+                                  child: Card(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.shade100,
+                                        border: Border.all(
+                                            color: Colors.green.shade900),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Store Invoice Payment Total:',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  addCommasToNumber(
+                                                              invoicePaymentController
+                                                                  .total_fhome
+                                                                  .value)
+                                                          .toString() +
+                                                      '\$',
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.green.shade900,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Delivery Invoice Payment Total:',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  addCommasToNumber(
+                                                              invoicePaymentController
+                                                                  .total_fhome_del
+                                                                  .value)
+                                                          .toString() +
+                                                      '\$',
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.green.shade900,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -1326,84 +1340,132 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Obx(() {
-                            if (rechargeBalanceController.isLoading.value ||
-                                invoiceHistoryController.isLoading.value) {
+                            if (invoiceHistoryController.isLoading.value) {
                               return Center(child: CircularProgressIndicator());
                             } else {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => BuyExpenses());
-                                  },
-                                  child: Card(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.red.shade100,
-                                        border: Border.all(
-                                            color: Colors.red.shade900),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Expenses Total:',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black),
-                                                ),
-                                                Text(
-                                                  addCommasToNumber(
-                                                              expensesController
-                                                                  .total_fhome
-                                                                  .value)
-                                                          .toString() +
-                                                      '\$',
-                                                  style: TextStyle(
-                                                      color:
-                                                          Colors.red.shade900,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
-                                            ),
-                                            // Row(
-                                            //   mainAxisAlignment:
-                                            //       MainAxisAlignment.spaceBetween,
-                                            //   children: [
-                                            //     Text(
-                                            //       'Recharge Payments Total:',
-                                            //       style:
-                                            //           TextStyle(fontWeight: FontWeight.bold),
-                                            //     ),
-                                            //     Text(
-                                            //       addCommasToNumber(
-                                            //                   rechInvoicePaymentController
-                                            //                       .total_fhome.value / rateController.rateValue.value)
-                                            //               .toString() +
-                                            //           '\$',
-                                            //       style: TextStyle(
-                                            //           color: Colors.green.shade900,
-                                            //           fontWeight: FontWeight.bold),
-                                            //     )
-                                            //   ],
-                                            // ),
-                                          ],
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.shade100,
+                                          border: Border.all(
+                                              color: Colors.red.shade900),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            Get.to(() => BuyExpenses());
+                                          },
+                                          icon: Icon(Icons.add_outlined,
+                                              color: Colors.black),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              );
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Get.to(() => ExpenseManage());
+                                          },
+                                          child: Card(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.red.shade100,
+                                                border: Border.all(
+                                                    color: Colors.red.shade900),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          'Expenses Total:',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                        Text(
+                                                          addCommasToNumber(
+                                                                      expensesController
+                                                                          .total_fhome
+                                                                          .value)
+                                                                  .toString() +
+                                                              '\$',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .red.shade900,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    // Row(
+                                                    //   mainAxisAlignment:
+                                                    //       MainAxisAlignment.spaceBetween,
+                                                    //   children: [
+                                                    //     Text(
+                                                    //       'Recharge Payments Total:',
+                                                    //       style:
+                                                    //           TextStyle(fontWeight: FontWeight.bold),
+                                                    //     ),
+                                                    //     Text(
+                                                    //       addCommasToNumber(
+                                                    //                   rechInvoicePaymentController
+                                                    //                       .total_fhome.value / rateController.rateValue.value)
+                                                    //               .toString() +
+                                                    //           '\$',
+                                                    //       style: TextStyle(
+                                                    //           color: Colors.green.shade900,
+                                                    //           fontWeight: FontWeight.bold),
+                                                    //     )
+                                                    //   ],
+                                                    // ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                  // Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     Text(
+                                  //       'Recharge Payments Total:',
+                                  //       style:
+                                  //           TextStyle(fontWeight: FontWeight.bold),
+                                  //     ),
+                                  //     Text(
+                                  //       addCommasToNumber(
+                                  //                   rechInvoicePaymentController
+                                  //                       .total_fhome.value / rateController.rateValue.value)
+                                  //               .toString() +
+                                  //           '\$',
+                                  //       style: TextStyle(
+                                  //           color: Colors.green.shade900,
+                                  //           fontWeight: FontWeight.bold),
+                                  //     )
+                                  //   ],
+                                  // ),
+
+                                  );
                             }
                           })),
                     ],
@@ -1413,8 +1475,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Column(
                 children: [
                   Obx(() {
-                    if (rechargeBalanceController.isLoading.value ||
-                        invoiceHistoryController.isLoading.value) {
+                    if (invoiceHistoryController.isLoading.value) {
                       return Center(child: CircularProgressIndicator());
                     } else {
                       return Padding(
@@ -1442,20 +1503,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Text(
                                         addCommasToNumber(imoneyController
                                                         .dollar_money.value +
+                                                    invoiceHistoryController
+                                                        .total_fhome_del.value +
+                                                    invoicePaymentController
+                                                        .total_fhome_del.value +
                                                     (imoneyController.lebanese_money.value /
                                                         rateController
                                                             .rateValue.value) +
-                                                    rechargeInvoiceHistoryController
-                                                        .totalrec_fhome.value +
                                                     invoiceHistoryController
                                                         .totalrec_fhome.value +
                                                     invoicePaymentController
                                                         .total_fhome.value +
-                                                    (rechInvoicePaymentController
-                                                            .total_fhome.value /
-                                                        rateController
-                                                            .rateValue.value) -
-                                                    expensesController
+                                                    -expensesController
                                                         .total_fhome.value)
                                                 .toString() +
                                             '\$',

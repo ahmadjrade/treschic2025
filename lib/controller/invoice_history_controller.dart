@@ -3,16 +3,15 @@
 
 import 'dart:ffi';
 
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/rate_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/category_model.dart';
-import 'package:fixnshop_admin/model/color_model.dart';
-import 'package:fixnshop_admin/model/domain.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/model/phone_model.dart';
-import 'package:fixnshop_admin/model/product_model.dart';
-import 'package:fixnshop_admin/view/Accessories/buy_accessories.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/rate_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/category_model.dart';
+import 'package:treschic/model/color_model.dart';
+import 'package:treschic/model/domain.dart';
+import 'package:treschic/model/invoice_model.dart';
+import 'package:treschic/model/product_model.dart';
+import 'package:treschic/view/Product/buy_accessories.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -113,13 +112,42 @@ class InvoiceHistoryController extends GetxController {
         .where((invoice) =>
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate))
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Store')
+        .toList();
+  }
+
+  List<InvoiceModel> SearchDInvoices(String query) {
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+
+    return invoices
+        .where((invoice) =>
+            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Delivery')
         .toList();
   }
 
@@ -141,13 +169,47 @@ class InvoiceHistoryController extends GetxController {
         .where((invoice) =>
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate) ||
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Date.contains(formattedDate))
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Store')
+        .toList();
+  }
+
+  List<InvoiceModel> SearchDInvoicesYesterday(String query) {
+    // Get the date for yesterday
+    DateTime now = DateTime.now();
+    DateTime yesterday = now.subtract(Duration(days: 1));
+
+    // Format the date for yesterday
+    String day = yesterday.day.toString().padLeft(2, '0');
+    String month = yesterday.month.toString().padLeft(2, '0');
+    String year = yesterday.year.toString();
+
+    formattedDate = '$year-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+
+    return invoices
+        .where((invoice) =>
+            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Date.contains(formattedDate) &&
+                invoice.Invoice_Type == 'Delivery')
         .toList();
   }
 
@@ -163,11 +225,37 @@ class InvoiceHistoryController extends GetxController {
     return invoices
         .where((invoice) =>
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
-                invoice.Username == Username.value ||
+                invoice.Username == Username.value &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value ||
+                invoice.Username == Username.value &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
-                invoice.Username == Username.value)
+                invoice.Username == Username.value &&
+                invoice.Invoice_Type == 'Store')
+        .toList();
+  }
+
+  List<InvoiceModel> SearchDInvoicesAll(String query) {
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+
+    return invoices
+        .where((invoice) =>
+            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Type == 'Delivery')
         .toList();
   }
 
@@ -234,13 +322,43 @@ class InvoiceHistoryController extends GetxController {
         .where((invoice) =>
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Month == (monthNumber) ||
+                invoice.Invoice_Month == (monthNumber) &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Month == (monthNumber) ||
+                invoice.Invoice_Month == (monthNumber) &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Month == (monthNumber))
+                invoice.Invoice_Month == (monthNumber) &&
+                invoice.Invoice_Type == 'Store')
+        .toList();
+  }
+
+  List<InvoiceModel> SearchDInvoicesMonth(String query) {
+    DateTime now = DateTime.now(); // Get today's date
+    int getMonthNumber(DateTime date) {
+      return date.month;
+    }
+
+    int monthNumber = getMonthNumber(now);
+
+    Username = sharedPreferencesController.username;
+
+    return invoices
+        .where((invoice) =>
+            (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Month == (monthNumber) &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Month == (monthNumber) &&
+                invoice.Invoice_Type == 'Delivery' ||
+            invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
+                invoice.Username == Username.value &&
+                invoice.Invoice_Month == (monthNumber) &&
+                invoice.Invoice_Type == 'Delivery')
         .toList();
   }
 
@@ -257,13 +375,16 @@ class InvoiceHistoryController extends GetxController {
         .where((invoice) =>
             (invoice.Invoice_id.toString()).contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Due_USD != 0 ||
+                invoice.Invoice_Due_USD != 0 &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Name!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Due_USD != 0 ||
+                invoice.Invoice_Due_USD != 0 &&
+                invoice.Invoice_Type == 'Store' ||
             invoice.Cus_Number!.toLowerCase().contains(query.toLowerCase()) &&
                 invoice.Username == Username.value &&
-                invoice.Invoice_Due_USD != 0)
+                invoice.Invoice_Due_USD != 0 &&
+                invoice.Invoice_Type == 'Store')
         .toList();
   }
 
@@ -272,18 +393,34 @@ class InvoiceHistoryController extends GetxController {
   RxDouble totaldue = 0.0.obs;
   RxDouble totalreclb = 0.0.obs;
   RxDouble totalrec = 0.0.obs;
+  RxDouble total_d = 0.0.obs;
+  RxDouble totalrecusd_d = 0.0.obs;
+  RxDouble totaldue_d = 0.0.obs;
+  RxDouble totalreclb_d = 0.0.obs;
+  RxDouble totalrec_d = 0.0.obs;
 
   RxDouble total_yday = 0.0.obs;
   RxDouble totalrecusd_yday = 0.0.obs;
   RxDouble totaldue_yday = 0.0.obs;
   RxDouble totalreclb_yday = 0.0.obs;
   RxDouble totalrec_yday = 0.0.obs;
+  RxDouble total_yday_d = 0.0.obs;
+  RxDouble totalrecusd_yday_d = 0.0.obs;
+  RxDouble totaldue_yday_d = 0.0.obs;
+  RxDouble totalreclb_yday_d = 0.0.obs;
+  RxDouble totalrec_yday_d = 0.0.obs;
 
   RxDouble total_all = 0.0.obs;
   RxDouble totalrecusd_all = 0.0.obs;
   RxDouble totaldue_all = 0.0.obs;
   RxDouble totalreclb_all = 0.0.obs;
   RxDouble totalrec_all = 0.0.obs;
+
+  RxDouble total_all_d = 0.0.obs;
+  RxDouble totalrecusd_all_d = 0.0.obs;
+  RxDouble totaldue_all_d = 0.0.obs;
+  RxDouble totalreclb_all_d = 0.0.obs;
+  RxDouble totalrec_all_d = 0.0.obs;
 
   RxDouble total_driver = 0.0.obs;
   RxDouble totalrecusd_driver = 0.0.obs;
@@ -296,12 +433,23 @@ class InvoiceHistoryController extends GetxController {
   RxDouble totaldue_month = 0.0.obs;
   RxDouble totalreclb_month = 0.0.obs;
   RxDouble totalrec_month = 0.0.obs;
+  RxDouble total_month_d = 0.0.obs;
+  RxDouble totalrecusd_month_d = 0.0.obs;
+  RxDouble totaldue_month_d = 0.0.obs;
+  RxDouble totalreclb_month_d = 0.0.obs;
+  RxDouble totalrec_month_d = 0.0.obs;
 
   RxDouble total_fhome = 0.0.obs;
   RxDouble totalrecusd_fhome = 0.0.obs;
   RxDouble totaldue_fhome = 0.0.obs;
   RxDouble totalreclb_fhome = 0.0.obs;
   RxDouble totalrec_fhome = 0.0.obs;
+
+  RxDouble total_fhome_del = 0.0.obs;
+  RxDouble totalrecusd_fhome_del = 0.0.obs;
+  RxDouble totaldue_fhome_del = 0.0.obs;
+  RxDouble totalreclb_fhome_del = 0.0.obs;
+  RxDouble totalrec_fhome_del = 0.0.obs;
 
   RxDouble total_cus = 0.0.obs;
   RxDouble totalrecusd_cus = 0.0.obs;
@@ -327,6 +475,7 @@ class InvoiceHistoryController extends GetxController {
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
             invoice.Username == Username.value &&
+            invoice.Invoice_Type == 'Store' &&
             invoice.Invoice_Date.contains(formattedDate))
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
@@ -336,6 +485,40 @@ class InvoiceHistoryController extends GetxController {
       totaldue_fhome.value += totalofinvoices[i].Invoice_Due_USD;
       totalreclb_fhome.value += totalofinvoices[i].Invoice_Rec_Lb;
       totalrec_fhome.value +=
+          totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+              totalofinvoices[i].Invoice_Rec_Usd;
+    }
+  }
+
+  void CalTotal_fhome_del() {
+    Username = sharedPreferencesController.username;
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    // print(formattedDate);
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+    total_fhome_del.value = 0;
+    totalrecusd_fhome_del.value = 0;
+    totaldue_fhome_del.value = 0;
+    totalreclb_fhome_del.value = 0;
+    totalrec_fhome_del.value = 0;
+
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Type == 'Delivery' &&
+            invoice.Invoice_Date.contains(formattedDate))
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_fhome_del.value += totalofinvoices[i].Invoice_Rec_Usd +
+          (totalofinvoices[i].Invoice_Rec_Lb / rateController.rateValue.value);
+      totalrecusd_fhome_del.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_fhome_del.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_fhome_del.value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec_fhome_del.value +=
           totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
               totalofinvoices[i].Invoice_Rec_Usd;
     }
@@ -360,7 +543,8 @@ class InvoiceHistoryController extends GetxController {
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
             invoice.Username == Username.value &&
-            invoice.Invoice_Date.contains(formattedDate))
+            invoice.Invoice_Date.contains(formattedDate) &&
+            invoice.Invoice_Type == 'Store')
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total.value += totalofinvoices[i].Invoice_Total_Usd;
@@ -368,6 +552,39 @@ class InvoiceHistoryController extends GetxController {
       totaldue.value += totalofinvoices[i].Invoice_Due_USD;
       totalreclb.value += totalofinvoices[i].Invoice_Rec_Lb;
       totalrec.value +=
+          totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+              totalofinvoices[i].Invoice_Rec_Usd;
+    }
+  }
+
+  void CalTotalDelivery() {
+    Username = sharedPreferencesController.username;
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+    String month = dateParts[1].length == 1 ? '0${dateParts[1]}' : dateParts[1];
+    String day = dateParts[2].length == 1 ? '0${dateParts[2]}' : dateParts[2];
+    String formattedDate = '${dateParts[0]}-$month-$day';
+    // print(formattedDate);
+    formattedTime = dateController.getFormattedTime();
+    Username = sharedPreferencesController.username;
+    total_d.value = 0;
+    totalrecusd_d.value = 0;
+    totaldue_d.value = 0;
+    totalreclb_d.value = 0;
+    totalrec_d.value = 0;
+
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Date.contains(formattedDate) &&
+            invoice.Invoice_Type == 'Delivery')
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_d.value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_d.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_d.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_d.value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec_d.value +=
           totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
               totalofinvoices[i].Invoice_Rec_Usd;
     }
@@ -402,7 +619,8 @@ class InvoiceHistoryController extends GetxController {
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
             invoice.Username == Username.value &&
-            invoice.Invoice_Month == (monthNumber))
+            invoice.Invoice_Month == (monthNumber) &&
+            invoice.Invoice_Type == 'Store')
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total_month.value += totalofinvoices[i].Invoice_Total_Usd;
@@ -410,6 +628,49 @@ class InvoiceHistoryController extends GetxController {
       totaldue_month.value += totalofinvoices[i].Invoice_Due_USD;
       totalreclb_month.value += totalofinvoices[i].Invoice_Rec_Lb;
       totalrec_month.value +=
+          totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+              totalofinvoices[i].Invoice_Rec_Usd;
+    }
+  }
+
+  void CalTotalMonthDelivery() {
+    total_month_d.value = 0;
+    totaldue_month_d.value = 0;
+    totalrecusd_month_d.value = 0;
+    totalreclb_month_d.value = 0;
+    totalrec_month_d.value = 0;
+    Username = sharedPreferencesController.username;
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+
+    // print(formattedDate);
+    DateTime now = DateTime.now();
+    DateTime yesterday = now.subtract(Duration(days: 1));
+    int getMonthNumber(DateTime date) {
+      return date.month;
+    }
+
+    int monthNumber = getMonthNumber(now);
+    // Format the date for yesterday
+    String day = yesterday.day.toString().padLeft(2, '0');
+    String month = yesterday.month.toString().padLeft(2, '0');
+    String year = yesterday.year.toString();
+
+    formattedDate = '$year-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Month == (monthNumber) &&
+            invoice.Invoice_Type == 'Delivery')
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_month_d.value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_month_d.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_month_d.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_month_d.value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec_month_d.value +=
           totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
               totalofinvoices[i].Invoice_Rec_Usd;
     }
@@ -440,7 +701,8 @@ class InvoiceHistoryController extends GetxController {
     List<InvoiceModel> totalofinvoices = invoices
         .where((invoice) =>
             invoice.Username == Username.value &&
-            invoice.Invoice_Date.contains(formattedDate))
+            invoice.Invoice_Date.contains(formattedDate) &&
+            invoice.Invoice_Type == 'Store')
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total_yday.value += totalofinvoices[i].Invoice_Total_Usd;
@@ -448,6 +710,45 @@ class InvoiceHistoryController extends GetxController {
       totaldue_yday.value += totalofinvoices[i].Invoice_Due_USD;
       totalreclb_yday.value += totalofinvoices[i].Invoice_Rec_Lb;
       totalrec_yday.value +=
+          totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+              totalofinvoices[i].Invoice_Rec_Usd;
+    }
+  }
+
+  void CalTotalYdayDelivery() {
+    total_yday_d.value = 0;
+    totaldue_yday_d.value = 0;
+    totalrecusd_yday_d.value = 0;
+    totalreclb_yday_d.value = 0;
+    totalrec_yday_d.value = 0;
+    Username = sharedPreferencesController.username;
+    String dateString = dateController.getFormattedDate();
+    List<String> dateParts = dateString.split('-');
+
+    // print(formattedDate);
+    DateTime now = DateTime.now();
+    DateTime yesterday = now.subtract(Duration(days: 1));
+
+    // Format the date for yesterday
+    String day = yesterday.day.toString().padLeft(2, '0');
+    String month = yesterday.month.toString().padLeft(2, '0');
+    String year = yesterday.year.toString();
+
+    formattedDate = '$year-$month-$day';
+    formattedTime = dateController.getFormattedTime();
+
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Date.contains(formattedDate) &&
+            invoice.Invoice_Type == 'Delivery')
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_yday_d.value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_yday_d.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_yday_d.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_yday_d.value += totalofinvoices[i].Invoice_Rec_Lb;
+      totalrec_yday_d.value +=
           totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
               totalofinvoices[i].Invoice_Rec_Usd;
     }
@@ -463,7 +764,9 @@ class InvoiceHistoryController extends GetxController {
     Username = sharedPreferencesController.username;
 
     List<InvoiceModel> totalofinvoices = invoices
-        .where((invoice) => invoice.Username == Username.value)
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Type == 'Store')
         .toList();
     for (int i = 0; i < totalofinvoices.length; i++) {
       total_all.value += totalofinvoices[i].Invoice_Total_Usd;
@@ -472,6 +775,32 @@ class InvoiceHistoryController extends GetxController {
       totalreclb_all.value += totalofinvoices[i].Invoice_Rec_Lb;
 
       totalrec_all.value +=
+          totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
+              totalofinvoices[i].Invoice_Rec_Usd;
+    }
+  }
+
+  void CalTotalallDelivery() {
+    total_all_d.value = 0;
+    totaldue_all_d.value = 0;
+    totalrecusd_all_d.value = 0;
+    totalreclb_all_d.value = 0;
+    totalrec_all_d.value = 0;
+
+    Username = sharedPreferencesController.username;
+
+    List<InvoiceModel> totalofinvoices = invoices
+        .where((invoice) =>
+            invoice.Username == Username.value &&
+            invoice.Invoice_Type == 'Delivery')
+        .toList();
+    for (int i = 0; i < totalofinvoices.length; i++) {
+      total_all_d.value += totalofinvoices[i].Invoice_Total_Usd;
+      totalrecusd_all_d.value += totalofinvoices[i].Invoice_Rec_Usd;
+      totaldue_all_d.value += totalofinvoices[i].Invoice_Due_USD;
+      totalreclb_all_d.value += totalofinvoices[i].Invoice_Rec_Lb;
+
+      totalrec_all_d.value +=
           totalofinvoices[i].Invoice_Rec_Lb / totalofinvoices[i].Inv_Rate +
               totalofinvoices[i].Invoice_Rec_Usd;
     }

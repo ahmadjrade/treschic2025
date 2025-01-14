@@ -1,22 +1,24 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/expenses_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_payment_controller.dart';
-import 'package:fixnshop_admin/controller/purchase_payment_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/expenses_model.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/model/invoice_payment_model.dart';
-import 'package:fixnshop_admin/model/purchase_payment_model.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/expenses_controller.dart';
+import 'package:treschic/controller/invoice_history_controller.dart';
+import 'package:treschic/controller/invoice_payment_controller.dart';
+import 'package:treschic/controller/purchase_payment_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/expenses_model.dart';
+import 'package:treschic/model/invoice_model.dart';
+import 'package:treschic/model/invoice_payment_model.dart';
+import 'package:treschic/model/purchase_payment_model.dart';
+import 'package:treschic/view/Invoices/invoice_history_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
 class ExpenseMonth extends StatelessWidget {
   ExpenseMonth({super.key});
@@ -73,49 +75,53 @@ class ExpenseMonth extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Obx(() {
-                        FilterQuery.text = barcodeController.barcode3.value;
-                        return Expanded(
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+              child: Obx(() {
+                FilterQuery.text = barcodeController.barcode3.value;
+                return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                          //   color: Colors.grey.shade500,
+                          border: Border.all(color: Colors.grey.shade500),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            controller: FilterQuery,
-                            onChanged: (query) {
-                              //print(formattedDate);
+                            //   obscureText: true,
+                            //  readOnly: isLoading,
+                            onChanged: (value) {
                               expensesController.expenses.refresh();
                             },
+                            controller: FilterQuery,
                             decoration: InputDecoration(
-                              labelText: 'Search by ID,Customer Name or Number',
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  FilterQuery.clear();
+                                  expensesController.expenses.refresh();
+                                },
+                              ),
                               prefixIcon: Icon(Icons.search),
+                              border: InputBorder.none,
+                              hintText: 'Search By Name or Number',
                             ),
                           ),
-                        );
-                      }),
-                      // SizedBox(
-                      //   width: 14,
-                      // ),
-                      // Padding(
-                      //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      //   child: IconButton(
-                      //     icon: Icon(Icons.qr_code_scanner_rounded),
-                      //     color: Colors.black,
-                      //     onPressed: () {
-                      //       barcodeController.scanBarcodeSearch();
-                      //       //.then((value) => set());
-                      //     },
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Obx(
+                        )));
+              }),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Obx(
                   () {
                     final List<ExpensesModel> filteredinvoices =
                         expensesController.searchExpensesMonth(
@@ -158,7 +164,9 @@ class ExpenseMonth extends StatelessWidget {
                                                 fontSize: 15),
                                           ),
                                           Text(
-                                            expense.Exp_Cat_Name,
+                                            expense.Exp_Cat_Name +
+                                                ' -- ' +
+                                                expense.Expense_Desc,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15),
@@ -217,7 +225,7 @@ class ExpenseMonth extends StatelessWidget {
                     }
                   },
                 ),
-              ],
+              ),
             ),
             SizedBox(
               height: 10,

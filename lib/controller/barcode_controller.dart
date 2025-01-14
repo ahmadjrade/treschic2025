@@ -1,7 +1,6 @@
-import 'package:fixnshop_admin/controller/bulk_phone_purchase_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_controller.dart';
-import 'package:fixnshop_admin/controller/product_controller.dart';
-import 'package:fixnshop_admin/controller/transfer_controller.dart';
+import 'package:treschic/controller/invoice_controller.dart';
+import 'package:treschic/controller/product_controller.dart';
+import 'package:treschic/controller/transfer_controller.dart';
 import 'package:get/get.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 
@@ -16,8 +15,8 @@ class BarcodeController extends GetxController {
 
   final InvoiceController invoiceController = Get.put(InvoiceController());
   final ProductController productController = Get.find<ProductController>();
-  final BulkPhonePurchaseController bulkPhonePurchaseController =
-      Get.put(BulkPhonePurchaseController());
+  
+
 
   Future<void> scanBarcode() async {
     try {
@@ -75,26 +74,5 @@ class BarcodeController extends GetxController {
     }
   }
 
-  Future<void> scanBarcodePhonePurchase(item) async {
-    try {
-      ScanResult result = await BarcodeScanner.scan();
-      purchase_phone_barcode.value = result.rawContent;
-      if (purchase_phone_barcode.value != '') {
-        if (purchase_phone_barcode.value.length == 15) {
-          bulkPhonePurchaseController.UpdatePhoneImei(
-              item, purchase_phone_barcode.value);
-          purchase_phone_barcode.value == '';
-        } else {
-          Get.snackbar('Error', 'IMEI MUST HAVE 15 NUMBERS');
-        }
-      } else {
-        Get.snackbar('Error', 'Couldn\'t Read IMEI');
-      }
-      //productController.products.refresh();
-
-//invoiceController.fetchProduct(barcode2.value);
-    } catch (e) {
-      print('Error scanning barcode: $e');
-    }
-  }
+  
 }

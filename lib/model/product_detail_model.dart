@@ -6,6 +6,8 @@ class ProductDetailModel {
   final String Product_Name;
   final String Product_Code;
   final String Product_Color;
+  final String Product_Size;
+
   final int Product_Quantity;
   final int Product_Max_Quantity;
   final int Product_Sold_Quantity;
@@ -20,6 +22,7 @@ class ProductDetailModel {
   RxDouble _product_MPrice;
   RxInt quantity;
   final int isPhone;
+  final String pdetail_code;
 
   ProductDetailModel({
     required this.PD_id,
@@ -27,6 +30,7 @@ class ProductDetailModel {
     required this.Product_Name,
     required this.Product_Code,
     required this.Product_Color,
+    required this.Product_Size,
     required this.Product_Quantity,
     required this.Product_Max_Quantity,
     required this.Product_Sold_Quantity,
@@ -39,6 +43,8 @@ class ProductDetailModel {
     required this.Username,
     required this.quantity,
     required this.isPhone,
+        required this.pdetail_code,
+
   })  : _product_MPrice = Product_MPrice.obs,
         _product_Cost = Product_Cost.obs,
         _Product_LPrice = Product_Cost.obs; // Initialize RxDouble
@@ -66,6 +72,8 @@ class ProductDetailModel {
       Product_Name: json['Product_Name'],
       Product_Code: json['Product_Code'],
       Product_Color: json['Product_Color'],
+      Product_Size: json['Product_Size'],
+
       Product_Quantity: json['Product_Quantity'],
       Product_Max_Quantity: json['Product_Max_Quantity'],
       Product_Sold_Quantity: json['Product_Sold_Quantity'],
@@ -79,7 +87,8 @@ class ProductDetailModel {
 
       quantity: 1.obs,
 
-      isPhone: json['isPhone'],
+      isPhone: json['isPhone'],      pdetail_code: json['pdetail_code'],
+
     );
   }
 }

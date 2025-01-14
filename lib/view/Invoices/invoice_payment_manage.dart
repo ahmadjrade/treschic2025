@@ -1,20 +1,21 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'package:fixnshop_admin/controller/barcode_controller.dart';
-import 'package:fixnshop_admin/controller/datetime_controller.dart';
-import 'package:fixnshop_admin/controller/invoice_history_controller.dart';
-import 'package:fixnshop_admin/controller/sharedpreferences_controller.dart';
-import 'package:fixnshop_admin/model/invoice_model.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_all.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_items.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_month.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_history_yesterday.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_payment.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_payment_all.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_payment_month.dart';
-import 'package:fixnshop_admin/view/Invoices/invoice_payment_yesterday.dart';
-import 'package:fixnshop_admin/view/Invoices/tab_item.dart';
+import 'package:treschic/controller/barcode_controller.dart';
+import 'package:treschic/controller/datetime_controller.dart';
+import 'package:treschic/controller/invoice_history_controller.dart';
+import 'package:treschic/controller/invoice_payment_controller.dart';
+import 'package:treschic/controller/sharedpreferences_controller.dart';
+import 'package:treschic/model/invoice_model.dart';
+import 'package:treschic/view/Invoices/invoice_history.dart';
+import 'package:treschic/view/Invoices/invoice_history_all.dart';
+import 'package:treschic/view/Invoices/invoice_history_items.dart';
+import 'package:treschic/view/Invoices/invoice_history_month.dart';
+import 'package:treschic/view/Invoices/invoice_history_yesterday.dart';
+import 'package:treschic/view/Invoices/invoice_payment.dart';
+import 'package:treschic/view/Invoices/invoice_payment_all.dart';
+import 'package:treschic/view/Invoices/invoice_payment_month.dart';
+import 'package:treschic/view/Invoices/invoice_payment_yesterday.dart';
+import 'package:treschic/view/Invoices/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -28,26 +29,27 @@ class InvoicePaymentManage extends StatelessWidget {
   //     Get.find<InvoiceHistoryController>();
   final SharedPreferencesController sharedPreferencesController =
       Get.find<SharedPreferencesController>();
-
+  final InvoicePaymentController invoicePaymentController =
+      Get.find<InvoicePaymentController>();
   RxString Username = ''.obs;
   TextEditingController FilterQuery = TextEditingController();
   final BarcodeController barcodeController = Get.find<BarcodeController>();
-            String Today = '';
-                        String Yesterday = '';
-
+  String Today = '';
+  String Yesterday = '';
 
   @override
   Widget build(BuildContext context) {
-     DateTime now = DateTime.now();
-             Today = DateFormat('EEEE').format(now) ;
-     DateTime yday = now.subtract(Duration(days: 1));
-     String getMonthName(DateTime date) {
-  return DateFormat('MMMM').format(date);
-}
-      String monthName = getMonthName(now);
+    DateTime now = DateTime.now();
+    Today = DateFormat('EEEE').format(now);
+    DateTime yday = now.subtract(Duration(days: 1));
+    String getMonthName(DateTime date) {
+      return DateFormat('MMMM').format(date);
+    }
+
+    String monthName = getMonthName(now);
 
     // Getting the name of the day for yesterday
-     Yesterday = DateFormat('EEEE').format(yday);
+    Yesterday = DateFormat('EEEE').format(yday);
 
     // invoiceHistoryController.reset();
 
@@ -80,31 +82,29 @@ class InvoicePaymentManage extends StatelessWidget {
       return time8Hour;
     }
 
-          
     String addCommasToNumber(double value) {
       final formatter = NumberFormat('#,##0.00');
       return formatter.format(value);
     }
-    
 
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Invoice Payment',
-                style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
               ),
-               IconButton(
-              onPressed: () {
-                // invoiceHistoryController.reset();
-                // invoiceHistoryController.isDataFetched = false;
-                // invoiceHistoryController.fetchinvoices();
-              },
-              icon: Icon(Icons.refresh))
+              IconButton(
+                  onPressed: () {
+                    invoicePaymentController.reset();
+                    invoicePaymentController.isDataFetched = false;
+                    invoicePaymentController.fetch_payments();
+                  },
+                  icon: Icon(Icons.refresh))
             ],
           ),
           centerTitle: true,
@@ -130,8 +130,7 @@ class InvoicePaymentManage extends StatelessWidget {
                   tabs: [
                     TabItem(title: Today, count: 0),
                     TabItem(title: Yesterday, count: 0),
-                                        TabItem(title:  monthName, count: 0),
-
+                    TabItem(title: monthName, count: 0),
                     TabItem(title: 'All', count: 0),
                   ],
                 ),
@@ -139,20 +138,19 @@ class InvoicePaymentManage extends StatelessWidget {
             ),
           ),
         ),
-      body: 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TabBarView(
-                          children: [
-                            InvoicePayment(), // Page for "Today" tab
-                            InvoicePaymentYesterday(),
-                            InvoicePaymentMonth(), // Page for "Yesterday" tab
- // Page for "Yesterday" tab
-                            InvoicePaymentAll(), // Page for "All" tab
-                          ],
-                        ),
-              ),
-              
-    ),);
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TabBarView(
+            children: [
+              InvoicePayment(), // Page for "Today" tab
+              InvoicePaymentYesterday(),
+              InvoicePaymentMonth(), // Page for "Yesterday" tab
+              // Page for "Yesterday" tab
+              InvoicePaymentAll(), // Page for "All" tab
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
